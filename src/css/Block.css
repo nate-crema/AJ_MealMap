@@ -1,0 +1,42 @@
+.fncBlock {
+    /* width: 400px;
+    height: 300px; */
+    width: auto;
+    height: auto;
+    border-radius: 50px;
+    box-shadow: 5px 7px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-y: hidden;
+}
+
+.fncBlock .title {
+    position: relative;
+    top: 40px;
+    left: 40px;
+    font-size: 26px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 600;
+    margin: 0;
+}
+
+.fncBlock .subtext {
+    position: relative;
+    top: 45px;
+    left: 40px;
+    font-size: 16px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    word-break: keep-all;
+    max-width: 44%;
+    margin: 0;
+}
+
+.fncBlock .boxImage {
+    width: auto;
+    height: 80%;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
