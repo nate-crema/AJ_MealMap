@@ -6,7 +6,7 @@ function getWindowSize(idx) {
     return idx == 0 ? window.innerWidth : idx == 1 && window.innerHeight;
 }
 
-function Block({ title, subtext, color, img, htmlDoc, boxSize: _boxSize, style, imgCss, subTextCss, menu: _menu, changeMenu }) {
+function Block({ title, subtext, color, img, htmlDoc, boxSize: _boxSize, style, imgCss, subTextCss, menu: _menu, changeMenuUI, onClick }) {
 
     const [ docSize, setDocSize ] = useState([getWindowSize(0), getWindowSize(1)]);
     const [ boxSize, setBoxSize ] = useState([400, 300, 'default']);
@@ -35,13 +35,13 @@ function Block({ title, subtext, color, img, htmlDoc, boxSize: _boxSize, style, 
         }, 10);
     }
 
-    useEffect(() => {
-        window.addEventListener("resize", _resizeHandler)
-        return () => window.removeEventListener("resize", _resizeHandler);
-    }, []);
+    // useEffect(() => {
+    //     window.addEventListener("resize", _resizeHandler)
+    //     return () => window.removeEventListener("resize", _resizeHandler);
+    // }, []);
 
     useEffect(() => {
-        console.log(`docSize updated: (${docSize[0]},${docSize[1]})`);
+        // console.log(`docSize updated: (${docSize[0]},${docSize[1]})`);
         if (_boxSize && _boxSize.cvtPoint) {
             if (docSize[_boxSize.cvtPoint[0]] >= _boxSize.cvtPoint[1]){
                 if (_boxSize.PC) setBoxSize([
@@ -71,7 +71,7 @@ function Block({ title, subtext, color, img, htmlDoc, boxSize: _boxSize, style, 
                 _boxSize ? _boxSize.default[1] : "300px",
                 'default'
         ])
-        console.log(`boxSize updated: (${boxSize[0]},${boxSize[1]}) || mode: ${boxSize[2]}`);
+        // console.log(`boxSize updated: (${boxSize[0]},${boxSize[1]}) || mode: ${boxSize[2]}`);
     }, [ docSize ]);
     
     return (
@@ -79,6 +79,7 @@ function Block({ title, subtext, color, img, htmlDoc, boxSize: _boxSize, style, 
             width: boxSize[0],
             height: boxSize[1]
         }} 
+        onClick={ onClick }
         style={Object.assign(style)}
         onMouseEnter={(e) => {
             let { style, offsetWidth, offsetHeight } = e.target;
@@ -96,7 +97,7 @@ function Block({ title, subtext, color, img, htmlDoc, boxSize: _boxSize, style, 
             }, 200);
             // console.log(e.target.offsetWidth);
         }}
-        onClick={changeMenu}
+        onClick={changeMenuUI}
         >
             <p className="title" style={{ color }}>{title}</p>
             <p className="subtext" style={Object.assign({ color }, subTextCss)}>{subtext}</p>

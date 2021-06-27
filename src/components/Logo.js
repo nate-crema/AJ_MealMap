@@ -1,5 +1,5 @@
 import "../css/Logo.css";
-import img_A from "../assets/img/img_a.png";
+import img_A from "../assets/img/img_a.gif";
 
 
 function getTextWidth(text, font) {
