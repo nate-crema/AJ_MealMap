@@ -35,10 +35,10 @@ function Block({ title, subtext, color, img, htmlDoc, boxSize: _boxSize, style, 
         }, 10);
     }
 
-    // useEffect(() => {
-    //     window.addEventListener("resize", _resizeHandler)
-    //     return () => window.removeEventListener("resize", _resizeHandler);
-    // }, []);
+    useEffect(() => {
+        window.addEventListener("resize", _resizeHandler)
+        return () => window.removeEventListener("resize", _resizeHandler);
+    }, []);
 
     useEffect(() => {
         // console.log(`docSize updated: (${docSize[0]},${docSize[1]})`);

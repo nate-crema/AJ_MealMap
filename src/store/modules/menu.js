@@ -11,7 +11,7 @@ export const setMenu = createAction({ type: SETMENU });
 // initial State
 
 const initState = {
-    menu: 0
+    menu: undefined
 }
 
 // export reducer

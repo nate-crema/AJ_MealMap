@@ -15,14 +15,16 @@ const exporters = new function() {
             // set subTitle
             OT.setTitler(title, true, document.querySelector("p.titler"));
         };
-        this.changeMenuUI = (pos, history, state, setMenu) => {
-
+        this.changeMenuUI = (pos, pusher, state) => {
+            console.log(`changeMenuUI: ${pos}`);
+            if (pos < 0 || pos == undefined) return;
             const { def: { blocks, boxSize } } = state;
-            console.log(history);
             if ((boxSize.cvtPoint[0] == 0 ? window.innerWidth : boxSize.cvtPoint[0] == 1 && window.innerHeight) > boxSize.cvtPoint[1]) {
+                // if window size is bigger than convert point
 
-                if (pos != undefined) {
-
+                if (pos != 0) {
+                    // if position is not undefined
+                    // regard user move to specific menu from main page
                     if (document.getElementById("menuRef")) {
                         // close menus
                         document.getElementById("menuRef").style.opacity = 0;
@@ -47,23 +49,18 @@ const exporters = new function() {
                     }, 50);
         
                     // set subTitle
-                    setTitler(blocks[pos].title, true, document.getElementById("titleRef"));
+                    setTitler(blocks[pos-1].title, true, document.getElementById("titleRef"));
     
                     setTimeout(() => {
-                        // setMenu
-                        // subarea.current = null;
-                        setMenu((pos != undefined) ? pos+1 : 0);
-                        console.log(`pos: ${pos} | menu: ${(pos != undefined) ? pos+1 : 0}`);
-        
                         // move page
-                        history.push(blocks[pos].to || "#");
-                        // wrapRef.current.style.gridTemplateColumns = "20% 80%";
+                        pusher(blocks[pos-1].to || "#");
                     }, 50);
                 } else {
+
+                    console.log("regard user move to main page from specific menu");
     
                     // move page
-                    // subarea.current = null;
-                    history.push("/");
+                    pusher("/");
         
                     // moveLogo
                     document.querySelector("div.logoMain").style.top = null;
@@ -80,8 +77,35 @@ const exporters = new function() {
                             }, 90);
                         }, 10);
                     }, 50);
+
+                    setTitler("", false, document.getElementById("titleRef"));
+                }
+            } else {
+                // if window size is smaller than convert point
+                if (pos != 0) {
+                    // if position is not undefined
+                    // regard user move to specific menu from main page
+                    if (document.getElementById("menuRef")) {
+                        // close menus
+                        document.getElementById("menuRef").style.opacity = 0;
+                        document.getElementById("menuRef").style.marginTop = "10px";
+                        setTimeout(() => document.getElementById("menuRef").style.display = "none", 30);
+                    }
+        
+                    // set subTitle
+                    setTitler(blocks[pos-1].title, true, document.getElementById("titleRef"));
     
-                    setMenu(0);
+                    setTimeout(() => {
+                        // move page
+                        pusher(blocks[pos-1].to || "#");
+                    }, 50);
+                } else {
+
+                    console.log("regard user move to main page from specific menu");
+    
+                    // move page
+                    pusher("/");
+
                     setTitler("", false, document.getElementById("titleRef"));
                 }
             }

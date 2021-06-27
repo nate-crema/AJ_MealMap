@@ -35,29 +35,37 @@ function Index({ history }) {
     
     // level controller
     const [ title, setTitle ] = useState("");
-    const menuRef = useRef(null);
-    const titlerRef = useRef(null);
-    const wrapRef = useRef(null);
+    const init = useState(false);
     
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
     const { def: { blocks, boxSize, size, prev }, menu: { menu } } = state;
 
-    const setMenu = useCallback((i) => {
-        changeMenuUI(i, history, state, () => {
-            dispatch({ type: "prev/LOGPREV", v: window.location.href });
-            dispatch({ type: "menu/SETMENU", v: i ? i+1 : 0 });
-        })
-    }, [ dispatch ]);
+    const setMenu = (i) => {
+        dispatch({ type: "prev/LOGPREV", v: window.location.href });
+        dispatch({ type: "menu/SETMENU", v: i });
+    };
 
     useEffect(() => {
-        console.log("GLOBAL MENU CHANGED");
+        console.log(`GLOBAL MENU CHANGED: ${menu}`);
+        changeMenuUI(menu, history.push, state);
     }, [ menu ]);
+
+    // backward event handler
+
+    useEffect(() => {
+        // 뒷정리 함수 이용
+        return history.listen((location) => {
+          if (history.action === "POP") {
+            window.location.href = window.location.pathname;
+          }
+        });
+      }, [ history ]);
 
     return (
         <div className="wrapper" id="wrapRef">
             <div className="logoSpace">
-                <Logo className="logoMain" onClick={e => setMenu()} style={{
+                <Logo className="logoMain" onClick={e => setMenu(0)} style={{
                     cursor: menu == 0 ? "default" : "pointer"
                 }}/>
                 <div className="titlerCover" style={{ top: "250px" }}>
@@ -67,14 +75,11 @@ function Index({ history }) {
             </div>
             <div className="serviceSpace">
                 <Route path="/" exact component={() => {return <Main
-                    blocks={blocks}
-                    boxSize={boxSize}
                     changeMenuUI={(i) => setMenu(i)}
-                    menu={menu}
-                    // onClick={ getList }
+                    init={init}
                 />}}/>
-                <Route path="/mealmap" exact component={() => {return <MealMap
-                    state={state}
+                <Route path="/mealmap" exact component={() => {return <MealMap 
+                    init={init}
                 />}}/>
             </div>
         </div>

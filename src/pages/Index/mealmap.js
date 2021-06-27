@@ -13,9 +13,9 @@ import * as actions from '../../store/modules/map';
 import { initMenu, changeMenuUI, setTitler, getNowInfo, loadList } from "../../module/functions";
 import { push } from "react-router-redux";
 
-function MealMap({  }) {
+function MealMap({ init }) {
     
-    const dispatch = useDispatch;
+    const dispatch = useDispatch();
     const mapRef = useRef(null);
     const lTRef = useRef(null);
     let map = null;
@@ -28,11 +28,12 @@ function MealMap({  }) {
     const [ sCT, setSCT ] = useState("위치기준 정렬");
 
     const state = useSelector(select => select);
-    const { def: { blocks, boxSize, size }, menu: { menu } } = state;
+    const { def: { blocks, boxSize, size, prev }, menu: { menu } } = state;
 
     // list
 
     const [ list, setList ] = useState([]);
+    const [ isLoaded, setIsLoaded ] = useState(false);
     const [ filter, setFilter ] = useState([]);
 
     // listTitle
@@ -59,6 +60,7 @@ function MealMap({  }) {
                 let doc = document.getElementById("designCircle");
                 doc.style.backgroundColor = "#005aae4f";
                 doc.style.width = "100px";
+                doc.style.height = "100px";
                 setTimeout(() => {
                     lTRef.current.style.opacity = 1;
                     lTRef.current.style.color = "#005aae";
@@ -224,16 +226,10 @@ function MealMap({  }) {
     useEffect(() => {
         console.log(list);
     }, [ list ]);
-
-    useEffect(() => {
-        console.log(history);
-        changeMenuUI(1, history, state, () => {
-            dispatch({ type: "menu/SETMENU", v: 1 });
-        })
-    }, []);
     
     useEffect(() => {
-        if (list.length == 0) {
+        if (!isLoaded) {
+            setIsLoaded(true);
             const host = process.env.HOST || `http://localhost:3001`
             axios.get(`${host}/api/shopList`)
             .then(({ data }) => {
@@ -244,16 +240,18 @@ function MealMap({  }) {
                 console.error(e);
             })
         }
-    }, [ ]);
-
-    useEffect(() => {
-        // design initializing
-        if (menu != 1) {
-            initMenu(blocks[0].title, true);
+        console.log(`init: ${init[0]}`);
+        // console.log(`menu: ${menu} || init: ${init[0]}`)
+        if (menu != 1 && !init[0]) {
+            console.log(`menu: ${menu} || init: ${init[0]}`)
+            init[1](true);
+            dispatch({ type: "menu/SETMENU", v: 1 });
+            changeMenuUI(menu, history ? history.push : window.location.href, state);
         }
+        console.log(`mapLayout: loaded`);
         // map initializing
         mapInit(0);
-    }, [])
+    }, [ ]);
 
 
     return (
