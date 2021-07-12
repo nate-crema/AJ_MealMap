@@ -17,7 +17,7 @@ import Logo from "../components/Logo";
 
 // compoennts - fnc for menu
 
-import Filter from "../components/filter";
+import Filter from "../components/Filter";
 
 // components - pages
 import Main from "./Index/main";

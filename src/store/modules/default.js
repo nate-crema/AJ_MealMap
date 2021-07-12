@@ -11,7 +11,7 @@ import bI_5 from "../../assets/img/blockImg5.png";
 import bI_6 from "../../assets/img/blockImg6.png";
 
 // components - fnc for menu
-import Filter from "../../components/filter";
+import Filter from "../../components/Filter";
 
 const LOGPREV = "prev/LOGPREV";
 

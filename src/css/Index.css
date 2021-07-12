@@ -94,6 +94,7 @@
 
     .wrapper .titlerCover {
         width: 180px;
+        display: block;
     }
 }
 

@@ -1,0 +1,32 @@
+.filterBlock {
+    width: 100px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+    transition: all .24s ease;
+}
+
+.filterBlock:hover {
+    width: 105px;
+    height: 52px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+}
+
+.filterBlock .filterName {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #005BAE;
+}

@@ -230,7 +230,7 @@ function MealMap({ init }) {
     useEffect(() => {
         if (!isLoaded) {
             setIsLoaded(true);
-            const host = process.env.HOST || `http://localhost:3001`
+            const host = 'http://' + process.env.REACT_APP_DB_HOST.split(":")[0] + ":3001" || `http://localhost:3001`
             axios.get(`${host}/api/shopList`)
             .then(({ data }) => {
                 console.log(data);
