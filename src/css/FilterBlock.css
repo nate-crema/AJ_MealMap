@@ -7,7 +7,7 @@
     display: inline-block;
     margin: 5px;
     cursor: pointer;
-    transition: all .24s ease;
+    transition: all .5s cubic-bezier(0.05, 0.88, 0.05, 0.94);
 }
 
 .filterBlock:hover {

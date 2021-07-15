@@ -1,54 +1,46 @@
 import "../css/Index.css";
-import { useState, useEffect, useRef, createContext, useCallback } from "react";
+import { useState, useEffect, useRef, createContext, useCallback, useLayoutEffect } from "react";
 import { Route, Link, Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import * as mapActions from '../store/modules/map';
-
-// img
-import bI_1 from "../assets/img/blockImg1.png";
-import bI_2 from "../assets/img/blockImg2.png";
-import bI_3 from "../assets/img/blockImg3.png";
-import bI_4 from "../assets/img/blockImg4.png";
-import bI_5 from "../assets/img/blockImg5.png";
-import bI_6 from "../assets/img/blockImg6.png";
 
 // components - etc
 import Logo from "../components/Logo";
-
-// compoennts - fnc for menu
-
-import Filter from "../components/Filter";
 
 // components - pages
 import Main from "./Index/main";
 import MealMap from "./Index/mealmap";
 
+
 // global functions
 
-import { initMenu, changeMenuUI, setTitler, getNowInfo, loadList } from "../module/functions";
+import { initMenuN, changeMenuUI, setTitler, getNowInfo, loadList, constant } from "../module/functions";
 
 // ----
 
 function Index({ history }) {
 
-    console.log(initMenu);
+    const { menuList, boxSize } = constant;
     
     // level controller
     const [ title, setTitle ] = useState("");
-    const init = useState(false);
     
+    // state controller
     const state = useSelector((state) => state);
     const dispatch = useDispatch();
-    const { def: { blocks, boxSize, size, prev }, menu: { menu } } = state;
+    const { menu: { menu, init } } = state;
+
+    // global menu setter
 
     const setMenu = (i) => {
         dispatch({ type: "prev/LOGPREV", v: window.location.href });
         dispatch({ type: "menu/SETMENU", v: i });
     };
 
+    // menu ui setter
+
     useEffect(() => {
         console.log(`GLOBAL MENU CHANGED: ${menu}`);
-        changeMenuUI(menu, history.push, state);
+        changeMenuUI(menu, history.push);
     }, [ menu ]);
 
     // backward event handler
@@ -56,11 +48,29 @@ function Index({ history }) {
     useEffect(() => {
         // 뒷정리 함수 이용
         return history.listen((location) => {
-          if (history.action === "POP") {
-            window.location.href = window.location.pathname;
-          }
+            if (history.action === "POP") window.location.href = window.location.pathname;
         });
-      }, [ history ]);
+    }, [ history ]);
+
+    useEffect(() => {
+        if (!init) {
+            // 메인페이지가 아닌 페이지로 처음 들어왔을 경우
+            console.log(menu);
+            console.log(menu == undefined);
+            if (menu == undefined) {
+                let isSetted = false;
+                for (var i = 0; i < menuList.length; i++) if (menuList[i].route == window.location.pathname) {
+                    console.log(`found menu index num: ${i}`);
+                    dispatch({ type: "menu/SETMENU", v: i });
+                    isSetted = true;
+                    break;
+                }
+                if (!isSetted) dispatch({type: "menu/SETMENU", v: 0});
+            }
+            changeMenuUI(menu, history.push);
+            dispatch({ type: "menu/INITMENU" });
+        }
+    }, []);
 
     return (
         <div className="wrapper" id="wrapRef">
@@ -71,7 +81,7 @@ function Index({ history }) {
                 <div className="titlerCover" style={{ top: "250px" }}>
                     <p className="titler" id="titleRef">{title}</p>
                 </div>
-                {menu > 0 && (blocks[menu-1].subarea || <></>)}
+                {menu > 0 && (menuList[menu].subarea || <></>)}
             </div>
             <div className="serviceSpace">
                 <Route path="/" exact component={() => {return <Main

@@ -33,6 +33,9 @@ const initState = new function() {
             description: "리스트에 표시할 업종",
             isSelectable: true,
             isOptionNeed: true,
+            setStyle: {
+                height: "150px"
+            },
             optionType: "select"
         },
         2: {
@@ -102,12 +105,7 @@ const initState = new function() {
             isOptionNeed: true,
             optionType: "select"
         },
-        length: 11,
-        map: (fnc) => {
-            let rtv = []
-            for (var i = 0; i < this.list.length; i++) rtv.push(fnc(this.list[i], i, this.list[i].filterUID))
-            return rtv;
-        }
+        length: 11
     };
     this.activated = [];
     this.deActivated = [];

@@ -9,9 +9,9 @@ function FilterBlock({ filterId, clickHandler, isActivated, children }) {
     const dispatch = useDispatch();
     const { filter: { list: filterList, activated: activatedG, deActivated: deActivatedG } } = state;
 
-    console.log(filterId);
-    console.log(filterList);
-    console.log(filterList[filterId]);
+    // console.log(filterId);
+    // console.log(filterList);
+    // console.log(filterList[filterId]);
 
     let g_idx = -1;
 
@@ -23,7 +23,7 @@ function FilterBlock({ filterId, clickHandler, isActivated, children }) {
     return (
         <div className={`filterBlock filter_${filterId}`} filterid={filterId} onClick={clickHandler} style={ isActivated ? {
             backgroundColor: "#005BAE",
-            width: "90%"
+            // width: "90%"
         } : {
             backgroundColor: "white",
             width: "100px"
