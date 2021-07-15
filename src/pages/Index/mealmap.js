@@ -3,14 +3,14 @@ import "../../css/Mealmap.css";
 
 import axios from "axios";
 
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import * as actions from '../../store/modules/map';
 
 // global functions
 
-import { initMenu, changeMenuUI, setTitler, getNowInfo, loadList } from "../../module/functions";
+import { initMenuN, changeMenuUI, setTitler, getNowInfo, loadList } from "../../module/functions";
 import { push } from "react-router-redux";
 
 function MealMap({ init }) {
@@ -27,8 +27,7 @@ function MealMap({ init }) {
     const [ sM , setSM ] = useState(0); // sort mode
     const [ sCT, setSCT ] = useState("위치기준 정렬");
 
-    const state = useSelector(select => select);
-    const { def: { blocks, boxSize, size, prev }, menu: { menu } } = state;
+    // const state = useSelector(select => select);
 
     // list
 
@@ -239,14 +238,6 @@ function MealMap({ init }) {
             .catch((e) => {
                 console.error(e);
             })
-        }
-        console.log(`init: ${init[0]}`);
-        // console.log(`menu: ${menu} || init: ${init[0]}`)
-        if (menu != 1 && !init[0]) {
-            console.log(`menu: ${menu} || init: ${init[0]}`)
-            init[1](true);
-            dispatch({ type: "menu/SETMENU", v: 1 });
-            changeMenuUI(menu, history ? history.push : window.location.href, state);
         }
         console.log(`mapLayout: loaded`);
         // map initializing

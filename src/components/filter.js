@@ -43,28 +43,45 @@ function Filter() {
     const _filterActiveClickHandler = (e) => {
         e.stopPropagation();
         const filterId = e.currentTarget.getAttribute("filterid") * 1;
-        console.log(e.currentTarget);
-        console.log();
-        addActivated(filterId);
+        const setStyle = filterList[filterId].setStyle;
+        // console.log(e.currentTarget);
+        console.log(filterId);
         // open option
-        console.log(filterList[filterId]);
+        // console.log(filterList[filterId]);
         if (filterList[filterId].isOptionNeed) {
-            e.currentTarget.style.height = "100px";
+            setTimeout(() => {
+                document.querySelector(`div[filterid='${filterId}']`).style.width = (setStyle && setStyle.width) ? setStyle.width : "90%";
+                document.querySelector(`div[filterid='${filterId}']`).style.height = (setStyle && setStyle.height) ? setStyle.height : "210px";
+                document.querySelector(`div[filterid='${filterId}']`).children[0].style.top = (setStyle && setStyle.top) ? setStyle.top : "22%";
+                document.querySelector(`div[filterid='${filterId}']`).children[0].style.left = (setStyle && setStyle.left) ? setStyle.left : "30px";
+                document.querySelector(`div[filterid='${filterId}']`).children[0].style.fontWeight = (setStyle && setStyle.fontWeight) ? setStyle.fontWeight : "500";
+                document.querySelector(`div[filterid='${filterId}']`).children[0].style.fontSize = (setStyle && setStyle.fontSize) ? setStyle.fontSize : "17px";
+            }, 100);
         } else {
             console.log("Option not needed");
         }
+        addActivated(filterId);
     }
 
     const _filterDeActiveClickHandler = (e) => {
         e.stopPropagation();
         const filterId = e.currentTarget.getAttribute("filterid") * 1;
+        if (e.currentTarget.style.height != "") {
+            e.currentTarget.style.width = null;
+            e.currentTarget.style.height = null;
+            e.currentTarget.children[0].style.top = null;
+            e.currentTarget.children[0].style.left = "20px";
+            e.currentTarget.children[0].style.fontWeight = null;
+            e.currentTarget.children[0].style.fontSize = null;
+            setTimeout(() => {
+                rmActivated(filterId);
+            }, 200);
+        } else rmActivated(filterId);
         // console.log(e.currentTarget);
-        // console.log();
-        rmActivated(filterId);
     }
 
     useEffect(() => {
-        console.log(filterRef);
+        // console.log(filterRef);
         filterRef.current.style.display = "block";
         setTimeout(() => {
             filterRef.current.style.opacity = 1;
@@ -117,7 +134,7 @@ function Filter() {
                 {
                     deActivatedG.map((v) => {
                         const { filterUID, isSelectable } = v;
-                        console.log(v);
+                        // console.log(v);
                         if (isSelectable && !activated.includes(filterUID)) return <FilterBlock
                             filterId={filterUID}
                             isActivated={false}
