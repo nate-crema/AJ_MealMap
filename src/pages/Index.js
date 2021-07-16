@@ -13,7 +13,7 @@ import MealMap from "./Index/mealmap";
 
 // global functions
 
-import { initMenuN, changeMenuUI, setTitler, getNowInfo, loadList, constant } from "../module/functions";
+import { initMenu, changeMenuUI, setTitler, getNowInfo, loadList, constant } from "../module/functions";
 
 // ----
 

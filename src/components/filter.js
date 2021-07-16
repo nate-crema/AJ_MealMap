@@ -43,15 +43,18 @@ function Filter() {
     const _filterActiveClickHandler = (e) => {
         e.stopPropagation();
         const filterId = e.currentTarget.getAttribute("filterid") * 1;
-        const setStyle = filterList[filterId].setStyle;
+        let filterInfo = {};
+        for (var i = 0; i < filterList.length; i++) if (filterList[i].filterUID == filterId) filterInfo = filterList[i];
+        const setStyle = filterInfo.setStyle;
         // console.log(e.currentTarget);
         console.log(filterId);
         // open option
         // console.log(filterList[filterId]);
-        if (filterList[filterId].isOptionNeed) {
+        if (filterInfo.isOptionNeed) {
             setTimeout(() => {
                 document.querySelector(`div[filterid='${filterId}']`).style.width = (setStyle && setStyle.width) ? setStyle.width : "90%";
                 document.querySelector(`div[filterid='${filterId}']`).style.height = (setStyle && setStyle.height) ? setStyle.height : "210px";
+                document.querySelector(`div[filterid='${filterId}']`).children[0].style.transform = (setStyle && setStyle.transform) ? setStyle.transform : "translateY(-50%)";
                 document.querySelector(`div[filterid='${filterId}']`).children[0].style.top = (setStyle && setStyle.top) ? setStyle.top : "22%";
                 document.querySelector(`div[filterid='${filterId}']`).children[0].style.left = (setStyle && setStyle.left) ? setStyle.left : "30px";
                 document.querySelector(`div[filterid='${filterId}']`).children[0].style.fontWeight = (setStyle && setStyle.fontWeight) ? setStyle.fontWeight : "500";
@@ -69,8 +72,9 @@ function Filter() {
         if (e.currentTarget.style.height != "") {
             e.currentTarget.style.width = null;
             e.currentTarget.style.height = null;
+            e.currentTarget.children[0].style.transform = null;
             e.currentTarget.children[0].style.top = null;
-            e.currentTarget.children[0].style.left = "20px";
+            e.currentTarget.children[0].style.left = "50px";
             e.currentTarget.children[0].style.fontWeight = null;
             e.currentTarget.children[0].style.fontSize = null;
             setTimeout(() => {
@@ -122,21 +126,20 @@ function Filter() {
             </div>
             <div className="fBlocks" ref={contRef}>    
                 {
-                    activatedG.map((v) => {
-                        const { filterUID } = v;
+                    activatedG.map((v, i) => {
                         return <FilterBlock 
-                            filterId={filterUID}
+                            key={`activated_${i}`}
+                            filterInfo={v}
                             isActivated={true}
                             clickHandler={_filterDeActiveClickHandler}    
                         />
                     })
                 }
                 {
-                    deActivatedG.map((v) => {
-                        const { filterUID, isSelectable } = v;
-                        // console.log(v);
-                        if (isSelectable && !activated.includes(filterUID)) return <FilterBlock
-                            filterId={filterUID}
+                    deActivatedG.map((v, i) => {
+                        if (v.isSelectable) return <FilterBlock
+                            key={`deActivated_${i}`}
+                            filterInfo={v}
                             isActivated={false}
                             clickHandler={_filterActiveClickHandler}
                         />

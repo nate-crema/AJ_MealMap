@@ -10,7 +10,7 @@ import * as actions from '../../store/modules/map';
 
 // global functions
 
-import { initMenuN, changeMenuUI, setTitler, getNowInfo, loadList } from "../../module/functions";
+import { initMenu, changeMenuUI, setTitler, getNowInfo, loadList } from "../../module/functions";
 import { push } from "react-router-redux";
 
 function MealMap({ init }) {
@@ -27,11 +27,12 @@ function MealMap({ init }) {
     const [ sM , setSM ] = useState(0); // sort mode
     const [ sCT, setSCT ] = useState("위치기준 정렬");
 
-    // const state = useSelector(select => select);
+    const state = useSelector(select => select);
+    const { map: { list } } = state;
 
     // list
 
-    const [ list, setList ] = useState([]);
+    // const [ list, setList ] = useState([]);
     const [ isLoaded, setIsLoaded ] = useState(false);
     const [ filter, setFilter ] = useState([]);
 
@@ -196,7 +197,7 @@ function MealMap({ init }) {
                 
                 arrPushTo(cngList, v, _i);
             })
-            setList(cngList);
+            dispatch({ type: "map/SETLIST", list: cngList });
             _setLT(mode);
         } else if (mode == 1) {
             list.forEach((v, i) => {
@@ -215,7 +216,7 @@ function MealMap({ init }) {
             })
     
             cngList.forEach(v => v.dist = null);
-            setList(cngList);
+            dispatch({ type: "map/SETLIST", list: cngList });
             _setLT(mode);
         }
     }
@@ -227,19 +228,10 @@ function MealMap({ init }) {
     }, [ list ]);
     
     useEffect(() => {
-        if (!isLoaded) {
+        if (!isLoaded && list.length == 0) {
             setIsLoaded(true);
-            const host = 'http://' + process.env.REACT_APP_DB_HOST.split(":")[0] + ":3001" || `http://localhost:3001`
-            axios.get(`${host}/api/shopList`)
-            .then(({ data }) => {
-                console.log(data);
-                setList(data.list);
-            })
-            .catch((e) => {
-                console.error(e);
-            })
+            dispatch({ type: "map/LOADLIST" });
         }
-        console.log(`mapLayout: loaded`);
         // map initializing
         mapInit(0);
     }, [ ]);

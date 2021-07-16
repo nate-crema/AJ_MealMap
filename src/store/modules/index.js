@@ -5,7 +5,7 @@ import menu from './menu';
 import filter from './filter';
 
 export default combineReducers({ 
-    // map,
+    map,
     filter,
     menu, 
     // def

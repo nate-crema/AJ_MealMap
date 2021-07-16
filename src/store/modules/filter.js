@@ -36,7 +36,16 @@ const initState = new function() {
             setStyle: {
                 height: "150px"
             },
-            optionType: "select"
+            optionType: "select",
+            select: {
+                option: [ {
+                    id: "meal",
+                    text: "식당"
+                }, {
+                    id: "alcohol",
+                    text: "술"
+                } ]   
+            }
         },
         2: {
             filterUID: 2,

@@ -166,7 +166,7 @@ const exporters = new function() {
             clickUnavailable: true
         }
     ]
-    this.initMenuN = async (listId) => {
+    this.initMenu = async (listId) => {
         // DOM API Load Breaker
         await DOMPender();
         // moveLogo
@@ -394,7 +394,7 @@ const exporters = new function() {
 };
 
 // new
-export const initMenuN = exporters.initMenuN;
+export const initMenu = exporters.initMenu;
 export const changeMenuUI = exporters.changeMenuUI;
 export const setTitler = exporters.setTitler;
 export const getNowInfo = exporters.getNowInfo;
