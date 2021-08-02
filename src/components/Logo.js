@@ -1,5 +1,5 @@
 import "../css/Logo.css";
-import img_A from "../assets/img/img_a.gif";
+import img_A from "../assets/img/img_a.png";
 
 
 function getTextWidth(text, font) {
@@ -14,8 +14,8 @@ function getTextWidth(text, font) {
 
 function Logo({ style, className, onClick }) {
     return (
-        <div style={Object.assign({ cursor: "pointer" }, style)} className={`logoWrapper` + (className ? ` ${className}` : '')}
-            onClick={onClick}
+        <div style={{ ...style, cursor: "pointer" }} className={`logoWrapper` + (className ? ` ${className}` : '')}
+            onClick={onClick ? onClick : () => window.location.href = "/"}
         >
             <img className="imgMain" src={img_A}/>
             <p className="seviceName">아대 밀맵</p>

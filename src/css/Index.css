@@ -1,117 +1,24 @@
-* {
-    transition: all .24s cubic-bezier(0, 0.76, 0.21, 1);
-}
-
-.wrapper {
+.menuBlocksCover {
+    /* width: calc(100% - ( 30% + 150px + 200px )); */
+    width: 1000px;
+    height: calc(100% - 100px);
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 200px auto;
+    top: 100px;
+    right: 120px; 
+    /* background-color: rgb(0, 0, 0, 0.2); */
+    display: block;
+    overflow-y: auto;
 }
 
-.wrapper .logoMain {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 140px;
-    height: 150px;
-}
-
-.wrapper .titlerCover {
-    width: 140px;
-    height: 40px;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    margin-top: 0;
-    display: none;
-    opacity: 0;
-}
-
-.wrapper .titlerCover .titler {
-    /* position: relative; */
-    /* transform: translate(-50%, -50%); */
-    /* top: 250px; */
-    /* width: 140px; */
-    /* height: fit-content; */
-    font-size: 25px;
-    font-weight: 400;
-    color: #005BAE;
-    /* display: none; */
-}
-
-.wrapper .serviceSpace {
-    position: relative;
-    width: inherit;
+.menuBlocksCover .menuBlocks {
+    width: calc(100% - 50px);
     height: auto;
-}
-
-.wrapper .serviceSpace .contentWrap {
-    width: 90%;
-    height: 90%;
     position: relative;
-    top: calc(50% + 50px);
+    top: 30px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%);
     display: grid;
-    grid-template-rows: repeat(7, 60px);
-    grid-template-columns: repeat(2, 47%);
-    grid-gap: 5%;
-    grid-template-areas: 
-        "block_1 block_2"
-        "block_1 block_2"
-        "block_1 block_3"
-        "block_4 block_3"
-        "block_4 block_5"
-        "block_6 block_5"
-        "block_6 block_5";
-}
-
-
-
-/* common */
-
-.menuComp {
-    animation: menuCompInit .5s;
-}
-
-@media (min-width: 1000px) {
-    .wrapper {
-        grid-template-columns: 50% 50%;
-        grid-template-rows: auto;
-    } 
-
-    .wrapper .logoMain {
-        width: 180px;
-        height: 190px;
-    }
-
-    .wrapper .titlerCover {
-        width: 180px;
-        display: block;
-    }
-}
-
-
-@keyframes menuCompInit {
-    from {
-        opacity: 0;
-        margin-top: 10px;
-    }
-
-    50% {
-        opacity: 0;
-        margin-top: 10px;
-    }
-
-    to {
-        opacity: 1;
-        margin-top: 0;
-    }
+    grid-template-columns: calc(50% - 25px) calc(50% - 25px);
+    grid-template-rows: 180px 50px 100px 150px 200px;
+    /* gap: 40px; */
 }

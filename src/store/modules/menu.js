@@ -1,32 +1,22 @@
 import { createAction, handleActions } from 'redux-actions';
 
-// action type definition
-const SETMENU = 'menu/SETMENU';
-const INITMENU = 'menu/INITMENU';
+// Action Definition
+const SETMENU = "menu/SETMENU";
 
-// action creater
-// export const loadList = () => ({ type: LOADLIST });
-// export const addList = () => ({ type: ADDLIST });
+// Action Create & Export
 export const setMenu = createAction({ type: SETMENU });
-export const initMenu = createAction({ type: INITMENU });
 
-// initial State
-
+// Initial State Definition
 const initState = {
-    menu: undefined,
-    init: false
+    menu: -100
 }
 
-// export reducer
-
+// Create Reducers
 export default handleActions({
-    [SETMENU]: ( state , { v: _menu }) => {
-        console.log(`Update Menu: ${state.menu} => ${_menu}`);
-        return { ...state, menu: _menu || 0 };
-    },
-    [INITMENU]: ( state ) => {
-        // console.log(`Update Menu: ${menu} => ${_menu}`);
-        return { ...state, init: true };
-    },
-
+    [ SETMENU ]: (state, { menu }) => {
+        return {
+            ...state,
+            menu
+        }
+    }
 }, initState);

@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
-import map from './map';
-import menu from './menu';
+// import map from './map';
+// import menu from './menu';
 // import def from './default';
-import filter from './filter';
+// import filter from './filter';
+import menu from './menu';
 
 export default combineReducers({ 
     // map,
-    filter,
-    menu, 
+    // filter,
+    // menu, 
     // def
+    menu
 });
