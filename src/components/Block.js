@@ -5,10 +5,6 @@ import "../css/Block.css";
 
 function Block({ className, indexing, style, info, onClick }) {
 
-    useEffect(() => {
-        console.log(`Block Rendering`, indexing);
-    }, []);
-
     const [ css, setCss ] = useState({
         width: "auto",
         height: "auto"

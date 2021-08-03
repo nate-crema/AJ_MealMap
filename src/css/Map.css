@@ -1,0 +1,32 @@
+.map_notdp {
+    width: 300px;
+    height: 100px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.map_notdp img.svg {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.map_notdp p {
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+    position: relative;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.map_notdp p.btn {
+    color: var(--theme-color-D);
+    cursor: pointer;
+}

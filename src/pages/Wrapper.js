@@ -36,7 +36,7 @@ function Wrapper({ history, location }) {
     const logo_ref = useRef(null);
 
     function _designHandler(e) {
-        console.log(`width: ${ window.innerWidth } | height: ${ window.innerHeight }`)
+        // console.log(`width: ${ window.innerWidth } | height: ${ window.innerHeight }`)
         setWidth(window.innerWidth);
         setHeight(window.innerHeight);
 
@@ -46,28 +46,40 @@ function Wrapper({ history, location }) {
             logo_ref.current.style.height = null;
             logo_ref.current.style.top = null;
             logo_ref.current.style.width = null;
+            document.getElementById("serviceArea").style.width = null;
 
 
         } else {
             if (window.location.pathname == "/") {
 
                 // logo position change
-
                 logo_ref.current.style.height = null;
                 logo_ref.current.style.top = null;
+
+                // service area change
+                document.getElementById("serviceArea").style.width = null;
+
+                // logo position change
                 setTimeout(() => {
                     logo_ref.current.style.width = null;
                 }, 150);
+
                 
             } else {
 
                 // logo position change
-
                 logo_ref.current.style.width = "300px";
+
+                
+                // logo position change
                 setTimeout(() => {
+                    // service area change
+                    document.getElementById("serviceArea").style.width = "calc(100% - 460px)";
                     logo_ref.current.style.height = "80%";
                     logo_ref.current.style.top = "30%";
                 }, 150);
+
+
 
             }
         }
@@ -89,7 +101,7 @@ function Wrapper({ history, location }) {
         },
         {
             path: "/mealmap",
-            comp: Mealmap,
+            comp: (props) => <Mealmap window={{ width, height }} />,
             menu_index: 2
         },
         {
@@ -106,7 +118,7 @@ function Wrapper({ history, location }) {
 
     history.listen((history, action) => {
         console.log(`history changed`);
-        console.log(history, window.location, location, action);
+        // console.log(history, window.location, location, action);
         _designHandler();
     })
 
