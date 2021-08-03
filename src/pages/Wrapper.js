@@ -77,7 +77,7 @@ function Wrapper({ history, location }) {
 
         let updateCss = css;
 
-        if (isMobile(width)) {
+        if (isMobile()) {
             
             // style option initialize
             updateCss.logo_loc.height = null;
@@ -181,7 +181,7 @@ function Wrapper({ history, location }) {
 
     // Handling Window Size
 
-    function isMobile(w) {
+    function isMobile() {
         // REFERENCE: https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
         let check = false;
         // eslint-disable-next-line
