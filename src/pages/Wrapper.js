@@ -146,11 +146,17 @@ function Wrapper({ history, location }) {
     const setMenu = (menu) => dispatch({ type: "menu/SETMENU", menu });
 
     const [ inited, setInitialized ] = useState(false);
+    const [ pagekey, setPagekey ] = useState("");
 
     history.listen((history, action) => {
         console.log(`history changed`);
         console.log(history, window.location, location, action);
         _designHandler();
+        setTimeout(() => {
+            setPagekey(location.key); // must not erase: logo position problem
+        }, 300);
+        // console.log(history);
+        // console.log(action);
     })
 
     useEffect(() => {
