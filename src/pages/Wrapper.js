@@ -16,36 +16,6 @@ import NFOUND from "./404";
 // design assets
 import Logo from "../components/Logo";
 
-// api resource
-import json from "../keys/api.json";
-
-// map api import
-
-function MAPIMPORT() {
-    const APIKEY = json.kakao.web;
-
-    useEffect(() => {
-
-        const scriptMapBase = document.createElement('script');
-        scriptMapBase.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${APIKEY}&autoload=false`;
-        scriptMapBase.async = false;
-        document.body.appendChild(scriptMapBase);
-
-        const scriptMapLib = document.createElement('script');
-        scriptMapLib.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${APIKEY}&libraries=services,clusterer,drawing&autoload=false`;
-        scriptMapLib.async = false;
-        document.body.appendChild(scriptMapLib);
-
-        return () => {
-            document.body.removeChild(scriptMapBase);
-            document.body.removeChild(scriptMapLib);
-        }
-
-    }, []);
-
-    return <></>
-}
-
 // Design Wrapper
 
 function Wrapper({ history, location }) {
@@ -63,55 +33,42 @@ function Wrapper({ history, location }) {
 
     const [ width, setWidth ] = useState(window.innerWidth);
     const [ height, setHeight ] = useState(window.innerHeight);
-    const [ css, setCss ] = useState({
-        wrap: {},
-        logo_loc: {
-            left: null,
-        },
-    });
+    const logo_ref = useRef(null);
 
     function _designHandler(e) {
         console.log(`width: ${ window.innerWidth } | height: ${ window.innerHeight }`)
         setWidth(window.innerWidth);
         setHeight(window.innerHeight);
 
-        let updateCss = css;
-
         if (isMobile()) {
             
             // style option initialize
-            updateCss.logo_loc.height = null;
-            updateCss.logo_loc.top = null;
-            updateCss.logo_loc.width = null;
-            setCss(updateCss);
+            logo_ref.current.style.height = null;
+            logo_ref.current.style.top = null;
+            logo_ref.current.style.width = null;
 
 
         } else {
             if (window.location.pathname == "/") {
+
                 // logo position change
-                updateCss.logo_loc.height = null;
-                updateCss.logo_loc.top = null;
-                setCss(updateCss);
+
+                logo_ref.current.style.height = null;
+                logo_ref.current.style.top = null;
                 setTimeout(() => {
-                    updateCss.logo_loc.width = null;
-                    // updateCss.logo_loc.height = "80%";
-                    setCss(updateCss);
+                    logo_ref.current.style.width = null;
                 }, 150);
-                // updateCss.logo_loc.left = "50%";
-                // updateCss.logo_loc.transform = "translate(-50%, -50%)";
                 
             } else {
+
                 // logo position change
-                updateCss.logo_loc.width = "300px";
-                setCss(updateCss);
+
+                logo_ref.current.style.width = "300px";
                 setTimeout(() => {
-                    updateCss.logo_loc.height = "80%";
-                    updateCss.logo_loc.top = "30%";
-                    // updateCss.logo_loc.height = "80%";
-                    setCss(updateCss);
+                    logo_ref.current.style.height = "80%";
+                    logo_ref.current.style.top = "30%";
                 }, 150);
-                // updateCss.logo_loc.left = "0";
-                // updateCss.logo_loc.transform = "translate(0, -50%)";
+
             }
         }
 
@@ -146,17 +103,11 @@ function Wrapper({ history, location }) {
     const setMenu = (menu) => dispatch({ type: "menu/SETMENU", menu });
 
     const [ inited, setInitialized ] = useState(false);
-    const [ pagekey, setPagekey ] = useState("");
 
     history.listen((history, action) => {
         console.log(`history changed`);
         console.log(history, window.location, location, action);
         _designHandler();
-        setTimeout(() => {
-            setPagekey(location.key); // must not erase: logo position problem
-        }, 300);
-        // console.log(history);
-        // console.log(action);
     })
 
     useEffect(() => {
@@ -218,12 +169,10 @@ function Wrapper({ history, location }) {
 
     return (
         <>
-            <MAPIMPORT/>
             <div className="wrap"
-                style={{ ...css.wrap }}
                 current-menu={menu}
             >
-                <div className="logoArea" style={{ ...css.logo_loc }}>
+                <div className="logoArea" ref={logo_ref}>
                     <Logo className="logoComp" onClick={() => setMenu(0)}></Logo>
                     <div className="ctrlArea" ref={ctrl_ref}></div>
                 </div>
@@ -232,7 +181,7 @@ function Wrapper({ history, location }) {
                         <CSSTransition 
                             classNames="routerFade"
                             key={location.key} 
-                            timeout={ width > 1500 ? { enter: 200, exit: 200 } : { enter: 1000, exit: 1000 }}
+                            timeout={ width > 1500 ? { enter: 200, exit: 200 } : { enter: 1000, exit: 500 }}
                         >
                             <Switch location={location}>
                                 { 

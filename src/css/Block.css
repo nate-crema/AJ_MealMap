@@ -21,6 +21,7 @@
     transform: translate(-50%, -50%);
     overflow: hidden;
     transition: all .2s ease;
+    cursor: pointer;
 }
 
 .menu_block_cover .menu_block:hover {
