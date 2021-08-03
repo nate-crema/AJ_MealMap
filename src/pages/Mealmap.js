@@ -1,5 +1,13 @@
+// css
+import "../css/Mealmap.css";
+
+
 function Mealmap() {
-    return <div doc-contype="menu-content">MEALMAP</div>
+    
+    return <div className="mealmap serviceArea">
+        <p>MEALMAPMEALMAP</p>
+    </div>
+
 }
 
 

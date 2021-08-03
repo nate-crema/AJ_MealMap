@@ -10,21 +10,51 @@
 
 /* Transition */
 
-.routeTrans_fade-enter {
+.routerFade-enter {
     opacity: 0;
+    margin-right: -80px;
 }
 
-.routeTrans_fade-enter.routeTrans_fade-enter-active {
+.routerFade-enter.routerFade-enter-active {
     opacity: 1;
-    transition: all .2s ease;
+    margin-right: 0px;
+    transition: all .25s cubic-bezier(0.03, 0.72, 0.08, 1.02);
 }
 
 
-.routeTrans_fade-exit {
+.routerFade-exit {
     opacity: 1;
+    margin-right: 0px;
 }
 
-.routeTrans_fade-exit.routeTrans_fade-exit-active {
+.routerFade-exit.routerFade-exit-active {
     opacity: 0;
-    transition: all .2s ease;
+    margin-right: 80px;
+    transition: all .25s cubic-bezier(0.03, 0.72, 0.08, 1.02);
+}
+
+@media ( max-width: 1500px ) {
+    .routerFade-enter {
+        margin-top: 100px;
+        margin-right: unset;
+    }
+    
+    .routerFade-enter.routerFade-enter-active {
+        margin-top: 0;
+        margin-right: unset;
+        transition: all .5s cubic-bezier(0.03, 0.72, 0.08, 1.02);
+        transition-delay: .24s;
+    }
+    
+    
+    .routerFade-exit {
+        margin-top: 0;
+        margin-right: unset;
+    }
+    
+    .routerFade-exit.routerFade-exit-active {
+        margin-top: 100px;
+        margin-right: unset;
+        transition: all .38s cubic-bezier(0.03, 0.72, 0.08, 1.02);
+    }
 }

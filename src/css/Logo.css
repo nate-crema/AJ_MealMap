@@ -16,7 +16,7 @@
     height: auto;
 }
 
-.logoWrapper .seviceName {
+.logoWrapper .serviceName {
     position: absolute;
     top: 55%;
     left: 50%;
@@ -31,7 +31,7 @@
     background-color: white;
 }
 
-.logoWrapper .seviceNameEn {
+.logoWrapper .serviceNameEn {
     position: absolute;
     top: 95%;
     left: 50%;

@@ -18,8 +18,8 @@ function Logo({ style, className, onClick }) {
             onClick={onClick ? onClick : () => window.location.href = "/"}
         >
             <img className="imgMain" src={img_A}/>
-            <p className="seviceName">아대 밀맵</p>
-            <p className="seviceNameEn" style={{
+            <p className="serviceName">아대 밀맵</p>
+            <p className="serviceNameEn" style={{
                 width: getTextWidth("아대 밀맵", "bold 40px arial")
             }}>AJ Meal Map</p>
         </div>

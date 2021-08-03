@@ -104,7 +104,7 @@ function Index({ history }) {
     // }, [ menu ]);
 
 
-    return <div className="menuBlocksCover" doc-contype="menu-content">
+    return <div className="serviceArea menuBlocksCover" doc-contype="menu-content">
         <div className="menuBlocks" style={{
             gridTemplateColumns: "calc(50%) calc(50%)",
             gridTemplateRows: "240px 100px 130px 110px 230px"
