@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+
+// components
 import Block from "../components/Block";
+import Notice from "../components/Notice";
 
 // css
 import "../css/Index.css";
@@ -96,6 +100,16 @@ function Index({ window: { width, height }, history }) {
         }
     ]
 
+    const notice_grid_css = [
+        // for notice
+        { gridRow: "2 / 4" },
+        { gridRow: "" },
+        { gridRow: "3 / 5" },
+        { gridRow: "4 / 6" },
+        { gridRow: "5 / 7" },
+        { gridRow: "" },
+    ]
+
     const grid_css = [
         { gridRow: "1 / 3" },
         { gridRow: "" },
@@ -110,17 +124,41 @@ function Index({ window: { width, height }, history }) {
     //     history.push(go_menu.route);
     // }, [ menu ]);
 
+    // notice control
+
+    const [ notice, setNotice ] = useState(false);
+
+    useEffect( async () => {
+        try {
+            const { data: notices } = await axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/notice`);
+            console.log("notice", notices);
+            if (notices.list.length <= 0) return;
+            else setNotice(notices.list);
+        } catch(e) {
+            console.error(e);
+        }
+    }, []);
+
 
     return <div className="serviceArea menuBlocksCover" id="serviceArea" doc-contype="menu-content">
         <div className="menuBlocks" style={ ( width > 700 ) ? {
             gridTemplateColumns: "calc(50%) calc(50%)",
-            gridTemplateRows: "240px 100px 130px 110px 230px"
+            // gridTemplateRows: "240px 100px 130px 110px 230px"
+            gridTemplateRows: "100px 240px 100px 130px 110px 230px"
         } : {
             gridTemplateColumns: "100%",
             gridTemplateRows: "repeat(6, 250px)"
         }}>
+            { notice && notice.map(not => <Notice notice={not} style={{ gridRow: "1", gridColumn: "1 / 3" }}/>)}
             { menu_list.map( ( block_info, i ) => 
-                <Block key={i} indexing={i} style={( width > 700 ) ? { ...block_info.css, ...grid_css[i] } : { ...block_info.css } } info={block_info} onClick={() => dispatch({ type: "menu/SETMENU", menu: block_info.menu_index })}/>
+                <Block key={i} indexing={i} style={
+                    ( width > 700 ) ? 
+                        notice ? 
+                            { ...block_info.css, ...notice_grid_css[i] } : 
+                            { ...block_info.css, ...grid_css[i] } 
+                        : 
+                    { ...block_info.css } 
+                } info={block_info} onClick={() => dispatch({ type: "menu/SETMENU", menu: block_info.menu_index })}/>
             ) }
         </div>
     </div>

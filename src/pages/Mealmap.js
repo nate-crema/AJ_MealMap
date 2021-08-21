@@ -116,6 +116,9 @@ function Mealmap({ window }) {
                                 </g>
                             </svg>
                         </div>
+                        <div class="shop_img_cover">
+                            <img class="shop_img" src="${ list[i].img || "" }"/>
+                        </div>
                     </div>
                 `;
                 markers.push({

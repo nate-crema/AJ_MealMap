@@ -1,0 +1,42 @@
+.noticeArea {
+    width: auto;
+    height: 80%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 20px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.noticeArea .not_img {
+    width: auto;
+    height: 55%;
+    position: relative;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+}
+
+.noticeArea .textArea {
+    width: 88%;
+    min-width: 500px;
+    height: 95%;
+    /* border: 1px solid black; */
+    position: relative;
+    top: 50%;
+    float: right;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+.noticeArea .textArea .notice-title {
+    font-size: 20px;
+    font-weight: 300;
+    font-family: "Noto Sans KR", sans-serif;
+    color: var(--theme-color-C);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: fit-content;
+    height: fit-content;
+}
