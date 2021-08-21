@@ -48,6 +48,62 @@
     cursor: pointer;
 }
 
+.mealmap .mealmapArea .searchArea {
+    width: 90%;
+    height: 50px;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid var(--theme-color-C);
+    transform: translate(-50%);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.mealmap .mealmapArea .searchArea .innerText {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    color: var(--theme-color-C);
+    margin: 0;
+}
+
+.mealmap .mealmapArea .searchArea .stylebar {
+    width: 2px;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    background-color: var(--theme-color-C);
+    transform: translateY(-50%);
+}
+
+.mealmap .mealmapArea .searchArea input {
+    outline: none;
+    border: none;
+    width: calc(100% - 130px);
+    height: 60%;
+    font-size: 16px;
+    color: var(--theme-color-C);
+    border-bottom: 1px solid #005aae00;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    top: 50%;
+    float: right;
+    right: 20px;
+    transform: translateY(-50%);
+    transition: all .24s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.mealmap .mealmapArea .searchArea input:focus {
+    font-size: 18px;
+    border-bottom: 1px solid #005aae;
+}
+
 .mealmap .mealmapArea .mapArea {
     width: 100%;
     height: calc(100% - 50px);
@@ -61,9 +117,9 @@
 
 .mealmap .listArea .listBlocks {
     width: 100%;
-    height: calc(100% - 50px);
+    height: calc(100% - 120px);
     position: relative;
-    /* top: 50px; */
+    top: 20px;
 }
 
 .mealmap .listArea .listBlocks .listBlock {
@@ -166,13 +222,19 @@
     .mealmap {
         top: 100px !important;
     }
+    .mealmap .mealmapArea {
+        height: 90%;
+    }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
     .mealmap {
         display: block;
         grid-template-columns: unset;
         gap: unset;
     }
+    /* .mealmap .mealmapArea {
+        height: auto;
+    } */
 }
 

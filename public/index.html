@@ -7,6 +7,75 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;500;700&display=swap" rel="stylesheet">    
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <script src="node_modules/devtools-detect/index.js"></script>
+
+    <script type="module">
+      // Check if it's open
+      console.log('Is DevTools open:', window.devtools.isOpen);
+    
+      // Check it's orientation, `undefined` if not open
+      console.log('DevTools orientation:', window.devtools.orientation);
+    
+      // Get notified when it's opened/closed or orientation changes
+      window.addEventListener('devtoolschange', event => {
+        console.log('Is DevTools open:', event.detail.isOpen);
+        console.log('DevTools orientation:', event.detail.orientation);
+      });
+    </script>
+
+    <style>
+      #footer-support {
+        width: 100%;
+        height: 50px;
+        background-color: #eeeeeeb9;
+        z-index: 10000000000;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%);
+      }
+
+      #footer-support div {
+        position: absolute;
+        width: 40%;
+        height: 80%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      #footer-support #text-support {
+        font-family: "Noto Sans KR", sans-serif;
+        font-weight: 500;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        color: black;
+      }
+
+      #footer-support #d2-img {
+        width: auto;
+        height: 80%;
+        float: right;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      
+      @media (max-width: 1500px) {
+        #footer-support div {
+          width: 90%;
+        }
+        #footer-support #text-support {
+          background-color: #eeeeeeb9;
+          z-index: 500;
+        }
+      }
+
+    </style>
+    
     <meta
       name="description"
       content="Web site created using create-react-app"
@@ -28,5 +97,11 @@
   <body>
     <noscript>밀맵을 사용하기 위해서는 반드시 ES6 js 실행이 필요합니다. 사용가능한 환경에서 다시 접속해주세요.</noscript>
     <div id="root"></div>
+    <footer id="footer-support">
+      <div>
+        <span id="text-support">이 서비스는 Whois와 Naver D2의 지원을 받아 제작되었습니다.</span>
+        <img id="d2-img" src="%PUBLIC_URL%/naver_d2_support.png"/>
+      </div>
+    </footer>
   </body>
 </html>

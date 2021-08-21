@@ -24,14 +24,16 @@
 
 @media (max-width: 1500px) {
     .menuBlocksCover {
-        top: 300px !important;
+        top: 250px !important;
         right: unset !important;
         transform: translate(-50%) !important; 
+        height: calc(100% - 250px) !important;
     }
 }
 
 @media (max-width: 700px) {
     .menuBlocksCover {
         width: 100%;
+        top: 220px !important;
     }
 }

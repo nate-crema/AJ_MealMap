@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Block from "../components/Block";
 
@@ -14,7 +14,7 @@ import bI_4 from "../assets/img/blockImg4.png";
 import bI_5 from "../assets/img/blockImg5.png";
 import bI_6 from "../assets/img/blockImg6.png";
 
-function Index({ history }) {
+function Index({ window: { width, height }, history }) {
 
     const { menu: { menu } } = useSelector(state => state);
     const dispatch = useDispatch();
@@ -23,6 +23,8 @@ function Index({ history }) {
         {
             title: "지도",
             route: "/mealmap",
+            isOpen: true,
+            isOpenMsg: `2021년 8월 21일 9:00 서비스 시작 😆`,
             displayTitle: "#지도",
             displaySubtext: `???: 니들이 밥집을 알아?\n동기와 선배들이 정리한\n아대 밥좌표`,
             css: {},
@@ -35,6 +37,7 @@ function Index({ history }) {
         {
             title: "술지도",
             route: "/alcholmap",
+            isOpen: false,
             displayTitle: "#알지? 나와",
             displaySubtext: `밥먹자는데, 과연 밥만 먹을까?\n주변 술집정도는 상.식.`,
             css: {},
@@ -46,6 +49,7 @@ function Index({ history }) {
         {
             title: "편의점지도",
             route: "/cvs",
+            isOpen: false,
             displayTitle: "#편ㄱ?",
             displaySubtext: `자취생에게\n편의점은 필수지`,
             css: {},
@@ -57,6 +61,7 @@ function Index({ history }) {
         {
             title: "룰렛",
             route: "/random",
+            isOpen: false,
             displayTitle: "#ㅁㄴㅇㄹ",
             displaySubtext: `뭐먹지?\n뇌빼고 룰렛 한판`,
             css: {},
@@ -67,6 +72,7 @@ function Index({ history }) {
         {
             title: "검색",
             route: "#",
+            isOpen: false,
             displayTitle: "#그_뭐더라",
             displaySubtext: `검색.\nprint(결과)`,
             css: {},
@@ -78,6 +84,7 @@ function Index({ history }) {
         {
             title: "광고블록",
             route: "#",
+            isOpen: false,
             displayTitle: "#이거? 광고야 >_<",
             displaySubtext: `서버 운영비인데..\nAdBlock은 좀..풀어줘`,
             css: {},
@@ -105,12 +112,15 @@ function Index({ history }) {
 
 
     return <div className="serviceArea menuBlocksCover" id="serviceArea" doc-contype="menu-content">
-        <div className="menuBlocks" style={{
+        <div className="menuBlocks" style={ ( width > 700 ) ? {
             gridTemplateColumns: "calc(50%) calc(50%)",
             gridTemplateRows: "240px 100px 130px 110px 230px"
+        } : {
+            gridTemplateColumns: "100%",
+            gridTemplateRows: "repeat(6, 250px)"
         }}>
             { menu_list.map( ( block_info, i ) => 
-                <Block key={i} indexing={i} style={{ ...block_info.css, ...grid_css[i] }} info={block_info} onClick={() => dispatch({ type: "menu/SETMENU", menu: block_info.menu_index })}/>
+                <Block key={i} indexing={i} style={( width > 700 ) ? { ...block_info.css, ...grid_css[i] } : { ...block_info.css } } info={block_info} onClick={() => dispatch({ type: "menu/SETMENU", menu: block_info.menu_index })}/>
             ) }
         </div>
     </div>

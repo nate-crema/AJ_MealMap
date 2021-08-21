@@ -19,6 +19,7 @@
     opacity: 1;
     margin-right: 0px;
     transition: all .25s cubic-bezier(0.03, 0.72, 0.08, 1.02);
+    transition-delay: .24s;
 }
 
 

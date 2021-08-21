@@ -30,3 +30,132 @@
     color: var(--theme-color-D);
     cursor: pointer;
 }
+
+
+/* custom overlay */
+
+.custom_overlay_mmap {
+    width: 330px;
+    height: 180px;
+    display: block;
+    background-color: white;
+    position: absolute;
+    top: -45px;
+    transform: translate(-50%, -100%);
+    border-radius: 15px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    animation-name: overlay_in;
+    animation-duration: .35s;
+    animation-timing-function: cubic-bezier(0, 0.85, 0.25, 1);
+    animation-fill-mode: both;
+    overflow-y: hidden;
+}
+.custom_overlay_mmap::after {
+    content: '';
+    position: absolute;
+    margin-left: -12px;
+    left: 50%;
+    bottom: -12px;
+    width: 22px;
+    height: 12px;
+    background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png);
+}
+
+.custom_overlay_mmap .shop_name {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--theme-color-C);
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}
+
+.custom_overlay_mmap .shop_cat {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    position: absolute;
+    top: 26px;
+    left: 105px;
+}
+
+.custom_overlay_mmap .shop_GPA {
+    position: absolute;
+    top: 55px;
+    left: 30px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--theme-color-C);
+}
+
+.custom_overlay_mmap .GPA_max {
+    position: absolute;
+    top: 63px;
+    left: 60px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--theme-color-C);
+}
+
+.custom_overlay_mmap .btn_fnc {
+    width: 38px;
+    height: 38px;
+    position: absolute;
+    top: 120px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.custom_overlay_mmap .btn_fnc svg {
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.custom_overlay_mmap .btn_fnc svg .st0 {
+    stroke: var(--theme-color-C);
+}
+
+.custom_overlay_mmap .btn_fnc.btn_cmp {
+    left: 30px;
+}
+
+.custom_overlay_mmap .btn_fnc.btn_stm {
+    left: 80px;
+}
+
+.custom_overlay_mmap .btn_fnc.btn_info {
+    left: 130px;
+}
+
+
+/* keyframe */
+
+@keyframes overlay_in {
+    from {
+        width: 50px;
+        height: 50px;
+        opacity: 0;
+    }
+    
+    35% {
+        width: 330px;
+        opacity: 1;
+    }
+    
+    56% {
+        height: 50px;
+        opacity: 1;
+    }
+  
+    to {
+        height: 180px;
+    }
+}

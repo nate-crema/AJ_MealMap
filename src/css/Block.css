@@ -7,6 +7,30 @@
     overflow: hidden;
 }
 
+.menu_block_cover .block_unactive_cover {
+    position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 40px;
+    z-index: 100000;
+}
+
+.menu_block_cover .block_unactive_cover span {
+    font-size: 16px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    white-space: nowrap;
+}
+
 .menu_block_cover .menu_block {
     /* width: 400px;
     height: 300px; */
@@ -22,6 +46,7 @@
     overflow: hidden;
     transition: all .2s ease;
     cursor: pointer;
+    z-index: 10;
 }
 
 .menu_block_cover .menu_block:hover {

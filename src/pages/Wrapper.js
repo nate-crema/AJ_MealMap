@@ -56,11 +56,11 @@ function Wrapper({ history, location }) {
                 logo_ref.current.style.height = null;
                 logo_ref.current.style.top = null;
 
-                // service area change
-                document.getElementById("serviceArea").style.width = null;
-
+                
                 // logo position change
                 setTimeout(() => {
+                    // service area change
+                    document.getElementById("serviceArea").style.width = null;
                     logo_ref.current.style.width = null;
                 }, 150);
 
@@ -91,7 +91,7 @@ function Wrapper({ history, location }) {
     const route_table = [
         {
             path: "/",
-            comp: Index,
+            comp: (props) => <Index window={{ width, height }} />,
             menu_index: 0
         },
         {
@@ -193,7 +193,7 @@ function Wrapper({ history, location }) {
                         <CSSTransition 
                             classNames="routerFade"
                             key={location.key} 
-                            timeout={ width > 1500 ? { enter: 200, exit: 200 } : { enter: 1000, exit: 500 }}
+                            timeout={ width > 1500 ? { enter: 450, exit: 450 } : { enter: 1000, exit: 500 }}
                         >
                             <Switch location={location}>
                                 { 
