@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 // css
@@ -7,11 +7,13 @@ import "../css/Mealmap.css";
 // components
 import KakaoMap from "../components/Map";
 import Mobile from "../components/Mobile";
+import ListSpec from "../components/ListSpec";
 
-function ShopCore({ info }) {
+function ShopCore({ info, _moveMap }) {
     
     const _clickHandler = (e) => {
-        console.log(e.currentTarget);
+        // console.log(e.currentTarget);
+        _moveMap( info );
     }
 
     return <div className="listBlock" onClick={_clickHandler}>
@@ -29,15 +31,14 @@ function ShopCore({ info }) {
 
 function Mealmap({ window }) {
 
+    // MAP
+
+    // Map Component - Parental Management
+    const [ map, setMap ] = useState(null); // kakao map object
+    const [ revealOverlay, setRO ] = useState(() => {}); // map overlay displayer
+
     // map status manage
     const [ map_loaded, setMapStat ] = useState(false);
-
-    // display text manage
-    const [ location_text, setLocText ] = useState("핀 위치: 아주삼거리");
-    const [ sort_text, setSortText ] = useState("평점순");
-
-    // filter manage
-    const [ filter, setFilter ] = useState([]);
 
     // map initial location manage
     const [ location, setLoc ] = useState({ lat: 37.27983974701925, long: 127.04362143912854 });
@@ -53,12 +54,33 @@ function Mealmap({ window }) {
             // alert("정보를 불러오지 못했습니다. 다시 시도해주세요.", e)
         });
     }, []);
-
     useEffect(() => console.log("list: changed", list), [ list ]);
+
+    // map list content click handling
+
+    const _moveMap = (info) => {
+        const { loc, i } = info;
+        // map position move
+        // console.log(`moveTo: ${loc.lat}, ${loc.long}`)
+        map.setLevel(1);
+        setTimeout(() => {
+            // eslint-disable-next-line
+            map.panTo(new kakao.maps.LatLng(loc.lat, loc.long));
+
+            // open ovelay layer (will run after specific area open)
+            setTimeout(() => {
+                // console.log(revealOverlay);
+                if (revealOverlay) revealOverlay(i);
+            }, 100);
+
+            // open specific area (will run before overlay area open)
+            specOpen(info);
+
+        }, 300);
+    }
 
     // map marker manage
     const [ mapMarkers, setMarkers ] = useState([]);
-
 
     useEffect(() => {
         if (map_loaded) {
@@ -126,12 +148,60 @@ function Mealmap({ window }) {
                     overlay
                 });
             }
-            console.log("markers", markers);
+            // console.log("markers", markers);
             setMarkers(markers);
         }
     }, [ map_loaded ]);
 
 
+    // LIST
+
+    // display text manage
+    const [ location_text, setLocText ] = useState("핀 위치: 아주삼거리");
+    const [ sort_text, setSortText ] = useState("평점순");
+    const [ shop_text, setShopText ] = useState("가게를 선택하세요!");
+
+    // filter manage
+    const [ filter, setFilter ] = useState([]);
+
+    // list specific area open handler
+
+    const listAreaRef = useRef(null);
+    const specAreaRef = useRef(null);
+
+    const [ spec_opened, setSO ] = useState(false);
+    const [ spec_info, setSI ] = useState(null);
+
+    const specOpen = (info) => {
+        if (!spec_opened) { 
+            if (spec_info) setSO(true);
+            else if ( !info ) return false;
+            else {
+                // set spec information & open
+                setSI(info);
+                setShopText(`${info.name} | ${info.loc?.spec}`);
+                setSO(true);
+            }
+        } else setSO(false);
+    }
+
+    useEffect(() => {
+        // console.log("listAreaRef.current", listAreaRef.current);
+        // console.log("specAreaRef.current", specAreaRef.current);
+        if (listAreaRef.current && specAreaRef.current) {
+            if (spec_opened) {
+                listAreaRef.current.style.height = "50px";
+                specAreaRef.current.style.height = "calc(100% - 80px)";
+                specAreaRef.current.children[0].style.top = "unset";
+                specAreaRef.current.children[0].style.transform = "translate(-50%)";
+            } else {    
+                listAreaRef.current.style.height = "calc(100% - 80px)";
+                specAreaRef.current.style.height = "50px";
+                specAreaRef.current.children[0].style.top = "50%";
+                specAreaRef.current.children[0].style.transform = "translate(-50%, -50%)";
+            }
+        }
+    }, [ spec_opened ]);
     
     return <Mobile>
         <div className="mealmap serviceArea" id="serviceArea">
@@ -140,6 +210,9 @@ function Mealmap({ window }) {
                     <p className="location_text innerText">{ location_text }</p>
                 </div>
                 <KakaoMap 
+                    parentMapState={[ map, setMap ]}
+                    parentOverlayDisplayer={[ revealOverlay, setRO ]}
+                    parentSpeclistOpen={specOpen}
                     filter={filter}
                     location={location}
                     className="mapArea"
@@ -147,26 +220,34 @@ function Mealmap({ window }) {
                     display={ mapMarkers }
                 />
             </div> : <></> }
-            <div className="listArea mealmapArea">
-                <div className="textArea">
-                    <p className="list_text innerText">식당 리스트 ({ sort_text })</p>
-                    <zz></zz>
-                    <p className="btn_cngSort">거리순 정렬</p>
-                </div>
-                <div className="searchArea" onClick={(e) => {
-                    e.currentTarget.children[2].focus();
+            <div className="infosArea">
+                <div className="listArea mealmapArea" ref={listAreaRef} style={{
+                    height: "calc(100% - 80px)"
                 }}>
-                    <p className="innerText">검색</p>
-                    <div className="stylebar"></div>
-                    <input type="text" placeholder="메뉴나 가게명 입력" onFocus={(e) => {
-                        e.currentTarget.placeholder = "";
-                    }} onBlur={(e) => {
-                        e.currentTarget.placeholder = "메뉴나 가게명 입력";
-                    }}/>
+                    <div className="textArea" onClick={() => specOpen()}>
+                        <p className="list_text innerText">식당 리스트 ({ sort_text })</p>
+                        <zz></zz>
+                        <p className="btn_cngSort">거리순 정렬</p>
+                    </div>
+                    <div className="searchArea" onClick={(e) => {
+                        e.currentTarget.children[2].focus();
+                    }}>
+                        <p className="innerText">검색</p>
+                        <div className="stylebar"></div>
+                        <input type="text" placeholder="메뉴나 가게명 입력" onFocus={(e) => {
+                            e.currentTarget.placeholder = "";
+                        }} onBlur={(e) => {
+                            e.currentTarget.placeholder = "메뉴나 가게명 입력";
+                        }}/>
+                    </div>
+                    <div className="listBlocks">
+                        { list.map((v, i) => <ShopCore info={{ ...v, i }} key={i} _moveMap={_moveMap} />) }
+                    </div>
                 </div>
-                <div className="listBlocks">
-                    { list.map((v, i) => <ShopCore info={v} key={i} />) }
-                </div>
+                <ListSpec _ref={specAreaRef} innerCont={{
+                    tAreaOnClick: () => specOpen(),
+                    shop_text
+                }} />
             </div>
         </div>
     </Mobile>

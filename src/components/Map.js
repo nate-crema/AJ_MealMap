@@ -12,12 +12,14 @@ import marker_img from "../assets/img/marker.svg";
 // api resource
 import json from "../keys/api.json";
 
-function KakaoMap({ className, location, stat, display }) {
+function KakaoMap({ 
+    parentMapState: [ map, setMap ] = useState(null), // kakao map object
+    parentOverlayDisplayer: [ ro, setRO ] = useState(() => {}),
+    className, location, stat, display }) {
 
     // map load manage
     const [ map_loaded, setMapStat ] = stat; // map load state
     const [ init, setInit ] = useState(false); // map init state
-    const [ map, setMap ] = useState(null); // kakao map object
     const [ marker_cluster, setMC ] = useState(null); // map marker manage cluster
     const mapRef = useRef(null); // map reference
 
@@ -25,22 +27,22 @@ function KakaoMap({ className, location, stat, display }) {
     const [ marked, setMarked ] = useState([]); // marked marker objects
 
     function revealOverlay(i) {
-        const { overlay, marker: map_marker } = marked[i];
-        let map_po = overlay.getMap();
-        if(map_po == null) {
-            
-            // enable overlay
-            overlay.setMap(map);
-
-            // move center
-            map.setCenter(map_marker.getPosition());
-        }
-        else {
-
-            // disable overlay
-            overlay.setMap(null);
+        try {
+            const { overlay, marker: map_marker } = marked[i];
+            let map_po = overlay.getMap();
+            if(map_po == null) {
+                // enable overlay
+                overlay.setMap(map);
+                // move center
+                map.setCenter(map_marker.getPosition());
+            }
+            else overlay.setMap(null); // disable overlay
+        } catch(e) {
+            // console.error(e);
         }
     }
+
+    
 
     useEffect(() => {
         if (!init) {
@@ -91,6 +93,7 @@ function KakaoMap({ className, location, stat, display }) {
                 });
                 setMC(mcluster);
                 setMapStat(true);
+                setRO(revealOverlay);
             })
         }, 1000)
     }, [ init ]);
@@ -108,6 +111,8 @@ function KakaoMap({ className, location, stat, display }) {
                     position: new kakao.maps.LatLng( mark_info.loc.lat, mark_info.loc.long ),
                     image: new kakao.maps.MarkerImage( marker_img, new kakao.maps.Size(51, 55) )
                 });
+
+                console.log("map_marker", map_marker)
 
                 map_marker.setMap(map);
 

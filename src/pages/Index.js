@@ -128,7 +128,7 @@ function Index({ window: { width, height }, history }) {
 
     const [ notice, setNotice ] = useState(false);
 
-    useEffect( async () => {
+    useEffect( async () => { // (한번만 조회하면 다시 조회하지 않게 설정 필요)
         try {
             const { data: notices } = await axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/notice`);
             console.log("notice", notices);
@@ -143,13 +143,12 @@ function Index({ window: { width, height }, history }) {
     return <div className="serviceArea menuBlocksCover" id="serviceArea" doc-contype="menu-content">
         <div className="menuBlocks" style={ ( width > 700 ) ? {
             gridTemplateColumns: "calc(50%) calc(50%)",
-            // gridTemplateRows: "240px 100px 130px 110px 230px"
-            gridTemplateRows: "100px 240px 100px 130px 110px 230px"
+            gridTemplateRows: notice ? "100px 240px 100px 130px 110px 230px" : "240px 100px 130px 110px 230px"
         } : {
             gridTemplateColumns: "100%",
-            gridTemplateRows: "repeat(6, 250px)"
+            gridTemplateRows: notice ? "100px repeat(6, 250px)" : "repeat(6, 250px)"
         }}>
-            { notice && notice.map(not => <Notice notice={not} style={{ gridRow: "1", gridColumn: "1 / 3" }}/>)}
+            { notice && <Notice notices={notice} style={ ( width > 700 ) ? { gridRow: "1", gridColumn: "1 / 3" } : { width: "90%", height: "100px" }} window={{ width, height }}/>}
             { menu_list.map( ( block_info, i ) => 
                 <Block key={i} indexing={i} style={
                     ( width > 700 ) ? 

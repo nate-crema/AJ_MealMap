@@ -1,9 +1,19 @@
+import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // components
 import ServiceWrap from "./pages/Wrapper";
 
 function App() {
+
+  // cookie handling
+  const [ cookie, setCookie, remCookie ] = useCookies("uinfo");
+
+  useEffect(() => {
+    console.log(cookie);
+    if (cookie.isLogined != "true") setCookie("isLogined", "true");
+  }, []);
 
   return (
     <>

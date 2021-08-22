@@ -9,6 +9,7 @@
 }
 
 .noticeArea .not_img {
+    transition: all .24s cubic-bezier(0.165, 0.84, 0.44, 1);
     width: auto;
     height: 55%;
     position: relative;
@@ -18,8 +19,9 @@
 }
 
 .noticeArea .textArea {
-    width: 88%;
-    min-width: 500px;
+    transition: all .24s cubic-bezier(0.165, 0.84, 0.44, 1);
+    width: calc(100% - 120px);
+    /* min-width: 500px; */
     height: 95%;
     /* border: 1px solid black; */
     position: relative;
@@ -39,4 +41,10 @@
     transform: translateY(-50%);
     width: fit-content;
     height: fit-content;
+}
+
+@media (max-width: 700px) {
+    .noticeArea .textArea {
+        width: calc(90% - 100px);
+    }
 }

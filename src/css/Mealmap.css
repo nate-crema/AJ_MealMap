@@ -112,17 +112,41 @@
     left: 0;
 }
 
+/* infos area design */
+
+.mealmap .infosArea {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.mealmap .infosArea .listArea {
+    width: auto;
+    height: auto;
+    overflow-y: hidden;
+    position: relative;
+    transition: all .24s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.mealmap .infosArea .specArea {
+    width: auto;
+    height: auto;
+    overflow-y: hidden;
+    position: relative;
+    transition: all .24s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
 
 /* list design */
 
-.mealmap .listArea .listBlocks {
+.mealmap .infosArea .listArea .listBlocks {
     width: 100%;
     height: calc(100% - 120px);
     position: relative;
     top: 20px;
 }
 
-.mealmap .listArea .listBlocks .listBlock {
+.mealmap .infosArea .listArea .listBlocks .listBlock {
     width: 100%;
     height: 150px;
     box-shadow: 0px 20px 20px rgb(0, 0, 0, 0.1);
@@ -130,7 +154,7 @@
     background-color: white;
 }
 
-.mealmap .listArea .listBlocks .listBlock .shopName {
+.mealmap .infosArea .listArea .listBlocks .listBlock .shopName {
     font-size: 20px;
     font-weight: 500;
     color: #005BAE;
@@ -140,7 +164,7 @@
     width: fit-content;
 }
 
-.mealmap .listArea .listBlocks .listBlock .GPA_avg {
+.mealmap .infosArea .listArea .listBlocks .listBlock .GPA_avg {
     font-size: 20px;
     font-weight: 500;
     color: #005BAE;
@@ -151,7 +175,7 @@
     width: fit-content;   
 }
 
-.mealmap .listArea .listBlocks .listBlock .GPA_max {
+.mealmap .infosArea .listArea .listBlocks .listBlock .GPA_max {
     font-size: 10px;
     font-weight: 500;
     color: #005BAE;
@@ -162,7 +186,7 @@
     width: fit-content;   
 }
 
-.mealmap .listArea .listBlocks .listBlock .descriptionGPA {
+.mealmap .infosArea .listArea .listBlocks .listBlock .descriptionGPA {
     font-size: 10px;
     font-weight: 300;
     color: #cccccc;
@@ -173,7 +197,7 @@
     width: fit-content;   
 }
 
-.mealmap .listArea .listBlocks .listBlock .shopStat {
+.mealmap .infosArea .listArea .listBlocks .listBlock .shopStat {
     font-size: 14px;
     font-weight: 300;
     color: #cccccc;
@@ -183,7 +207,7 @@
     width: fit-content;   
 }
 
-.mealmap .listArea .listBlocks .listBlock .workTime {
+.mealmap .infosArea .listArea .listBlocks .listBlock .workTime {
     font-size: 12px;
     font-weight: 300;
     color: #cccccc;
@@ -194,7 +218,7 @@
     word-break: keep-all;
 }
 
-.mealmap .listArea .listBlocks .listBlock .isTrustGPA {
+.mealmap .infosArea .listArea .listBlocks .listBlock .isTrustGPA {
     font-size: 15px;
     font-weight: 300;
     position: absolute;
@@ -204,7 +228,7 @@
     width: fit-content;   
 }
 
-.mealmap .listArea .mobileBackgroud {
+.mealmap .infosArea .listArea .mobileBackgroud {
     width: 80%;
     height: 100%;
     position: absolute;
@@ -216,6 +240,15 @@
     box-shadow: 0px 0 18px 0px rgb(0 0 0 / 40%);
     border-radius: 60px;
     z-index: 0;
+}
+
+/* spec design */
+
+.mealmap .infosArea .specArea .textArea {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 @media (max-width: 1500px) {
@@ -237,4 +270,3 @@
         height: auto;
     } */
 }
-
