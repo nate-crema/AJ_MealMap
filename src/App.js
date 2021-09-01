@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // components
 import ServiceWrap from "./pages/Wrapper";
+import Login from "./pages/Login";
 
 function App() {
 

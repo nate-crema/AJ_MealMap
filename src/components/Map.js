@@ -15,16 +15,16 @@ import json from "../keys/api.json";
 function KakaoMap({ 
     parentMapState: [ map, setMap ] = useState(null), // kakao map object
     parentOverlayDisplayer: [ ro, setRO ] = useState(() => {}),
-    className, location, stat, display }) {
+    parentMarkersCtrl: [ marked, setMarked ] = useState([]), // marked marker objects
+    className, location, stat, display 
+}) {
 
     // map load manage
     const [ map_loaded, setMapStat ] = stat; // map load state
     const [ init, setInit ] = useState(false); // map init state
-    const [ marker_cluster, setMC ] = useState(null); // map marker manage cluster
     const mapRef = useRef(null); // map reference
 
     // map marking manage
-    const [ marked, setMarked ] = useState([]); // marked marker objects
 
     function revealOverlay(i) {
         try {
@@ -76,22 +76,6 @@ function KakaoMap({
                 setMap(n_map);
                 let marked_marker = [];
                 marked.forEach(v => marked_marker.push(v.marker));
-                var mcluster = new kakao.maps.MarkerClusterer({
-                    map: n_map,
-                    markers: marked_marker,
-                    // gridSize: 35,
-                    // averageCenter: true,
-                    minLevel: 6,
-                    disableClickZoom: true,
-                    styles: [{
-                        width : '53px', height : '52px',
-                        background: `url(${marker_img}) no-repeat`,
-                        color: '#fff',
-                        textAlign: 'center',
-                        lineHeight: '54px'
-                    }]
-                });
-                setMC(mcluster);
                 setMapStat(true);
                 setRO(revealOverlay);
             })
@@ -100,7 +84,7 @@ function KakaoMap({
 
     useEffect(() => {
 
-        if (init && map && marker_cluster) {
+        if (init && map) {
             let prev_markers = marked;
             display.forEach( (mark_info, i) => {
 
@@ -128,11 +112,10 @@ function KakaoMap({
                 kakao.maps.event.addListener(map_marker, 'click', () => revealOverlay(i));
 
                 prev_markers.push( { marker: map_marker, overlay } );
-                marker_cluster.addMarker(map_marker);
             } )
             setMarked(prev_markers);
         }
-    }, [ display, init, marker_cluster ]);
+    }, [ display, init ]);
 
     // useEffect(() => setInit(true), [ ]);
     

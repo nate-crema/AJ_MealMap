@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import axios from "../connection/requester";
 
 // components
 import Block from "../components/Block";

@@ -50,7 +50,7 @@ function Wrapper({ history, location }) {
 
 
         } else {
-            if (window.location.pathname == "/") {
+            if (["/", "/login"].includes(window.location.pathname)) {
 
                 // logo position change
                 logo_ref.current.style.height = null;
@@ -90,13 +90,13 @@ function Wrapper({ history, location }) {
 
     const route_table = [
         {
-            path: "/",
-            comp: (props) => <Index window={{ width, height }} />,
+            path: "/login",
+            comp: Login,
             menu_index: 0
         },
         {
-            path: "/login",
-            comp: Login,
+            path: "/",
+            comp: (props) => <Index window={{ width, height }} />,
             menu_index: 1
         },
         {
@@ -185,7 +185,7 @@ function Wrapper({ history, location }) {
                 current-menu={menu}
             >
                 <div className="logoArea" ref={logo_ref}>
-                    <Logo className="logoComp" onClick={() => setMenu(0)}></Logo>
+                    <Logo className="logoComp" onClick={() => setMenu(1)}></Logo>
                     <div className="ctrlArea" ref={ctrl_ref}></div>
                 </div>
                 <Router>

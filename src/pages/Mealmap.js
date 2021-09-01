@@ -1,32 +1,18 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import axios from "../connection/requester";
 
 // css
 import "../css/Mealmap.css";
 
 // components
 import KakaoMap from "../components/Map";
+import KakaoMapInit from "../components/MapInit";
 import Mobile from "../components/Mobile";
 import ListSpec from "../components/ListSpec";
+import ShopCore from "../components/ShopCore";
 
-function ShopCore({ info, _moveMap }) {
-    
-    const _clickHandler = (e) => {
-        // console.log(e.currentTarget);
-        _moveMap( info );
-    }
-
-    return <div className="listBlock" onClick={_clickHandler}>
-        <p className="shopName">{ info.name }</p>
-        <p className="GPA_avg">{ info.review.avg || "?" }</p>
-        <p className="GPA_max">/ 10</p>
-        <p className="shopStat">{ info.workTime.text }</p>
-        <p className="workTime">{ info.workTime.totalTimes[new Date().getDay()] }</p>
-        <p className="isTrustGPA" style={{
-            color: info.review.isTrustHigh ? "var(--theme-color-D)" : "#AE0000"
-        }} >{info.review.avg ? `평점 신뢰도 ${ info.review.isTrustHigh ? "높음" : "낮음"}` : "평점정보 없음" }</p>
-    </div>
-}
+// api
+import { shop } from "../apis";
 
 
 function Mealmap({ window }) {
@@ -35,6 +21,7 @@ function Mealmap({ window }) {
 
     // Map Component - Parental Management
     const [ map, setMap ] = useState(null); // kakao map object
+    const [ marked, setMarked ] = useState([]); // marked marker objects
     const [ revealOverlay, setRO ] = useState(() => {}); // map overlay displayer
 
     // map status manage
@@ -46,19 +33,20 @@ function Mealmap({ window }) {
     // map list manage
     const [ list, setList ] = useState([]);
 
-    useEffect(() => {
-        axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/shop/list`)
-        .then(({ data }) => setList(data.list))
-        .catch(e => {
-            console.error(e);
-            // alert("정보를 불러오지 못했습니다. 다시 시도해주세요.", e)
-        });
+    useEffect(async () => {
+        const shop_list = await shop.getShopList();
+        setList(shop_list);
     }, []);
-    useEffect(() => console.log("list: changed", list), [ list ]);
+
+    // useEffect(() => console.log("list: changed", list), [ list ]);
 
     // map list content click handling
 
     const _moveMap = (info) => {
+        if (!map) {
+            specOpen(info);
+            return;
+        }
         const { loc, i } = info;
         // map position move
         // console.log(`moveTo: ${loc.lat}, ${loc.long}`)
@@ -153,6 +141,7 @@ function Mealmap({ window }) {
         }
     }, [ map_loaded ]);
 
+    // ----------------------
 
     // LIST
 
@@ -179,7 +168,7 @@ function Mealmap({ window }) {
             else {
                 // set spec information & open
                 setSI(info);
-                setShopText(`${info.name} | ${info.loc?.spec}`);
+                setShopText(info.name);
                 setSO(true);
             }
         } else setSO(false);
@@ -202,6 +191,29 @@ function Mealmap({ window }) {
             }
         }
     }, [ spec_opened ]);
+
+    // registration block manage
+    const [ registerobj_list, setRLState ] = useState([]);
+    
+    const addRL = () => {
+        if (registerobj_list.length == 0) setRLState([
+            {
+                _id: new Date().getTime(),
+                name: "",
+                GPA: "",
+                loc: { LatLong: { lat: 0, long: 0 }, WCongNaMul: { x: 0, y: 0 } }
+            },
+            ...registerobj_list
+        ])
+        else return;
+    }
+
+    const remRL = (_i) => {
+        // console.log(registerobj_list);
+        const rol = registerobj_list.filter((v, i) => v._id != _i);
+        // console.log(rol);
+        setRLState(rol);
+    }
     
     return <Mobile>
         <div className="mealmap serviceArea" id="serviceArea">
@@ -212,6 +224,7 @@ function Mealmap({ window }) {
                 <KakaoMap 
                     parentMapState={[ map, setMap ]}
                     parentOverlayDisplayer={[ revealOverlay, setRO ]}
+                    parentMarkersCtrl={[ marked, setMarked ]}
                     parentSpeclistOpen={specOpen}
                     filter={filter}
                     location={location}
@@ -219,13 +232,13 @@ function Mealmap({ window }) {
                     stat={[ map_loaded, setMapStat ]}
                     display={ mapMarkers }
                 />
-            </div> : <></> }
+            </div> : <KakaoMapInit/> }
             <div className="infosArea">
                 <div className="listArea mealmapArea" ref={listAreaRef} style={{
                     height: "calc(100% - 80px)"
                 }}>
                     <div className="textArea" onClick={() => specOpen()}>
-                        <p className="list_text innerText">식당 리스트 ({ sort_text })</p>
+                        <p className="list_text innerText">음식점 리스트 ({ sort_text })</p>
                         <zz></zz>
                         <p className="btn_cngSort">거리순 정렬</p>
                     </div>
@@ -241,12 +254,26 @@ function Mealmap({ window }) {
                         }}/>
                     </div>
                     <div className="listBlocks">
-                        { list.map((v, i) => <ShopCore info={{ ...v, i }} key={i} _moveMap={_moveMap} />) }
+                        { registerobj_list.map((v, i) => <ShopCore type="register" key={i} info={{ ...v , i }} remFnc={remRL} map_objs={ {
+                            map_obj: map,
+                            marker_state: [ mapMarkers, setMarkers ],
+                            map_marked: [ marked, setMarked ]
+                        } } />)  }
+                        { list.map((v, i) => <ShopCore type="display" info={{ ...v, i }} key={i} _moveMap={_moveMap} />) }
+                    </div>
+                    <div className="addBtn" style={{
+                        display: spec_opened ? "none" : "block",
+                        backgroundColor: registerobj_list.length == 0 ? "white" : "var(--theme-color-C)",
+                        color: registerobj_list.length == 0 ? "var(--theme-color-C)" : "white",
+                    }} onClick={() => addRL()}>
+                        <span className="text">음식점 추가하기</span>
                     </div>
                 </div>
                 <ListSpec _ref={specAreaRef} innerCont={{
                     tAreaOnClick: () => specOpen(),
-                    shop_text
+                    shop_text,
+                    info: spec_info || {},
+                    isOpen: spec_opened
                 }} />
             </div>
         </div>
