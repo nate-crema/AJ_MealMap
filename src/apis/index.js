@@ -1,5 +1,7 @@
 import shop from "./shop";
+import user from "./user";
 
 export {
-    shop
+    shop,
+    user
 }

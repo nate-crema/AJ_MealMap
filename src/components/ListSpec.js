@@ -111,7 +111,7 @@ function ListSpec({ _ref, style, innerCont: { isOpen, tAreaOnClick, shop_text, i
                         </g>
                     </svg>
                 </div>
-                <span className="text" onClick={() => window.location.href=`tel:${info.number?.default}`}>{ info.number?.default }</span>
+                <span className="text" style={{ cursor: "pointer" }} onClick={() => window.location.href=`tel:${info.number?.default}`}>{ info.number?.default }</span>
             </div>
             <div className="shop_distance info_dp">
                 <div className="service_icn">
@@ -186,7 +186,7 @@ function ListSpec({ _ref, style, innerCont: { isOpen, tAreaOnClick, shop_text, i
                         </g>
                     </svg>
                 </div>
-                <span className="text">이 { info.cat?.cat } 공유하기</span>
+                <span className="text" style={{ cursor: "not-allowed" }} >이 { info.cat?.cat } 공유하기</span>
             </div>
         </div>
     </div>

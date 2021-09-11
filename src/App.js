@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // components
 import ServiceWrap from "./pages/Wrapper";
+import MobileMap from "./mobile/MobileMap";
 import Login from "./pages/Login";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           
           */}
           {/* <Route path="/shared" component={Shared}/> */}
+          <Route exact path="/fullmap" component={MobileMap}/>
           <Route path="/" component={ServiceWrap}/>
         </Switch>
       </Router>

@@ -10,6 +10,7 @@
 
 # security
 /src/keys
+/cert
 
 # production
 /build

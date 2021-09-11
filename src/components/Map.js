@@ -69,15 +69,17 @@ function KakaoMap({
         } else setTimeout(() => {
             kakao.maps.load(() => {
                 console.log('map loaded');
-                const n_map = new kakao.maps.Map(mapRef.current, {
-                    center: new kakao.maps.LatLng(location.lat, location.long),
-                    level: 3
-                })
-                setMap(n_map);
-                let marked_marker = [];
-                marked.forEach(v => marked_marker.push(v.marker));
-                setMapStat(true);
-                setRO(revealOverlay);
+                if (map == null) {
+                    const n_map = new kakao.maps.Map(mapRef.current || document.getElementById("KakaoMap"), {
+                        center: new kakao.maps.LatLng(location.lat, location.long),
+                        level: 3
+                    })
+                    setMap(n_map);
+                    let marked_marker = [];
+                    marked.forEach(v => marked_marker.push(v.marker));
+                    setMapStat(true);
+                    setRO(revealOverlay);
+                }
             })
         }, 1000)
     }, [ init ]);

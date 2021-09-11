@@ -67,6 +67,8 @@ function Mealmap({ window }) {
         }, 300);
     }
 
+    // 
+
     // map marker manage
     const [ mapMarkers, setMarkers ] = useState([]);
 
@@ -75,13 +77,16 @@ function Mealmap({ window }) {
             let markers = [];
             for (var i = 0; i < ( list.length > 10 ? 10 : list.length ); i++) {
                 // map custom overlay
+
+                
+
                 const overlay = `
                     <div class="custom_overlay_mmap" id="mmap_overlay" >
                         <span class="shop_name">${ list[i].name }</span>
                         <span class="shop_cat">${ list[i].cat?.subcat }</span>
                         <span class="shop_GPA">${ list[i].review?.avg }</span>
                         <span class="GPA_max">/10</span>
-                        <div class="btn_fnc btn_cmp">
+                        <div class="btn_fnc btn_cmp" style="cursor: ${'pointer'}">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                     viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
                                 <style type="text/css">
@@ -93,7 +98,7 @@ function Mealmap({ window }) {
                                 </g>
                             </svg>
                         </div>
-                        <div class="btn_fnc btn_stm">
+                        <div class="btn_fnc btn_stm" style="cursor: ${'not-allowed'}">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                     viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
                                 <style type="text/css">
@@ -110,7 +115,7 @@ function Mealmap({ window }) {
                                 </g>
                             </svg>
                         </div>
-                        <div class="btn_fnc btn_info">
+                        <div class="btn_fnc btn_info" id="btn_info_overlay_${list[i]._id}" style="cursor: ${'pointer'}">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
                                 <style type="text/css">

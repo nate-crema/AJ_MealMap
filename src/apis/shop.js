@@ -12,12 +12,14 @@ const getShopList = async () => {
 const regShopPref = async ( name, point, loc, extra ) => {
     try {
         console.log(name, point, loc, extra);
+        const token = window.localStorage.getItem('linfo');
+        if (!token) throw new Error("");
         const { data: reg_res } = await axios.post(`/review/register/quick`, {
             name,
             cat: 0,
             point,
             loc,
-            register: "611a304652a9dd4557880e06"
+            token
         })
         console.log(reg_res);
         return reg_res;

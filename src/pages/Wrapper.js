@@ -13,6 +13,9 @@ import Login from "./Login";
 import Mealmap from "./Mealmap";
 import NFOUND from "./404";
 
+// api
+import { user } from "../apis";
+
 // design assets
 import Logo from "../components/Logo";
 
@@ -111,7 +114,7 @@ function Wrapper({ history, location }) {
         },
     ]
 
-    const { menu: { menu } } = g_state;
+    const { menu: { menu }, user: { uinfo } } = g_state;
     const setMenu = (menu) => dispatch({ type: "menu/SETMENU", menu });
 
     const [ inited, setInitialized ] = useState(false);
@@ -147,6 +150,32 @@ function Wrapper({ history, location }) {
     }, [ menu ]);
 
     useEffect(() => setInitialized(true), [ ]);
+
+    // Handling Login
+
+    useEffect( async () => {
+        console.log("uinfo changed", uinfo, window.location.pathname);
+        if (window.location.pathname == "/login" && uinfo.isLogined) setMenu(1);
+        else if (!uinfo.isLogined && window.localStorage.getItem('linfo')) {
+            // Login State Handling
+            try {
+                const uinfo = await user.isValidAuthToken(window.localStorage.getItem('linfo'));
+                if (uinfo?.res?.authorize?.token) {
+                    window.localStorage.setItem('linfo', uinfo.res.authorize.token);
+                    dispatch({ type: "user/SETUSER", uinfo: {
+                        ...uinfo.res,
+                        isLogined: true,
+                        isOneTime: false
+                    } });
+                }
+                else throw new Error();
+            } catch(e) {
+                console.error(e);
+                if (e?.response?.data == "Login Expired") window.location.href = "/login?error=expire";
+                else window.location.href = "/login?error=error";
+            }
+        } else if (!uinfo.isLogined && window.location.pathname != "/login") setMenu(0);
+    }, [ uinfo, window.location.pathname ]);
 
     // Handling Window Size
 

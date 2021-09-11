@@ -1,0 +1,40 @@
+.pinwrap {
+    width: 380px;
+    height: 100px;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(4, auto);
+    gap: 30px;
+    /* border: 1px solid var(--theme-color-C); */
+    outline: none;
+}
+
+.pinwrap .one-pin {
+    border: 1px solid var(--theme-color-C);
+    border-radius: 20px;
+    box-shadow: 2px 2px 6px rgb(0, 0, 0, 0.2);
+    transition: all .5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.pinwrap .one-pin .sec_svg {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: auto;
+    stroke-dasharray: 619px; /* dash interval */
+    stroke-dashoffset: 619px; /* start point */
+    animation-name: secAnim;
+    animation-duration: .5s;
+    animation-fill-mode: both;
+}
+
+@keyframes secAnim {
+    from {
+        stroke-dashoffset: 619px; /* start point */
+    }
+    to {
+        stroke-dashoffset: 0px; /* start point */
+    }
+}
