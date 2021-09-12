@@ -31,9 +31,9 @@ jobs:
     
     - run: npm install
     
-    - run: mkdir ./keys
+    - run: mkdir ./keys && echo '{}' > ./keys/api.json
     
-    - run: echo '' > ./keys/api.json
+    - run: cat ./keys/api.json
     
     - run: npm run build
     
