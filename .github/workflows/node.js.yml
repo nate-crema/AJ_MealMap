@@ -37,7 +37,7 @@ jobs:
     
     # execute pull command to service server
     - name: execute remote ssh commands
-      uses: appleboy/ssh-action@deploy
+      uses: appleboy/ssh-action
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.UNAME }}
@@ -47,7 +47,7 @@ jobs:
           rm -rf /project/mealmap/AJ_MealMap/*
           
     - name: copy file via ssh
-      uses: appleboy/scp-action@deploy
+      uses: appleboy/scp-action
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.UNAME }}
