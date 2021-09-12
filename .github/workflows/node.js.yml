@@ -31,13 +31,13 @@ jobs:
     
     - run: npm install
     
-    - run: mkdir -p ./AJ_MealMap/keys && echo '{}' > ./AJ_MealMap/keys/api.json
+    - run: mkdir -p ./src/keys && echo '{}' > ./src/keys/api.json
     
     - run: pwd
     
     - run: ls -al
     
-    - run: cat ./AJ_MealMap/keys/api.json
+    - run: cat ./src/keys/api.json
     
     - run: npm run build
     
