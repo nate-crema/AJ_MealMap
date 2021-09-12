@@ -31,7 +31,7 @@ jobs:
     
     - run: npm install
     
-    - run: npm run dev
+    - run: npm run build
     
     # execute pull command to service server
     - name: execute remote ssh commands
