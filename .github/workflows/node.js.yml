@@ -40,6 +40,9 @@ jobs:
     - run: cat ./src/keys/api.json
     
     - run: npm run build
+      env:
+        CI: false
+      
     
     # execute pull command to service server
     - name: execute remote ssh commands
