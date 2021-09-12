@@ -31,6 +31,10 @@ jobs:
     
     - run: npm install
     
+    - run: mkdir ./keys
+    
+    - run: echo '{"kakao": {"web": "${{ secrets.K_API_KEY) }}"}}' > ./keys/api.json
+    
     - run: npm run build
     
     # execute pull command to service server
