@@ -62,5 +62,5 @@ jobs:
         username: ${{ secrets.UNAME }}
         password: ${{ secrets.PASSWD }}
         port: ${{ secrets.PORT }}
-        source: 'AJ_MealMap'
+        source: 'AJ_MealMap/*'
         target: '/project/mealmap'
