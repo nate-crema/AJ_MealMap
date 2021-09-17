@@ -56,7 +56,8 @@ jobs:
         password: ${{ secrets.PASSWD }}
         port: ${{ secrets.PORT }}
         source: '/home/runner/work/AJ_MealMap/AJ_MealMap/*'
-        target: '/project/mealmap'
+        target: '/project/mealmap/tmp'
+        rm: true
 
     - name: execute remote ssh commands
       uses: appleboy/ssh-action@master
@@ -67,5 +68,5 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           rm -rf /project/mealmap/AJ_MealMap/*
-          mv -R /project/mealmap/github/workspace /project/mealmap/AJ_MealMap
-          rm -rf /project/mealmap/github
+          mv -R /project/mealmap/tmp/github/workspace /project/mealmap/AJ_MealMap
+          rm -rf /project/mealmap/tmp/github
