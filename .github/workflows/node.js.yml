@@ -33,6 +33,8 @@ jobs:
     
     - run: mkdir -p ./src/keys && echo '{}' > ./src/keys/api.json
     
+    - run: echo 'REACT_APP_DB_HOST=${{ secrets.REACT_APP_DB_HOST }}\nREACT_APP_BACKEND_HOST=${{ secrets.REACT_APP_BACKEND_HOST }}\nHTTPS=true\nSSL_CRT_FILE=${{ secrets.SSL_CRT_FILE }}\nSSL_KEY_FILE=${{ secrets.SSL_KEY_FILE }}' > ./.env.production
+    
     - run: pwd
     
     - run: ls -al
