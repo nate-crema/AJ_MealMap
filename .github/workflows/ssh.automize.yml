@@ -31,6 +31,9 @@ jobs:
         password: ${{ secrets.PASSWD }}
         port: ${{ secrets.PORT }}
         script: |
+          rm -rf /project/mealmap/tmp
           git clone -b publish --single-branch https://github.com/nate-crema/AJ_MealMap /project/mealmap/tmp
           rm -rf /project/mealmap/AJ_MealMap/*
           cp -R /project/mealmap/tmp/* /project/mealmap/AJ_MealMap
+          cd /project/mealmap/AJ_MealMap && yarn
+          yarn build
