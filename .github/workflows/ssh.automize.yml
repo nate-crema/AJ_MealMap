@@ -41,6 +41,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /project/mealmap/tmp
-          git clone -b publish --single-branch https://github.com/nate-crema/AJ_MealMap
+          pwd
+          git clone -b publish --single-branch https://github.com/nate-crema/AJ_MealMap /project/mealmap/tmp
           rm -rf /project/mealmap/AJ_MealMap/*
           mv -R /project/mealmap/tmp/github/workspace /project/mealmap/AJ_MealMap
