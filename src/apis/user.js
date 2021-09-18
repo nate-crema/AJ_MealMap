@@ -6,9 +6,9 @@ const isRegistered = async ( pn ) => {
         const { data } = await axios.get(`/user/isexist/${pn}`);
         return data;
     } catch(e) {
-        if (e.response.data == "Authorization Not Ended") return "ANE";
-        else if (e.response.data == "Invalid Phone Number Format") return "NPN";
-        else if (e.response.status == 404) return false;
+        if (e?.response?.data == "Authorization Not Ended") return "ANE";
+        else if (e?.response?.data == "Invalid Phone Number Format") return "NPN";
+        else if (e?.response?.status == 404) return false;
         else console.error(e);
     }
 }
@@ -22,31 +22,45 @@ const register = async ( name, pn, email ) => {
         });
         return server_res;
     } catch(e) {
-        if (e.response.data == "Already Exist User") return "AEU";
-        else if (e.response.data == "Invalid Email Type or Format") return "NEMAIL";
+        if (e?.response?.data == "Already Exist User") return "AEU";
+        else if (e?.response?.data == "Invalid Email Type or Format") return "NEMAIL";
         else {
-            console.log(e.response.data);
+            console.log(e?.response?.data);
             console.error(e);
             return "ERROR";
         }
-        // console.log(e.response.data == "Already Exist User");
+        // console.log(e?.response?.data == "Already Exist User");
     }
 }
 
-const login = async ( pn, pin ) => {
+const login = async ( pn, pin, _key ) => {
     try {
-        const { data: server_res } = await axios.post(`/user/login`, { pn, pin });
+        console.log("_key", _key);
+        const key = `${_key}${_key}${_key}${_key}${_key}`.substr(0, 32);
+        const iv = `${_key}${_key}${_key}${_key}${_key}`.substr(0, 16);
+        // console.log(iv, key);
+
+        let cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+        let pin_enc = cipher.update(pin, 'utf8', 'base64');
+        pin_enc += cipher.final('base64');
+
+        cipher = null;
+        cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+        let pn_enc = cipher.update(pn, 'utf8', 'base64');
+        pn_enc += cipher.final('base64');
+
+        const { data: server_res } = await axios.post(`/user/login`, { pn: pn_enc, pin: pin_enc });
         return server_res;
     } catch(e) {
-        if (e.response.data == "User Not Found") return "UNF";
-        else if (e.response.data == "Invalid Phone Number Format") return "NPN";
-        else if (e.response.data == "Invalid PIN") return "NPIN";
+        if (e?.response?.data == "User Not Found") return "UNF";
+        else if (e?.response?.data == "Invalid Phone Number Format") return "NPN";
+        else if (e?.response?.data == "Invalid PIN") return "NPIN";
         else {
-            console.log(e.response.data);
+            console.log(e?.response?.data);
             console.error(e);
             return "ERROR";
         }
-        // console.log(e.response.data == "Already Exist User");
+        // console.log(e?.response?.data == "Already Exist User");
     }
 }
 
@@ -80,10 +94,14 @@ const isValidAuthRoute = async ( authorize_code ) => {
 
 const isValidAuthToken = async ( token ) => {
     try {
-        const { data } = await axios.post(`/user/token/isValid`, { token });
+        const { data } = await axios.post(`/user/token/isValid`, {}, {
+            headers: {
+                "X-ACCESS-MEAL-JWT": token
+            }
+        });
         return data;
     } catch(e) {
-        console.error(e.response.data || e);
+        console.error(e?.response?.data || e);
         throw e;
     }
 }

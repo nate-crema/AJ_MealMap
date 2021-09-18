@@ -130,7 +130,7 @@ function Index({ window: { width, height }, history }) {
 
     useEffect( async () => { // (한번만 조회하면 다시 조회하지 않게 설정 필요)
         try {
-            const { data: notices } = await axios.get(`http://${process.env.REACT_APP_BACKEND_HOST}/notice`);
+            const { data: notices } = await axios.get(`/notice`);
             console.log("notice", notices);
             if (notices.list.length <= 0) return;
             else setNotice(notices.list);

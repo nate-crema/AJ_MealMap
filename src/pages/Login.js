@@ -120,6 +120,9 @@ function Login({ location }) {
     const [ pn, setPn ] = useState("");
     const [ name, setName ] = useState("");
     const [ email, setEmail ] = useState("");
+
+    // login encryption info
+    const [ key, setKey ] = useState(null);
     
     // register state manage
     const [ reged, setReged ] = useState(false);
@@ -138,7 +141,7 @@ function Login({ location }) {
     // set login
     const _loginReq = async (pin, pinReset) => {
         if (pn != "" && pin != "") try {
-            const login_res = await user.login(pn, pin);
+            const login_res = await user.login(pn, pin, key);
             if (login_res == "UNF") {
                 setGA("???");
                 setMent(`사용자를 찾지 못했습니다.`);
@@ -225,7 +228,7 @@ function Login({ location }) {
 
     // login handling
     const login = async (uinfo) => {
-        if (!uinfo?.authorize?.token) {
+        if (uinfo?.isOneTime !== true && !uinfo?.authorize?.token) {
             setGA("로그인 오류");
             setMent("로그인중 문제가 발생하였습니다. 다시 시도해주세요");
             setTimeout(() => {
@@ -283,7 +286,7 @@ function Login({ location }) {
                             if (pn == "") setMent("전화번호로 로그인");
                             else if (pn.length == 11) {
                                 const isexist = await user.isRegistered(pn);
-                                console.log(isexist);
+                                console.log(isexist, isexist == "ANE", isexist == "NPN", isexist == undefined);
                                 if (isexist == "ANE") {
                                     setGA("어라? 뭔가 이상해요");
                                     setMent("학교이메일로 인증 후 이용해주세요.");
@@ -293,7 +296,11 @@ function Login({ location }) {
                                 } else if (isexist) {
                                     setGA("안녕하세요! 또 뵙네요 :)");
                                     setMent("PIN입력을 완료하여 로그인");
+                                    setKey(isexist.key);
                                     setLMode(1);
+                                } else if (isexist == undefined) {
+                                    setGA("어라? 뭔가 이상해요");
+                                    setMent("일시적인 오류가 발생했어요. 잠시 후 다시 로그인해주세요 ㅠㅠ");
                                 } else {
                                     setGA("처음뵙네요! 반가워요 :)");
                                     setMent("가입을 위해 아래에 이름과 아주대 이메일을 입력해주세요!");

@@ -164,6 +164,7 @@ function Wrapper({ history, location }) {
                     window.localStorage.setItem('linfo', uinfo.res.authorize.token);
                     dispatch({ type: "user/SETUSER", uinfo: {
                         ...uinfo.res,
+                        authorize: null, 
                         isLogined: true,
                         isOneTime: false
                     } });
@@ -171,8 +172,8 @@ function Wrapper({ history, location }) {
                 else throw new Error();
             } catch(e) {
                 console.error(e);
-                if (e?.response?.data == "Login Expired") window.location.href = "/login?error=expire";
-                else window.location.href = "/login?error=error";
+                // if (e?.response?.data == "Login Expired") window.location.href = "/login?error=expire";
+                // else window.location.href = "/login?error=error";
             }
         } else if (!uinfo.isLogined && window.location.pathname != "/login") setMenu(0);
     }, [ uinfo, window.location.pathname ]);
