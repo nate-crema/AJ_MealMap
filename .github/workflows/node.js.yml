@@ -69,4 +69,3 @@ jobs:
         script: |
           rm -rf /project/mealmap/AJ_MealMap/*
           mv -R /project/mealmap/tmp/github/workspace /project/mealmap/AJ_MealMap
-//          rm -rf /project/mealmap/tmp/github
