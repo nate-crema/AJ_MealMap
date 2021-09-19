@@ -235,9 +235,15 @@ function Login({ location }) {
                 window.localStorage.removeItem('linfo');
                 window.location.reload();
             }, 2000);
-        } else {
+        } else if (!uinfo?.isOneTime) {
             window.localStorage.setItem('linfo', uinfo.authorize.token);
             dispatch({ type: "user/SETUSER", uinfo });
+        } else {
+            setGA("안내");
+            setMent("로그인 없이 이용하실경우 일부 정보가 표시되지 않을 수 있으며, 새로고침 시 로그아웃됩니다");
+            setTimeout(() => {
+                dispatch({ type: "user/SETUSER", uinfo });
+            }, 2000);
         }
     }
 

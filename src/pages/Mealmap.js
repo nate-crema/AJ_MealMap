@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "../connection/requester";
+import { useDispatch, useSelector } from "react-redux";
 
 // css
 import "../css/Mealmap.css";
@@ -16,6 +17,9 @@ import { shop } from "../apis";
 
 
 function Mealmap({ window }) {
+
+    // Global Variable
+    const { uinfo } = useSelector(state => state.user);
 
     // MAP
 
@@ -201,7 +205,7 @@ function Mealmap({ window }) {
     const [ registerobj_list, setRLState ] = useState([]);
     
     const addRL = () => {
-        if (registerobj_list.length == 0) setRLState([
+        if (!uinfo.isOneTime && registerobj_list.length == 0) setRLState([
             {
                 _id: new Date().getTime(),
                 name: "",
@@ -210,6 +214,7 @@ function Mealmap({ window }) {
             },
             ...registerobj_list
         ])
+        else if (uinfo.isOneTime) alert("로그인되어있지 않아 음식점을 추가할 수 없습니다.");
         else return;
     }
 

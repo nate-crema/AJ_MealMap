@@ -21,7 +21,7 @@ function ListSpec({ _ref, style, innerCont: { isOpen, tAreaOnClick, shop_text, i
             // eslint-disable-next-line
             const endWCONG = new kakao.maps.LatLng( info.loc.lat, info.loc.long );
             // console.log(`lat: ${latitude}, long: ${longitude} => x: ${WCongNaMul.toCoords().getX()}, y: ${WCongNaMul.toCoords().getY()}`);
-            const { data: s_distance } = await axios.post(`http://${process.env.REACT_APP_BACKEND_HOST}/shop/distance`, {
+            const { data: s_distance } = await axios.post(`/shop/distance`, {
                 shop_id: info._id,
                 coords: {
                     SLatLong: {

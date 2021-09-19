@@ -18,9 +18,10 @@ const regShopPref = async ( name, point, loc, extra ) => {
             name,
             cat: 0,
             point,
-            loc,
-            token
-        })
+            loc
+        }, { headers: {
+            "x-access-meal-jwt": token
+        } })
         console.log(reg_res);
         return reg_res;
 
