@@ -1,0 +1,125 @@
+.mbar {
+    width: 135px;
+    height: 100%;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: grid;
+    grid-template-rows: 280px auto;
+    background-color: white;
+}
+
+/* logo display */
+
+.mbar .logoArea {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* border: 1px solid black; */
+}
+
+.mbar .logoArea .logo_hinder {
+    width: 100%;
+    height: 50px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+}
+
+.mbar .logoArea .stylebar {
+    width: 30%;
+    height: 3px;
+    position: relative;
+    border-radius: 2px;
+    background-color: var(--theme-color-C);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mbar .logoArea .action_btns {
+    width: 100%;
+    height: 80px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* border: 1px solid black; */
+}
+
+.mbar .logoArea .action_btns .login, .register {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    position: absolute;    
+    color: var(--theme-color-C);
+}
+
+.mbar .logoArea .action_btns .login {
+    left: 50%;
+    top: 20px;
+    transform: translate(-50%);
+}
+
+.mbar .logoArea .action_btns .register {
+    left: 50%;
+    top: 50px;
+    transform: translate(-50%);
+}
+
+/* menu button design */
+
+.mbar .menus {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* background-color: beige; */
+}
+
+.mbar .menus .bar-cont {
+    width: 100%;
+    height: 130px;
+    position: relative;
+    /* background-color: pink; */
+}
+
+.mbar .menus .bar-cont .icon_block {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mbar .menus .bar-cont .icon_block .bar-img {
+    width: 40%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mbar .menus .bar-cont .menu_title {
+    font-size: 16px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translate(-50%);
+    color: var(--theme-color-C);
+}

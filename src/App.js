@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // components
 import ServiceWrap from "./pages/Wrapper";
 import MobileMap from "./mobile/MobileMap";
-import Login from "./pages/Login";
+// import Login from "./pages/Login";
 
 function App() {
 
