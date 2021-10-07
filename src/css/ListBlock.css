@@ -1,9 +1,13 @@
 .listBlock {
-    width: 100%;
+    width: 95%;
     height: 150px;
-    box-shadow: 0px 20px 20px rgb(0, 0, 0, 0.1);
+    box-shadow: 0px 8px 20px rgb(0, 0, 0, 0.1);
     position: relative;
     background-color: white;
+    border-radius: 15px;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
     cursor: pointer;
 }
 
@@ -78,6 +82,16 @@
     float: right;
     top: 85px;
     right: 35px;
+    width: fit-content;   
+}
+
+.listBlock .shopAddr {
+    font-size: 14px;
+    font-weight: 300;
+    color: #cccccc;
+    position: absolute;
+    top: 60px;
+    left: 35px;
     width: fit-content;   
 }
 

@@ -1,0 +1,100 @@
+/* Notification Wrapper */
+
+.noti_wrap {
+    width: 500px;
+    height: fit-content;
+    position: fixed;
+    top: 0;
+    right: 0;
+    float: right;
+    /* background-color: beige; */
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 100;
+}
+
+/* Notification */
+
+.notification_inarea {
+    width: 85%;
+    height: 110px;
+    border-radius: 6px;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%);
+    animation-name: noti_inarea;
+    animation-duration: .3s;
+    animation-fill-mode: both;
+    overflow: hidden;
+    /* background-color: beige; */
+}
+
+.notification {
+    width: 85%;
+    height: 90px;
+    border-radius: 6px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation-name: noti_fadein;
+    animation-delay: .3s;
+    /* animation-delay: 2s; */
+    animation-duration: .35s;
+    animation-fill-mode: both;
+}
+
+.notification .text {
+    font-size: 16px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: black;
+    position: relative;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    transition: all .2s ease;
+}
+
+.notification .timeout-bar {
+    width: 100%;
+    height: 5px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: var(--theme-color-C);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0, 0, 0, 0);
+    /* transition-duration: 5s; */
+}
+
+@keyframes noti_outarea {
+    from {
+        height: 110px;
+    }
+    to {
+        height: 0px;
+    }
+}
+
+@keyframes noti_inarea {
+    from {
+        height: 0px;
+    }
+    to {
+        height: 110px;
+    }
+}
+
+
+@keyframes noti_fadein {
+    from {
+        left: 180%;
+    }
+    to {
+        left: 50%;
+    }
+}

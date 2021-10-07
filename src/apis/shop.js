@@ -9,6 +9,15 @@ const getShopList = async () => {
     }
 }
 
+const findShopList = async (keyword) => {
+    try {
+        const { data: shop_list } = await axios.get(`/shop/find?query=${encodeURI(keyword)}`);
+        return shop_list.list;
+    } catch(e) {
+        console.error(e);
+    }
+}
+
 const regShopPref = async ( name, point, loc, extra ) => {
     try {
         console.log(name, point, loc, extra);
@@ -32,5 +41,6 @@ const regShopPref = async ( name, point, loc, extra ) => {
 
 export default {
     getShopList,
+    findShopList,
     regShopPref
 }

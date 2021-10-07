@@ -22,7 +22,7 @@ function Map({
 }) {
 
     // Global Variable
-    const { updated: marker_list_upoint, raw: marker_list_raw, display: marker_list_display } = useSelector(state => state.map.list);
+    const { updated: marker_list_upoint, mapto: remote_movepoint, raw: marker_list_raw, display: marker_list_display } = useSelector(state => state.map);
     const dispatch = useDispatch();
 
     // MAP |-------------
@@ -53,7 +53,6 @@ function Map({
                 }
             } else setTimeout(() => {
                 kakao.maps.load(() => {
-                    console.log('map loaded');
                     if (map == null) {
                         const n_map = new kakao.maps.Map(mapRef.current || document.getElementById("KakaoMap"), {
                             center: new kakao.maps.LatLng(location.lat, location.long),
@@ -68,6 +67,27 @@ function Map({
             }, 1000)
         }, [ init ]);
 
+    // MAP - Position Remote Move
+    
+        useEffect(() => {
+            if (map_loaded) {
+                const info = marker_list_raw.find(v => v._id == remote_movepoint);
+                const displayed = getMarkers(marker_list_display, remote_movepoint);
+                if (info) {
+                    const moveLatLon = new kakao.maps.LatLng(info.loc.lat, info.loc.long);
+                    map.setLevel(1);
+                    map.panTo(moveLatLon);
+
+                    // open overlay
+                    displayed.overlay.setMap(map);
+                }
+            }
+        }, [ remote_movepoint ]);
+
+    // MAP - Restrict |------------
+
+        
+
     // MAP - Marker |-------------
 
         // data -> custom marker object
@@ -76,7 +96,7 @@ function Map({
             datas.forEach((data, i) => {
                 ret.push({
                     loc: data.loc,
-                    overlay: `
+                    overlay: data.overlay == false ? null : `
                         <div class="custom_overlay_mmap" id="mmap_overlay" >
                             <span class="shop_name">${ data.name }</span>
                             <span class="shop_cat">${ data.cat?.subcat }</span>
@@ -139,7 +159,7 @@ function Map({
         }
 
         // custom marker object -> kakao marker object
-        function customMarkerToKMarker(cmarkers) {
+        function customMarkerToKMarker(display, cmarkers) {
             const return_markers = [];
             cmarkers.forEach( (mark_info, i) => {
                 // create marker
@@ -154,47 +174,51 @@ function Map({
                 });
                 // overlay display disable
                 overlay.setMap(null);
-                // marker click handling
-                kakao.maps.event.addListener(map_marker, 'click', () => revealOverlay(mark_info.marker_id));
+
                 // add kmarker to return array
-                return_markers.push( { marker: map_marker, overlay, marker_id: mark_info.marker_id } );
+                return_markers.push( { marker: map_marker, overlay, marker_id: (mark_info.marker_id || new Date().getTime()) } );
             } )
             return return_markers;
         }
 
-        // create markers
-        function createMarker(remove_prev) {
-            // remove all markers (optional)
-            if (remove_prev == true) marker_list_display.forEach(v => removeMarker(v));
+        // set marker overlay
+        const setMarkerOverlay = (display, kMarker) => {
+            const { marker: map_marker, overlay, marker_id } = kMarker;
+            // marker click handling
+            kakao.maps.event.addListener(map_marker, 'click', () => revealOverlay(display, marker_id));
+        }
 
+        // create markers
+        function createMarker(gstate, remove_prev) {
+
+            const { marker_list_raw: raw, marker_list_display: display } = gstate;
+
+            console.log('createMarker', raw, display);
+
+            // remove all markers (optional)
+            if (remove_prev == true) display.forEach(v => {
+                removeMarker(display, v);
+            });
+ 
             // create markers
-            const markerobj_custom = dataToCustomMarker(marker_list_raw);
-            const kMarkers = customMarkerToKMarker(markerobj_custom);
+            const markerobj_custom = dataToCustomMarker(raw);
+            const kMarkers = customMarkerToKMarker(display, markerobj_custom);
             dispatch({ type: "map/SETDISPLAY", display: kMarkers });
             kMarkers.forEach(v => displayMarker(v.marker));
         }
 
         // get markers
         function getMarkers(position, marker_id) {
-            let res;
-            switch(position) {
-                case "raw":
-                    res = marker_list_raw.find(v => v._id == marker_id);
-                case "display":
-                    console.log("filter: display");
-                    res = marker_list_display.find(v => v.marker_id == marker_id);
-                    console.log(marker_list_display);
-                default:
-                    break;
-            }
+            let res = position.find(v => v.marker_id == marker_id);
             return res;
         }
 
         // remove markers
-        function removeMarker(marker) {
+        function removeMarker(display, marker) {
             try {
-                const list = getMarkers("display", marker.marker_id);
-                dispatch({ type: "map/SETDISPLAY", list });
+                console.log('remove marker', marker.marker_id);
+                const { marker: kakao_marker } = getMarkers(display, marker.marker_id);
+                undisplayMarker(kakao_marker);
                 return true;
             } catch(e) {
                 console.error(e);
@@ -204,20 +228,19 @@ function Map({
 
         // display markers (display list not affected)
         function displayMarker(kakao_marker) {
-            console.log("kakao marker displaying");
+            // console.log("kakao marker displaying");
             kakao_marker.setMap(map);
         }
 
         // undisplay markers (display list not affected)
-        function undisplayMarker(marker) {
-            marker.setMap(null);
+        function undisplayMarker(kakao_marker) {
+            kakao_marker.setMap(null);
         }
 
         // map marking manage
-        function revealOverlay(marker_id) {
+        function revealOverlay(display, marker_id) {
             try {
-                const marker = getMarkers("display", marker_id);
-                console.log("marker", marker_id, marker);
+                const marker = getMarkers(display, marker_id);
                 const { overlay, marker: map_marker } = marker;
                 let map_po = overlay.getMap();
                 if(map_po == null) {
@@ -234,8 +257,15 @@ function Map({
 
         // create markers
         useEffect(() => {
-            if (map_loaded) createMarker(!init);
+            if (map_loaded) {
+                createMarker({ marker_list_raw, marker_list_display }, init);
+            }
         }, [ marker_list_raw, map_loaded ]);
+
+        // active marker click action
+        useEffect(() => {
+            marker_list_display.forEach(v => setMarkerOverlay(marker_list_display, v));
+        }, [ marker_list_display ]);
 
     return (
         <div id="KakaoMap" className={ className } ref={ mapRef }>

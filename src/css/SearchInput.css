@@ -1,0 +1,37 @@
+.search_input {
+    border-radius: 50px;
+    border: 1px solid var(--theme-color-C);
+    position: relative;
+    background-color: white;
+}
+
+.search_input .s_inptag {
+    outline: none;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--theme-color-C);
+    font-size: 15px;
+    width: calc(100% - 130px);
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 45px;
+    transform: translateY(-50%);
+    transition: all .2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+
+.search_input .s_inptag:focus {
+    border-bottom: 1px solid var(--theme-color-C);
+    font-size: 17px;
+}
+
+.search_input #loupe {
+    width: auto;
+    height: 42%;
+    position: absolute;
+    top: 50%;
+    float: right;
+    right: 42px;
+    transform: translateY(-50%);
+}

@@ -10,6 +10,7 @@ import "../css/Global.css";
 
 // menu component
 import MenuBar from "../components/MenuBar";
+import Notification from "../components/Notification";
 
 // page component
 // import Index from "./Index";
@@ -46,29 +47,16 @@ function Wrapper({ history, location }) {
     // Handling Route
 
     const route_table = [
-        {
-            path: "/login",
-            // comp: Login,
-            menu_index: 0
-        },
-        {
-            path: "/",
-            // comp: (props) => <Index window={{ width, height }} />,
-            menu_index: 1
-        },
-        {
-            path: "/mealmap",
-            // comp: (props) => <Mealmap window={{ width, height }} />,
-            menu_index: 2
-        },
-        {
-            path: "/",
-            // comp: NFOUND,
-            menu_index: -100
-        },
+        { path: "/login", menu_index: 0 },
+        { path: "/", menu_index: 1 },
+        { path: "/search", menu_index: 2 },
+        { path: "/route", menu_index: 3 },
+        { path: "/review", menu_index: 4 },
+        { path: "/register", menu_index: 5 },
+        { path: "/", menu_index: -100 },
     ]
 
-    const { menu: { menu }, user: { uinfo } } = g_state;
+    const { menu: { menu, mopen }, user: { uinfo } } = g_state;
     const setMenu = (menu) => dispatch({ type: "menu/SETMENU", menu });
 
     const [ inited, setInitialized ] = useState(false);
@@ -84,14 +72,19 @@ function Wrapper({ history, location }) {
             console.log("INITIALIZING");
             // initialized
             const go_menu = route_table.find((e, i) => e.path == window.location.pathname);
-            // console.log("go_menu", go_menu);
-            if (go_menu) setMenu(go_menu.menu_index);
-            else console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
+            console.log("go_menu", go_menu);
+            if (go_menu) {
+                if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
+                else dispatch({ type: "menu/SETMOPEN", mopen: false });
+                setMenu(go_menu.menu_index);
+            } else console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
         } else {
             // dom re-render
             const go_menu = route_table.find((e, i) => e.menu_index == menu);
             if (go_menu && go_menu.path != window.location.pathname) {
                 console.log(`path not match: history push`, go_menu.path);
+                if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
+                else dispatch({ type: "menu/SETMOPEN", mopen: false });
                 history.push(go_menu.path);
             } else if (!go_menu) {
                 console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
@@ -105,6 +98,8 @@ function Wrapper({ history, location }) {
     useEffect(() => setInitialized(true), [ ]);
 
     // Handling Login
+
+    /*
 
     useEffect( async () => {
         console.log("uinfo changed", uinfo, window.location.pathname);
@@ -131,20 +126,26 @@ function Wrapper({ history, location }) {
         } else if (!uinfo.isLogined && window.location.pathname != "/login") setMenu(0);
     }, [ uinfo, window.location.pathname ]);
 
-
+    */
 
     // ROUTING |-------------
 
     // MAP |-----------
 
     useEffect(() => {
-        shop.getShopList()
-        .then((list) => {
-            console.log('list', list);
-            dispatch({ type: "map/SETLIST", list });
-        })
-        .catch(e => console.error(e));
-    }, []);
+        if ( menu == 5 ) dispatch({ type: "map/SETLIST", list: [] });
+        else {
+            dispatch({ type: "map/SETLIST", list: [] });
+            setTimeout(() => {
+                shop.getShopList()
+                .then((list) => {
+                    console.log('list', list);
+                    dispatch({ type: "map/SETLIST", list });
+                })
+                .catch(e => console.error(e));
+            }, 150);
+        }
+    }, [ menu ]);
 
     // MAP |-----------
 
@@ -153,6 +154,7 @@ function Wrapper({ history, location }) {
         <>
             <div className="wrap">
                 <MenuBar/>
+                <Notification/>
                 <div className="map_service">
                     <Map
                         location={{
