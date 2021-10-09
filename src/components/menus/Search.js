@@ -68,7 +68,7 @@ function Search() {
     }
 
     return <div className="search_menu">
-        <SearchInput className="search_input" valueState={[ kw, setKW ]}/>
+        <SearchInput className="search_input" valueState={[ kw, setKW ]} placeholder="메뉴나 상호를 검색하세요!"/>
         {/* <div className="relate_results">
             <div className="titles">
                 <span className="relate_title">혹시 여기찾으세요?</span>

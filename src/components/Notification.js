@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // css
 import "../css/Notification.css";
@@ -107,6 +108,9 @@ function Notification({ type, content, display, option, time }) {
 
 function NotificationArea() {
 
+    const { notis } = useSelector(state => state.notification);
+    const dispatch = useDispatch();
+
     const [ noti_arrs, setNA ] = useState([]);
     const [ noti_comps, setNC ] = useState({});
 
@@ -131,6 +135,16 @@ function NotificationArea() {
             keys: new Date().getTime()
         });
     }, []);
+
+    useEffect(() => {
+        notis.forEach(({ type, display, time, content, option, keys, notied }) => {
+            console.log(keys, notied);
+            if (notied != true) {
+                addNotification({ type, display, time, content, option, keys });
+                dispatch({ type: "noti/SETNOTIED", noti_key: keys })
+            }
+        });
+    }, [ notis ]);
     
     return <div className="noti_wrap">
         { noti_arrs.map(v => noti_comps[v]) }

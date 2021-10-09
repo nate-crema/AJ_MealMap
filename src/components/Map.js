@@ -22,7 +22,7 @@ function Map({
 }) {
 
     // Global Variable
-    const { updated: marker_list_upoint, mapto: remote_movepoint, raw: marker_list_raw, display: marker_list_display } = useSelector(state => state.map);
+    const { updated: marker_list_upoint, mapto: remote_movepoint, raw: marker_list_raw, display: marker_list_display, customClick, customClickedPo } = useSelector(state => state.map);
     const dispatch = useDispatch();
 
     // MAP |-------------
@@ -86,7 +86,108 @@ function Map({
 
     // MAP - Restrict |------------
 
+        // Out-Of-Range Notification Handler
+
+        const harversine = (lat, long) => {
+            return 2 * 6371 * Math.asin(Math.sqrt(Math.pow(Math.sin((lat[1]-lat[0])/2), 2) + (Math.cos(lat[1]) * Math.cos(lat[0]) * Math.pow(Math.sin((long[1]-long[0])/2), 2))))
+        }
+
+        useEffect(() => {
+            if (map_loaded) {
+                kakao.maps.event.addListener(map, 'dragend', function() {        
+                
+                    // 지도 중심좌표를 얻어옵니다 
+                    const latlng = map.getCenter(); 
+                    const lat = latlng.getLat();
+                    const lng = latlng.getLng();
+                    // console.log(harversine([ (lat*1) * (Math.PI/180), (37.282857175308095) * (Math.PI/180) ], [ (lng*1) * (Math.PI/180), (127.04644412955818) * (Math.PI/180) ]));
         
+                    if (harversine([ (lat*1) * (Math.PI/180), (37.282857175308095) * (Math.PI/180) ], [ (lng*1) * (Math.PI/180), (127.04644412955818) * (Math.PI/180) ]) > 1.05) {
+                        dispatch({ type: "noti/ADDNOTIFICATION", noti: {
+                            type: 0,
+                            display: "timeout",
+                            time: 5,
+                            content: "[경고] 지도에서 밀맵 지원범위를 벗어났습니다. \n푸른색으로 표시되지 않은 지역에서 이용해주세요.",
+                            option: {
+                                text: "per-line"
+                            },
+                            keys: new Date().getTime()
+                        } })
+                    }
+                    
+                });
+            }    
+        }, [ map_loaded ]);
+
+        // Color Wrapper Handler
+
+        useEffect(() => {
+            if (map_loaded) {
+                const ban = [
+                    new kakao.maps.LatLng(0, 180),
+                    new kakao.maps.LatLng(0, 0),
+                    new kakao.maps.LatLng(90, -180),
+                    new kakao.maps.LatLng(90, 0)
+                ]
+                const allow = [
+                    new kakao.maps.LatLng(37.292150923689306, 127.04671254886877),
+                    new kakao.maps.LatLng(37.28595454452496, 127.03908556724028),
+                    new kakao.maps.LatLng(37.28505365392358, 127.03863403264188),
+                    new kakao.maps.LatLng(37.283684133605824, 127.03845290835254),
+                    new kakao.maps.LatLng(37.28278313845068, 127.03831713341029),
+                    new kakao.maps.LatLng(37.2822426745258, 127.03782070233348),
+                    new kakao.maps.LatLng(37.28069305859922, 127.03727867576553),
+                    new kakao.maps.LatLng(37.27975593482548, 127.037413524701),
+                    new kakao.maps.LatLng(37.27881869575131, 127.03790919541098),
+                    new kakao.maps.LatLng(37.2778095022654, 127.03799889439149),
+                    new kakao.maps.LatLng(37.277124769698666, 127.03781814165832),
+                    new kakao.maps.LatLng(37.276764252419504, 127.03813367474189),
+                    new kakao.maps.LatLng(37.27607872945015, 127.04034330296625),
+                    new kakao.maps.LatLng(37.27510447150301, 127.04354494902292),
+                    new kakao.maps.LatLng(37.27427439985684, 127.04647599909195),
+                    new kakao.maps.LatLng(37.273805210342275, 127.04809931617807),
+                    new kakao.maps.LatLng(37.27524568615779, 127.05094159639897),
+                    new kakao.maps.LatLng(37.27650694721778, 127.05139346394216),
+                    new kakao.maps.LatLng(37.278705287487384, 127.05184598929524),
+                    new kakao.maps.LatLng(37.28090364510721, 127.05225343667033),
+                    new kakao.maps.LatLng(37.28220080046888, 127.05302112119728),
+                    new kakao.maps.LatLng(37.28349770335458, 127.0543301031416),
+                    new kakao.maps.LatLng(37.284722487147654, 127.05568418360136),
+                    new kakao.maps.LatLng(37.2851547511993, 127.05618067826455),
+                    new kakao.maps.LatLng(37.28670558622614, 127.05392643871616),
+                    new kakao.maps.LatLng(37.28829228124738, 127.05198789276228),
+                    new kakao.maps.LatLng(37.29020362076905, 127.04932772143783),
+                    new kakao.maps.LatLng(37.29193465685529, 127.04675752613119)
+                ];
+                const color_wrapper = new kakao.maps.Polygon({
+                    map,
+                    path: [ ban, allow ],
+                    strokeWidth: 2,
+                    strokeColor: "var(--theme-color-C)",
+                    strokeOpacity: 0.7,
+                    fillColor: "var(--theme-color-C)",
+                    fillOpacity: 0.2
+                })
+            }
+        }, [ map_loaded ])
+        
+    // MAP - ClickEventHandler |--------------
+
+        const _customClick = (e) => {
+            console.log(e.latLng.toString().slice(1, -1).split(", ")[0]);
+            dispatch({ type: "map/SETMCPO", lat: e.latLng.toString().slice(1, -1).split(", ")[0]*1, lng: e.latLng.toString().slice(1, -1).split(", ")[1]*1 });
+            dispatch({ type: "map/SETMCLICK", active: false });
+        }
+
+        useEffect(() => {
+            if (map_loaded && init) {
+                if (customClick) {
+                    kakao.maps.event.addListener(map, 'click', _customClick);
+                } else {
+                    kakao.maps.event.removeListener(map, 'click', _customClick);
+                }
+            }
+        }, [ customClick ]);
 
     // MAP - Marker |-------------
 
@@ -196,15 +297,26 @@ function Map({
             console.log('createMarker', raw, display);
 
             // remove all markers (optional)
-            if (remove_prev == true) display.forEach(v => {
-                removeMarker(display, v);
-            });
+            if (remove_prev == true) {
+                console.log(`marker removing progress: ${display.length}`);
+                display.forEach(v => {
+                    removeMarker(display, v);
+                });
+            }
  
             // create markers
             const markerobj_custom = dataToCustomMarker(raw);
             const kMarkers = customMarkerToKMarker(display, markerobj_custom);
             dispatch({ type: "map/SETDISPLAY", display: kMarkers });
+
             kMarkers.forEach(v => displayMarker(v.marker));
+            
+            // display all marker in user window
+            const bounds = new kakao.maps.LatLngBounds();
+            raw.forEach(v => bounds.extend(new kakao.maps.LatLng(v?.loc?.lat, v?.loc?.long)));
+
+            // move map to markers position
+            if (raw.length > 0) map.setBounds(bounds);
         }
 
         // get markers
@@ -266,6 +378,18 @@ function Map({
         useEffect(() => {
             marker_list_display.forEach(v => setMarkerOverlay(marker_list_display, v));
         }, [ marker_list_display ]);
+
+    // MAP - AreaEdit |---------------
+
+        // useEffect(() => {
+        //     if (map_loaded) {
+        //         kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+        //             // 클릭한 위도, 경도 정보를 가져옵니다 
+        //             var latlng = mouseEvent.latLng; 
+        //             console.log(latlng.getLat(), latlng.getLng());
+        //         });
+        //     }
+        // },[ map_loaded ]);
 
     return (
         <div id="KakaoMap" className={ className } ref={ mapRef }>

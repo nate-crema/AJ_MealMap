@@ -6,37 +6,73 @@
     left: 0;
 }
 
-.add_menu .ment_a {
+.add_menu .ment {
     font-family: "Noto Sans KR", sans-serif;
-    font-weight: 500;
     font-size: 18px;
+    font-weight: 500;
     color: var(--theme-color-C);
-    position: relative;
+    position: absolute;
     top: 10px;
     left: 0;
+    transition: all .23s cubic-bezier(0.16, 0, 0, 1);
+    animation-duration: .3s;
+    animation-timing-function: cubic-bezier(0.16, 0, 0, 1);
+    /* animation-timing-function: ease; */
+    animation-fill-mode: both;
 }
 
-.add_menu .search_inp {
+.add_menu .name_search {
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    transition: all .23s cubic-bezier(0.16, 0, 0, 1);
+}
+
+.add_menu .searched_list {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    top: 150px;
+    left: 50%;
+    transform: translate(-50%);
+    transition: all .23s cubic-bezier(0.16, 0, 0, 1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2) inset;
+}
+
+.add_menu .searched_list .list_block {
+    height: 130px;
+}
+
+.add_menu .not_found_button {
     width: 100%;
     height: 50px;
     position: relative;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 200px;
+    left: 0;    
 }
 
-/* search results */
-
-.add_menu .search_results {
-    width: 100%;
-    height: fit-content;
-    position: relative;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    transition: all .24s ease;
-    border-radius: 10px;
-    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.3) inset;
-    overflow: hidden;
+@keyframes ment_change {
+    from {
+        margin-top: 0px;
+        opacity: 1;
+    }
+    30% {
+        opacity: 0;
+    }
+    65% {
+        margin-top: 10px;
+    }
+    85% {
+        margin-top: 10px;
+        opacity: 0;
+    }
+    to {
+        margin-top: 0px;
+        opacity: 1;
+    }
 }
