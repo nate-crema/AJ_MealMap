@@ -62,6 +62,7 @@ function Map({
                         let marked_marker = [];
                         marked.forEach(v => marked_marker.push(v.marker));
                         setMapStat(true);
+                        dispatch({ type: "map/SETMSTAT", stat: true });
                     }
                 })
             }, 1000)
@@ -173,17 +174,18 @@ function Map({
         
     // MAP - ClickEventHandler |--------------
 
-        const _customClick = (e) => {
-            console.log(e.latLng.toString().slice(1, -1).split(", ")[0]);
+        const _customClick = function(e) {
             dispatch({ type: "map/SETMCPO", lat: e.latLng.toString().slice(1, -1).split(", ")[0]*1, lng: e.latLng.toString().slice(1, -1).split(", ")[1]*1 });
-            dispatch({ type: "map/SETMCLICK", active: false });
         }
 
         useEffect(() => {
             if (map_loaded && init) {
+                console.log(`custom click status: ${customClick}`);
                 if (customClick) {
+                    console.log(`active map click listener`);
                     kakao.maps.event.addListener(map, 'click', _customClick);
                 } else {
+                    console.log(`deactive map click listener`);
                     kakao.maps.event.removeListener(map, 'click', _customClick);
                 }
             }
@@ -303,6 +305,8 @@ function Map({
                     removeMarker(display, v);
                 });
             }
+
+            if (!raw) return;
  
             // create markers
             const markerobj_custom = dataToCustomMarker(raw);

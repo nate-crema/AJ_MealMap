@@ -1,0 +1,168 @@
+.infos_edit {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid var(--theme-color-C);
+    display: grid;  
+    box-shadow: 0px 5px 10px rgba(255, 255, 255, 0.5) inset;  
+}
+
+.infos_edit .info_row {
+    width: 90%;
+    height: 80%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.infos_edit .info_row .col_title {
+    width: fit-content;
+    height: fit-content;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: var(--theme-color-C);
+    font-size: 17px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.infos_edit .info_row .col_value {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    font-size: 15px;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    animation-name: val_change_end;
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.46, 0, 0.04, 1);
+}
+
+.infos_edit .info_row .icon {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    float: right;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+
+@keyframes val_change_start {
+    from {
+        opacity: 1;
+        display: block;
+    }
+    90% {
+        opacity: 0;
+        display: block;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+@keyframes val_change_end {
+    from {
+        opacity: 0;
+        display: none;
+    }
+    10% {
+        opacity: 0;
+        display: block;
+    }
+    100% {
+        opacity: 1;
+        display: block;
+    }
+}
+
+
+
+/* edit mode css */
+
+.edit_string {
+    background: rgba(0, 0, 0, 0); /* deactivate init state */
+    outline: none; /* deactivate init state */
+    border: none; /* deactivate init state */
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    font-size: 15px;
+    width: 35%; 
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+}
+
+.edit_string:focus {
+    border-bottom: 1px solid var(--theme-color-C);
+}
+
+/* switch */
+.enum_switch {
+    width: 200px;
+    height: 50px;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(2, auto);
+    border-radius: 12px;
+    border: 1px solid var(--theme-colorC);
+    box-shadow: 3px 3px 9px rgba(0, 0, 0, 0.12);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.enum_switch .enum_key {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    color: var(--theme-color-C);
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    width: fit-content;
+    height: fit-content;
+}
+
+
+/* date-selector */
+
+.date-selector {
+    width: 300px;
+    height: 130px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    overflow: hidden;
+}
+
+.date-selector .title {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    font-size: 15px;
+    position: absolute;
+    top: 20px;
+    left: 25px;
+}

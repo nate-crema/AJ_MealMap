@@ -3,6 +3,7 @@ import specific from './specific';
 import user from './user';
 import menu from './menu';
 import map from './map';
+import mobile from './mobile';
 import notification from './notification';
 
 export default combineReducers({ 
@@ -10,5 +11,6 @@ export default combineReducers({
     user,
     menu,
     map,
+    mobile,
     notification
 });

@@ -12,12 +12,15 @@ import "../css/Global.css";
 import MenuBar from "../components/MenuBar";
 import Notification from "../components/Notification";
 
+import { MobileTop, MobileBottom } from "../components/Mobile";
+
 // page component
 // import Index from "./Index";
 // import Login from "./Login";
 // import Mealmap from "./Mealmap";
 // import NFOUND from "./404";
 
+import MobileHandler from "../components/MobileHandler";
 import Map from "../components/Map";
 
 // api
@@ -41,6 +44,15 @@ function Wrapper({ history, location }) {
     const [ width, setWidth ] = useState(window.innerWidth);
     const [ height, setHeight ] = useState(window.innerHeight);
     const logo_ref = useRef(null);
+
+    useEffect(() => {
+        const onResizeHandler = () => {
+            setWidth(window.innerWidth);
+            setHeight(window.innerHeight);
+        };
+        window.addEventListener("resize", onResizeHandler);
+        return () => window.removeEventListener("resize", onResizeHandler);
+    }, []);
 
     // ROUTING |-------------
 
@@ -153,15 +165,27 @@ function Wrapper({ history, location }) {
     return (
         <>
             <div className="wrap">
-                <MenuBar/>
-                <Notification/>
-                <div className="map_service">
-                    <Map
-                        location={{
-                            lat: 37.27983974701925,
-                            long: 127.04362143912854
-                        }}
-                    />
+                {
+                    (width > 800) ? <>
+                        <Notification/>
+                        <MenuBar/>
+                    </> : <>
+                        <MobileTop width={width} height={height}/>
+                        <MobileBottom width={width} height={height}/>
+                    </>
+                }
+                <div className="map_service" style={{
+                    width: (!(width > 800)) && "100%",
+                    left: (!(width > 800)) && "0",
+                }}>
+                    <MobileHandler width={width} height={height}>
+                        <Map
+                            location={{
+                                lat: 37.27983974701925,
+                                long: 127.04362143912854
+                            }}
+                        />
+                    </MobileHandler>
                 </div>
             </div>
             {/* <div className="wrap"

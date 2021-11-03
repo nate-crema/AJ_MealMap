@@ -1,0 +1,274 @@
+.mobile-specific {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%);
+    /* background-color: lavender; */
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.mobile-specific .common-content {
+    width: 100%;
+    height: 38px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: white;
+    z-index: 50;
+}
+
+.mobile-specific .common-content .shop_name {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--theme-color-C);
+    position: relative;
+    top: 0;
+}
+
+.mobile-specific .common-content .shop_cat {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    position: relative;
+    top: 0;
+    left: 20px;
+}
+
+.mobile-specific .common-content .shop_status {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    position: relative;
+    top: 10px;
+    right: 0;
+    float: right;
+}
+
+.mobile-specific .inner-slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mobile-specific .inner-slider.onchangingL {
+    animation-name: slide-onchange-l;
+    animation-duration: .5s;
+    animation-fill-mode: both;
+}
+
+.mobile-specific .inner-slider.onchangingR {
+    animation-name: slide-onchange-r;
+    animation-duration: .5s;
+    animation-fill-mode: both;
+}
+
+/* reviews */
+
+.mobile-specific .reviews {
+    width: 100%;
+    height: calc(100% - 38px);
+    position: relative;
+    top: 38px;
+    left: 50%;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: auto;
+}
+
+.mobile-specific .reviews .good, .bad {
+    width: 95%;
+    height: 50%;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.mobile-specific .reviews .cat_title {
+    font-size: 15px;
+    font-weight: 300;
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+.mobile-specific .reviews .good .cat_title {
+    color: var(--theme-color-C);
+}
+
+.mobile-specific .reviews .bad .cat_title {
+    color: lightgray;
+}
+
+.mobile-specific .reviews .tag_list {
+    width: 100%;
+    height: 70%;
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.mobile-specific .reviews .tag_list .review_tag {
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+    position: relative;
+    border-radius: 20px;
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+.mobile-specific .reviews .tag_list .review_tag.tag_good {
+    background-color: var(--theme-color-C);
+}
+
+.mobile-specific .reviews .tag_list .review_tag.tag_bad {
+    background-color: lightgray;
+}
+
+.mobile-specific .reviews .tag_list .review_tag span {
+    font-size: 13px;
+    font-weight: 300;
+    font-family: "Noto Sans KR", sans-serif;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+.mobile-specific .reviews .tag_list .tag_unavail {
+    font-size: 15px;
+    font-weight: 300;
+    font-family: "Noto Sans KR", sans-serif;
+    color: lightgray;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    word-break: keep-all;
+    width: 100%;
+    height: 100%;
+}
+
+/* reservation */
+
+.mobile-specific .reservation {
+    width: 100%;
+    height: 50%;
+    position: relative;
+    top: 50px;
+    left: 50%; 
+    transform: translate(-50%);
+}
+
+.mobile-specific .reservation .tab_title {
+    font-size: 17px;
+    font-weight: 500;
+    font-family: "Noto Sans KR", sans-serif;
+    color: var(--theme-color-C);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.mobile-specific .reservation .not-ready {
+    font-size: 15px;
+    font-weight: 300;
+    font-family: "Noto Sans KR", sans-serif;
+    color: lightgray;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* dots */
+
+.mobile-specific .dots {
+    width: 80px;
+    height: 12px;
+    position: absolute;
+    top: 210px;
+    left: 50%;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: auto;
+    z-index: 100;
+}
+
+.mobile-specific .dots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    cursor: pointer;
+}
+
+
+/* animation frame */
+
+@keyframes slide-onchange-l {
+    from {
+        opacity: 1;
+        margin-left: 0;
+    }
+    20% {
+        opacity: 0;
+        margin-left: -10px;
+    }
+    30% {
+        opacity: 0;
+        margin-left: 10px;
+    }
+    80% {
+        opacity: 0;
+        margin-left: 10px;
+    }
+    to {
+        opacity: 1;
+        margin-left: 0;
+    }
+}
+
+@keyframes slide-onchange-r {
+    from {
+        opacity: 1;
+        margin-left: 0;
+    }
+    20% {
+        opacity: 0;
+        margin-left: 10px;
+    }
+    30% {
+        opacity: 0;
+        margin-left: -10px;
+    }
+    80% {
+        opacity: 0;
+        margin-left: -10px;
+    }
+    to {
+        opacity: 1;
+        margin-left: 0;
+    }
+}

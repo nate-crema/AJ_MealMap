@@ -6,6 +6,7 @@ const SETDISPLAY = "map/SETDISPLAY";
 const SETMAPLOC = "map/SETMAPLOC";
 const SETMCLICK = "map/SETMCLICK";
 const SETMCPO = "map/SETMCPO";
+const SETMSTAT = "map/SETMSTAT";
 
 // Action Create & Export
 export const setList = createAction({ type: SETLIST });
@@ -13,6 +14,7 @@ export const setDisplay = createAction({ type: SETDISPLAY });
 export const setMapLoc = createAction({ type: SETMAPLOC });
 export const setMClick = createAction({ type: SETMCLICK });
 export const setMCPo = createAction({ type: SETMCPO });
+export const setMStat = createAction({ type: SETMSTAT });
 
 // Initial State Definition
 const initState = {
@@ -21,7 +23,8 @@ const initState = {
     raw: [], // original list; server-side data
     display: [], // displaying list; client-side data
     customClick: false, // map click action activation
-    customClickedPo: [] // map clicked position [Lat, Lng]
+    customClickedPo: [], // map clicked position [Lat, Lng]
+    stat: false // map loaded status
 }
 
 // Create Reducers
@@ -58,4 +61,10 @@ export default handleActions({
             customClickedPo: [ lat, lng ]
         }
     },
+    [ SETMSTAT ]: (state, { stat }) => {
+        return {
+            ...state,
+            stat
+        }
+    }
 }, initState);

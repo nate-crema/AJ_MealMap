@@ -1,10 +1,16 @@
 import axios from "../connection/requester";
 import { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 
 // css
 import "../css/ListSpec.css";
 
+// img
+import appointment from "../assets/img/appointment.svg";
+
 function ListSpec({ _ref, style, className, innerCont: { isOpen, tAreaOnClick, shop_text, info } }) {
+
+    const { mealfriend } = useSelector(state => state.mobile);
 
     const [ distance, setDistance ] = useState( info.loc?.distance || "위치접근을 활성화해주세요!" );
     const [ mapbtn_text, setMBT ] = useState( "주소 보기" );
@@ -156,37 +162,44 @@ function ListSpec({ _ref, style, className, innerCont: { isOpen, tAreaOnClick, s
             </div>
             <div className="shop_send info_dp">
                 <div className="service_icn">
-                    <svg version="1.1" className="icn" id="Layer_1" x="0px" y="0px"
-                        viewBox="0 0 500 500" style={{
-                            enableBackground: "new 0 0 500 500"
-                        }}>
-                    {/* <style type="text/css">
-                        .st0{fill:#FFFFFF;stroke:#000000;stroke-width:10;stroke-miterlimit:10;}
-                    </style> */}
-                        <path class="st0" style={{
-                            fill: "#FFFFFF",
-                            // stroke: "var(--theme-color-C)",
-                            stroke: "#000000",
-                            strokeWidth: "15",
-                            strokeMiterlimit: "10"
-                        }} d="M126.5,365.63V134.37c0-31.96,25.91-57.87,57.87-57.87h131.26c31.96,0,57.87,25.91,57.87,57.87v231.26
-                            c0,31.96-25.91,57.87-57.87,57.87H184.37C152.41,423.5,126.5,397.59,126.5,365.63z"/>
-                        <g>
+                    { (mealfriend.list.length > 0) ? <>
+                        <img src={appointment} className="icn" style={{
+                            width: "25px",
+                            height: "auto"
+                        }}/>
+                    </> : <>
+                        <svg version="1.1" className="icn" id="Layer_1" x="0px" y="0px"
+                            viewBox="0 0 500 500" style={{
+                                enableBackground: "new 0 0 500 500"
+                            }}>
+                        {/* <style type="text/css">
+                            .st0{fill:#FFFFFF;stroke:#000000;stroke-width:10;stroke-miterlimit:10;}
+                        </style> */}
+                            <path class="st0" style={{
+                                fill: "#FFFFFF",
+                                // stroke: "var(--theme-color-C)",
+                                stroke: "#000000",
+                                strokeWidth: "15",
+                                strokeMiterlimit: "10"
+                            }} d="M126.5,365.63V134.37c0-31.96,25.91-57.87,57.87-57.87h131.26c31.96,0,57.87,25.91,57.87,57.87v231.26
+                                c0,31.96-25.91,57.87-57.87,57.87H184.37C152.41,423.5,126.5,397.59,126.5,365.63z"/>
                             <g>
-                                <path style={{
-                                    fill: "#FFFFFF",
-                                    // stroke: "var(--theme-color-C)",
-                                    stroke: "#000000",
-                                    strokeWidth: "12",
-                                    strokeMiterlimit: "10",
-                                }} d="M303.11,235.4l-41.74-30.84c-6.21-4.59-15.01-0.15-15.01,7.57v15.04c-22.88,3.97-55.45,47.98-53.17,67.83
-                                    c0.3,2.64,3.93,3.16,4.95,0.7c6-14.41,24.15-34.01,48.22-36.23v14.34c0,7.73,8.79,12.16,15.01,7.57l41.74-30.84
-                                    C308.2,246.78,308.2,239.17,303.11,235.4z"/>
+                                <g>
+                                    <path style={{
+                                        fill: "#FFFFFF",
+                                        // stroke: "var(--theme-color-C)",
+                                        stroke: "#000000",
+                                        strokeWidth: "12",
+                                        strokeMiterlimit: "10",
+                                    }} d="M303.11,235.4l-41.74-30.84c-6.21-4.59-15.01-0.15-15.01,7.57v15.04c-22.88,3.97-55.45,47.98-53.17,67.83
+                                        c0.3,2.64,3.93,3.16,4.95,0.7c6-14.41,24.15-34.01,48.22-36.23v14.34c0,7.73,8.79,12.16,15.01,7.57l41.74-30.84
+                                        C308.2,246.78,308.2,239.17,303.11,235.4z"/>
+                                </g>
                             </g>
-                        </g>
-                    </svg>
+                        </svg>  
+                    </> }
                 </div>
-                <span className="text" style={{ cursor: "not-allowed" }} >이 { info.cat?.cat } 공유하기</span>
+                <span className="text" style={{ cursor: "not-allowed" }} >{ (mealfriend.list.length > 0) ? "이 장소로 약속잡기" : "공유하기 / 보내기" }</span>
             </div>
         </div>
     </div>

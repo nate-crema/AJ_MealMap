@@ -15,7 +15,7 @@ import Search from "./menus/Search";
 import Add from "./menus/Add";
 import Specific from "./menus/Specific";
 
-function Logo({ onClick, style: _style = {} }) {
+export const Logo = function ({ onClick, style: _style = {}, className }) {
     const style = [
         {   
             fill: "none",
@@ -43,7 +43,7 @@ function Logo({ onClick, style: _style = {} }) {
         }
     ];
     return <>
-        <svg version="1.1" id="Layer_1" x="0px" y="0px" onClick={onClick}
+        <svg version="1.1" className={ className || "" } id="Layer_1" x="0px" y="0px" onClick={onClick}
             viewBox="0 0 110 110" style={{ enableBackground: "new 0 0 110 110", ..._style?.svg, cursor: onClick ? "pointer" : null }}>
             <path class="st0" style={style[0]} d="M83.7,94.7c-8.1,5.8-18,9.3-28.7,9.3C28,104,6,82,6,55S28,6,55,6s49,21.9,49,49c0,7.8-1.8,15.2-5.1,21.8"/>
             <path class="st0" style={style[0]} d="M81.5,35.8c3.9,5.4,6.2,12,6.2,19.2c0,18.1-14.7,32.8-32.8,32.8S22.2,73.1,22.2,55S36.9,22.2,55,22.2

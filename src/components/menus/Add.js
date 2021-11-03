@@ -4,22 +4,63 @@ import { useSelector, useDispatch } from 'react-redux';
 // css
 import "../../css/Add.css";
 
+// img
+import edit_icon from "../../assets/img/menu_icon/edit.svg"
+
 // component
 import SearchInput from "../SearchInput";
 import { SearchBlock } from "../ListBlock";
+import InfoEdit from "../InfoEdit";
 import Button from '../Button';
 
 // api
 import { shop } from "../../apis";
 
-function Add() {
+export const InfoDisplay = function({ editable, className, infokey, option, initVal, changeStats: [ [ change, setChange ], [ change_v, setChangeV ] ] }) {
+
+    const _clickHandler = (e) => {
+        if (!(editable === false)) setChange(infokey);
+    }
+
+    const _editEnd = (e) => {
+        console.log(`edit ended`);
+        setChange("");
+    }
+
+    return <div className={`info_display ${className || ""}`} onClick={_clickHandler}>
+        <span className="value" style={{
+            animationName: (change == infokey) ? "val_change_start" : "val_change_end",
+            color: initVal ? "var (--theme-color-C" : "lightgray"
+        }} onClick={_clickHandler} >{ (change == infokey) ? "" : initVal || "정보를 찾지 못했어요" }</span>
+        { (change == infokey) && (
+            option?.type == "string" ? <input style={{ 
+                animationName: (change == infokey) ? "val_change_end" : "val_change_start",
+             }} type="text" placeholder={initVal || "[값 입력]"} value={change_v} onChange={(e) => setChangeV(e.target.value)} onBlur={_editEnd}/>
+            : option?.type == "string" ? <input type="text"/>
+            : option?.type == "string" ? <input type="text"/>
+            : option?.type == "string" ? <input type="text"/>
+            : <></>
+        ) }
+        <div className="icon" onClick={_clickHandler}><img src={edit_icon}/></div>
+    </div>
+}
+
+export default function Add() {
 
     // Global Variable
-    const { map: { customClickedPo } } = useSelector(state => state);
+    const { map: { customClick, customClickedPo } } = useSelector(state => state);
     const dispatch = useDispatch();
 
     // DESIGN ASSET
-    const loc_svg = <></>
+    const loc_svg = <svg version="1.1" id="loupe" x="0px" y="0px" viewBox="0 0 30.8 47.3" style={{ enableBackground: "new 0 0 30.8 47.3" }}>
+        <g id="Group_262" transform="translate(-167.829 -275.34)">
+        <path id="Path_52" style={{ fill: "var(--theme-color-C)" }} d="M183,275.3c-8.4,0.1-15.1,6.9-15.2,15.3c0,2.8,0.8,5.6,2.2,8c4,6.5,7.6,13.3,10.8,20.4l1.3,2.9
+            c0.3,0.6,1,0.9,1.6,0.6c0.3-0.1,0.5-0.3,0.6-0.6l1.1-2.5c3.2-7.2,6.9-14.1,11-20.8c1.4-2.4,2.2-5.1,2.2-7.9
+            c0-8.5-6.9-15.4-15.4-15.4C183.1,275.3,183.1,275.3,183,275.3z M183.2,295.8c-3.6,0-6.5-2.9-6.5-6.5l0,0c0-3.6,2.9-6.5,6.5-6.5l0,0
+            c3.6,0,6.5,2.9,6.5,6.5l0,0C189.7,292.9,186.8,295.8,183.2,295.8L183.2,295.8L183.2,295.8z"/>
+        <circle id="Ellipse_10" style={{ fill: "#FFFFFF" }} cx="183" cy="289" r="7"/>
+        </g>
+    </svg>
 
     // STAGE - COMMON
         const [ shop_name, setSN ] = useState(""); // 등록할 음식점 이름
@@ -31,17 +72,33 @@ function Add() {
                 setInit(true);
             }, 100);
         }, []);
+
+        useEffect(() => {
+            console.log("shop_info", shop_info);
+        }, [ shop_info ]);
         
         // stage managemnt
         const [ stage, setStage ] = useState(0); // 등록단계
         const mentRef = useRef();
         const nameSearchRef = useRef();
 
+        const reg_infos_list = {
+            name: { display: "상호명", editable: false, valtype: "string" },
+            cat: { display: "업종", valtype: "list-select", list: [  ], question: "" },
+            loc: { display: "위치", editable: false, valtype: "loc_object", question: "" },
+            worktime: { display: "근무시간", valtype: "date-select", question: "" },
+            deliverable: { display: "배달여부", valtype: "boolean", question: "" },
+            number: { display: "전화번호", valtype: "string", question: "" },
+            registerable: { display: "예약가능여부", valtype: "boolean", question: "" }
+        };
+
         const ment_list = [
             "추가할 상호명을 입력해주세요",
             "입력이 멈추면 바로 검색할게요",
             "혹시 여기 아닌가요?",
             "위치를 지도에서 클릭해주세요!",
+            "아래 정보들 중 아는 정보들을 입력해주세요!",
+            "정보가 맞지 않다면 클릭하여 수정할 수 있습니다 ;)"
         ];
         
         useEffect(() => {
@@ -81,8 +138,9 @@ function Add() {
             }
         }, [ stage ]);
     
-    // STAGE - 1
+    // LEVEL - 1 (stage: 0~3)
         const [ kw, setKw ] = useState(""); // 검색어
+        const [ snedit, setSNE ] = useState(true); // 음식점 이름 입력가능여부
         const [ search_result, _setSR ] = useState([]);
         const [ search_result_temp, setSR ] = useState([]);
 
@@ -115,21 +173,57 @@ function Add() {
             return [ sum, sum/arr.length ];
         }
 
-        // Not Found Btn Handler
-        const _nFound = () => {
-            setStage(3);
-            dispatch({ type: "map/SETMCLICK", active: true });
-        }
+        // User Action Handler
 
-        useEffect(() => {
-            setSI({
-                setted: false,
-                loc: {
-                    lat: customClickedPo[0],
-                    long: customClickedPo[1]
+            // List Shop Click Handler
+            const _listClick = (info) => {
+                // console.log(info);
+                setShopLoc(info.place_name, info.y, info.x, {
+                    number: info.phone,
+                    loc: {
+                        addr: info.road_address_name?.split("경기 수원시 ")[1]?.split("구 ")[1] || info.road_address_name || info.addresss_name,
+                        lat: info.y,
+                        long: info.x
+                    }
+                });
+            }
+
+            // Not Found Btn Handler
+            const _nFoundClick = () => {
+                setStage(3);
+                dispatch({ type: "map/SETMCLICK", active: true });
+            }
+
+            useEffect(() => {
+                if (customClick) {
+                    // console.log(`position detected: ${customClickedPo[0]}, ${customClickedPo[1]}`)
+                    setShopLoc(shop_name, customClickedPo[0], customClickedPo[1]);
+                    dispatch({ type: "map/SETMCLICK", active: false });
                 }
-            })
-        }, [ customClickedPo ])
+            }, [ customClickedPo ])
+
+            // Set Adding shop location
+            const setShopLoc = (name, lat, long, infos) => {
+                // set informations
+                setSI({ setted: false, name, loc: { lat, long }, ...infos });
+                // remove markers (except selected)
+                dispatch({ 
+                    type: "map/SETLIST", 
+                    list: [{
+                        loc: { lat, long },
+                        overlay: false,
+                        _id: new Date().getTime()
+                    }]
+                })
+                // move map position
+                dispatch({ type: "map/SETMAPTO", loc: [ lat, long ] });
+
+                // disable shop name edit
+                setSNE(false);
+
+                // update stage
+                setStage(4);
+            }
 
         // search keyword change detection
             useEffect(() => {
@@ -143,10 +237,13 @@ function Add() {
                     setStage(1);
                 }
             }, [ shop_name ]);
+
             useEffect(() => {
+                // keyword searchpoint detection
                 if (kw == shop_name && kw.length > 0) {
                     setStage(2);
                     searchKakaoMap(kw);
+                    nameSearchRef.current.children[1].blur(); // focus disable
                 } else {
                     dispatch({ type: "map/SETLIST", list: [] });
                 }
@@ -175,6 +272,13 @@ function Add() {
                 }
             }, 300);
         }, [ search_result_temp ]);
+
+    // LEVEL 2 (stage 4 ~ )
+
+        // ment change ( 4 -> 5 )
+        useEffect(() => {
+            if (stage == 4) setTimeout(() => setStage(5), 2000);
+        }, [ stage ]);
         
 
     return <div className="add_menu">
@@ -182,8 +286,8 @@ function Add() {
         <SearchInput 
             className="name_search"
             valueState={[ shop_name, setSN ]}
-            disabled={shop_info?.setted}
-            svg={(shop_info?.setted) && loc_svg}
+            disabled={!snedit}
+            svg={!snedit && loc_svg}
             placeholder="상호명을 입력해주세요"
             onFocus={() => setStage(1)}
             onBlur={() => setStage(0)}
@@ -206,13 +310,14 @@ function Add() {
                         }}
                         key={i}
                         info={{...shop, i}}
-                        _moveMap={() => {}}
+                        _moveMap={_listClick}
                     />)}               
                 </div>
-                <Button className="not_found_button" styletype="B" style={{ textAlign: "left" }} onClick={_nFound}>이중에 없어요 ㅠㅠ</Button>
+                <Button className="not_found_button" styletype="B" style={{ textAlign: "left" }} onClick={_nFoundClick}>이중에 없어요 ㅠㅠ</Button>
             </>
+        }
+        { 
+            ([4, 5].includes(stage)) && <InfoEdit infos_list={reg_infos_list} infos={[ shop_info, setSI ]} className="infos_wrap"/>
         }
     </div>
 }
-
-export default Add;

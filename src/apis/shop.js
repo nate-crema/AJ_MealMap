@@ -18,6 +18,24 @@ const findShopList = async (keyword) => {
     }
 }
 
+const findShopByLocation = async (lat, long, range) => {
+    try {
+        const { data: shop_list } = await axios.get(`/shop/coords/${lat}, ${long}?range=${range || 10}`);
+        return shop_list.list;
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+const findShopById = async (id) => {
+    try {
+        const { data: shop_list } = await axios.get(`/shop/${id}`);
+        return shop_list.list && shop_list.list.length > 0 ? shop_list.list[0] : shop_list.list || shop_list;
+    } catch(e) {
+        console.error(e);
+    }
+}
+
 const regShopPref = async ( name, point, loc, extra ) => {
     try {
         console.log(name, point, loc, extra);
@@ -42,5 +60,7 @@ const regShopPref = async ( name, point, loc, extra ) => {
 export default {
     getShopList,
     findShopList,
+    findShopByLocation,
+    findShopById,
     regShopPref
 }

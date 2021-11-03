@@ -1,0 +1,166 @@
+.time-picker {
+    position: relative;
+    /* display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(3, auto); */
+}
+
+.time-picker .rotater {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+}
+
+.time-picker .rotater .needle {
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0, -50%) rotateZ(-90deg);
+    transform-origin: 0 50%;
+    background-color: lightgray;
+    border-radius: 2px;
+    /* transition: all .2s ease; */
+    z-index: 10;
+}
+
+.time-picker .rotater .needle.hour-needle {
+    width: 70px;
+}
+
+.time-picker .rotater .needle.minute-needle {
+    width: 120px;
+}
+
+.time-picker .rotater .needle .circle {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-50%, -50%);
+    background-color: lightgray;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.time-picker .rotater .needle.onEditing {
+    height: 5px;
+    background-color: var(--theme-color-C);
+    z-index: 150;
+}
+
+.time-picker .rotater .needle.onEditing .circle {
+    width: 25px;
+    height: 25px;
+    background-color: var(--theme-color-C);
+    z-index: 150;
+}
+
+.time-picker .rotater .cell-cover {
+    width: 120px;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 50%;
+    background-color: rgba(0, 0, 0, 0);
+    animation-duration: .5s;
+    animation-name: cell-in;
+}
+
+.time-picker .rotater .cell-cover .cell {
+    width: 8%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    float: right;
+    right: 0;
+    transform: translate(0, -50%);
+    background-color: black;
+}
+
+.time-picker .time-display {
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    top: 280px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: gray;
+}
+
+
+/* slider */
+
+/* .slider {
+    width: 80px;
+    height: 80%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: lightblue;
+}
+
+.slider .split-bar {
+    width: 80%;
+    height: 3px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    background-color: var(--theme-color-C);
+}
+
+.slider .split-bar.bar-A {
+    top: 35px;
+}
+
+.slider .split-bar.bar-B {
+    bottom: 35px;
+}
+
+.slider .number-display {
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(97, 199, 218, 0.397);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.slider .number-display .selection-display {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    display: grid;
+    grid-template-columns: auto;
+}
+
+.slider .number-display .selection-display span {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+
+@keyframes cell-in {
+    from {
+        width: 0;
+    }
+    to {
+        width: 120px;
+    }
+}
