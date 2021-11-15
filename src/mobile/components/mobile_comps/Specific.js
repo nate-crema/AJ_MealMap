@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css
-import "../../css/mobile_comp/Specific.css";
+import "../../../css/mobile_comp/Specific.css";
 
 // api
-import { shop } from "../../apis";
+import { shop } from "../../../apis";
 
 // components
-import ListSpec from "../ListSpec";
+import ListSpec from "../../../components/ListSpec";
 
 function Specific({ swipeEvent, id }) {
 
@@ -38,7 +38,7 @@ function Specific({ swipeEvent, id }) {
             else setTI(prev => (prev-1 > 0) ? prev-1 : prev);
         }, 100);
         setTimeout(() => {
-            sliderRef.current.classList.toggle("onchangingR");
+            if (sliderRef.current) sliderRef.current.classList.toggle("onchangingR");
         }, 500);
     }
 
@@ -50,7 +50,7 @@ function Specific({ swipeEvent, id }) {
             else setTI(prev => (prev+1 <= 3) ? prev+1 : prev);
         }, 100);
         setTimeout(() => {
-            sliderRef.current.classList.toggle("onchangingL");
+            if (sliderRef.current) sliderRef.current.classList.toggle("onchangingL");
         }, 500);
     }
 
@@ -102,7 +102,7 @@ function Specific({ swipeEvent, id }) {
                         <span className="cat_title">이런게 좋아요</span>
                         <div className="tag_list">
                             {/* { taglist.slice(0, 3).concat([`+ ${taglist.length-3}개`]).map(tag => <> */}
-                            { info.review?.taglist?.slice(0, 3).concat([`+ ${taglist.length-3}개`]).map(tag => <>
+                            { info.review?.taglist?.good.slice(0, 3).concat(info.review?.taglist?.good.length > 3 ? [`+ ${info.review?.taglist?.good.length-3}개`] : []).map(tag => <>
                                 <div className="review_tag tag_good" style={{
                                     width: `${getTextLengthInPixel(tag, "17px") + 20}px`
                                 }}>
@@ -116,7 +116,7 @@ function Specific({ swipeEvent, id }) {
                         <span className="cat_title">이건 별로에요</span>
                         <div className="tag_list">
                             {/* { taglist.slice(0, 3).concat([`+ ${taglist.length-3}개`]).map(tag => <> */}
-                            { info.review?.taglist?.slice(0, 3).concat([`+ ${taglist.length-3}개`]).map(tag => <>
+                            { info.review?.taglist?.bad.slice(0, 3).concat(info.review?.taglist?.bad.length > 3 ? [`+ ${info.review?.taglist?.bad.length-3}개`] : []).map(tag => <>
                                 <div className="review_tag tag_bad" style={{
                                     width: `${getTextLengthInPixel(tag, "17px") + 20}px`
                                 }}>

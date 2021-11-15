@@ -42,7 +42,7 @@
     cursor: pointer;
 }
 
-.mobile-bottom .contents-area .contents-wrap .btn-bottom img {
+.mobile-bottom .contents-area .contents-wrap .btn-bottom .img {
     width: 30px;
     height: auto;
     position: relative;
@@ -61,6 +61,10 @@
     left: 50%;
     transform: translate(-50%);
     text-align: center;
+}
+
+.mobile-bottom .contents-area .contents-wrap .btn-bottom * {
+    transition: all .2s ease;
 }
 
 

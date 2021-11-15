@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // components
 import ServiceWrap from "./pages/Wrapper";
-import MobileMap from "./mobile/MobileMap";
+import MobileMap from "./mobile/fullmap/MobileMap";
 // import Login from "./pages/Login";
 
 function App() {

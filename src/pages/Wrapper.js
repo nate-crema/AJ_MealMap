@@ -12,7 +12,8 @@ import "../css/Global.css";
 import MenuBar from "../components/MenuBar";
 import Notification from "../components/Notification";
 
-import { MobileTop, MobileBottom } from "../components/Mobile";
+import { MobileTop } from "../mobile/components/header/MobileTop";
+import { MobileBottom } from "../mobile/components/footer/MobileBottom";
 
 // page component
 // import Index from "./Index";
@@ -20,11 +21,12 @@ import { MobileTop, MobileBottom } from "../components/Mobile";
 // import Mealmap from "./Mealmap";
 // import NFOUND from "./404";
 
-import MobileHandler from "../components/MobileHandler";
+import MobileHandler from "../mobile/components/MobileHandler";
 import Map from "../components/Map";
 
 // api
 import { user, shop } from "../apis";
+import { useCookies } from "react-cookie";
 
 // Design Wrapper
 
@@ -34,6 +36,9 @@ function Wrapper({ history, location }) {
 
     const g_state = useSelector(state => state);
     const dispatch = useDispatch();
+
+    // global cookie controller
+    const [ cookies, setCookie, removeCookie ] = useCookies('x-access-meal-jwt');
 
     // Control Area Reference
 
@@ -111,34 +116,57 @@ function Wrapper({ history, location }) {
 
     // Handling Login
 
-    /*
-
-    useEffect( async () => {
+    useEffect( () => {
         console.log("uinfo changed", uinfo, window.location.pathname);
-        if (window.location.pathname == "/login" && uinfo.isLogined) setMenu(1);
-        else if (!uinfo.isLogined && window.localStorage.getItem('linfo')) {
-            // Login State Handling
-            try {
-                const uinfo = await user.isValidAuthToken(window.localStorage.getItem('linfo'));
-                if (uinfo?.res?.authorize?.token) {
-                    window.localStorage.setItem('linfo', uinfo.res.authorize.token);
-                    dispatch({ type: "user/SETUSER", uinfo: {
-                        ...uinfo.res,
-                        authorize: null, 
-                        isLogined: true,
-                        isOneTime: false
-                    } });
-                }
-                else throw new Error();
-            } catch(e) {
-                console.error(e);
-                // if (e?.response?.data == "Login Expired") window.location.href = "/login?error=expire";
-                // else window.location.href = "/login?error=error";
-            }
-        } else if (!uinfo.isLogined && window.location.pathname != "/login") setMenu(0);
-    }, [ uinfo, window.location.pathname ]);
+        if (width > 800) {
+            // PC
 
-    */
+            /*
+
+            if (window.location.pathname == "/login" && uinfo.isLogined) setMenu(1);
+            else if (!uinfo.isLogined && window.localStorage.getItem('linfo')) {
+                // Login State Handling
+                try {
+                    const uinfo = await user.isValidAuthToken(window.localStorage.getItem('linfo'));
+                    if (uinfo?.res?.authorize?.token) {
+                        window.localStorage.setItem('linfo', uinfo.res.authorize.token);
+                        dispatch({ type: "user/SETUSER", uinfo: {
+                            ...uinfo.res,
+                            authorize: null, 
+                            isLogined: true,
+                            isOneTime: false
+                        } });
+                    }
+                    else throw new Error();
+                } catch(e) {
+                    console.error(e);
+                    // if (e?.response?.data == "Login Expired") window.location.href = "/login?error=expire";
+                    // else window.location.href = "/login?error=error";
+                }
+            } else if (!uinfo.isLogined && window.location.pathname != "/login") setMenu(0);
+
+            */
+        } else {
+            // Mobile
+
+            // recover login state
+            const token = cookies['x-access-meal-jwt'];
+            if (token && !uinfo.isLogined) user.isValidAuthToken(token)
+                .then(({res}) => {
+                    if (res && res.authorize) dispatch({ type: "user/SETUSER", uinfo: {
+                        isLogined: true,
+                        isOneTime: false,
+                        name: res?.uinfo?.name,
+                        department: res?.uinfo?.college?.ko,
+                        major: res?.uinfo?.major?.ko,
+                        pn: res?.uinfo?.pn,
+                        authorize: res.authorize
+                    } })
+                    else throw new Error();
+                })
+                .catch(e => console.error(e));
+        }
+    }, [ uinfo, window.location.pathname ]);
 
     // ROUTING |-------------
 

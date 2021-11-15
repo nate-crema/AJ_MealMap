@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { shop } from '../apis';
+import { shop } from '../../apis';
 
 // mobile-rendering component
-import Search from "./mobile_comps/Search";
 
 function MobileHandler({ width, height, children }) {
 

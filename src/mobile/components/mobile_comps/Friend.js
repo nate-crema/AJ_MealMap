@@ -2,14 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css
-import "../../css/mobile_comp/Friend.css";
-import "../../css/mobile_comp/Menu_common.css";
+import "../../../css/mobile_comp/Friend.css";
+import "../../../css/mobile_comp/Menu_common.css";
 
 // img
-import friend from "../../assets/img/friend.svg";
-import friend_edit from "../../assets/img/friend_edit.svg";
-import near from "../../assets/img/near.svg";
-import person from "../../assets/img/person.svg";
+import friend from "../../../assets/img/friend.svg";
+import friend_edit from "../../../assets/img/friend_edit.svg";
+import near from "../../../assets/img/near.svg";
+import person from "../../../assets/img/person.svg";
 
 // component
 import MobileBtn from "./MobileBtn";
@@ -31,13 +31,15 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
 
     const sizes = {
         maximize: "10%",
+        sub_maximize: "25%",
         default: "40%",
+        sub_default: "30%",
         minimize: "75%"
     }
 
     const _swipeUpHandler = (direct_mode) => setIsOpen(prev => {
         setPS(ps => {
-            if (ps || direct_mode == "max" || ps) {
+            if (ps || direct_mode == "max") {
                 // maximize menu
                 bottomCompHandler(sizes.maximize);
                 setIsMaximize(true);
@@ -53,11 +55,12 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
     
     const _swipeDownHandler = (direct_mode) => setIsMaximize(prev => {
         setPS(ps => {
+            console.log(`ps`, ps);
             if (ps || direct_mode == "min") {
                 // minimize menu
                 bottomCompHandler(sizes.minimize);
                 setIsOpen(false);
-                return true;
+                return ps;
             } else if (!ps && (!prev || direct_mode == "close")) {
                 // close menu
                 dispatch({ type: "mobile/SETCOMP", comp: null });
@@ -92,16 +95,16 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
 
     // menu auto-continuation
     useEffect(() => {
-        const watchID = navigator.geolocation.watchPosition((cb) => {
-                console.log(`-----------------------`);
-                console.log("accuracy", cb.coords.accuracy);
-                console.log("altitude", cb.coords.altitude);
-                console.log("altitudeAccuracy", cb.coords.altitudeAccuracy);
-                console.log("heading", cb.coords.heading);
-                console.log("latitude", cb.coords.latitude);
-                console.log("longitude", cb.coords.longitude);
-                console.log("speed", cb.coords.speed);
-          }, null, { enableHighAccuracy: true });
+        // const watchID = navigator.geolocation.watchPosition((cb) => {
+        //         console.log(`-----------------------`);
+        //         console.log("accuracy", cb.coords.accuracy);
+        //         console.log("altitude", cb.coords.altitude);
+        //         console.log("altitudeAccuracy", cb.coords.altitudeAccuracy);
+        //         console.log("heading", cb.coords.heading);
+        //         console.log("latitude", cb.coords.latitude);
+        //         console.log("longitude", cb.coords.longitude);
+        //         console.log("speed", cb.coords.speed);
+        //   }, null, { enableHighAccuracy: true });
         if (mealfriend.list.length > 0) {
             setMenu(1);
         }
@@ -113,7 +116,19 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
             titleRef.current.style.left = "50px";
             titleImgRef.current.src = menus[Math.floor(menu_id-1)].img;
             setMT(menus[Math.floor(menu_id-1)].title);
-            _swipeUpHandler("max");
+            switch(menu_id) {
+                case 2:
+                    bottomCompHandler(sizes.sub_maximize);
+                    break;
+
+                case 1.7:
+                    // bottomCompHandler(sizes.default);
+                    break;
+                case 1:
+                default:
+                    _swipeUpHandler("max");
+                    break;
+            }
         } else  {
             titleRef.current.style.left = null;
         }
@@ -261,7 +276,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
                     <MobileBtn text="친구 추가" className="add-friend-btn" type="0" action={_openSelectList} style={{
                         width: (!(mealfriend.list.length > 0)) && "100%"
                     }}/>
-                    { (mealfriend.list.length > 0) && <MobileBtn text="시간 정하기" className="send-noti-btn" type="0" action={_timeSelection}/> }
+                    { (mealfriend.list.length > 0) && <MobileBtn text="시간 정하기" className="set-time-btn" type="0" action={_timeSelection}/> }
                     <MobileBtn text="모임 취소" className="break-meeting-btn" type="1" action={_breakMeeting}/>
                 </div>
             </>
@@ -294,8 +309,15 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
             (progressing_stat == 1.7) && <>
                 <div className="time-selection sliding-l">
                     <span className="msg">{ msg }</span>
-                    <TimePicker className="meet-time-picker"/>
+                    <TimePicker className="meet-time-picker" bottomCompHandler={(mode_id) => bottomCompHandler(mode_id < 0 ? sizes.sub_default : sizes.maximize)}/>
+                    <MobileBtn text="알림 발송" className="send-noti-btn sliding-l" type="0"/>
                 </div>
+            </>
+        }
+
+        {
+            (progressing_stat == 2) && <>
+                <span className="nearfriend">아직은 지원하지 않아요 ㅠㅠ<br/>아쉽지만 곧 만나요!</span>
             </>
         }
     </div>;

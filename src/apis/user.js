@@ -112,5 +112,11 @@ export default {
     login,
     authorize,
     isValidAuthRoute,
-    isValidAuthToken
+    isValidAuthToken,
+    RESPONSE: {
+        ANE: "ANE",
+        NPN: "NPN",
+        UNF: "UNF",
+        NPIN: "NPIN"
+    }
 }

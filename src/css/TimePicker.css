@@ -5,15 +5,56 @@
     grid-template-columns: repeat(3, auto); */
 }
 
-.time-picker .rotater {
+.time-picker .time-display {
     width: 100%;
+    height: 70px;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: auto;
+}
+
+.time-picker .time-display .displayer {
+    width: 90%;
     height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0);
+}
+
+.time-picker .time-display .displayer .value {
+    font-family: "Noto Sans KR";
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--theme-color-C);
+    width: fit-content;
+    height: fit-content;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.time-picker .rotater {
+    width: 250px;
+    height: 250px;
+    position: relative;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%);
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
+    animation-name: rotater-fade-in;
+    animation-duration: .3s;
+    animation-fill-mode: both;
+    margin-bottom: 100px;
 }
 
 .time-picker .rotater .needle {
@@ -85,16 +126,6 @@
     background-color: black;
 }
 
-.time-picker .time-display {
-    width: 100%;
-    height: 100px;
-    position: absolute;
-    top: 280px;
-    left: 50%;
-    transform: translate(-50%);
-    background-color: gray;
-}
-
 
 /* slider */
 
@@ -162,5 +193,27 @@
     }
     to {
         width: 120px;
+    }
+}
+
+@keyframes rotater-fade-in {
+    from {
+        margin-top: 20px;
+        opacity: 0;
+    }
+    to {
+        margin-top: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes rotater-fade-out {
+    from {
+        margin-top: 0;
+        opacity: 1;
+    }
+    to {
+        margin-top: -20px;
+        opacity: 0;
     }
 }

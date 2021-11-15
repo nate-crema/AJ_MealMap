@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "../connection/requester";
 
 // components
-import Button from "../components/Button";
+import Button from "./Button";
 import PBar from "../components/PBar"
 
 // api

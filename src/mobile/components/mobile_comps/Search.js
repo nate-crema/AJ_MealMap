@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css
-import "../../css/mobile_comp/Search.css";
+import "../../../css/mobile_comp/Search.css";
 
 function ShopList({ info }) {
 

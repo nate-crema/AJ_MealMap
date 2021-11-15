@@ -1,62 +1,116 @@
-.loginCover {
-    /* box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
-    border-radius: 25px; */
-}
-
-.loginCover .greeting {
-    transition: all .2s cubic-bezier(0.23, 1, 0.320, 1);
-    font-size: 60px;
-    font-family: "Noto Sans KR", sans-serif;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.041);
+.login-cover {
+    width: 100%;
+    height: calc(80% - 120px);
     position: absolute;
-    top: 20%;
-    left: 80px;
-    transform: translateY(-50%);
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%);
 }
 
-.loginCover .ment {
-    transition: all .2s cubic-bezier(0.23, 1, 0.320, 1);
-    font-size: 30px;
+.login-cover .title {
+    font-size: 28px;
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 500;
     color: var(--theme-color-C);
     position: absolute;
-    top: 27%;
-    left: 150px;
-    transform: translateY(-50%);
+    top: 0;
+    left: 0;
 }
 
-.loginCover .pn_input {
-    width: 350px;
-    height: 50px;
-    position: absolute;
-    top: 60%;
-    left: 60%;
-    transform: translate(-50%, -50%);
-}
-
-.loginCover .skip-login {
+.login-cover .ment {
+    transition: all .2s cubic-bezier(0.23, 1, 0.320, 1);
+    font-size: 18px;
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 300;
-    font-size: 17px;
+    color: var(--theme-color-C);
+    word-break: keep-all;
     position: absolute;
-    top: calc(60% + 50px);
-    right: 15%;
-    float: right;
-    transform: translate(-50%, -50%);
-    color: var(--theme-color-A);
-    cursor: pointer;
+    top: 80px;
+    left: 0;
 }
 
-.loginCover .pin_input {
+.login-cover .go-login-btn {
+    width: 100%;
+    height: 70px;
     position: absolute;
-    top: 55%;
-    left: 70%;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    animation-name: reveal;
+    animation-duration: .2s;
+    animation-fill-mode: both;
+}
+
+.login-cover .login-form {
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    transform: translate(-50%);
+    opacity: 0;
+    animation-duration: .2s;
+    animation-fill-mode: both;
+}
+
+.login-cover .login-form .pn_input {
+    width: 100%;
+    height: 70px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    animation-name: reveal;
+    animation-duration: .2s;
+    animation-fill-mode: both;
+}
+
+.login-cover .login-confirm {
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%);
+    opacity: 0;
+    animation-duration: .2s;
+    animation-fill-mode: both;
+}
+
+.login-cover .login-confirm .is-confirmed {
+    transition: all .2s cubic-bezier(0.23, 1, 0.320, 1);
+    font-size: 20px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    color: var(--theme-color-C);
+    word-break: keep-all;
+    position: absolute;
+    top: 0px;
+    left: 0;
+}
+
+.login-cover .login-confirm .department {
+    transition: all .2s cubic-bezier(0.23, 1, 0.320, 1);
+    font-size: 15px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    word-break: keep-all;
+    position: absolute;
+    top: 30px;
+    left: 0;
+}
+
+.login-cover .pin_input {
+    width: 100%;
+    height: 80px;
+    position: relative;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }
 
-.loginCover .name_input {
+.login-cover .name_input {
     width: 350px;
     height: 50px;
     position: absolute;
@@ -65,7 +119,7 @@
     transform: translate(-50%, -50%);
 }
 
-.loginCover .email_input {
+.login-cover .email_input {
     width: 350px;
     height: 50px;
     position: absolute;
@@ -74,23 +128,14 @@
     transform: translate(-50%, -50%);
 }
 
-@media ( max-width: 1500px ) {
-    .loginCover {
-        width: 80% !important;
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10%);
     }
-    .loginCover .greeting {
-        width: 100%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .loginCover .ment {
-        width: 100%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .loginCover .pin_input {
-        top: 50%;
-        left: 50%;
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0%);
     }
 }
 
@@ -114,7 +159,7 @@
 
 .inp_cover .placeholder {
     font-family: "Noto Sans KR", sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     color: rgb(7 83 195 / 50%);
     position: absolute;
     top: 50%;
@@ -135,7 +180,7 @@
     height: 80%;
     transition: all .24s cubic-bezier(0.165, 0.84, 0.44, 1);
     color: var(--theme-color-C);
-    font-size: 18px;
+    font-size: 20px;
 }
 
 input[type="number"]::-webkit-outer-spin-button,

@@ -4,14 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 // css
 import "../css/SearchInput.css";
 
-function SearchInput({ className, valueState: [ value, setV ], style, disabled, svg, onClick, onFocus, onBlur, placeholder, _ref }) {
+function SearchInput({ className, valueState: [ value, setV ], style, disabled, svg, onClick, onFocus, onBlur, onChange, placeholder, _ref }) {
 
     const [ isFocus, setIF ] = useState(false);
     const inputRef = useRef(<></>);
 
     useEffect(() => {
-        if (isFocus && onFocus) onFocus();
-        else if (!isFocus && onBlur) onBlur();
+        if (isFocus && onFocus) onFocus(value);
+        else if (!isFocus && onBlur) onBlur(value);
     }, [ isFocus ]);
 
     return <div className={`search_input ${className || ""}`} style={style || {}} onClick={onClick} ref={_ref || null}>
@@ -28,7 +28,7 @@ function SearchInput({ className, valueState: [ value, setV ], style, disabled, 
             }}
             value={value} 
             ref={inputRef}
-            onChange={(e) => setV(e.target.value)}
+            onChange={(e) => { setV(e.target.value); onChange && onChange(e.target.value); }}
             id="search_input"
             disabled={disabled}
             onFocus={() => setIF(true)}

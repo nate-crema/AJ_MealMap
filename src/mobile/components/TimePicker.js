@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css
-import "../css/TimePicker.css";
+import "../../css/TimePicker.css";
 
 function Slider({ values }) {
 
@@ -108,22 +108,22 @@ function Slider({ values }) {
     </div>
 }
 
-function TimePicker({ className, style }) {
+function TimePicker({ className, style, bottomCompHandler }) {
 
     const { mealfriend: { meet_time, list } } = useSelector(state => state.mobile);
-    const dispatch = useDispatch();
 
     const rotaterRef = useRef(<></>);
-    const hourRef = useRef(<></>);
-    const minuteRef = useRef(<></>);
+    const needleRef = useRef(<></>);
 
+    const [ rActive, setRA ] = useState(false);
+    const [ time, setTime ] = useState([ new Date().getHours(), new Date().getMinutes() ]);
     const [ startpoint, setSP ] = useState([-100, -100]);
     const [ angle_calced, setAC ] = useState(-100);
     const [ mode, setMode ] = useState(0);
     const selectable = [
         [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
-        // [ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 ]
-        [ 15, 30, 45, 60 ]
+        [ 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 ]
+        // [ 15, 30, 45, 60 ]
     ]
 
 
@@ -135,19 +135,17 @@ function TimePicker({ className, style }) {
         const angle_calc = angle + 90;
         setAC(angle_calc);
         const angle_per_cell = 360 / (selectable[mode].length)
-        const angle_rotate = (Math.floor(angle_calc/angle_per_cell)+1)*angle_per_cell - 90;
 
         // vibration
         if( Math.floor(angle)%angle_per_cell === 0 && window.navigator.vibrate ) window.navigator.vibrate(10);
 
-        document.querySelector(".onEditing").style.transform = `translate(0, -50%) rotate(${angle_rotate}deg)`;
+        needleRef.current.style.transform = `translate(0, -50%) rotate(${angle}deg)`;
     }
 
     const _moveStartHandler = (_mode) => {
         setMode(_mode);
-        document.querySelector(".onEditing").classList.toggle("onEditing");
-        document.querySelectorAll(".needle")[_mode].classList.toggle("onEditing");
         const v = rotaterRef.current.getBoundingClientRect();
+
         return setSP([(v.x + ((v.width)/2)), (v.y + ((v.height)/2))]);
     }
 
@@ -157,30 +155,71 @@ function TimePicker({ className, style }) {
         let angle_rotate = (Math.floor(angle_calced/angle_per_cell)+1)*angle_per_cell - 90;
         const angle_recalced = angle_rotate - angle_calced;
         if(angle_recalced > -45) angle_rotate -= angle_per_cell;
-        document.querySelector(".onEditing").style.transform = `translate(0, -50%) rotate(${angle_rotate}deg)`;
+        needleRef.current.style.transform = `translate(0, -50%) rotate(${angle_rotate}deg)`;
+        setTime(prev => {
+            const interval = selectable[mode][1] - selectable[mode][0];
+            if (mode === 0) {
+                const isPM = prev[mode] >= 12;
+                prev[mode] = ( interval * (angle_rotate+90)/angle_per_cell) + ( isPM ? 12 : 0 );
+            } else {
+                prev[mode] = ( interval * (angle_rotate+90)/angle_per_cell)%60;
+            }
+            return prev;
+        })
         setAC(-100);
+        setTimeout(() => {
+            if (rotaterRef.current) rotaterRef.current.style.animationName = "rotater-fade-out";
+            setTimeout(() => setEmode(-1), 100);
+        }, 150);
         return setSP([-100, -100]);
     }
 
-    return <div className={(className || "") + " time-picker"} style={style}>
-        <div className="rotater" ref={rotaterRef} onTouchMove={_moveHandler}>
-            <div className="needle hour-needle onEditing" ref={hourRef}><div className="circle" onTouchStart={() => _moveStartHandler(0)} onTouchEnd={_moveEndHandler}></div></div>
-            <div className="needle minute-needle" ref={minuteRef}><div className="circle" onTouchStart={() => _moveStartHandler(1)} onTouchEnd={_moveEndHandler}></div></div>
-            {
-                selectable[mode].map((_, i) => <div className="cell-cover" style={{
-                    transform: `translate(0, -50%) rotateZ(${-90+(360 / (selectable[mode].length)*i)}deg)`,
-                    animationDelay: `${i*0.05}s`
-                }}><div className="cell"></div></div>)
-            }
-        </div>
-        <div className="time-display">
-            <div className="displayer hour-display">
-                
-            </div>
-            <div className="displayer minute-display">
+    const setEmode = (mode_id) => {
+        setRA(mode_id > -1);
+        if (mode_id > -1) {
+            setMode(mode_id)
 
+            // initial angle set
+            const angle_per_cell = 360 / (selectable[mode_id].length);
+            const angle_rotate = (angle_per_cell * ((mode_id === 0) ? time[mode_id]%12 : time[mode_id]/(time[mode_id][1]-time[mode_id][0])))-90;
+            console.log(`angle_rotate`, angle_rotate);
+            setTimeout(() => { 
+                needleRef.current.style.transform = `translate(0, -50%) rotate(${angle_rotate}deg)`;
+            }, 150);
+        };
+        bottomCompHandler(mode_id);
+
+        
+        setTimeout(() => {
+            if (rotaterRef?.current?.style) rotaterRef.current.style.animationName = "rotater-fade-in";
+        }, 150);
+    }
+
+    useEffect(() => {
+        bottomCompHandler(-1);
+    }, []);
+
+    return <div className={(className || "") + " time-picker"} style={style}>
+        { !rActive ? <div className="time-display">
+            <div className="displayer apm-display" onClick={() => setTime(prev => ((prev[0] > 12) ? [prev[0]-12, prev[1]] : [prev[0]+12, prev[1]]))}>
+                <span className="value">{ time[0] <= 12 ? "오전" : "오후" }</span>
             </div>
-        </div>
+            <div className="displayer hour-display" onClick={() =>  setEmode(0)}>
+                <span className="value">{ (time[0]%12 == 0 ? '12' : (time[0]%12 < 10 ? '0' : '') + time[0]%12) }</span>
+            </div>
+            <div className="displayer minute-display" onClick={() =>  setEmode(1)}>
+                <span className="value">{ (time[1] < 10 ? '0' : '') + time[1] }</span>
+            </div>
+        </div> : <div className="rotater" ref={rotaterRef} onTouchMove={_moveHandler}>
+                <div className="needle hour-needle onEditing" ref={needleRef}><div className="circle" onTouchStart={() => _moveStartHandler(mode)} onTouchEnd={_moveEndHandler}></div></div>
+                {
+                    selectable[mode].map((_, i) => <div className="cell-cover" style={{
+                        transform: `translate(0, -50%) rotateZ(${-90+(360 / (selectable[mode].length)*i)}deg)`,
+                        animationDelay: `${i*0.05}s`
+                    }}><div className="cell"></div></div>)
+                }
+            </div>
+        }
         {/* <Slider values={[ "오전", "오후" ]}/>
         <Slider values={[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]}/>
         <Slider values={[ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60 ]}/> */}

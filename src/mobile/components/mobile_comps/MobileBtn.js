@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css
-import "../../css/mobile_comp/MobileBtn.css";
+import "../../../css/mobile_comp/MobileBtn.css";
 
 function MobileBtn({ text, action, type = 0, className, style }) {
 

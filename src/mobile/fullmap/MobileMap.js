@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 // api resource
-import json from "../keys/api.json";
+import json from "../../keys/api.json";
 
 function MI() {
 
