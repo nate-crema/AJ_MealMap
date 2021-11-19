@@ -147,7 +147,7 @@ function Input({ type, placeholder, className, state: [ v, setV ], onChange, onF
         <span ref={phRef} className="placeholder" id="inp_placeholder" onClick={(e) => inpRef.current.focus()}>{ placeholder || "" }</span>
         <input ref={inpRef} type={type} value={v} onKeyPress={onKeyPress} onChange={(e) => {
             setV(e.target.value);
-            if (onChange) onChange(e);
+            if (onChange) return onChange(e);
         }} onFocus={(e) => {
             if (v == "") {
                 // placeholder handler
@@ -464,6 +464,16 @@ function _Login({ location }) {
 
 function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp }) {
 
+    const sizes = {
+        maximize: "720px",
+        sub_maximize: "680px",
+        oh_default: "550x",
+        default: "400px",
+        half_default: "200px",
+        quarter_default: "100px",
+        minimize: "40px"
+    }
+
     const [ pn, setPn ] = useState("");
     const [ key, setKey ] = useState("");
     const [ department, setDP ] = useState("");
@@ -501,15 +511,15 @@ function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp }) {
             case 2:
                 // onPinInput();
                 if (pin_open) {
-                    bottomCompHandler("10%");
+                    bottomCompHandler(sizes.maximize);
                     break;
                 }
             default:
                 onPinInputEnd();
                 if (stage != 3) {
                     setMent(ments[stage]);
-                    bottomCompHandler("30%");
-                } else bottomCompHandler("45%");
+                    bottomCompHandler(sizes.default);
+                } else bottomCompHandler(sizes.default);
                 break;
         }
     }, [ stage, pin_open ]);

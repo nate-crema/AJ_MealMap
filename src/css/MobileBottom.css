@@ -87,7 +87,8 @@
     width: calc(100% - 2px);
     height: 120%;
     position: absolute;
-    top: 105%;
+    /* top: 105%; */
+    bottom: -50px;
     left: 50%;
     transform: translate(-50%);
     border-radius: 20px;

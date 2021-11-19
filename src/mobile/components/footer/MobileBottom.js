@@ -132,6 +132,16 @@ export const MobileBottom = function({ width, height }) {
     }
 
     // bottom upper component handler
+
+    const sizes = {
+        maximize: "600px",
+        sub_maximize: "530px",
+        oh_default: "470px",
+        default: "400px",
+        half_default: "250px",
+        quarter_default: "150px",
+        minimize: "110px"
+    }
     
     const _bcompHandler = (bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate) => {
 
@@ -150,9 +160,10 @@ export const MobileBottom = function({ width, height }) {
             bgRef.current.style.display = "block";
             if (ddbar_enable) dropdownBarRef.current.style.display = "block";
             setTimeout(() => {
-                mbCompRef.current.style.top = opensize || "50%";
+                mbCompRef.current.style.height = opensize || "200px";
+                mbCompRef.current.style.bottom = "50px";
                 compDisplayerRef.current.style.width = "80%";
-                compDisplayerRef.current.style.height = `calc(100% - ${opensize} - 20px)`;
+                compDisplayerRef.current.style.height = '80%';
 
                 if (bg_blaclize) {
                     bgRef.current.style.opacity = "1";
@@ -173,7 +184,8 @@ export const MobileBottom = function({ width, height }) {
                 bgRef.current.removeEventListener("click", _bgClickHandler);
     
                 bgRef.current.style.opacity = "0";
-                mbCompRef.current.style.top = "105%";
+                mbCompRef.current.style.height = "0px";
+                mbCompRef.current.style.bottom = "-50px";
                 bgRef.current.style.backgroundColor = "white";
                 dropdownBarRef.current.style.display = "none";
                 setTimeout(() => {
@@ -182,7 +194,7 @@ export const MobileBottom = function({ width, height }) {
                     if (mobile_init) _bgClickHandler();
                     setTimeout(() => {
                         mBottomRef.current.style.zIndex = null;
-                    }, 150);
+                    }, 300);
                 }, 200);
             }, 200);
         }
@@ -191,25 +203,26 @@ export const MobileBottom = function({ width, height }) {
 
     useEffect(() => {
         if (!stat) return;
+        // console.log("Bcomp", Bcomp);
         if (Bcomp) {
-            if (!uinfo.isLogined) return _bcompHandler(true, true, "45%", true, false);
+            if (!uinfo.isLogined) return _bcompHandler(true, true, sizes.default, true, false);
             else switch(Bcomp.mode) {
                 case "search":
-                    return _bcompHandler(false, true, "70%");
+                    return _bcompHandler(false, true, sizes.oh_default);
                 case "specific":
-                    return _bcompHandler(true, true, "62%", true);
+                    return _bcompHandler(true, true, sizes.oh_default, true);
                 case "friend":
-                    return _bcompHandler(false, true, "40%", true, false, false);
+                    return _bcompHandler(false, true, sizes.default, true, false, false);
                 case "review":
-                    return _bcompHandler(false, true, "35%", true, false, false);
+                    return _bcompHandler(false, true, sizes.default, true, false, false);
                 default:
                     return _bcompHandler(true, true);
             }
         }
-        else {
-            _bcompHandler(true, false);
-            closeKeyboard();
-        }
+        
+        _bcompHandler(true, false);
+        closeKeyboard();
+
     }, [ Bcomp, stat ]);
 
     // prevent initial marker removing error
@@ -219,12 +232,6 @@ export const MobileBottom = function({ width, height }) {
 
     // bottom menu control
     const openMenu = (menu) => {
-        if (Bcomp) {
-            dispatch({ type: "mobile/SETCOMP", comp: null });
-            return setTimeout(() => {
-                openMenu(menu);
-            }, 150);
-        }
         mBottomRef.current.querySelectorAll(".img path").forEach(v => v.style.fill = "rgba(0, 0, 0, 0.1)");
         mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "rgba(0, 0, 0, 0.5)");
         switch(menu) {
@@ -241,6 +248,12 @@ export const MobileBottom = function({ width, height }) {
             default:
                 return;
         }
+    }
+
+    const closeMenu = (menu) => {
+        mBottomRef.current.querySelectorAll(".img path").forEach(v => v.style.fill = "var(--theme-color-C)");
+        mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
+        dispatch({ type: "mobile/SETCOMP", comp: null })
     }
 
     // keyboard state control
@@ -263,7 +276,7 @@ export const MobileBottom = function({ width, height }) {
             <div className="dropdown-bar" ref={dropdownBarRef}></div>
             <div className="mobile-bottom-comp-displayer" ref={compDisplayerRef}>
                 { (Bcomp != null && Bcomp) ?
-                    (uinfo.isLogined) ?
+                    // (uinfo.isLogined) ?
                         (Bcomp.mode == "search") ? <Search results={Bcomp.value || []}/> :
                         (Bcomp.mode == "specific") ? <Specific swipeEvent={_swipeEvent} id={Bcomp.value || ""}/> :
                         (Bcomp.mode == "friend") ? <Friend swipeEvent={_swipeEvent} 
@@ -272,8 +285,8 @@ export const MobileBottom = function({ width, height }) {
                         (Bcomp.mode == "review") ? <Review swipeEvent={_swipeEvent} 
                             bottomCompHandler={(percent) => _bcompHandler(false, true, percent, true, false)}
                         /> : false
-                        :
-                        <Login bottomCompHandler={(percent) => _bcompHandler(true, true, percent, true, false)} onPinInput={openKeyboard} onPinInputEnd={closeKeyboard} minp={[m_kboard, setMK]} />
+                        // :
+                        // <Login bottomCompHandler={(percent) => _bcompHandler(true, true, percent, true, false)} onPinInput={openKeyboard} onPinInputEnd={closeKeyboard} minp={[m_kboard, setMK]} />
                     :
                     <></>
                 }
@@ -282,7 +295,7 @@ export const MobileBottom = function({ width, height }) {
         <div className="mobile-bottom" ref={mBottomRef}>
             <div className="contents-area">
                 <div className="contents-wrap">
-                    <div className="btn-bottom btn-friend" onClick={() => openMenu("friend")}>
+                    <div className="btn-bottom btn-friend" onClick={() => Bcomp?.mode == "friend" ? closeMenu() : openMenu("friend")}>
                         { (mealfriend.list.length > 0) ? <>
                             <svg className="img friend_svg" xmlns="http://www.w3.org/2000/svg" width="34.006" height="28.308" viewBox="0 0 34.006 28.308">
                                 <g id="Group_381" data-name="Group 381" transform="translate(-439.161 -208.87)">
@@ -317,7 +330,7 @@ export const MobileBottom = function({ width, height }) {
                             <span className="btn-name">친구</span>
                         </> }
                     </div>
-                    <div className="btn-bottom btn-route" onClick={() => openMenu("route")}>
+                    <div className="btn-bottom btn-route" onClick={() => Bcomp?.mode == "route" ? closeMenu() : openMenu("route")}>
                         <svg className="img route_svg" xmlns="http://www.w3.org/2000/svg" width="28.104" height="27.959" viewBox="0 0 28.104 27.959">
                         <g id="Group_321" data-name="Group 321" transform="translate(-66.066 -66.336)">
                             <path id="Path_86" data-name="Path 86" d="M70.283,105.97c-1.179,0-4.217-7.037-4.217-8.613a4.217,4.217,0,0,1,4.217-4.218h0A4.222,4.222,0,0,1,74.5,97.355v0C74.5,98.933,71.462,105.97,70.283,105.97Zm0-11.7h0a3.089,3.089,0,0,0-3.088,3.089c0,1.5,2.182,5.873,3.089,7.217.908-1.344,3.089-5.719,3.089-7.217v0A3.092,3.092,0,0,0,70.284,94.268Z" transform="translate(0 -11.675)" fill="#005bae"/>
@@ -327,7 +340,7 @@ export const MobileBottom = function({ width, height }) {
                         </svg>
                         <span className="btn-name">경로</span>
                     </div>
-                    <div className="btn-bottom btn-review" onClick={() => openMenu("review")}>
+                    <div className="btn-bottom btn-review" onClick={() => Bcomp?.mode == "review" ? closeMenu() : openMenu("review")}>
                         <svg className="img review_svg" xmlns="http://www.w3.org/2000/svg" width="23.944" height="29.262" viewBox="0 0 23.944 29.262">
                             <g id="Group_322" data-name="Group 322" transform="translate(-257.523 -68.462)">
                                 <path id="Path_89" data-name="Path 89" d="M269.495,106.5c-6.031,0-11.171-4.792-11.955-11.146a2.13,2.13,0,0,1,.509-1.675,1.9,1.9,0,0,1,1.435-.656h20.023a1.9,1.9,0,0,1,1.434.656,2.133,2.133,0,0,1,.51,1.675C280.666,101.713,275.526,106.5,269.495,106.5ZM259.484,94.313a.628.628,0,0,0-.472.222.845.845,0,0,0-.2.666c.7,5.711,5.3,10.018,10.68,10.018s9.975-4.307,10.68-10.018a.843.843,0,0,0-.2-.666.627.627,0,0,0-.472-.222Z" transform="translate(0 -8.781)" fill="#005bae"/>

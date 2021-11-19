@@ -30,11 +30,13 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
     // swipe events
 
     const sizes = {
-        maximize: "10%",
-        sub_maximize: "25%",
-        default: "40%",
-        sub_default: "30%",
-        minimize: "75%"
+        maximize: "600px",
+        sub_maximize: "530px",
+        oh_default: "470px",
+        default: "400px",
+        half_default: "250px",
+        quarter_default: "150px",
+        minimize: "110px"
     }
 
     const _swipeUpHandler = (direct_mode) => setIsOpen(prev => {
@@ -309,7 +311,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
             (progressing_stat == 1.7) && <>
                 <div className="time-selection sliding-l">
                     <span className="msg">{ msg }</span>
-                    <TimePicker className="meet-time-picker" bottomCompHandler={(mode_id) => bottomCompHandler(mode_id < 0 ? sizes.sub_default : sizes.maximize)}/>
+                    <TimePicker className="meet-time-picker" bottomCompHandler={(mode_id) => bottomCompHandler(mode_id < 0 ? sizes.oh_default : sizes.maximize)}/>
                     <MobileBtn text="알림 발송" className="send-noti-btn sliding-l" type="0"/>
                 </div>
             </>
