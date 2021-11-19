@@ -35,7 +35,8 @@ const register = async ( name, pn, email ) => {
 
 const login = async ( pn, pin, _key ) => {
     try {
-        console.log("_key", _key);
+        // console.log("_key", _key);
+        console.log(pn, pin, _key);
         const key = `${_key}${_key}${_key}${_key}${_key}`.substr(0, 32);
         const iv = `${_key}${_key}${_key}${_key}${_key}`.substr(0, 16);
         // console.log(iv, key);

@@ -47,11 +47,12 @@ function OnePin({ state, onClick, ref }) {
 }
 
 
-function Pin({ digit = 4, className, style, onEnd = () => {} }) {
+function Pin({ digit = 4, className, style, onEnd = () => {}, onFocus, onBlur, minp }) {
 
     const pinComps = [];
     const [ pin, setPin ] = useState("");
     const [ isIActived, setIActive ] = useState(false);
+    const [ init, setInit ] = useState(false);
     const [ isListenAble, setLA ] = useState(false);
     const [ ued, setUED ] = useState(false);
 
@@ -85,6 +86,10 @@ function Pin({ digit = 4, className, style, onEnd = () => {} }) {
         setIActive(active);
     }
 
+    useEffect(() => {
+        _pressHandler({ key: minp })
+    }, [ minp ])
+
     // const _styleHandler = () => {
     //     if (isIActived) {
     //         for (let i = 0; i < pin.length; i++) pinComps[i].state[1](2);
@@ -99,14 +104,21 @@ function Pin({ digit = 4, className, style, onEnd = () => {} }) {
     // }
 
     useEffect(() => {
+        setInit(true);
+    }, []);
+
+    useEffect(() => {
         if (isIActived) {
+            // start input
             for (let i = 0; i < pin.length; i++) pinComps[i].state[1](2);
             pinComps[pin.length].state[1](1);
             for (let j = pin.length+1; j < digit; j++) pinComps[j].state[1](0);
-            // if (!isListenAble) setLA(true);
+            if (init && onFocus) onFocus();
+            setLA(!isListenAble);
         } else {
             if (pin.length < digit) for (let i = 0; i < digit; i++) pinComps[i].state[1](0);
             else for (let i = 0; i < digit; i++) pinComps[i].state[1](3);
+            if (onBlur) onBlur();
             // if (isListenAble) setLA(false);
         }
     }, [ isIActived ]);
@@ -450,11 +462,13 @@ function _Login({ location }) {
 }
 
 
-function Login({ bottomCompHandler }) {
+function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp }) {
 
     const [ pn, setPn ] = useState("");
     const [ key, setKey ] = useState("");
     const [ department, setDP ] = useState("");
+
+    const [ pin_open, setPinOpen ] = useState(false);
 
     const [ cookies, setCookie, removeCookie ] = useCookies(['x-access-meal-jwt']);
 
@@ -483,12 +497,22 @@ function Login({ bottomCompHandler }) {
     }
 
     useEffect(() => {
-        if (stage == 3) bottomCompHandler("45%");
-        else {
-            setMent(ments[stage]);
-            if (stage > 0) bottomCompHandler("30%");
+        switch(stage) {
+            case 2:
+                // onPinInput();
+                if (pin_open) {
+                    bottomCompHandler("10%");
+                    break;
+                }
+            default:
+                onPinInputEnd();
+                if (stage != 3) {
+                    setMent(ments[stage]);
+                    bottomCompHandler("30%");
+                } else bottomCompHandler("45%");
+                break;
         }
-    }, [ stage ]);
+    }, [ stage, pin_open ]);
 
     const dispatch = useDispatch();
 
@@ -525,9 +549,10 @@ function Login({ bottomCompHandler }) {
     // login handler
     const _login = async (pin) => {
         const { login, RESPONSE: { UNF, NPN, NPIN } } = user;
-
-        const login_res = await login(pn, pin, key);
         
+        setMent(`정보를 암호화하여 로그인하는 중이에요...`);
+        const login_res = await login( pn, pin, key );
+
         if (typeof login_res == "object" && login_res?.res) {
             // logined
             console.log(login_res);
@@ -571,6 +596,13 @@ function Login({ bottomCompHandler }) {
         dispatch({ type: "user/SETUSER", uinfo });
     }
 
+    // pin active checker
+    useEffect(() => {
+        console.log("pin_open", pin_open);
+        if (pin_open) onPinInput();
+        else onPinInputEnd();
+    }, [ pin_open ]);
+
     return <div className="login-cover">
         <span className="title">로그인</span>
         <span className="ment" ref={mentRef}>{ ment.split("<br/>").map(v => <>{v}<br/></>) }</span>
@@ -592,18 +624,18 @@ function Login({ bottomCompHandler }) {
                     }}
                 />
             </div>
-            : (stage == 2) ? <div className="login-form" style={{
-                animationName: (stage == 2) ? "reveal" : ""
-            }}>
-                <Pin className="pin_input" onEnd={_login}/>
-            </div>
-            : (stage == 3) && <div className="login-confirm" style={{
-                animationName: (stage == 3) ? "reveal" : "",
-                animationDelay: (stage == 3) ? "5s" : ""
-            }}>
-                <span className="is-confirmed">로그인 승인</span>
-                <span className="department">{department}</span>
-            </div>
+            : (stage == 2) ?<div className="login-form" style={{
+                    animationName: (stage == 2) ? "reveal" : ""
+                }}>
+                    <Pin className="pin_input" onEnd={_login} onFocus={() => setPinOpen(true)} onBlur={() => setPinOpen(false)} minp={minp[0]}/>
+                </div>
+                : (stage == 3) && <div className="login-confirm" style={{
+                    animationName: (stage == 3) ? "reveal" : "",
+                    animationDelay: (stage == 3) ? "5s" : ""
+                }}>
+                    <span className="is-confirmed">로그인 승인</span>
+                    <span className="department">{department}</span>
+                </div>
         }
         {
             (stage == 1 && pn.length == 11) && <MobileBtn text="로그인" className="go-login-btn" type="0" action={_chkIdValid}/>

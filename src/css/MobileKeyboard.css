@@ -1,0 +1,56 @@
+.seckeyboard-mobile {
+    width: 100vw;
+    height: 300px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: #eeeeee;
+    border-radius: 35px;
+    z-index: 50000000;
+    animation-name: keyboard-open;
+    animation-duration: .7s;
+    animation-delay: .3s;
+    animation-fill-mode: both;
+    transition: all .2s ease;
+}
+
+.seckeyboard-mobile .btns-cover {
+    width: calc(100% - 20px);
+    height: 230px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%);
+    /* background-color: lightgray; */
+    display: grid;
+}
+
+.seckeyboard-mobile .btns-cover .click_btns {
+    width: 90%;
+    height: 90%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 
+        0px 2px 10px rgb(0 0 0 / 30%), 
+        inset 0px 2px 10px rgb(0 0 0 / 0%);
+    transition: all .1s ease;
+}
+.seckeyboard-mobile .btns-cover .click_btns:active {
+    box-shadow: 
+        0px 2px 10px rgb(0 0 0 / 0%), 
+        inset 0px 2px 10px rgb(0 0 0 / 30%);
+}
+
+@keyframes keyboard-open {
+    from {
+        transform: translate(-50%, 100%);
+    }
+    to {
+        transform: translate(-50%, 0%);
+    }
+}

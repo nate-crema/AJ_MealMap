@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 // css
 import "../../../css/MobileBottom.css";
 
+// security keyboard
+import SKB from "../security/MobileKeyboard";
+
 // sub-rendering component
 import Search from "../mobile_comps/Search";
 import Specific from "../mobile_comps/Specific";
@@ -27,6 +30,8 @@ export const MobileBottom = function({ width, height }) {
     const [ eventTimeB, setETB ] = useState(0);
     const [ swipe_start, setSS ] = useState([-100, -100]);
     const [ mobile_init, setMobileInit ] = useState(false);
+    const [m_kboard, setMK] = useState("");
+    const [m_itype, setMIT] = useState(0);
 
     const mbCompRef = useRef(<></>);
     const bgRef = useRef(<></>);
@@ -196,12 +201,15 @@ export const MobileBottom = function({ width, height }) {
                 case "friend":
                     return _bcompHandler(false, true, "40%", true, false, false);
                 case "review":
-                    return _bcompHandler(false, true, "40%", true, false, false);
+                    return _bcompHandler(false, true, "35%", true, false, false);
                 default:
                     return _bcompHandler(true, true);
             }
         }
-        else _bcompHandler(true, false);
+        else {
+            _bcompHandler(true, false);
+            closeKeyboard();
+        }
     }, [ Bcomp, stat ]);
 
     // prevent initial marker removing error
@@ -235,6 +243,17 @@ export const MobileBottom = function({ width, height }) {
         }
     }
 
+    // keyboard state control
+    const [ keyboard_open, setKO ] = useState(false);
+    
+    const openKeyboard = () => {
+        setKO(true);
+    }
+
+    const closeKeyboard = () => {
+        setKO(false);
+    }
+
     return <>
         <div className="background-cover" ref={bgRef}></div>
         <div className="mobile-bottom-comp" ref={mbCompRef} 
@@ -254,7 +273,7 @@ export const MobileBottom = function({ width, height }) {
                             bottomCompHandler={(percent) => _bcompHandler(false, true, percent, true, false)}
                         /> : false
                         :
-                        <Login bottomCompHandler={(percent) => _bcompHandler(true, true, percent, true, false)}/>
+                        <Login bottomCompHandler={(percent) => _bcompHandler(true, true, percent, true, false)} onPinInput={openKeyboard} onPinInputEnd={closeKeyboard} minp={[m_kboard, setMK]} />
                     :
                     <></>
                 }
@@ -322,5 +341,6 @@ export const MobileBottom = function({ width, height }) {
                 </div>
             </div>
         </div>
+        { keyboard_open && <SKB width={500} height={300} valueState={[m_kboard, setMK]} inputType={[m_itype, setMIT]}/> }
     </>
 }
