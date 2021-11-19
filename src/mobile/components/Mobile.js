@@ -136,21 +136,23 @@ export const MobileBottom = function({ width, height }) {
     useEffect(() => {
         const { time: eA } = eventTimeA;
         const { time: eB, mp, e } = eventTimeB;
-        if (eA == eB) if (eventList[mp] && !(swipe_start[0] < 0) && !(swipe_start[1] < 0)) 
-        Object.values(eventList[mp]).forEach((fnc, i) => {
-            try {
-                fnc(
-                    (mp === "toRight") ? (e.touches[0].clientX - swipe_start[0]) :
-                    (mp === "toLeft") ? (swipe_start[0] - e.touches[0].clientX) :
-                    (mp === "toDown") ? (e.touches[0].clientY - swipe_start[1]) :
-                    (mp === "toUp") ? (swipe_start[1] - e.touches[0].clientY) :
-                    0
-                )
-            } catch(e) {
-                console.log(`Event Listener: Error on ${i} | ${fnc.name}`);
-                console.error(e);
-            }
-        })
+        if ((eA == eB) && eventList[mp] && !(swipe_start[0] < 0) && !(swipe_start[1] < 0)) {
+            console.log("Swipe Detected");
+            Object.values(eventList[mp]).forEach((fnc, i) => {
+                try {
+                    fnc(
+                        (mp === "toRight") ? (e.touches[0].clientX - swipe_start[0]) :
+                        (mp === "toLeft") ? (swipe_start[0] - e.touches[0].clientX) :
+                        (mp === "toDown") ? (e.touches[0].clientY - swipe_start[1]) :
+                        (mp === "toUp") ? (swipe_start[1] - e.touches[0].clientY) :
+                        0
+                    )
+                } catch(e) {
+                    console.log(`Event Listener: Error on ${i} | ${fnc.name}`);
+                    console.error(e);
+                }
+            })
+        }
     }, [ eventTimeB ]);
 
     const _swipeEvent = new function() {
@@ -271,7 +273,12 @@ export const MobileBottom = function({ width, height }) {
     }
 
     return <>
-        <div className="background-cover" ref={bgRef}></div>
+        <div 
+            ref={bgRef}
+            className="background-cover"
+            onTouchStart={_swipeStartHandler}
+            onTouchMove={_swipeEndHandler}
+        ></div>
         <div className="mobile-bottom-comp" ref={mbCompRef} 
             onTouchStart={_swipeStartHandler} 
             onTouchMove={_swipeEndHandler}

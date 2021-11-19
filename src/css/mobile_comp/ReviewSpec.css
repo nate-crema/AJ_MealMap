@@ -88,7 +88,7 @@
 
 .review-specific .review-wrap {
     width: 100%;
-    height: calc(80% - 50px);
+    height: 100%;
     position: relative;
     top: 50px;
     left: 50%;

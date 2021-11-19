@@ -98,21 +98,23 @@ export const MobileBottom = function({ width, height }) {
     useEffect(() => {
         const { time: eA } = eventTimeA;
         const { time: eB, mp, e } = eventTimeB;
-        if (eA == eB) if (eventList[mp] && !(swipe_start[0] < 0) && !(swipe_start[1] < 0)) 
-        Object.values(eventList[mp]).forEach((fnc, i) => {
-            try {
-                fnc(
-                    (mp === "toRight") ? (e.touches[0].clientX - swipe_start[0]) :
-                    (mp === "toLeft") ? (swipe_start[0] - e.touches[0].clientX) :
-                    (mp === "toDown") ? (e.touches[0].clientY - swipe_start[1]) :
-                    (mp === "toUp") ? (swipe_start[1] - e.touches[0].clientY) :
-                    0
-                )
-            } catch(e) {
-                console.log(`Event Listener: Error on ${i} | ${fnc.name}`);
-                console.error(e);
-            }
-        })
+        if ((eA == eB) && eventList[mp] && !(swipe_start[0] < 0) && !(swipe_start[1] < 0)) {
+            console.log("Swipe Detection");
+            Object.values(eventList[mp]).forEach((fnc, i) => {
+                try {
+                    fnc(
+                        (mp === "toRight") ? (e.touches[0].clientX - swipe_start[0]) :
+                        (mp === "toLeft") ? (swipe_start[0] - e.touches[0].clientX) :
+                        (mp === "toDown") ? (e.touches[0].clientY - swipe_start[1]) :
+                        (mp === "toUp") ? (swipe_start[1] - e.touches[0].clientY) :
+                        0
+                    )
+                } catch(e) {
+                    console.log(`Event Listener: Error on ${i} | ${fnc.name}`);
+                    console.error(e);
+                }
+            })
+        }
     }, [ eventTimeB ]);
 
     const _swipeEvent = new function() {
@@ -138,12 +140,15 @@ export const MobileBottom = function({ width, height }) {
         sub_maximize: "530px",
         oh_default: "470px",
         default: "400px",
+        third_quarter_default: "320px",
         half_default: "250px",
         quarter_default: "150px",
         minimize: "110px"
     }
     
-    const _bcompHandler = (bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate) => {
+    const _bcompHandler = (options) => {
+
+        const { bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate, cover_all } = options;
 
         console.log(`_bcompHandler`, bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate);
 
@@ -160,10 +165,16 @@ export const MobileBottom = function({ width, height }) {
             bgRef.current.style.display = "block";
             if (ddbar_enable) dropdownBarRef.current.style.display = "block";
             setTimeout(() => {
-                mbCompRef.current.style.height = opensize || "200px";
-                mbCompRef.current.style.bottom = "50px";
                 compDisplayerRef.current.style.width = "80%";
                 compDisplayerRef.current.style.height = '80%';
+
+                if (cover_all) {
+                    mbCompRef.current.style.height = (opensize.replace("px", "")*1 + 50) + "px" || "300px";
+                    mbCompRef.current.style.bottom = "-50px";
+                } else {
+                    mbCompRef.current.style.height = opensize || "200px";
+                    mbCompRef.current.style.bottom = "50px";
+                }
 
                 if (bg_blaclize) {
                     bgRef.current.style.opacity = "1";
@@ -205,22 +216,54 @@ export const MobileBottom = function({ width, height }) {
         if (!stat) return;
         // console.log("Bcomp", Bcomp);
         if (Bcomp) {
-            if (!uinfo.isLogined) return _bcompHandler(true, true, sizes.default, true, false);
-            else switch(Bcomp.mode) {
+            // if (!uinfo.isLogined) return _bcompHandler(true, true, sizes.default, true, false);
+            // else 
+            switch(Bcomp.mode) {
                 case "search":
-                    return _bcompHandler(false, true, sizes.oh_default);
+                    return _bcompHandler({
+                        bg_blaclize: false,
+                        action: true,
+                        opensize: sizes.half_default,
+                        cover_all: true
+                    });
                 case "specific":
-                    return _bcompHandler(true, true, sizes.oh_default, true);
+                    return _bcompHandler({
+                        bg_blaclize: true,
+                        action: true,
+                        opensize: sizes.third_quarter_default, 
+                        ddbar_enable: true,
+                        cover_all: true
+                    });
                 case "friend":
-                    return _bcompHandler(false, true, sizes.default, true, false, false);
+                    return _bcompHandler({
+                        bg_blaclize: false,
+                        action: true,
+                        opensize: sizes.default, 
+                        ddbar_enable: true,
+                        alignment_top: false,
+                        bg_deactivate: false
+                    });
                 case "review":
-                    return _bcompHandler(false, true, sizes.default, true, false, false);
+                    return _bcompHandler({
+                        bg_blaclize: false,
+                        action: true,
+                        opensize: sizes.default,
+                        ddbar_enable: true,
+                        alignment_top: false,
+                        bg_deactivate: false,
+                    });
                 default:
-                    return _bcompHandler(true, true);
+                    return _bcompHandler({
+                        bg_blaclize: true,
+                        action: true
+                    });
             }
         }
         
-        _bcompHandler(true, false);
+        _bcompHandler({
+            bg_blaclize: true,
+            action: false
+        });
         closeKeyboard();
 
     }, [ Bcomp, stat ]);
@@ -268,7 +311,12 @@ export const MobileBottom = function({ width, height }) {
     }
 
     return <>
-        <div className="background-cover" ref={bgRef}></div>
+        <div
+            ref={bgRef}
+            className="background-cover"
+            onTouchStart={_swipeStartHandler} 
+            onTouchMove={_swipeEndHandler}
+        ></div>
         <div className="mobile-bottom-comp" ref={mbCompRef} 
             onTouchStart={_swipeStartHandler} 
             onTouchMove={_swipeEndHandler}
@@ -280,10 +328,10 @@ export const MobileBottom = function({ width, height }) {
                         (Bcomp.mode == "search") ? <Search results={Bcomp.value || []}/> :
                         (Bcomp.mode == "specific") ? <Specific swipeEvent={_swipeEvent} id={Bcomp.value || ""}/> :
                         (Bcomp.mode == "friend") ? <Friend swipeEvent={_swipeEvent} 
-                            bottomCompHandler={(percent) => _bcompHandler(false, true, percent, true, false)}
+                            bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
                         /> :
                         (Bcomp.mode == "review") ? <Review swipeEvent={_swipeEvent} 
-                            bottomCompHandler={(percent) => _bcompHandler(false, true, percent, true, false)}
+                            bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
                         /> : false
                         // :
                         // <Login bottomCompHandler={(percent) => _bcompHandler(true, true, percent, true, false)} onPinInput={openKeyboard} onPinInputEnd={closeKeyboard} minp={[m_kboard, setMK]} />

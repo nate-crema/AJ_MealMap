@@ -33,11 +33,13 @@ function Review({ swipeEvent, bottomCompHandler }) {
     ];
 
     const sizes = {
-        maximize: "10%",
-        sub_maximize: "25%",
-        default: "40%",
-        sub_default: "30%",
-        minimize: "75%"
+        maximize: "600px",
+        sub_maximize: "530px",
+        oh_default: "470px",
+        default: "400px",
+        half_default: "250px",
+        quarter_default: "150px",
+        minimize: "110px"
     }
 
     const _swipeUpHandler = (direct_mode) => setIsOpen(prev => {
@@ -78,7 +80,7 @@ function Review({ swipeEvent, bottomCompHandler }) {
             titleImgRef.current.src = "";
             titleRef.current.style.left = null;
             setMT("리뷰");
-            bottomCompHandler("40%");
+            bottomCompHandler(sizes.default);
         }
     }
 
@@ -99,14 +101,14 @@ function Review({ swipeEvent, bottomCompHandler }) {
         }
         {
             (menu == 1) && <ReviewWrite
-                extendReviewArea={() => bottomCompHandler("20%")}
-                defaultizeReviewArea={() => bottomCompHandler("40%")}
+                extendReviewArea={() => bottomCompHandler(sizes.oh_default)}
+                defaultizeReviewArea={() => bottomCompHandler(sizes.default)}
             />
         }
         {
             (menu == 2) && <ReviewSpec 
-                extendReviewArea={() => bottomCompHandler("20%")}
-                defaultizeReviewArea={() => bottomCompHandler("40%")}
+                extendReviewArea={() => bottomCompHandler(sizes.oh_default)}
+                defaultizeReviewArea={() => bottomCompHandler(sizes.default)}
             />
         }
     </div>;

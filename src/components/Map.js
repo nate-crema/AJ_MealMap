@@ -58,6 +58,7 @@ function Map({
                             center: new kakao.maps.LatLng(location.lat, location.long),
                             level: 3
                         })
+                        console.log(n_map.addListener);
                         setMap(n_map);
                         let marked_marker = [];
                         marked.forEach(v => marked_marker.push(v.marker));
