@@ -518,7 +518,7 @@ function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp }) {
                 onPinInputEnd();
                 if (stage != 3) {
                     setMent(ments[stage]);
-                    bottomCompHandler(sizes.default);
+                    bottomCompHandler(sizes.oh_default);
                 } else bottomCompHandler(sizes.default);
                 break;
         }

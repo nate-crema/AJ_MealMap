@@ -214,11 +214,16 @@ export const MobileBottom = function({ width, height }) {
 
     useEffect(() => {
         if (!stat) return;
-        // console.log("Bcomp", Bcomp);
+        console.log("Bcomp", Bcomp);
         if (Bcomp) {
-            // if (!uinfo.isLogined) return _bcompHandler(true, true, sizes.default, true, false);
-            // else 
-            switch(Bcomp.mode) {
+            if (!uinfo.isLogined) return _bcompHandler({
+                bg_blaclize: false,
+                action: true,
+                opensize: sizes.oh_default,
+                ddbar_enable: true,
+                alignment_top: false
+            });
+            else switch(Bcomp.mode) {
                 case "search":
                     return _bcompHandler({
                         bg_blaclize: false,
@@ -324,7 +329,7 @@ export const MobileBottom = function({ width, height }) {
             <div className="dropdown-bar" ref={dropdownBarRef}></div>
             <div className="mobile-bottom-comp-displayer" ref={compDisplayerRef}>
                 { (Bcomp != null && Bcomp) ?
-                    // (uinfo.isLogined) ?
+                    (uinfo?.isLogined) ?
                         (Bcomp.mode == "search") ? <Search results={Bcomp.value || []}/> :
                         (Bcomp.mode == "specific") ? <Specific swipeEvent={_swipeEvent} id={Bcomp.value || ""}/> :
                         (Bcomp.mode == "friend") ? <Friend swipeEvent={_swipeEvent} 
@@ -333,8 +338,8 @@ export const MobileBottom = function({ width, height }) {
                         (Bcomp.mode == "review") ? <Review swipeEvent={_swipeEvent} 
                             bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
                         /> : false
-                        // :
-                        // <Login bottomCompHandler={(percent) => _bcompHandler(true, true, percent, true, false)} onPinInput={openKeyboard} onPinInputEnd={closeKeyboard} minp={[m_kboard, setMK]} />
+                        :
+                        <Login bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: true, action: true, opensize, ddbar_enable: true, alignment_top: false })} onPinInput={openKeyboard} onPinInputEnd={closeKeyboard} minp={[m_kboard, setMK]} />
                     :
                     <></>
                 }
