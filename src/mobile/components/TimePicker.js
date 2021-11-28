@@ -39,7 +39,7 @@ function Slider({ values }) {
             setSS(e.touches[0].clientY);
         }
     
-        const _swipeEndHandler = (e) => {
+        const _swipeOngoingHandler = (e) => {
             // console.log("end");
             // console.log();
             if (swipe_start < 0) return;
@@ -93,7 +93,7 @@ function Slider({ values }) {
 
     return <div className="slider" 
             onTouchStart={_swipeStartHandler} 
-            onTouchMove={_swipeEndHandler}
+            onTouchMove={_swipeOngoingHandler}
         >
         <div className="split-bar bar-A"></div>
         <div className="split-bar bar-B"></div>

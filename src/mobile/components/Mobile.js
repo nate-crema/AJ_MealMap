@@ -9,7 +9,7 @@ import "../css/MobileBottom.css";
 import { Logo } from './MenuBar';
 
 // sub-rendering component
-import Search from "./mobile_comps/Search";
+import Search from "./mobile_comps/SearchNear";
 import Specific from "./mobile_comps/Specific";
 import Friend from './mobile_comps/Friend';
 import Login from './mobile_comps/Login';
@@ -110,7 +110,7 @@ export const MobileBottom = function({ width, height }) {
         setSS([e.touches[0].clientX, e.touches[0].clientY]);
     }
 
-    const _swipeEndHandler = (e) => {
+    const _swipeOngoingHandler = (e) => {
         // console.log("end");
         // console.log();
         if (swipe_start[0] < 0 || swipe_start[1] < 0) {
@@ -184,7 +184,7 @@ export const MobileBottom = function({ width, height }) {
                 if (bg_deactivate !== true) bgRef.current.addEventListener("click", _bgClickHandler);
                 // user swipe action detector activation
                 // mbCompRef.current.addEventListener("mousedown", _swipeStartHandler);
-                // mbCompRef.current.addEventListener("mouseup", _swipeEndHandler);
+                // mbCompRef.current.addEventListener("mouseup", _swipeOngoingHandler);
             }, 300);
     
             bgRef.current.style.display = "block";
@@ -205,7 +205,7 @@ export const MobileBottom = function({ width, height }) {
                 setBO(true);
                 bgRef.current.removeEventListener("click", _bgClickHandler);
                 // mbCompRef.current.removeEventListener("mousedown", _swipeStartHandler);
-                // mbCompRef.current.removeEventListener("mouseup", _swipeEndHandler);
+                // mbCompRef.current.removeEventListener("mouseup", _swipeOngoingHandler);
             }
 
         } else {
@@ -277,11 +277,11 @@ export const MobileBottom = function({ width, height }) {
             ref={bgRef}
             className="background-cover"
             onTouchStart={_swipeStartHandler}
-            onTouchMove={_swipeEndHandler}
+            onTouchMove={_swipeOngoingHandler}
         ></div>
         <div className="mobile-bottom-comp" ref={mbCompRef} 
             onTouchStart={_swipeStartHandler} 
-            onTouchMove={_swipeEndHandler}
+            onTouchMove={_swipeOngoingHandler}
         >
             <div className="dropdown-bar" ref={dropdownBarRef}></div>
             <div className="mobile-bottom-comp-displayer" ref={compDisplayerRef}>

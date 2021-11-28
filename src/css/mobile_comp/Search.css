@@ -1,96 +1,63 @@
-.search_results {
+.search-menu {
     width: 100%;
-    height: 80%;
+    height: calc(100% - 50px);
     position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-}
-
-.search_results .user_msg {
-    width: 100%;
-    position: relative;
-    top: 10px;
+    top: 50px;
     left: 50%;
     transform: translate(-50%);
 }
 
-.search_results .user_msg span {
-    font-size: 18px;
-    font-weight: 500;
+.search-menu .ment {
     font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
     color: black;
+    font-size: 19px;
     position: relative;
+    top: 0;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    text-align: left;
+    word-break: keep-all;
+    transition: all .2s ease;
 }
 
-.search_results .shop-blocks {
+.search-menu .list-wrapper {
     width: 100%;
-    height: 60%;
+    height: calc(100% - 100px);
     position: relative;
-    top: 50%;
+    top: 50px;
     left: 50%;
-    transform: translate(-50%, -50%);
-    overflow-y: hidden;
-    overflow-x: auto;
-    white-space: nowrap;
+    transform: translate(-50%);
+    overflow-y: auto;
 }
 
-/* ShopList */
-
-.shop-block {
-    display: inline-block;
-    width: 110px;
-    height: 120px;
-    position: relative;
-    margin-left: 20px;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.3);
+.search-menu .result-block {
+    margin-top: 20px;
 }
 
-.shop-block .block-contents {
+.search-menu .result-block:first-child {
+    margin-top: 0;
+}
+
+.search-menu .not-found {
     width: 95%;
-    height: 95%;
+    height: 56px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 15px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.search-menu .not-found span {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: var(--theme-color-C);
+    font-size: 15px;
+    width: 100%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-.shop-block .block-contents .shop-name {
-    width: fit-content;
-    height: fit-content;
-    font-size: 20px;
-    font-weight: 500;
-    font-family: "Noto Sans KR", sans-serif;
-    color: var(--theme-color-C);
-    position: absolute;
-    top: 10px;
-    left: 15px;
-}
-
-.shop-block .block-contents .shop-point {
-    font-size: 15px;
-    font-weight: 300;
-    font-family: "Noto Sans KR", sans-serif;
-    color: var(--theme-color-C);
-    position: absolute;
-    top: 50%;
-    left: 15px;
-}
-
-.shop-block .block-contents .shop-endtime {
-    font-size: 13px;
-    font-weight: 300;
-    font-family: "Noto Sans KR", sans-serif;
-    color: lightgray;
-    position: absolute;
-    top: 70%;
-    left: 15px;
-    width: calc(100% - 30px);
-    overflow-x: auto;
+    text-align: center;
 }

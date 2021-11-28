@@ -9,6 +9,7 @@ import SKB from "../security/MobileKeyboard";
 
 // sub-rendering component
 import Search from "../mobile_comps/Search";
+import SearchNear from "../mobile_comps/SearchNear";
 import Specific from "../mobile_comps/Specific";
 import Friend from '../mobile_comps/Friend';
 import Login from '../mobile_comps/Login';
@@ -72,7 +73,7 @@ export const MobileBottom = function({ width, height }) {
         setSS([e.touches[0].clientX, e.touches[0].clientY]);
     }
 
-    const _swipeEndHandler = (e) => {
+    const _swipeOngoingHandler = (e) => {
         // console.log("end");
         // console.log();
         if (swipe_start[0] < 0 || swipe_start[1] < 0) {
@@ -150,7 +151,7 @@ export const MobileBottom = function({ width, height }) {
 
         const { bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate, cover_all } = options;
 
-        console.log(`_bcompHandler`, bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate);
+        console.log(`_bcompHandler | bg_blaclize: ${bg_blaclize} | action: ${action} | opensize: ${opensize} | ddbar_enable: ${ddbar_enable} | alignment_top: ${alignment_top} | bg_deactivate: ${bg_deactivate}`);
 
         if (action) {
 
@@ -159,10 +160,10 @@ export const MobileBottom = function({ width, height }) {
                 if (bg_deactivate !== true) bgRef.current.addEventListener("click", _bgClickHandler);
                 // user swipe action detector activation
                 // mbCompRef.current.addEventListener("mousedown", _swipeStartHandler);
-                // mbCompRef.current.addEventListener("mouseup", _swipeEndHandler);
+                // mbCompRef.current.addEventListener("mouseup", _swipeOngoingHandler);
             }, 300);
     
-            bgRef.current.style.display = "block";
+            if (bg_deactivate !== true) bgRef.current.style.display = "block";
             if (ddbar_enable) dropdownBarRef.current.style.display = "block";
             setTimeout(() => {
                 compDisplayerRef.current.style.width = "80%";
@@ -187,7 +188,7 @@ export const MobileBottom = function({ width, height }) {
                 setBO(true);
                 bgRef.current.removeEventListener("click", _bgClickHandler);
                 // mbCompRef.current.removeEventListener("mousedown", _swipeStartHandler);
-                // mbCompRef.current.removeEventListener("mouseup", _swipeEndHandler);
+                // mbCompRef.current.removeEventListener("mouseup", _swipeOngoingHandler);
             }
 
         } else {
@@ -217,7 +218,7 @@ export const MobileBottom = function({ width, height }) {
         console.log("Bcomp", Bcomp);
         if (Bcomp) {
             if (!uinfo.isLogined) return _bcompHandler({
-                bg_blaclize: false,
+                bg_blaclize: true,
                 action: true,
                 opensize: sizes.oh_default,
                 ddbar_enable: true,
@@ -225,6 +226,13 @@ export const MobileBottom = function({ width, height }) {
             });
             else switch(Bcomp.mode) {
                 case "search":
+                    return _bcompHandler({
+                        bg_deactivate: true,
+                        action: true,
+                        opensize: sizes.maximize,
+                        cover_all: true
+                    });
+                case "searchnear":
                     return _bcompHandler({
                         bg_blaclize: false,
                         action: true,
@@ -320,17 +328,18 @@ export const MobileBottom = function({ width, height }) {
             ref={bgRef}
             className="background-cover"
             onTouchStart={_swipeStartHandler} 
-            onTouchMove={_swipeEndHandler}
+            onTouchMove={_swipeOngoingHandler}
         ></div>
         <div className="mobile-bottom-comp" ref={mbCompRef} 
             onTouchStart={_swipeStartHandler} 
-            onTouchMove={_swipeEndHandler}
+            onTouchMove={_swipeOngoingHandler}
         >
             <div className="dropdown-bar" ref={dropdownBarRef}></div>
             <div className="mobile-bottom-comp-displayer" ref={compDisplayerRef}>
                 { (Bcomp != null && Bcomp) ?
                     (uinfo?.isLogined) ?
-                        (Bcomp.mode == "search") ? <Search results={Bcomp.value || []}/> :
+                        (Bcomp.mode == "search") ? <Search swipeEvent={_swipeEvent}/> :
+                        (Bcomp.mode == "searchnear") ? <SearchNear results={Bcomp.value || []}/> :
                         (Bcomp.mode == "specific") ? <Specific swipeEvent={_swipeEvent} id={Bcomp.value || ""}/> :
                         (Bcomp.mode == "friend") ? <Friend swipeEvent={_swipeEvent} 
                             bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
@@ -339,7 +348,13 @@ export const MobileBottom = function({ width, height }) {
                             bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
                         /> : false
                         :
-                        <Login bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: true, action: true, opensize, ddbar_enable: true, alignment_top: false })} onPinInput={openKeyboard} onPinInputEnd={closeKeyboard} minp={[m_kboard, setMK]} />
+                        <Login
+                            bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: true, action: true, opensize, ddbar_enable: true, alignment_top: false })}
+                            onPinInput={openKeyboard}
+                            onPinInputEnd={closeKeyboard}
+                            minp={[m_kboard, setMK]}
+                            swipeEvent={_swipeEvent}
+                        />
                     :
                     <></>
                 }
