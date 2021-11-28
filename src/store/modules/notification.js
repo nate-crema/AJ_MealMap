@@ -3,7 +3,6 @@ import { createAction, handleActions } from 'redux-actions';
 // Action Definition
 const SETNOTIFICATION = "noti/SETNOTIFICATION";
 const ADDNOTIFICATION = "noti/ADDNOTIFICATION";
-
 const SETNOTIED = "noti/SETNOTIED";
 
 // Action Create & Export
@@ -37,5 +36,5 @@ export default handleActions({
             ...state,
             notis: n
         }
-    },
+    }
 }, initState);

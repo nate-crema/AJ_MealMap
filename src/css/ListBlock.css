@@ -105,13 +105,12 @@
 }
 
 .listBlock .cont-wrapper .workTime {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 300;
     color: #cccccc;
     position: absolute;
-    top: 90px;
-    left: 35px;
-    width: 40%;   
+    bottom: 0;
+    left: 0;
     word-break: keep-all;
 }
 

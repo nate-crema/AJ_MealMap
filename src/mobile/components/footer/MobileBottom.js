@@ -14,6 +14,7 @@ import Specific from "../mobile_comps/Specific";
 import Friend from '../mobile_comps/Friend';
 import Login from '../mobile_comps/Login';
 import Review from '../mobile_comps/Review';
+import MobileNotification from './MobileAlert';
 
 export const MobileBottom = function({ width, height }) {
 
@@ -422,6 +423,7 @@ export const MobileBottom = function({ width, height }) {
                 </div>
             </div>
         </div>
+        <MobileNotification/>
         { keyboard_open && <SKB width={500} height={300} valueState={[m_kboard, setMK]} inputType={[m_itype, setMIT]}/> }
     </>
 }
