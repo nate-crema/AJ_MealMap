@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from "react-cookie";
+import { getCookie, setCookie } from '../../../connection/cookie';
 
 // component
 // import Pin from "../components/Pin";
@@ -211,9 +211,6 @@ function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp, swipeEvent 
     // global variable handler
     const dispatch = useDispatch();
 
-    //  cookie handler
-    const [ cookies, setCookie, removeCookie ] = useCookies(['x-access-meal-jwt']);
-
     // ments handler
     const ments = [
         "로그인하면 다양한 기능을 사용할 수 있어요",
@@ -342,12 +339,12 @@ function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp, swipeEvent 
       
     const _setSession = async (uinfo) => {
         window.localStorage.setItem('linfo', uinfo.authorize.token);
-        setCookie("x-access-meal-jwt", uinfo.authorize.token, {
-            expires: new Date(uinfo.authorize.exp),
-            // domain: "ajoumeal.com",
-            // secure: true
-            // httpOnly: true
-        });
+        // setCookie("x-access-meal-jwt", uinfo.authorize.token, {
+        //     expires: new Date(uinfo.authorize.exp),
+        //     // domain: "ajoumeal.com",
+        //     // secure: true
+        //     httpOnly: true
+        // });
         dispatch({ type: "user/SETUSER", uinfo });
     }
 

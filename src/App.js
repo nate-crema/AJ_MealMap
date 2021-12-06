@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCookies } from "react-cookie";
+import { getCookie, setCookie } from "./connection/cookie";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // components
@@ -9,12 +9,10 @@ import MobileMap from "./mobile/fullmap/MobileMap";
 
 function App() {
 
-  // cookie handling
-  const [ cookie, setCookie, remCookie ] = useCookies("uinfo");
-
   useEffect(() => {
-    console.log(cookie);
-    if (cookie.isLogined != "true") setCookie("isLogined", "true");
+    const isLogined = getCookie("isLogined");
+    console.log(isLogined);
+    if (isLogined != "true") setCookie("isLogined", "true");
   }, []);
 
   return (

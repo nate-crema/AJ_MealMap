@@ -93,13 +93,9 @@ const isValidAuthRoute = async ( authorize_code ) => {
     }
 }
 
-const isValidAuthToken = async ( token ) => {
+const isValidAuthToken = async () => {
     try {
-        const { data } = await axios.post(`/user/token/isValid`, {}, {
-            headers: {
-                "X-ACCESS-MEAL-JWT": token
-            }
-        });
+        const { data } = await axios.post(`/user/token/isValid`, {});
         return data;
     } catch(e) {
         console.error(e?.response?.data || e);

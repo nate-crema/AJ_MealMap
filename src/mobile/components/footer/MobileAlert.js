@@ -6,10 +6,10 @@ import "../../../css/mobile_comp/MobileAlert.css";
 
 function AlertInnerBtn({ options, closeAlert }) {
 
-    return <div className="alert-inner-btn" style={{ ...options?.style }} onClick={() => {
+    return <div className="alert-inner-btn" style={{ ...options?.style }} onMouseUp={() => setTimeout(() => {
         if (options?.onClick) options.onClick();
         closeAlert();
-    }}>
+    }, 200)}>
         <span>{ options.text }</span>
     </div>;
 }

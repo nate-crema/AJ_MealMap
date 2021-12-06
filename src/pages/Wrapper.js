@@ -26,7 +26,7 @@ import Map from "../components/Map";
 
 // api
 import { user, shop } from "../apis";
-import { useCookies } from "react-cookie";
+import { getCookie, setCookie } from "../connection/cookie";
 
 // Design Wrapper
 
@@ -38,7 +38,6 @@ function Wrapper({ history, location }) {
     const dispatch = useDispatch();
 
     // global cookie controller
-    const [ cookies, setCookie, removeCookie ] = useCookies('x-access-meal-jwt');
 
     // Control Area Reference
 
@@ -150,8 +149,7 @@ function Wrapper({ history, location }) {
             // Mobile
 
             // recover login state
-            const token = cookies['x-access-meal-jwt'];
-            if (token && !uinfo.isLogined) user.isValidAuthToken(token)
+            if (!uinfo || !uinfo.isLogined) user.isValidAuthToken()
                 .then(({res}) => {
                     if (res && res.authorize) dispatch({ type: "user/SETUSER", uinfo: {
                         isLogined: true,
