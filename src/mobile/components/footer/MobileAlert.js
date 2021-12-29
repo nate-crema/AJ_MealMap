@@ -31,6 +31,8 @@ function MobileAlert({ props }) {
     }, [ alert_object ]);
 
     // test
+    /*
+
     useEffect(() => {
         dispatch({ type: "mobile/SETALERT", alert_object: {
             type: "selectable",
@@ -46,6 +48,8 @@ function MobileAlert({ props }) {
             ]
         } })
     }, [])
+    
+    */
 
     return <>
         <div className="mobile-alert-background" style={{

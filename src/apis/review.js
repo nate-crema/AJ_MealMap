@@ -9,6 +9,16 @@ const getReviews = async (id) => {
     }
 }
 
+const getQuestions = async (id) => {
+    try {
+        const { data: question_list } = await axios.get(`/review/questions?shopId=${id}`);
+        return question_list;
+    } catch(e) {
+        
+    }
+}
+
 export default {
-    getReviews
+    getReviews,
+    getQuestions
 }

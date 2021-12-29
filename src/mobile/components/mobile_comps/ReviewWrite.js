@@ -83,16 +83,15 @@ function ReviewWrite({ extendReviewArea, defaultizeReviewArea }) {
 
     const _resultClickHandler = (info) => {
         setSI(info);
-        setMent(`'${info?.name}'의 리뷰입니다!`);
+        setMent(`'${info?.name}'에 대한 질문을 가져오고 있어요..`);
         setMode(1);
-        getReviews(info._id);
+        getQuestions(info._id);
     }
 
-    const getReviews = async (id) => {
+    const getQuestions = async (id) => {
         try {
-            const reviews_raw = await review.getReviews(id);
-            console.log(reviews_raw);
-            setRV(reviews_raw.list);
+            const reviews_raw = await review.getQuestions(id);
+            
         } catch(e) {
             console.error(e);
         }
@@ -131,56 +130,7 @@ function ReviewWrite({ extendReviewArea, defaultizeReviewArea }) {
             </>
         }
         {
-            (mode == 1) && <div className="review-wrap">  
-                <div className="score_info score_avg">
-                    <p className="value">{shop_info.review?.avg || "미집계"}</p>
-                    <p className="text">평균점수</p>
-                </div>
-                <div className="score_info score_trustable">
-                    <p className="value" style={{
-                        color: (shop_info.review?.isTrustHigh == undefined) ? "gray" : shop_info.review?.isTrustHigh ? "var(--theme-color-C)" : "lightgray"
-                    }}>{(shop_info.review?.isTrustHigh == undefined) ? "미집계" : shop_info.review?.isTrustHigh ? "높음" : "낮음"}</p>
-                    <p className="text">평균<br/>리뷰 신뢰도</p>
-                </div>
-                <div className="review-list">
-                    { reviews.sort((a, b) => (new Date(a).getTime() - new Date(b).getTime())).map(v => <>
-                        <div className="simple-review-block">
-                            <span className="point">{ v.point }</span>
-                            <span className="visitTime">{ ((new Date().getTime() - new Date(v.visited).getTime())/(1000*60*60*24) < 7) ? `${days[new Date(v.visited).getDay()]}요일에 방문함` : "오래전에 방문함" }</span>
-                        </div>
-                    </>) }
-                </div>
-                <div className="reviews_tag">
-                    <div className="good">
-                        <span className="cat_title">이런게 좋아요</span>
-                        <div className="tag_list">
-                            {/* { taglist.slice(0, 3).concat([`+ ${taglist.length-3}개`]).map(tag => <> */}
-                            { shop_info.review?.taglist?.good.slice(0, 3).concat(shop_info.review?.taglist?.good.length > 3 ? [`+ ${shop_info.review?.taglist?.good.length-3}개`] : []).map(tag => <>
-                                <div className="review_tag tag_good" style={{
-                                    width: `${getTextLengthInPixel(tag, "17px") + 20}px`
-                                }}>
-                                    <span>{ tag }</span>
-                                </div>
-                            </>) }
-                            { (!shop_info.review?.taglist?.good || shop_info.review?.taglist?.good.length <= 0) && <span className="tag_unavail">리뷰가 적어 태그를 표시할 수 없습니다.</span> }
-                        </div>
-                    </div>
-                    <div className="bad">
-                        <span className="cat_title">이건 별로에요</span>
-                        <div className="tag_list">
-                            {/* { taglist.slice(0, 3).concat([`+ ${taglist.length-3}개`]).map(tag => <> */}
-                            { shop_info.review?.taglist?.bad.slice(0, 3).concat(shop_info.review?.taglist?.bad.length > 3 ? [`+ ${shop_info.review?.taglist?.bad.length-3}개`] : []).map(tag => <>
-                                <div className="review_tag tag_bad" style={{
-                                    width: `${getTextLengthInPixel(tag, "17px") + 20}px`
-                                }}>
-                                    <span>{ tag }</span>
-                                </div>
-                            </>) }
-                            { (!shop_info.review?.taglist?.bad || shop_info.review?.taglist?.bad.length <= 0) && <span className="tag_unavail">리뷰가 적어 태그를 표시할 수 없습니다.</span> }
-                        </div>
-                    </div>
-                </div>
-            </div>
+            (mode == 1) && <></>
         }
     </div>;
 }
