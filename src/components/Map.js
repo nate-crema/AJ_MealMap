@@ -190,6 +190,7 @@ function Map({
                     kakao.maps.event.removeListener(map, 'click', _customClick);
                 }
             }
+            // return () => kakao.maps.event.removeListener(map, 'click', _customClick);
         }, [ customClick ]);
 
     // MAP - Marker |-------------

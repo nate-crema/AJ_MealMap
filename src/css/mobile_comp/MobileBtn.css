@@ -17,11 +17,14 @@
     font-weight: 500;
     font-family: "Noto Sans KR", sans-serif;
     width: fit-content;
+    max-width: 80%;
     height: fit-content;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    word-break: keep-all;
+    text-align: center;
 }
 
 

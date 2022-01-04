@@ -30,28 +30,7 @@ const findShopByLocation = async (lat, long, range) => {
 const findShopById = async (id) => {
     try {
         const { data: shop_list } = await axios.get(`/shop/${id}`);
-        return shop_list.list && shop_list.list.length > 0 ? shop_list.list[0] : shop_list.list || shop_list;
-    } catch(e) {
-        console.error(e);
-    }
-}
-
-const regShopPref = async ( name, point, loc, extra ) => {
-    try {
-        console.log(name, point, loc, extra);
-        const token = window.localStorage.getItem('linfo');
-        if (!token) throw new Error("");
-        const { data: reg_res } = await axios.post(`/review/register/quick`, {
-            name,
-            cat: 0,
-            point,
-            loc
-        }, { headers: {
-            "x-access-meal-jwt": token
-        } })
-        console.log(reg_res);
-        return reg_res;
-
+        return shop_list;
     } catch(e) {
         console.error(e);
     }
@@ -61,6 +40,5 @@ export default {
     getShopList,
     findShopList,
     findShopByLocation,
-    findShopById,
-    regShopPref
+    findShopById
 }

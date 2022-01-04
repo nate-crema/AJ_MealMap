@@ -1,4 +1,4 @@
-/* .review-specific {
+.review-write {
     width: 100%;
     height: 100%;
     position: relative;
@@ -7,14 +7,14 @@
     transform: translate(-50%, -50%);
 }
 
-.review-specific .ment {
+.review-write .ment {
     transition: all .2s ease;
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 300;
     color: var(--theme-color-C);
 }
 
-.review-specific .review-searcher {
+.review-write .review-searcher {
     width: 100%;
     height: 50px;
     position: relative;
@@ -26,7 +26,7 @@
     animation-fill-mode: both;
 }
 
-.review-specific .search_results {
+.review-write .search_results {
     width: 100%;
     height: calc(80% - 100px);
     position: relative;
@@ -35,7 +35,7 @@
     transform: translate(-50%);
 }
 
-.review-specific .search_results .result-block {
+.review-write .search_results .result-block {
     width: 100%;
     height: 70px;
     position: relative;
@@ -54,13 +54,13 @@
     overflow: hidden;
 }
 
-.review-specific .search_results .result-block:active {
+.review-write .search_results .result-block:active {
     box-shadow: 
         0px 2px 10px rgb(0 0 0 / 0%), 
         inset 0px 2px 10px rgb(0 0 0 / 30%);
 }
 
-.review-specific .search_results .result-block .shopname {
+.review-write .search_results .result-block .shopname {
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 500;
     font-size: 20px;
@@ -71,7 +71,7 @@
     transform: translateY(-50%);
 }
 
-.review-specific .search_results .result-block .location {
+.review-write .search_results .result-block .location {
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 300;
     font-size: 15px;
@@ -86,199 +86,30 @@
     text-align: right;
 }
 
-.review-specific .review-wrap {
+.review-write .answer-wrap {
     width: 100%;
-    height: calc(80% - 50px);
-    position: relative;
-    top: 50px;
-    left: 50%;
-    transform: translate(-50%);
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-.review-specific .review-wrap .score_info {
-    width: 30%;
-    min-width: 100px;
-    height: 80px;
-    position: relative;
-    top: 0px;
-    left: 0;
-    animation-name: review-summary-in;
-    animation-duration: .3s;
-    animation-delay: .5s;
-    animation-fill-mode: both;
-}
-
-.review-specific .review-wrap .score_info p {
-    font-family: "Noto Sans KR", sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-    color: var(--theme-color-C);
-    position: relative;
-    text-align: left;
-    width: 100%;
-    margin: 0;
-}
-
-.review-specific .review-wrap .score_info .value {
-    font-size: 25px;
-    font-weight: 700;
-    top: 0px;
-    left: 0;
-}
-
-.review-specific .review-wrap .score_info .text {
-    top: 0px;
-    left: 0;
-}
-
-.review-specific .review-wrap .review-list {
-    width: 60%;
-    height: 150px;
-    position: absolute;
-    right: 0%;
-    top: 0px;
-    float: right;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-}
-
-.review-specific .review-wrap .review-list .simple-review-block {
-    width: 120px;
-    height: 120px;
+    height: calc( 80% - 50px );
     position: relative;
     top: 50%;
-    margin-left: 20px;
-    transform: translateY(-50%);
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-    display: inline-block;
-    animation-name: review-block-in;
-    animation-duration: .2s;
-    animation-delay: .5s;
-    animation-fill-mode: both;
-}
-
-.review-specific .review-wrap .review-list .simple-review-block span {
-    font-family: "Noto Sans KR", sans-serif;
-    font-weight: 300;
-    font-size: 15px;
-    color: var(--theme-color-C);
-    position: absolute; 
-    text-align: left;
-}
-
-.review-specific .review-wrap .review-list .simple-review-block .point {
-    font-weight: 700;
-    font-size: 25px;
-    top: 20px;
-    left: 20px;
-}
-
-.review-specific .review-wrap .review-list .simple-review-block .visitTime {
-    width: 60%;
-    top: 60px;
-    word-break: keep-all;
-    white-space: normal;
-    line-height: 150%;
-    left: 20px;
-}
-
-.review-specific .review-wrap .reviews_tag {
-    width: 100%;
-    height: calc(100% - 38px);
-    position: relative;
-    top: 38px;
     left: 50%;
-    transform: translate(-50%);
+    transform: translate(-50%, -50%);
     display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: auto;
+    gap: 20px;
 }
 
-.review-specific .review-wrap .reviews_tag .good, .bad {
-    width: 95%;
-    height: 50%;
-    position: relative;
-    top: 10px;
-    left: 50%;
-    transform: translate(-50%);
-    animation-name: review-summary-in;
-    animation-duration: .2s;
-    animation-delay: .5s;
-    animation-fill-mode: both;
-}
-
-.review-specific .review-wrap .reviews_tag .cat_title {
-    font-size: 15px;
-    font-weight: 500;
-    font-family: "Noto Sans KR", sans-serif;
-}
-
-.review-specific .review-wrap .reviews_tag .good .cat_title {
-    color: var(--theme-color-C);
-}
-
-.review-specific .review-wrap .reviews_tag .bad .cat_title {
-    color: lightgray;
-}
-
-.review-specific .review-wrap .reviews_tag .tag_list {
-    width: 100%;
-    height: 70%;
-    position: relative;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%);
-}
-
-.review-specific .review-wrap .reviews_tag .tag_list .review_tag {
-    display: inline-block;
-    width: 50px;
-    height: 30px;
-    position: relative;
-    border-radius: 20px;
-    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
-    margin-left: 5px;
-    margin-top: 2px;
-}
-
-.review-specific .review-wrap .reviews_tag .tag_list .review_tag.tag_good {
-    background-color: var(--theme-color-C);
-}
-
-.review-specific .review-wrap .reviews_tag .tag_list .review_tag.tag_bad {
-    background-color: lightgray;
-}
-
-.review-specific .review-wrap .reviews_tag .tag_list .review_tag span {
-    font-size: 13px;
-    font-weight: 300;
-    font-family: "Noto Sans KR", sans-serif;
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-}
-
-.review-specific .review-wrap .reviews_tag .tag_list .tag_unavail {
-    font-size: 15px;
-    font-weight: 300;
-    font-family: "Noto Sans KR", sans-serif;
-    color: lightgray;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    word-break: keep-all;
+.review-write .answer-wrap .selection {
     width: 100%;
     height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
 }
+
+
+
+
+
 
 @keyframes searcher_reveal {
     from {
@@ -329,4 +160,4 @@
         opacity: 1;
         margin-right: 0;
     }
-} */
+}

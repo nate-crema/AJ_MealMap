@@ -35,7 +35,7 @@ function MobileBtn({ text, action, type = 0, className, style }) {
         ...style
     }} onClick={(e) => (action && action(e))}>
         <span className="btn-text" style={{
-            color: styles[type].color
+            color: style?.color || styles[type].color
         }}>{ text }</span>
     </div>;
 }
