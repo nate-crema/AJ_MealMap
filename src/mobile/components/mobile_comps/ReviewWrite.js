@@ -187,7 +187,7 @@ function ReviewWrite({ extendReviewArea, defaultizeReviewArea }) {
                         </>
                     }
                     { ( review_info?.questions?.list[ review_stage-1 ]?.answer_type === 2 ) && <>
-                            <DateSelector className="time-selector" inputValue={[ "hour", "minute", "am/pm" ]} action={ 
+                            <DateSelector className="time-selector" inputValue={[ "date", "am/pm" ]} action={ 
                                 ( value ) => _answeredHandler( review_info.questions.list[ review_stage-1 ]._id, value )
                             } />
                         </>
