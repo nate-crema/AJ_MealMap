@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 // css
 import "../css/DateSelector.css";
 
-function ScrollSelector({ select_state, mode, displayInvalidity }) {
+// components
+import MobileBtn from '../mobile/components/mobile_comps/MobileBtn';
+
+function ScrollSelector({ select_state, mode, updating, displayInvalidity }) {
 
     const selectables = {
         hour: [ 
@@ -76,6 +79,10 @@ function ScrollSelector({ select_state, mode, displayInvalidity }) {
             { value: 30, display: "30" }, 
             { value: 31, display: "31" }
         ],
+        ampm: [ 
+            { value: 1, display: "AM" }, 
+            { value: 2, display: "PM" }
+        ],
     }
     const [ selected, setSelected ] = select_state;
 
@@ -102,8 +109,9 @@ function ScrollSelector({ select_state, mode, displayInvalidity }) {
 
         // get scroll position
         let scroll_position = Math.round(e.target.scrollTop/71);
+        console.log(scroll_position, selectables[mode]);
+        if ( selectables[mode].length < (scroll_position + 1) ) scroll_position = selectables[mode][selectables[mode].length-1].value-1;
         console.log(scroll_position);
-        if ( selectables[mode].length < (scroll_position + 1) ) scroll_position = selectables[mode].pop()-1;
         
         // adjust scroll position
         auto_scroll.current = true;
@@ -121,14 +129,21 @@ function ScrollSelector({ select_state, mode, displayInvalidity }) {
 
     const checkValidity = ( v1, v2 ) => {
         console.log(v1, v2);
+        const today = new Date();
+        let year = ( (new Date(`${today.getFullYear()}.${v1}.${v2}`).getTime - today.getTime) > 0 ) ? today.getFullYear()-1: today.getFullYear();
+        
         if ( ["month", "day"].includes(mode) &&
             ( 
-                (new Date(`${new Date().getFullYear()}.${v1}.${v2}`).getMonth()+1) !== v1 ||
-                new Date(`${new Date().getFullYear()}.${v1}.${v2}`).getDate() !== v2
+                (new Date(`${year}.${v1}.${v2}`).getMonth()+1) !== v1 ||
+                new Date(`${year}.${v1}.${v2}`).getDate() !== v2
             )
         ) return false;
         return true;
     }
+
+    useEffect(() => {
+        updating[1](scrolling);
+    }, [ scrolling ]);
 
     return <div className='scroll-selector-wrap'>
         <div className="value-focus-bar bar-top"></div>
@@ -157,29 +172,71 @@ function ScrollSelector({ select_state, mode, displayInvalidity }) {
 
 function DateSelector({ className, inputValue, action }) {
 
+    // selecter control
     const [ selected, setSelected ] = useState({});
+    const [ updating, setUpdating ] = useState(false);
 
     const _dateErrorHandler = () => {
         console.log('Invalid Date');
     }
 
+    // button control
+    const [ submit_available, setSubmitAvailable ] = useState(false);
+    
     useEffect(() => {
-        console.log(selected);
-    }, [ selected ])
+        let endpoint = inputValue.length;
+        if (inputValue.includes("time")) endpoint++;
+        if (inputValue.includes("date")) endpoint++;
+        if ( Object.keys(selected).length === endpoint ) setSubmitAvailable(true);
+    }, [ selected ]);
 
     return <>
         <div className={ className + " timeinfo_selector" } style={{
-            gridTemplateColumns: `repeat(${ inputValue.length }, 33%)`
+            // gridTemplateColumns: `repeat(${ inputValue.length }, 33%)`
         }}>
             { inputValue.includes("time") && <>
-                <ScrollSelector select_state={[ selected, setSelected ]} mode="hour" displayInvalidity={ _dateErrorHandler } />
-                <ScrollSelector select_state={[ selected, setSelected ]} mode="minute" displayInvalidity={ _dateErrorHandler } />
+                <ScrollSelector 
+                    updating={[ updating, setUpdating ]}
+                    select_state={[ selected, setSelected ]}
+                    displayInvalidity={ _dateErrorHandler }
+                    mode="hour"
+                />
+                <span className="selector-separator">:</span>
+                <ScrollSelector 
+                    updating={[ updating, setUpdating ]}
+                    select_state={[ selected, setSelected ]}
+                    displayInvalidity={ _dateErrorHandler }
+                    mode="minute"
+                />
             </> }
             { inputValue.includes("date") && <>
-                <ScrollSelector select_state={[ selected, setSelected ]} mode="month" displayInvalidity={ _dateErrorHandler } />
-                <ScrollSelector select_state={[ selected, setSelected ]} mode="day" displayInvalidity={ _dateErrorHandler } />
+                <ScrollSelector 
+                    updating={[ updating, setUpdating ]}
+                    select_state={[ selected, setSelected ]}
+                    displayInvalidity={ _dateErrorHandler }
+                    mode="month"
+                />
+                <span className="selector-separator">/</span>
+                <ScrollSelector 
+                    updating={[ updating, setUpdating ]}
+                    select_state={[ selected, setSelected ]}
+                    displayInvalidity={ _dateErrorHandler }
+                    mode="day"
+                />
+            </> }
+            { inputValue.includes("am/pm") && <>
+                <ScrollSelector 
+                    updating={[ updating, setUpdating ]}
+                    select_state={[ selected, setSelected ]}
+                    displayInvalidity={ _dateErrorHandler }
+                    mode="ampm"
+                />
             </> }
         </div>
+        <MobileBtn className="selection" text={ ( !updating && submit_available ) ? "다음" : "기억나지 않아요" }
+            type={ ( !updating && submit_available ) ? "0" : "1" }
+            action={ action } 
+        />
     </>;
 }
 

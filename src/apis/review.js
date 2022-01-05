@@ -39,8 +39,23 @@ const saveAnswer = async ( reviewId, questionId, answer ) => {
     }
 }
 
+const endReview = async ( reviewId ) => {
+    try {
+        const { data: review_stateinfo } = await axios.post(`/review/close`, {
+            reviewId
+        });
+        return {
+            result: true,
+            data: review_stateinfo
+        };
+    } catch(e) {
+        console.error(e);
+    }
+}
+
 export default {
     getReviews,
     getQuestions,
-    saveAnswer
+    saveAnswer,
+    endReview
 }

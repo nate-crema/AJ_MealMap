@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // css
 import "../../../css/mobile_comp/MobileBtn.css";
 
-function MobileBtn({ text, action, type = 0, className, style }) {
+function MobileBtn({ text, action, type: style_type = 0, className, style }) {
 
     const styles = [
         {
@@ -29,13 +29,17 @@ function MobileBtn({ text, action, type = 0, className, style }) {
         },
     ]
 
+    // text change handler
+    useEffect(() => {
+        
+    }, [ text ]);
 
     return <div className={ `${ className + " " }mobile-btn` } style={{
-        backgroundColor: styles[type].backgroundColor,
+        backgroundColor: styles[style_type].backgroundColor,
         ...style
     }} onClick={(e) => (action && action(e))}>
         <span className="btn-text" style={{
-            color: style?.color || styles[type].color
+            color: style?.color || styles[style_type].color
         }}>{ text }</span>
     </div>;
 }

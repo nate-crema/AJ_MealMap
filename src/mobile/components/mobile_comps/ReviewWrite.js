@@ -91,6 +91,7 @@ function ReviewWrite({ extendReviewArea, defaultizeReviewArea }) {
 
     useEffect(() => {
         if ( review_stage <= 0 ) return;
+        if ( review_stage > review_info.questions.list.length ) return endReview();
         setMent( `Q${ review_stage }. ${ review_info.questions.list[ review_stage-1 ]["content_ko"] }` );
         console.log(review_info?.questions?.list[ review_stage-1 ]);
     }, [ review_stage ]);
@@ -140,6 +141,12 @@ function ReviewWrite({ extendReviewArea, defaultizeReviewArea }) {
         console.log(answer_saveres);
     }
 
+    const endReview = async () => {
+        setMent( `응답해주셔서 감사합니다! 응답은 익명으로 처리된 뒤 태그와 점수에 반영돼요!` );
+        const review_result = await review.endReview( review_info.reviewId );
+        console.log(review_result);
+    }
+
     return <div className="review-write">
         <span className="ment" ref={mentRef}>{ ment }</span>
         {
@@ -183,7 +190,6 @@ function ReviewWrite({ extendReviewArea, defaultizeReviewArea }) {
                         )
                     }
                     { ( review_info?.questions?.list[ review_stage-1 ]?.answer_type === 1 ) && <>
-                        
                         </>
                     }
                     { ( review_info?.questions?.list[ review_stage-1 ]?.answer_type === 2 ) && <>
