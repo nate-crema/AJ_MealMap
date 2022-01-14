@@ -15,6 +15,8 @@ import Notification from "../components/Notification";
 import { MobileTop } from "../mobile/components/header/MobileTop";
 import { MobileBottom } from "../mobile/components/footer/MobileBottom";
 import LeftMenu from "../mobile/components/leftside/LeftMenu";
+import Record from "../mobile/components/submenu/Record";
+import Manage from "../mobile/components/submenu/Manage";
 
 // page component
 // import Index from "./Index";
@@ -194,24 +196,28 @@ function Wrapper({ history, location }) {
             <div className="wrap">
                 {
                     (width > 800) ? <>
-                        <Notification/>
-                        <MenuBar/>
+                        {/* <Notification/>
+                        <MenuBar/> */}
                     </> : <Router>
-                        <TransitionGroup className="mobile-page-transition">
-                            <CSSTransition className="page-fade"
-                                key={ location.key } timeout={{ enter: 450, exit: 450 }}
-                            >
-                                <Route
-                                    key={ "main" }
-                                    path={ '/' }
-                                    render={() => <>
-                                        <MobileTop width={width} height={height}/>
-                                        <LeftMenu width={width} height={height}/>
-                                        <MobileBottom width={width} height={height}/>
-                                    </>}
-                                />
-                            </CSSTransition>
-                        </TransitionGroup>
+                        <MobileTop width={width} height={height}/>
+                        <LeftMenu width={width} height={height}/>
+                        <MobileBottom width={width} height={height}/>
+                        <Switch>
+                            <Route
+                                key="record"
+                                path="/record"
+                                render={() => <>
+                                    <Record/>
+                                </>}
+                            />
+                            <Route
+                                key="manage"
+                                path="/manage"
+                                render={() => <>
+                                    <Manage/>
+                                </>}
+                            />
+                        </Switch>
                     </Router>
                 }
                 <div className="map_service" style={{

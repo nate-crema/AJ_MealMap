@@ -17,6 +17,7 @@ import Friend from '../mobile_comps/Friend';
 import Login from '../mobile_comps/Login';
 import Review from '../mobile_comps/Review';
 import MobileNotification from './MobileAlert';
+import BottomManageMeeting from '../mobile_comps/Sub.Manage.Meeting';
 
 export const MobileBottom = function({ width, height }) {
 
@@ -287,6 +288,18 @@ export const MobileBottom = function({ width, height }) {
                         alignment_top: false,
                         bg_deactivate: false,
                     });
+
+                // submenu content
+                case "[sub].manage.meeting":
+                    return _bcompHandler({
+                        path: "/manage/meeting",
+                        bg_blaclize: false,
+                        action: true,
+                        opensize: sizes.half_default,
+                        ddbar_enable: true,
+                        alignment_top: false,
+                        bg_deactivate: true,
+                    });
                 default:
                     return _bcompHandler({
                         path: "/",
@@ -339,6 +352,8 @@ export const MobileBottom = function({ width, height }) {
                 dispatch({ type: "mobile/SETCOMP", comp: { mode: "login" } })
                 return;
             default:
+                mBottomRef.current.querySelectorAll(".img path").forEach(v => v.style.fill = "var(--theme-color-C)");
+                mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
                 return;
         }
     }
@@ -408,6 +423,15 @@ export const MobileBottom = function({ width, height }) {
                                 path="/review"
                                 exact={true}
                                 render={() => <Review swipeEvent={_swipeEvent} 
+                                    bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
+                                /> }
+                            />
+                            {/* submenu content */}
+                            <Route
+                                key={ "[sub].manage.meeting" }
+                                path="/manage/meeting"
+                                exact={true}
+                                render={() => <BottomManageMeeting swipeEvent={_swipeEvent} 
                                     bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
                                 /> }
                             />

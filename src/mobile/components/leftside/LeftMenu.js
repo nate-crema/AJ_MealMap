@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 // css
 import "../../../css/mobile_comp/LeftMenu.css";
@@ -61,6 +62,7 @@ function LeftMenu() {
 
     const { menu: { menu, mopen }, user: { uinfo } } = useSelector( state => state );
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [ backgorund_display, setBackgroundDisplay ] = useState(false);
     const [ backgorund_visible, setBackgroundVisible ] = useState(false);
@@ -83,6 +85,11 @@ function LeftMenu() {
         dispatch({ type: "menu/SETMOPEN", mopen: false });
     }
 
+    const moveMenu = ( b_menu, s_menu ) => {
+        menuCloseHandler();
+        history.push(`/${b_menu}` + (s_menu ? `/${s_menu}` : ""));
+    }
+
     return <>
         <div className="mobile-menu-background" style={{
             display: backgorund_display ? "unset" : "none",
@@ -92,7 +99,7 @@ function LeftMenu() {
             left: backgorund_visible ? "-2px" : "-100%"
         }}>
             <div className="content-area">
-                <div className="full-logo">
+                <div className="full-logo" onClick={() => moveMenu("")}>
                     <img src={ full_logo }/>
                 </div>
                 <UserProfile value={ uinfo }/>
@@ -102,7 +109,7 @@ function LeftMenu() {
                         { title: "리뷰기록", onClick: () => {} },
                     ]}/>
                     <SelectionCategory title="관리" contents={[
-                        { title: "밥약속관리", onClick: () => {} },
+                        { title: "밥약속관리", onClick: () => moveMenu("manage", "meeting") },
                         { title: "친구관리", onClick: () => {} },
                         { title: "계정관리", onClick: () => {} },
                     ]}/>

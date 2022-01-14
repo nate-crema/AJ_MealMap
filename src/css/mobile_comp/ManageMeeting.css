@@ -1,0 +1,142 @@
+.meetingcard-list-handler {
+    width: 100%;
+    height: calc(100% - 280px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1500;
+}
+
+.meetingcard-list-handler .prev-mover {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    top: 20px;
+    left: 10%;
+    /* transform: translate(-50%); */
+}
+
+.meetingcard-list-handler .prev-mover .to-prev-text {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: white;
+}
+
+.meetingcard-list-handler .meeting-invitations-wrapper {
+    width: 100%;
+    height: calc( 100% - 40px - 40px );
+    position: absolute;
+    top: calc( 50% - 10px );
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: yellow;
+}
+
+
+/* MeetingInvitation */
+.meeting-invitation {
+    width: 80vw;
+    height: 90%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 16px;
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+
+.meeting-invitation:first-child {
+    margin-left: calc((100% - 80vw)/2);
+}
+
+.meeting-invitation .share-text {
+    width: 45%;
+    height: 25px;
+    position: relative;
+    top: 25px;
+    left: 50%;
+    transform: translate(-50%);
+    /* background-color: lightgray; */
+    text-align: right;
+}
+
+.meeting-invitation .share-text img {
+    width: auto;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.meeting-invitation .share-text span {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--theme-color-C);
+    width: fit-content;
+    height: fit-content;
+}
+
+.meeting-invitation .meeting-content {
+    width: 80%;
+    height: calc(100% - 100px);
+    position: relative;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    /* background-color: lightgray; */
+}
+
+.meeting-invitation .meeting-content p {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+}
+
+.meeting-invitation .meeting-content .meeting-title {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--theme-color-C);
+}
+
+.meeting-invitation .meeting-content .meeting-organizer {
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--theme-color-C);
+    position: relative;
+    top: 5px;
+}
+
+.meeting-invitation .meeting-content .meeting-info {
+    width: 100%;
+    height: 120px;
+    position: relative;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    /* background-color: lightpink; */
+    display: grid;
+    grid-template-columns: 125px auto;
+    grid-template-rows: repeat(3, calc(33% - 5px));
+    gap: 10px;
+}
+
+.meeting-invitation .meeting-content .meeting-info span {
+    word-break: keep-all;
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    left: 100%;
+    transform: translate(-100%, -50%);
+    color: var(--theme-color-C);
+    font-weight: 300;
+}
+
+.meeting-invitation .meeting-content .meeting-info span.cat {
+    left: 0;
+    transform: translate(0%, -50%);
+    font-weight: 500;
+}

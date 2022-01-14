@@ -1,0 +1,18 @@
+.meeting-manage-menu {
+    width: 100%;
+    height: 80%;
+    top: 50px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.meeting-manage-menu .title-area .description {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--theme-color-C);
+    position: relative;
+    top: calc(50% + 20px);
+    left: 0;   
+}
