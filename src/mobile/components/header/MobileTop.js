@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css
@@ -9,6 +9,9 @@ import { Logo } from '../../../components/MenuBar';
 
 // api
 import { shop } from '../../../apis';
+
+// components
+import Notification from './Notification';
 
 const SBClickBlock = function({ className, style, text, icn }) {
     
@@ -27,7 +30,7 @@ const SBClickBlock = function({ className, style, text, icn }) {
 export const MobileTop = function({ width, height }) {
 
     // global variable
-    const { user: { uinfo }, map: { stat }, search: { area_open }, mobile: { bottom_comp: Bcomp, mealfriend } } = useSelector(state => state);
+    const { user: { uinfo }, menu: { mopen }, map: { stat }, search: { area_open }, mobile: { bottom_comp: Bcomp, mealfriend } } = useSelector(state => state);
     const dispatch = useDispatch();
     
     const [ keyword, setKw ] = useState("");
@@ -81,6 +84,10 @@ export const MobileTop = function({ width, height }) {
             return pv;
         }), 200);
     }
+
+    const menuToggleHandler = () => {
+        if ( uinfo.isLogined === true ) dispatch({ type: "menu/SETMOPEN", mopen: true });
+    };
 
     // swipe handler
 
@@ -186,7 +193,7 @@ export const MobileTop = function({ width, height }) {
             <div className="logo" style={{
                 width: isActive ? "0" : null
             }}>
-                <div className="logo-wrap">
+                <div className="logo-wrap" onClick={ menuToggleHandler }>
                     <Logo/>
                 </div>
                 <div className="split-bar"></div>
@@ -204,5 +211,6 @@ export const MobileTop = function({ width, height }) {
                 }} />
             </div>
         </div>
+        <Notification/>
     </>
 }

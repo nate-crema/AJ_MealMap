@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie, setCookie } from '../../../connection/cookie';
+import { useHistory } from 'react-router-dom';
 
 // component
 // import Pin from "../components/Pin";
@@ -190,6 +191,9 @@ function Input({ type, placeholder, className, state: [ v, setV ], onChange, onF
 
 function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp, swipeEvent }) {
 
+    const Bcomp = useSelector(state => state.mobile.bottom_comp);
+    const history = useHistory();
+
     // size definition
     const sizes = {
         maximize: "720px",
@@ -319,8 +323,10 @@ function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp, swipeEvent 
                     department: login_res?.res?.college?.ko,
                     major: login_res?.res?.major?.ko,
                     pn: login_res?.res?.pn,
+                    img: login_res?.uinfo?.img,
                     authorize: login_res.res.authorize
                 })
+                if (Bcomp.mode === "login") dispatch({ type: "mobile/SETCOMP", mode: null })
             }, 1500);
         } else switch(login_res) {
             case UNF: setMent("사용자를 찾을 수 없어요. 다시 시도해주세요."); break;

@@ -14,6 +14,7 @@ import Notification from "../components/Notification";
 
 import { MobileTop } from "../mobile/components/header/MobileTop";
 import { MobileBottom } from "../mobile/components/footer/MobileBottom";
+import LeftMenu from "../mobile/components/leftside/LeftMenu";
 
 // page component
 // import Index from "./Index";
@@ -26,7 +27,6 @@ import Map from "../components/Map";
 
 // api
 import { user, shop } from "../apis";
-import { getCookie, setCookie } from "../connection/cookie";
 
 // Design Wrapper
 
@@ -82,34 +82,34 @@ function Wrapper({ history, location }) {
         // console.log(history, window.location, location, action);
     })
 
-    useEffect(() => {
-        // console.log(`location`, window.location, location);
-        if (!inited) {
-            console.log("INITIALIZING");
-            // initialized
-            const go_menu = route_table.find((e, i) => e.path == window.location.pathname);
-            console.log("go_menu", go_menu);
-            if (go_menu) {
-                if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
-                else dispatch({ type: "menu/SETMOPEN", mopen: false });
-                setMenu(go_menu.menu_index);
-            } else console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
-        } else {
-            // dom re-render
-            const go_menu = route_table.find((e, i) => e.menu_index == menu);
-            if (go_menu && go_menu.path != window.location.pathname) {
-                console.log(`path not match: history push`, go_menu.path);
-                if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
-                else dispatch({ type: "menu/SETMOPEN", mopen: false });
-                history.push(go_menu.path);
-            } else if (!go_menu) {
-                console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
-                setMenu(-100);
-            } else if (menu == -100) {
-                window.location.href = "/not_found";
-            }
-        }
-    }, [ menu ]);
+    // useEffect(() => {
+    //     // console.log(`location`, window.location, location);
+    //     if (!inited) {
+    //         console.log("INITIALIZING");
+    //         // initialized
+    //         const go_menu = route_table.find((e, i) => e.path == window.location.pathname);
+    //         console.log("go_menu", go_menu);
+    //         if (go_menu) {
+    //             if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
+    //             else dispatch({ type: "menu/SETMOPEN", mopen: false });
+    //             setMenu(go_menu.menu_index);
+    //         } else console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
+    //     } else {
+    //         // dom re-render
+    //         const go_menu = route_table.find((e, i) => e.menu_index == menu);
+    //         if (go_menu && go_menu.path != window.location.pathname) {
+    //             console.log(`path not match: history push`, go_menu.path);
+    //             if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
+    //             else dispatch({ type: "menu/SETMOPEN", mopen: false });
+    //             history.push(go_menu.path);
+    //         } else if (!go_menu) {
+    //             console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
+    //             setMenu(-100);
+    //         } else if (menu == -100) {
+    //             window.location.href = "/not_found";
+    //         }
+    //     }
+    // }, [ menu ]);
 
     useEffect(() => setInitialized(true), [ ]);
 
@@ -158,6 +158,7 @@ function Wrapper({ history, location }) {
                         department: res?.uinfo?.college?.ko,
                         major: res?.uinfo?.major?.ko,
                         pn: res?.uinfo?.pn,
+                        img: res?.uinfo?.img,
                         authorize: res.authorize
                     } })
                     else throw new Error();
@@ -195,10 +196,23 @@ function Wrapper({ history, location }) {
                     (width > 800) ? <>
                         <Notification/>
                         <MenuBar/>
-                    </> : <>
-                        <MobileTop width={width} height={height}/>
-                        <MobileBottom width={width} height={height}/>
-                    </>
+                    </> : <Router>
+                        <TransitionGroup className="mobile-page-transition">
+                            <CSSTransition className="page-fade"
+                                key={ location.key } timeout={{ enter: 450, exit: 450 }}
+                            >
+                                <Route
+                                    key={ "main" }
+                                    path={ '/' }
+                                    render={() => <>
+                                        <MobileTop width={width} height={height}/>
+                                        <LeftMenu width={width} height={height}/>
+                                        <MobileBottom width={width} height={height}/>
+                                    </>}
+                                />
+                            </CSSTransition>
+                        </TransitionGroup>
+                    </Router>
                 }
                 <div className="map_service" style={{
                     width: (!(width > 800)) && "100%",

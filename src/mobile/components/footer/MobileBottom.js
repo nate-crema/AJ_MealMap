@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Route, Switch, withRouter, useHistory } from "react-router-dom";
+
 
 // css
 import "../../../css/MobileBottom.css";
@@ -20,6 +22,8 @@ export const MobileBottom = function({ width, height }) {
 
     const { user: { uinfo }, map: { stat }, mobile: { bottom_comp: Bcomp, mealfriend } } = useSelector(state => state);
     const dispatch = useDispatch();
+
+    const history = useHistory();
 
     const [ isBcompOpen, setBO ] = useState(false);
     const [ eventList, setEL ] = useState({
@@ -58,7 +62,10 @@ export const MobileBottom = function({ width, height }) {
         mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
         dispatch({ type: "map/SETLIST", list: [] });
         dispatch({ type: "mobile/SETCOMP", comp: null });
-        if (isMobile() && stat) dispatch({ type: "map/SETMCLICK", active: true });
+        if (isMobile() && stat) {
+            dispatch({ type: "map/SETMCLICK", active: true });
+            history.push("/");
+        }
     }
 
     // swipe detection
@@ -147,12 +154,18 @@ export const MobileBottom = function({ width, height }) {
         quarter_default: "150px",
         minimize: "110px"
     }
+
+    useEffect(() => {
+        console.log("history", history);
+    }, [ history ]);
     
     const _bcompHandler = (options) => {
 
-        const { bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate, cover_all } = options;
+        const { path, bg_blaclize, action, opensize, ddbar_enable, alignment_top, bg_deactivate, cover_all } = options;
 
-        console.log(`_bcompHandler | bg_blaclize: ${bg_blaclize} | action: ${action} | opensize: ${opensize} | ddbar_enable: ${ddbar_enable} | alignment_top: ${alignment_top} | bg_deactivate: ${bg_deactivate}`);
+        console.log(`_bcompHandler | path: ${ path } | bg_blaclize: ${bg_blaclize} | action: ${action} | opensize: ${opensize} | ddbar_enable: ${ddbar_enable} | alignment_top: ${alignment_top} | bg_deactivate: ${bg_deactivate}`);
+
+        if (path) history.push(path);
 
         if (action) {
 
@@ -219,6 +232,7 @@ export const MobileBottom = function({ width, height }) {
         console.log("Bcomp", Bcomp);
         if (Bcomp) {
             if (!uinfo.isLogined) return _bcompHandler({
+                path: "/login",
                 bg_blaclize: true,
                 action: true,
                 opensize: sizes.oh_default,
@@ -226,8 +240,11 @@ export const MobileBottom = function({ width, height }) {
                 alignment_top: false
             });
             else switch(Bcomp.mode) {
+                case "login":
+                    closeMenu();
                 case "search":
                     return _bcompHandler({
+                        path: "/search",
                         bg_deactivate: true,
                         action: true,
                         opensize: sizes.maximize,
@@ -235,6 +252,7 @@ export const MobileBottom = function({ width, height }) {
                     });
                 case "searchnear":
                     return _bcompHandler({
+                        path: "/nearby",
                         bg_blaclize: false,
                         action: true,
                         opensize: sizes.half_default,
@@ -242,6 +260,7 @@ export const MobileBottom = function({ width, height }) {
                     });
                 case "specific":
                     return _bcompHandler({
+                        path: "/specific",
                         bg_blaclize: true,
                         action: true,
                         opensize: sizes.third_quarter_default, 
@@ -250,6 +269,7 @@ export const MobileBottom = function({ width, height }) {
                     });
                 case "friend":
                     return _bcompHandler({
+                        path: "/friend",
                         bg_blaclize: false,
                         action: true,
                         opensize: sizes.default, 
@@ -259,6 +279,7 @@ export const MobileBottom = function({ width, height }) {
                     });
                 case "review":
                     return _bcompHandler({
+                        path: "/review",
                         bg_blaclize: false,
                         action: true,
                         opensize: sizes.default,
@@ -268,7 +289,8 @@ export const MobileBottom = function({ width, height }) {
                     });
                 default:
                     return _bcompHandler({
-                        bg_blaclize: true,
+                        path: "/",
+                        bg_blaclize: false,
                         action: true
                     });
             }
@@ -282,10 +304,19 @@ export const MobileBottom = function({ width, height }) {
 
     }, [ Bcomp, stat ]);
 
+    // mobile: page route handling
+    useEffect(() => {
+        if (!mobile_init) return;
+        const subpath = window.location.pathname.split("/");
+        console.log(subpath);
+        if ( subpath.length > 1 ) openMenu(subpath[1]);
+    }, [ mobile_init ])
+
     // prevent initial marker removing error
     useEffect(() => {
         if (stat) setTimeout(() => setMobileInit(true), 500);
     }, [ stat ]);
+
 
     // bottom menu control
     const openMenu = (menu) => {
@@ -302,12 +333,18 @@ export const MobileBottom = function({ width, height }) {
                 mBottomRef.current.querySelectorAll(".btn-review span").forEach(v => v.style.color = "var(--theme-color-C)");
                 dispatch({ type: "mobile/SETCOMP", comp: { mode: "review" } })
                 return;
+            case "login":
+                mBottomRef.current.querySelectorAll(".img path").forEach(v => v.style.fill = "var(--theme-color-C)");
+                mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
+                dispatch({ type: "mobile/SETCOMP", comp: { mode: "login" } })
+                return;
             default:
                 return;
         }
     }
 
     const closeMenu = (menu) => {
+        history.push('/');
         mBottomRef.current.querySelectorAll(".img path").forEach(v => v.style.fill = "var(--theme-color-C)");
         mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
         dispatch({ type: "mobile/SETCOMP", comp: null })
@@ -338,26 +375,57 @@ export const MobileBottom = function({ width, height }) {
             <div className="dropdown-bar" ref={dropdownBarRef}></div>
             <div className="mobile-bottom-comp-displayer" ref={compDisplayerRef}>
                 { (Bcomp != null && Bcomp) ?
-                    (uinfo?.isLogined) ?
-                        (Bcomp.mode == "search") ? <Search swipeEvent={_swipeEvent}/> :
-                        (Bcomp.mode == "searchnear") ? <SearchNear results={Bcomp.value || []}/> :
-                        (Bcomp.mode == "specific") ? <Specific swipeEvent={_swipeEvent} id={Bcomp.value || ""}/> :
-                        (Bcomp.mode == "friend") ? <Friend swipeEvent={_swipeEvent} 
-                            bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
-                        /> :
-                        (Bcomp.mode == "review") ? <Review swipeEvent={_swipeEvent} 
-                            bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
-                        /> : false
+                    (uinfo?.isLogined || Bcomp.mode !== "login") ?
+                        <Switch>
+                            <Route
+                                key={ "nearby" }
+                                path="/nearby"
+                                exact={true}
+                                render={() => <SearchNear results={Bcomp.value || []}/> }
+                            />:
+                            <Route
+                                key={ "search" }
+                                path="/search"
+                                exact={true}
+                                render={() => <Search swipeEvent={_swipeEvent}/> }
+                            />:
+                            <Route
+                                key={ "specific" }
+                                path="/specific"
+                                exact={true}
+                                render={() => <Specific swipeEvent={_swipeEvent} id={Bcomp.value || ""}/> }
+                            />:
+                            <Route
+                                key={ "friend" }
+                                path="/friend"
+                                exact={true}
+                                render={() =><Friend swipeEvent={_swipeEvent} 
+                                    bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
+                                /> }
+                            />:
+                            <Route
+                                key={ "review" }
+                                path="/review"
+                                exact={true}
+                                render={() => <Review swipeEvent={_swipeEvent} 
+                                    bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
+                                /> }
+                            />
+                        </Switch>
                         :
-                        <Login
-                            bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: true, action: true, opensize, ddbar_enable: true, alignment_top: false })}
-                            onPinInput={openKeyboard}
-                            onPinInputEnd={closeKeyboard}
-                            minp={[m_kboard, setMK]}
-                            swipeEvent={_swipeEvent}
+                        <Route
+                            key="login"
+                            path="/login"
+                            render={() => <Login
+                                bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: true, action: true, opensize, ddbar_enable: true, alignment_top: false })}
+                                onPinInput={openKeyboard}
+                                onPinInputEnd={closeKeyboard}
+                                minp={[m_kboard, setMK]}
+                                swipeEvent={_swipeEvent}
+                            />}
                         />
                     :
-                    <></>
+                    <div onLoad={() => closeMenu()} ></div>
                 }
             </div>
         </div>
