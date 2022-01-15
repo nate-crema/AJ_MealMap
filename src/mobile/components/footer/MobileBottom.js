@@ -61,11 +61,11 @@ export const MobileBottom = function({ width, height }) {
     const _bgClickHandler = () => {
         mBottomRef.current.querySelectorAll(".img path").forEach(v => v.style.fill = "var(--theme-color-C)");
         mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
-        dispatch({ type: "map/SETLIST", list: [] });
-        dispatch({ type: "mobile/SETCOMP", comp: null });
-        if (isMobile() && stat) {
-            dispatch({ type: "map/SETMCLICK", active: true });
-            history.push("/");
+        dispatch({ type: "map/SETLIST", list: [] }); // remove map pointers
+        dispatch({ type: "mobile/SETCOMP", comp: null }); // remove bottom_component content
+        if (isMobile() && stat) { // when map is loaded & display size is mobile
+            dispatch({ type: "map/SETMCLICK", active: true }); // active map click
+            history.push("/"); // move to home
         }
     }
 
@@ -156,9 +156,65 @@ export const MobileBottom = function({ width, height }) {
         minimize: "110px"
     }
 
-    useEffect(() => {
-        console.log("history", history);
-    }, [ history ]);
+    const _bcompOptions = {
+        login: {
+            path: "/login",
+            bg_blaclize: true,
+            action: true,
+            opensize: sizes.oh_default,
+            ddbar_enable: true,
+            alignment_top: false
+        },
+        search: {
+            path: "/search",
+            bg_deactivate: true,
+            action: true,
+            opensize: sizes.maximize,
+            cover_all: true
+        },
+        nearby: {
+            path: "/nearby",
+            bg_blaclize: false,
+            action: true,
+            opensize: sizes.half_default,
+            cover_all: true
+        },
+        specific: {
+            path: "/specific",
+            bg_blaclize: true,
+            action: true,
+            opensize: sizes.third_quarter_default, 
+            ddbar_enable: true,
+            cover_all: true
+        },
+        friend: {
+            path: "/friend",
+            bg_blaclize: false,
+            action: true,
+            opensize: sizes.default, 
+            ddbar_enable: true,
+            alignment_top: false,
+            bg_deactivate: false
+        },
+        review: {
+            path: "/review",
+            bg_blaclize: false,
+            action: true,
+            opensize: sizes.default,
+            ddbar_enable: true,
+            alignment_top: false,
+            bg_deactivate: false,
+        },
+        "[sub].manage.meeting": {
+            path: "/manage/meeting",
+            bg_blaclize: false,
+            action: true,
+            opensize: sizes.half_default,
+            ddbar_enable: true,
+            alignment_top: false,
+            bg_deactivate: true,
+        }
+    }
     
     const _bcompHandler = (options) => {
 
@@ -232,76 +288,12 @@ export const MobileBottom = function({ width, height }) {
         if (!stat) return;
         console.log("Bcomp", Bcomp);
         if (Bcomp) {
-            if (!uinfo.isLogined) return _bcompHandler({
-                path: "/login",
-                bg_blaclize: true,
-                action: true,
-                opensize: sizes.oh_default,
-                ddbar_enable: true,
-                alignment_top: false
-            });
+            if (!uinfo.isLogined) return _bcompHandler(_bcompOptions.login);
             else switch(Bcomp.mode) {
                 case "login":
                     closeMenu();
-                case "search":
-                    return _bcompHandler({
-                        path: "/search",
-                        bg_deactivate: true,
-                        action: true,
-                        opensize: sizes.maximize,
-                        cover_all: true
-                    });
-                case "searchnear":
-                    return _bcompHandler({
-                        path: "/nearby",
-                        bg_blaclize: false,
-                        action: true,
-                        opensize: sizes.half_default,
-                        cover_all: true
-                    });
-                case "specific":
-                    return _bcompHandler({
-                        path: "/specific",
-                        bg_blaclize: true,
-                        action: true,
-                        opensize: sizes.third_quarter_default, 
-                        ddbar_enable: true,
-                        cover_all: true
-                    });
-                case "friend":
-                    return _bcompHandler({
-                        path: "/friend",
-                        bg_blaclize: false,
-                        action: true,
-                        opensize: sizes.default, 
-                        ddbar_enable: true,
-                        alignment_top: false,
-                        bg_deactivate: false
-                    });
-                case "review":
-                    return _bcompHandler({
-                        path: "/review",
-                        bg_blaclize: false,
-                        action: true,
-                        opensize: sizes.default,
-                        ddbar_enable: true,
-                        alignment_top: false,
-                        bg_deactivate: false,
-                    });
-
-                // submenu content
-                case "[sub].manage.meeting":
-                    return _bcompHandler({
-                        path: "/manage/meeting",
-                        bg_blaclize: false,
-                        action: true,
-                        opensize: sizes.half_default,
-                        ddbar_enable: true,
-                        alignment_top: false,
-                        bg_deactivate: true,
-                    });
                 default:
-                    return _bcompHandler({
+                    return _bcompHandler( _bcompOptions[Bcomp.mode] || {
                         path: "/",
                         bg_blaclize: false,
                         action: true
@@ -390,7 +382,7 @@ export const MobileBottom = function({ width, height }) {
             <div className="dropdown-bar" ref={dropdownBarRef}></div>
             <div className="mobile-bottom-comp-displayer" ref={compDisplayerRef}>
                 { (Bcomp != null && Bcomp) ?
-                    (uinfo?.isLogined || Bcomp.mode !== "login") ?
+                    (uinfo?.isLogined) ?
                         <Switch>
                             <Route
                                 key={ "nearby" }
@@ -439,7 +431,7 @@ export const MobileBottom = function({ width, height }) {
                         :
                         <Route
                             key="login"
-                            path="/login"
+                            path="/"
                             render={() => <Login
                                 bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: true, action: true, opensize, ddbar_enable: true, alignment_top: false })}
                                 onPinInput={openKeyboard}

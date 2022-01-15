@@ -16,7 +16,7 @@ function MobileHandler({ width, height, children }) {
             const results = await shop.findShopByLocation(lat, long, range);
     
             // open search result component
-            dispatch({ type: "mobile/SETCOMP", comp: { mode: "searchnear", value: results } })
+            dispatch({ type: "mobile/SETCOMP", comp: { mode: "nearby", value: results } })
         } catch(e) {
             throw e;
         }

@@ -18,12 +18,6 @@ import LeftMenu from "../mobile/components/leftside/LeftMenu";
 import Record from "../mobile/components/submenu/Record";
 import Manage from "../mobile/components/submenu/Manage";
 
-// page component
-// import Index from "./Index";
-// import Login from "./Login";
-// import Mealmap from "./Mealmap";
-// import NFOUND from "./404";
-
 import MobileHandler from "../mobile/components/MobileHandler";
 import Map from "../components/Map";
 
@@ -39,14 +33,9 @@ function Wrapper({ history, location }) {
     const g_state = useSelector(state => state);
     const dispatch = useDispatch();
 
-    // global cookie controller
-
-    // Control Area Reference
-
-    const ctrl_ref = useRef(false);
+    const ctrl_ref = useRef(false); // Control Area Reference
 
     // Handling Design
-
     const [ width, setWidth ] = useState(window.innerWidth);
     const [ height, setHeight ] = useState(window.innerHeight);
     const logo_ref = useRef(null);
@@ -64,16 +53,6 @@ function Wrapper({ history, location }) {
 
     // Handling Route
 
-    const route_table = [
-        { path: "/login", menu_index: 0 },
-        { path: "/", menu_index: 1 },
-        { path: "/search", menu_index: 2 },
-        { path: "/route", menu_index: 3 },
-        { path: "/review", menu_index: 4 },
-        { path: "/register", menu_index: 5 },
-        { path: "/", menu_index: -100 },
-    ]
-
     const { menu: { menu, mopen }, user: { uinfo } } = g_state;
     const setMenu = (menu) => dispatch({ type: "menu/SETMENU", menu });
 
@@ -84,109 +63,50 @@ function Wrapper({ history, location }) {
         // console.log(history, window.location, location, action);
     })
 
-    // useEffect(() => {
-    //     // console.log(`location`, window.location, location);
-    //     if (!inited) {
-    //         console.log("INITIALIZING");
-    //         // initialized
-    //         const go_menu = route_table.find((e, i) => e.path == window.location.pathname);
-    //         console.log("go_menu", go_menu);
-    //         if (go_menu) {
-    //             if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
-    //             else dispatch({ type: "menu/SETMOPEN", mopen: false });
-    //             setMenu(go_menu.menu_index);
-    //         } else console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
-    //     } else {
-    //         // dom re-render
-    //         const go_menu = route_table.find((e, i) => e.menu_index == menu);
-    //         if (go_menu && go_menu.path != window.location.pathname) {
-    //             console.log(`path not match: history push`, go_menu.path);
-    //             if (go_menu.menu_index >= 2 && go_menu.menu_index <= route_table.length-2) dispatch({ type: "menu/SETMOPEN", mopen: true });
-    //             else dispatch({ type: "menu/SETMOPEN", mopen: false });
-    //             history.push(go_menu.path);
-    //         } else if (!go_menu) {
-    //             console.log(`DIRECTORY NOT FOUND: ${window.location.pathname}`);
-    //             setMenu(-100);
-    //         } else if (menu == -100) {
-    //             window.location.href = "/not_found";
-    //         }
-    //     }
-    // }, [ menu ]);
-
     useEffect(() => setInitialized(true), [ ]);
 
     // Handling Login
 
     useEffect( () => {
         console.log("uinfo changed", uinfo, window.location.pathname);
-        if (width > 800) {
-            // PC
 
-            /*
+        // recover login state
+        if (!uinfo || !uinfo.isLogined) user.isValidAuthToken()
+            .then(({res}) => {
+                if (res && res.authorize) dispatch({ type: "user/SETUSER", uinfo: {
+                    isLogined: true,
+                    isOneTime: false,
+                    name: res?.uinfo?.name,
+                    department: res?.uinfo?.college?.ko,
+                    major: res?.uinfo?.major?.ko,
+                    pn: res?.uinfo?.pn,
+                    img: res?.uinfo?.img,
+                    authorize: res.authorize
+                } })
+                else throw new Error();
+            })
+            .catch(e => console.error(e));
 
-            if (window.location.pathname == "/login" && uinfo.isLogined) setMenu(1);
-            else if (!uinfo.isLogined && window.localStorage.getItem('linfo')) {
-                // Login State Handling
-                try {
-                    const uinfo = await user.isValidAuthToken(window.localStorage.getItem('linfo'));
-                    if (uinfo?.res?.authorize?.token) {
-                        window.localStorage.setItem('linfo', uinfo.res.authorize.token);
-                        dispatch({ type: "user/SETUSER", uinfo: {
-                            ...uinfo.res,
-                            authorize: null, 
-                            isLogined: true,
-                            isOneTime: false
-                        } });
-                    }
-                    else throw new Error();
-                } catch(e) {
-                    console.error(e);
-                    // if (e?.response?.data == "Login Expired") window.location.href = "/login?error=expire";
-                    // else window.location.href = "/login?error=error";
-                }
-            } else if (!uinfo.isLogined && window.location.pathname != "/login") setMenu(0);
-
-            */
-        } else {
-            // Mobile
-
-            // recover login state
-            if (!uinfo || !uinfo.isLogined) user.isValidAuthToken()
-                .then(({res}) => {
-                    if (res && res.authorize) dispatch({ type: "user/SETUSER", uinfo: {
-                        isLogined: true,
-                        isOneTime: false,
-                        name: res?.uinfo?.name,
-                        department: res?.uinfo?.college?.ko,
-                        major: res?.uinfo?.major?.ko,
-                        pn: res?.uinfo?.pn,
-                        img: res?.uinfo?.img,
-                        authorize: res.authorize
-                    } })
-                    else throw new Error();
-                })
-                .catch(e => console.error(e));
-        }
     }, [ uinfo, window.location.pathname ]);
 
     // ROUTING |-------------
 
     // MAP |-----------
 
-    useEffect(() => {
-        if ( menu == 5 ) dispatch({ type: "map/SETLIST", list: [] });
-        else {
-            dispatch({ type: "map/SETLIST", list: [] });
-            setTimeout(() => {
-                shop.getShopList()
-                .then((list) => {
-                    console.log('list', list);
-                    dispatch({ type: "map/SETLIST", list });
-                })
-                .catch(e => console.error(e));
-            }, 150);
-        }
-    }, [ menu ]);
+    // useEffect(() => {
+    //     if ( menu == 5 ) dispatch({ type: "map/SETLIST", list: [] });
+    //     else {
+    //         dispatch({ type: "map/SETLIST", list: [] });
+    //         setTimeout(() => {
+    //             shop.getShopList()
+    //             .then((list) => {
+    //                 console.log('list', list);
+    //                 dispatch({ type: "map/SETLIST", list });
+    //             })
+    //             .catch(e => console.error(e));
+    //         }, 150);
+    //     }
+    // }, [ menu ]);
 
     // MAP |-----------
 

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // img
 import shareIcon from "../../../../assets/img/Share@2x.png";
+import calenderBackground from "../../../../assets/img/calender-background.png";
 
 // css
 import "../../../../css/mobile_comp/ManageMeeting.css";
@@ -16,21 +17,23 @@ function MeetingInvitation({ info }) {
         hour: info.date.getHours(),
         minute: info.date.getMinutes(),
         second: info.date.getSeconds(),
-    }
-
-    const meeting_time = {
+    }, meeting_time = {
         year: info.meet_time.getFullYear(),
         month: info.meet_time.getMonth()+1,
         date: info.meet_time.getDate(),
         hour: info.meet_time.getHours(),
         minute: info.meet_time.getMinutes(),
         second: info.meet_time.getSeconds(),
+    }, filterImgList = {
+        "[_id]": ""
     }
+
+    useEffect(() => console.log(info), []);
 
     return <div className="meeting-invitation">
         <div className="share-text">
             <img src={ shareIcon }/>
-            <span>쓸어올려서 공유</span>
+            <span>카드를 밀어 공유</span>
         </div>
         <div className="meeting-content">
             <p className="meeting-title">{ meeting_created.month }월 { meeting_created.date }일에 초대된 약속</p>
@@ -39,25 +42,16 @@ function MeetingInvitation({ info }) {
                 <span className='cat'>약속에 포함된 사람</span>
                 <span>주최자 외 { info.participants.length }명</span>
                 <span className='cat'>약속시간</span>
-                <span>{ 
-                    // () ?
-                    // "오늘" :
-                    // () ?
-                    // "어제" :
-                    // () ?
-                    // "내일" :
-                    // `${ ((new Date().getFullYear() - meeting_time.year) || ) + "년전" } ${info.meet_time.getMonth()+1}월 ${info.meet_time.getDate()}일`
-                }</span>
+                <span>
+                    {`${ meeting_time.year }년 ${ meeting_time.month }월 ${ meeting_time.date }일
+                    ${ meeting_time.hour > 12 ? "오후" : meeting_time.hour < 12 ? "오전" : "낮" }
+                    ${ meeting_time.hour }시 ${ meeting_time.minute < 10 ? ('0' + meeting_time.minute) : meeting_time.minute }분`}
+                </span>
                 <span className='cat'>수락상태</span>
                 <span>{ info.participants.filter(v => v.confirmed === 1).length+1 } / { info.participants.length+1 }</span>
             </div>
-            <p className="meeting-filters">설정된 밥집 조건</p>
-            <div className="filter-list">
-                { info.filter.map(v => <>
-                    
-                </>) }
-            </div>
         </div>
+        <img className="background-style-img" src={ calenderBackground }/>
     </div>
 }
 
