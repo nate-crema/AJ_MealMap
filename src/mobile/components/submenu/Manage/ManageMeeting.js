@@ -8,7 +8,7 @@ import calenderBackground from "../../../../assets/img/calender-background.png";
 // css
 import "../../../../css/mobile_comp/ManageMeeting.css";
 
-function MeetingInvitation({ info }) {
+function MeetingInvitation({ info, shareable, onShareStart, onShareEnd }) {
     
     const meeting_created = {
         year: info.date.getFullYear(),
@@ -24,8 +24,6 @@ function MeetingInvitation({ info }) {
         hour: info.meet_time.getHours(),
         minute: info.meet_time.getMinutes(),
         second: info.meet_time.getSeconds(),
-    }, filterImgList = {
-        "[_id]": ""
     };
 
     // swipe detection
@@ -61,13 +59,14 @@ function MeetingInvitation({ info }) {
         else if (swipe_start[0] - SWIPE_STD - e.touches[0].clientX > 0) mp = "toLeft";
         else if (swipe_start[1] + SWIPE_STD - e.touches[0].clientY < 0) mp = "toDown";
         else if (swipe_start[1] - SWIPE_STD - e.touches[0].clientY > 0) mp = "toUp";
-        
+        setSwipedPos(mp);
         // console.log(mp);
+        
         // console.log(eventList[mp]);
         const t = new Date().getTime();
         
         if ( mp ) {
-            console.log("Swipe Detection");
+            // console.log("Swipe Detection");
             Object.values(eventList[mp]).forEach((fnc, i) => {
                 try {
                     fnc(
@@ -106,9 +105,13 @@ function MeetingInvitation({ info }) {
     // swipe event registration
 
     useEffect(() => {
-        _swipeEvent.addEventListener("toUp", _cardSharingDesignHandler);
+        _swipeEvent.addEventListener("toUp", _cardDesignHandler);
+        _swipeEvent.addEventListener("toLeft", _cardDesignHandler);
+        _swipeEvent.addEventListener("toRight", _cardDesignHandler);
         return () => {
-            _swipeEvent.removeEventListener("toUp", _cardSharingDesignHandler);
+            _swipeEvent.removeEventListener("toUp", _cardDesignHandler);
+            _swipeEvent.removeEventListener("toLeft", _cardDesignHandler);
+            _swipeEvent.removeEventListener("toRight", _cardDesignHandler);
         }
     }, [])
 
@@ -117,46 +120,70 @@ function MeetingInvitation({ info }) {
     const [ bg_automize, setBGAutomize ] = useState(false);
     const [ sharing_bg, setSharingBg ] = useState(0);
     const [ maximum_bg, setMaxBg ] = useState(0);
+    const [ swiped_pos, setSwipedPos ] = useState(null);
     const cardRef = useRef();
 
-    const _cardSharingDesignHandler = (e) => {
+    const _cardDesignHandler = useCallback((e) => {
         setSharingBg(e);
-    }
+    }, [ shareable ])
 
-    const _cardSharingHandler = useCallback(() => {
+    const _cardSwipingHandler = useCallback(() => {
         const swipe_percent = sharing_bg / maximum_bg;
-        if (swipe_percent > 0.7) {
-            // swiped
-            setBGAutomize(true);
-            setSharingBg(maximum_bg);
-            setTimeout(() => {
+        if ( swiped_pos == "toUp" ) {
+            if (swipe_percent > 0.7) {
+                // swiped
+                setBGAutomize(true);
+                setSharingBg(maximum_bg);
+                onShareStart();
+                setTimeout(() => {
+                    setSharingBg(0);
+                    setTimeout(() => {
+                        setBGAutomize(false);
+                        onShareEnd();
+                    }, 350);
+                }, 1500);
+            } else {
+                // non-swiped
+                setBGAutomize(true);
                 setSharingBg(0);
                 setTimeout(() => {
                     setBGAutomize(false);
+                    onShareEnd();
                 }, 350);
-            }, 1500);
-        } else {
-            // non-swiped
-            setBGAutomize(true);
-            setSharingBg(0);
-            setTimeout(() => {
-                setBGAutomize(false);
-            }, 350);
+            }
+        } else if ( swiped_pos in ["toLeft", "toRight"] ) {
+            
         }
-    }, [ sharing_bg ])
+    }, [ sharing_bg, swiped_pos ])
+
+    const _clickHandler = (e) => {
+        e.stopPropagation();
+    }
 
     useEffect(() => {
-        setMaxBg(cardRef.current.getBoundingClientRect().height);
+        console.log(info);
+
+        // calculate card height
+        setMaxBg(cardRef.current.getBoundingClientRect().height * (90/85));
+        
+        // add card open animation
+        cardRef.current.classList.add("on-open");
+
+        setTimeout(() => {
+            // remove card open animation
+            cardRef.current.classList.remove("on-open");
+        }, 300);
     }, [])
 
-    return <div className="meeting-invitation"
+    return <div className={"meeting-invitation" + ( shareable ? " selected" : "" )}
         onTouchStart={_swipeStartHandler}
         onTouchMove={_swipeOngoingHandler}
-        onTouchEnd={_cardSharingHandler}
+        onTouchEnd={_cardSwipingHandler}
+        onClick={_clickHandler}
         ref={cardRef}
         style={{
             transition: bg_automize ? "all .5s cubic-bezier(0.5, 1.9, 0.38, 0.7)" : null,
-            marginTop: `-${sharing_bg / 10}px`
+            marginTop: swiped_pos === "toUp" && `-${sharing_bg / 10}px`
         }}
     >
         <div className="share-text">
@@ -182,7 +209,7 @@ function MeetingInvitation({ info }) {
         <img className="background-style-img" src={ calenderBackground }/>
         <div className="sharing-swipe-background" style={{
             transition: bg_automize ? "all .35s ease" : "none",
-            height: `${sharing_bg}px`,
+            height: swiped_pos === "toUp" && `${sharing_bg}px`,
             opacity: sharing_bg / maximum_bg
         }}/>
     </div>
@@ -190,102 +217,240 @@ function MeetingInvitation({ info }) {
 
 function ManageMeeting({ props }) {
 
+    const { stat } = useSelector(state => state.map);
     const dispatch = useDispatch();
 
     const [ meetings, setMeetings ] = useState([]);
+    const [ is_sharing_onprocess, setIsSharingOnprocess ] = useState(false);
 
     useEffect(() => {
-        // set bottom_comp
-        dispatch({ type: "mobile/SETCOMP", comp: { mode: "[sub].manage.meeting" } });
+
+        if (stat) {
+            // set bottom_comp
+            dispatch({ type: "mobile/SETCOMP", comp: { mode: "[sub].manage.meeting" } });
+            
+            // get meeting lsit
+            setTimeout(() => {
+                const meetings_result = [
+                    {
+                        _id: "test_meeting_1",
+                        date: new Date(), // 기록시간
+                        organizer: {
+                            name: "ㅁㅁㅁ",
+                            pn: "01012345678",
+                            email: "testuser@ajoumeal.com",
+                            role: 2, // 0: admin | 2: user
+                            college: "첨단소프트웨어대학",
+                            major: "사이버보안학과",
+                            img: { type: String },
+                        }, // 주최자
+                        meet_time: new Date("2022-02-01"), // 약속시간
+                        participants: [ // 참가인원
+                            {
+                                user: {
+                                    _id: "7548320ncjsonvosme",
+                                    name: "ㄱㄱㄱ",
+                                    pn: "01012345678",
+                                    email: "testuser@ajoumeal.com",
+                                    role: 2, // 0: admin | 2: user
+                                    college: "첨단소프트웨어대학",
+                                    major: "사이버보안학과",
+                                    img: { type: String },
+                                },
+                                confirmed: 0
+                            },
+                            {
+                                user: {
+                                    _id: "7548320ncjsonvosmc",
+                                    name: "ㄴㄴㄴ",
+                                    pn: "01012345678",
+                                    email: "testuser@ajoumeal.com",
+                                    role: 2, // 0: admin | 2: user
+                                    college: "첨단소프트웨어대학",
+                                    major: "사이버보안학과",
+                                    img: { type: String },
+                                },
+                                confirmed: 1
+                            },
+                            {
+                                user: {
+                                    _id: "7548320ncjsonvosmq",
+                                    name: "ㄷㄷㄷ",
+                                    pn: "01012345678",
+                                    email: "testuser@ajoumeal.com",
+                                    role: 2, // 0: admin | 2: user
+                                    college: "첨단소프트웨어대학",
+                                    major: "사이버보안학과",
+                                    img: { type: String },
+                                },
+                                confirmed: 2
+                            }
+                        ],
+                        filter: [ // 적용 필터
+                            {
+                                filterInfo: {
+                                    _id: "fid_0",
+                                    name: "갑각류"
+                                },
+                                assign_count: 1,
+                                auth: true
+                            },
+                            {
+                                filterInfo: {
+                                    _id: "fid_1",
+                                    name: "우유"
+                                },
+                                assign_count: 3,
+                                auth: true
+                            }
+                        ],
+                        request: []
+                    },
+                    {
+                        _id: "test_meeting_2",
+                        date: new Date(), // 기록시간
+                        organizer: {
+                            name: "ㅁㅁㅁ",
+                            pn: "01012345678",
+                            email: "testuser@ajoumeal.com",
+                            role: 2, // 0: admin | 2: user
+                            college: "첨단소프트웨어대학",
+                            major: "사이버보안학과",
+                            img: { type: String },
+                        }, // 주최자
+                        meet_time: new Date("2022-02-01"), // 약속시간
+                        participants: [ // 참가인원
+                            {
+                                user: {
+                                    _id: "7548320ncjsonvosme",
+                                    name: "ㄱㄱㄱ",
+                                    pn: "01012345678",
+                                    email: "testuser@ajoumeal.com",
+                                    role: 2, // 0: admin | 2: user
+                                    college: "첨단소프트웨어대학",
+                                    major: "사이버보안학과",
+                                    img: { type: String },
+                                },
+                                confirmed: 0
+                            },
+                            {
+                                user: {
+                                    _id: "7548320ncjsonvosmc",
+                                    name: "ㄴㄴㄴ",
+                                    pn: "01012345678",
+                                    email: "testuser@ajoumeal.com",
+                                    role: 2, // 0: admin | 2: user
+                                    college: "첨단소프트웨어대학",
+                                    major: "사이버보안학과",
+                                    img: { type: String },
+                                },
+                                confirmed: 1
+                            },
+                            {
+                                user: {
+                                    _id: "7548320ncjsonvosmq",
+                                    name: "ㄷㄷㄷ",
+                                    pn: "01012345678",
+                                    email: "testuser@ajoumeal.com",
+                                    role: 2, // 0: admin | 2: user
+                                    college: "첨단소프트웨어대학",
+                                    major: "사이버보안학과",
+                                    img: { type: String },
+                                },
+                                confirmed: 2
+                            }
+                        ],
+                        filter: [ // 적용 필터
+                            {
+                                filterInfo: {
+                                    _id: "fid_0",
+                                    name: "갑각류"
+                                },
+                                assign_count: 1,
+                                auth: true
+                            },
+                            {
+                                filterInfo: {
+                                    _id: "fid_1",
+                                    name: "우유"
+                                },
+                                assign_count: 3,
+                                auth: true
+                            }
+                        ],
+                        request: []
+                    }
+                ];
+                setMeetings(meetings_result);
+                if (meetings.length > 0) setSelected(meetings[0]._id);
+            }, 300);
+        }
+
+    }, [ stat ])
+
+    // invitation scrolling-select handle functions
+
+    const lscrolled = useRef();
+    const swipeRef = useRef();
+    const auto_scroll = useRef(false);
+    const [ selected, setSelected ] = useState(null);
+
+    const _scrollHandler = ( e ) => {
+        // setScrolling(true);
+
+        // disable upscaled size
+        setSelected(null);
+        const timestamp = new Date().getTime();
+        lscrolled.current = timestamp;
+        return setTimeout(() => {
+            _invitationSelector( timestamp, e) ;
+        }, 100);
+    }
+    
+    const _invitationSelector = ( timestamp, e ) => {
+        // check is scroll action ends
+        if ( lscrolled.current !== timestamp || auto_scroll.current ) return;
+
+        // get scroll position
+        const px_per_vw = window.innerWidth / 100;
+        const selection_area_size = px_per_vw * ( 75 + 5 );
+        let scroll_position = Math.round(e.target.scrollLeft/selection_area_size);
+        // console.log(scroll_position, meetings);
+        if ( meetings.length < (scroll_position + 1) ) scroll_position = meetings[meetings.length-1].value-1;
+        // console.log(scroll_position, swipeRef.current.scrollLeft);
+        console.log(`selected: ${meetings[scroll_position]._id}`);
         
-        // get meeting lsit
-        setTimeout(() => {
-            setMeetings([
-                {
-                    date: new Date(), // 기록시간
-                    organizer: {
-                        name: "ㅁㅁㅁ",
-                        pn: "01012345678",
-                        email: "testuser@ajoumeal.com",
-                        role: 2, // 0: admin | 2: user
-                        college: "첨단소프트웨어대학",
-                        major: "사이버보안학과",
-                        img: { type: String },
-                    }, // 주최자
-                    meet_time: new Date("2022-02-01"), // 약속시간
-                    participants: [ // 참가인원
-                        {
-                            user: {
-                                _id: "7548320ncjsonvosme",
-                                name: "ㄱㄱㄱ",
-                                pn: "01012345678",
-                                email: "testuser@ajoumeal.com",
-                                role: 2, // 0: admin | 2: user
-                                college: "첨단소프트웨어대학",
-                                major: "사이버보안학과",
-                                img: { type: String },
-                            },
-                            confirmed: 0
-                        },
-                        {
-                            user: {
-                                _id: "7548320ncjsonvosmc",
-                                name: "ㄴㄴㄴ",
-                                pn: "01012345678",
-                                email: "testuser@ajoumeal.com",
-                                role: 2, // 0: admin | 2: user
-                                college: "첨단소프트웨어대학",
-                                major: "사이버보안학과",
-                                img: { type: String },
-                            },
-                            confirmed: 1
-                        },
-                        {
-                            user: {
-                                _id: "7548320ncjsonvosmq",
-                                name: "ㄷㄷㄷ",
-                                pn: "01012345678",
-                                email: "testuser@ajoumeal.com",
-                                role: 2, // 0: admin | 2: user
-                                college: "첨단소프트웨어대학",
-                                major: "사이버보안학과",
-                                img: { type: String },
-                            },
-                            confirmed: 2
-                        }
-                    ],
-                    filter: [ // 적용 필터
-                        {
-                            filterInfo: {
-                                _id: "fid_0",
-                                name: "갑각류"
-                            },
-                            assign_count: 1,
-                            auth: true
-                        },
-                        {
-                            filterInfo: {
-                                _id: "fid_1",
-                                name: "우유"
-                            },
-                            assign_count: 3,
-                            auth: true
-                        }
-                    ],
-                    request: []
-                }
-            ])
-        }, 300);
-    }, [])
+        // update current selected state
+        setSelected(meetings[scroll_position]._id);
+
+        // adjust scroll position
+        auto_scroll.current = true;
+        swipeRef.current.scrollLeft = scroll_position * selection_area_size - 12;
+        auto_scroll.current = false;
+        
+    }
+    
 
     // 아래로 내리기: 메뉴 나가기
     // 위로 올리기: 초대장 공유하기 (만료되지 않은 초대장일 경우) | 초대장 삭제하기 (만료된 초대장일 경우)
     // 좌우 스와이프: 초대장 넘기기
     // 터치: 초대장 내용 상세보기
-    // 
-    return <div className="meetingcard-list-handler">
-        <div className="meeting-invitations-wrapper">
-            { meetings.map(v => <MeetingInvitation info={ v } />) }
+
+    return <div className="meetingcard-list-handler" onClick={() => dispatch({ type: "mobile/SETCOMP", comp: null })}>
+        <div className="meeting-invitations-wrapper" ref={swipeRef} onScroll={_scrollHandler} style={{
+            overflowX: ( is_sharing_onprocess ) ? "hidden" : "scroll"
+        }}>
+            <div className="meeting-invitations-scroller" style={{
+                width: `calc( 95vw * ${ meetings.length })`
+            }}>
+                { meetings.map(v => <MeetingInvitation
+                    key={ v._id }
+                    info={ v } 
+                    shareable={ v._id === selected }
+                    onShareStart={ () => setIsSharingOnprocess(true) }
+                    onShareEnd={ () => setIsSharingOnprocess(false) }
+                />) }
+            </div>
         </div>
     </div>;
 }
