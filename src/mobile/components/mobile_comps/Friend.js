@@ -11,6 +11,9 @@ import friend_edit from "../../../assets/img/friend_edit.svg";
 import near from "../../../assets/img/near.svg";
 import person from "../../../assets/img/person.svg";
 
+// menu component
+import Friendlist from './Friend/Friendlist';
+
 // component
 import MobileBtn from "./MobileBtn";
 import TimePicker from '../TimePicker';
@@ -41,11 +44,11 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
 
     const _swipeUpHandler = (direct_mode) => setIsOpen(prev => {
         setPS(ps => {
-            if (ps || direct_mode == "max") {
+            if (ps || direct_mode === "max") {
                 // maximize menu
                 bottomCompHandler(sizes.maximize);
                 setIsMaximize(true);
-            } else if (!prev || direct_mode == "default") {
+            } else if (!prev || direct_mode === "default") {
                 // defaultize menu
                 bottomCompHandler(sizes.default);
                 setIsMaximize(false);
@@ -58,16 +61,16 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
     const _swipeDownHandler = (direct_mode) => setIsMaximize(prev => {
         setPS(ps => {
             console.log(`ps`, ps);
-            if (ps || direct_mode == "min") {
+            if (ps || direct_mode === "min") {
                 // minimize menu
                 bottomCompHandler(sizes.minimize);
                 setIsOpen(false);
                 return ps;
-            } else if (!ps && (!prev || direct_mode == "close")) {
+            } else if (!ps && (!prev || direct_mode === "close")) {
                 // close menu
                 dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
                 return false;
-            } else if (prev || direct_mode == "default") {
+            } else if (prev || direct_mode === "default") {
                 // defaultize menu
                 bottomCompHandler(sizes.default);
                 setIsOpen(true);
@@ -258,7 +261,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
             </div>
         }
         {
-            (progressing_stat == 1) && <>
+            (progressing_stat === 1) && <>
                 <div className="mealfriend">
                     <div className="friends-list">
                         { (mealfriend.list.length > 0) ? mealfriend.list.map((id, i) => {
@@ -284,7 +287,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
             </>
         }
         {
-            (progressing_stat == 1.5) && <>
+            (progressing_stat === 1.5) && <>
                     <div className="select-list add-user sliding-l">
                         { userinfo.friend.map((uinfo, i) => 
                         <div className="userlist-block" key={uinfo._id} onClick={() => _selectHandler(uinfo._id)}>
@@ -308,7 +311,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
             </>
         }
         {
-            (progressing_stat == 1.7) && <>
+            (progressing_stat === 1.7) && <>
                 <div className="time-selection sliding-l">
                     <span className="msg">{ msg }</span>
                     <TimePicker className="meet-time-picker" bottomCompHandler={(mode_id) => bottomCompHandler(mode_id < 0 ? sizes.oh_default : sizes.maximize)}/>
@@ -318,8 +321,14 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
         }
 
         {
-            (progressing_stat == 2) && <>
+            (progressing_stat === 2) && <>
                 <span className="nearfriend">아직은 지원하지 않아요 ㅠㅠ<br/>아쉽지만 곧 만나요!</span>
+            </>
+        }
+
+        {
+            (progressing_stat === 3) && <>
+                <Friendlist/>
             </>
         }
     </div>;

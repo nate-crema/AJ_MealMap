@@ -4,7 +4,7 @@ import { shop } from '../../apis';
 
 // mobile-rendering component
 
-function MobileHandler({ width, height, children }) {
+function MobileHandler({ width, height, children, history }) {
 
     // click position displayer
     const { stat, customClick, customClickedPo } = useSelector(state => state.map);
@@ -16,6 +16,7 @@ function MobileHandler({ width, height, children }) {
             const results = await shop.findShopByLocation(lat, long, range);
     
             // open search result component
+            history.push("/near");
             dispatch({ type: "mobile/SETCOMP", comp: { mode: "nearby", value: results } })
         } catch(e) {
             throw e;

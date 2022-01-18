@@ -78,11 +78,11 @@
 }
 
 .timeinfo_selector .value-focus-bar.bar-top {
-    top: 30px;
+    top: 27%;
 }
 
 .timeinfo_selector .value-focus-bar.bar-bottom {
-    bottom: 30px;
+    bottom: 27%;
 }
 
 .timeinfo_selector .selector-separator {

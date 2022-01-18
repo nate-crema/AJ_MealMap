@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 // css
 import "../../../css/mobile_comp/SearchNear.css";
 
-function ShopList({ info }) {
+function ShopList({ info, history }) {
 
     const dispatch = useDispatch();
     
     const _clickHandler = (e) => {
+        history.push(`/specific?shopId=${ info._id }`);
         dispatch({ type: "mobile/SETCOMP", comp: { mode: "specific", value: info._id } });
     }
 
@@ -23,7 +24,7 @@ function ShopList({ info }) {
     </div>
 }
 
-function SearchNear({ results }) {
+function SearchNear({ results, history }) {
     
     const [ data, setData ] = useState([]);
     const [ msg, setMsg ] = useState("");
@@ -40,7 +41,7 @@ function SearchNear({ results }) {
         </div>
         <div className="shop-blocks">
             { data.map((info, key) => <>
-                <ShopList info={info} key={key}/>
+                <ShopList info={info} key={key} history={history}/>
             </>)}
         </div>
     </div>;

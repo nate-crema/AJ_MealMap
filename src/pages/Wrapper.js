@@ -98,25 +98,21 @@ function Wrapper({ history, location }) {
         dispatch({ type: "mobile/SETCOMP", comp: router[menu].mobile_comp });
     };
 
-    const [ prev_location, setPrevLocation ] = useState("");
-
-    const _routeChangeHandler = useCallback((history, action) => {
-        console.log(`history changed`, prev_location, history.pathname, history.pathname === prev_location);
-        if (history.pathname === prev_location) return;
-        else setPrevLocation( history.pathname );
+    const _routeChangeHandler = (history, action) => {
+        console.log(`history changed`);
         const routed_urls = router.map(v => v.url);
-        console.log(history);
+        // console.log(history);
         if (routed_urls.includes(history.pathname)) 
             setMenu(routed_urls.indexOf(history.pathname));
         // console.log(history, window.location, location, action);
-    }, [ prev_location ]);
+    };
     
     useEffect(() => {
         _routeChangeHandler({ pathname: window.location.pathname })
     }, [ window.location.href ])
 
     useEffect(() => {
-        // history.push(window.location.pathname);
+        history.push(window.location.pathname);
     }, [ ]);
 
     // Handling Login
@@ -181,14 +177,14 @@ function Wrapper({ history, location }) {
                                 key="record"
                                 path="/record"
                                 render={() => <>
-                                    <Record/>
+                                    <Record history={ history }/>
                                 </>}
                             />
                             <Route
                                 key="manage"
                                 path="/manage"
                                 render={() => <>
-                                    <Manage/>
+                                    <Manage history={ history }/>
                                 </>}
                             />
                         </Switch>
@@ -198,7 +194,7 @@ function Wrapper({ history, location }) {
                     width: (!(width > 800)) && "100%",
                     left: (!(width > 800)) && "0",
                 }}>
-                    <MobileHandler width={width} height={height}>
+                    <MobileHandler width={width} height={height} history={history}>
                         <Map
                             location={{
                                 lat: 37.27983974701925,

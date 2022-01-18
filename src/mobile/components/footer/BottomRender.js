@@ -56,6 +56,7 @@ export const BottomRender = function({ width, height, mBottomRef, history }) {
         mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
         dispatch({ type: "map/SETLIST", list: [] }); // remove map pointers
         // dispatch({ type: "mobile/SETCOMP", comp: { mode: null } }); // remove bottom_component content
+        console.log(history);
         history.push("/"); // move to home
         if (isMobile() && stat) { // when map is loaded & display size is mobile
             dispatch({ type: "map/SETMCLICK", active: true }); // active map click
@@ -335,7 +336,7 @@ export const BottomRender = function({ width, height, mBottomRef, history }) {
             <div className="mobile-bottom-comp-displayer" ref={compDisplayerRef}>
                 { (Bcomp.mode !== null) ?
                     (uinfo?.isLogined) ?
-                            ( Bcomp.mode === "nearby" ) ?  <SearchNear results={Bcomp.value || []}/> :
+                            ( Bcomp.mode === "nearby" ) ?  <SearchNear results={Bcomp.value || []} history={ history }/> :
                             
                             ( Bcomp.mode === "search" ) ?  <Search swipeEvent={_swipeEvent}/> :
                             
@@ -350,7 +351,7 @@ export const BottomRender = function({ width, height, mBottomRef, history }) {
                             /> :
                             
                             /* submenu content */
-                            ( Bcomp.mode === "[sub].manage.meeting" ) ?  <BottomManageMeeting smeetingwipeEvent={_swipeEvent} 
+                            ( Bcomp.mode === "[sub].manage.meeting" ) ?  <BottomManageMeeting swipeEvent={_swipeEvent} history={ history }
                                 bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
                             /> :
                             ( Bcomp.mode === "login" ) ?  <Login

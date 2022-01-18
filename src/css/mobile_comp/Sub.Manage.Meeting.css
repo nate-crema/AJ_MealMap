@@ -16,3 +16,213 @@
     top: calc(50% + 20px);
     left: 0;   
 }
+
+.meeting-manage-menu .meeting-info-wrapper {
+    width: 100%;
+    height: calc(100% - 50px);
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%);
+    /* background-color: orange; */
+    /* overflow-x: hidden; */
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.meeting-manage-menu .meeting-info-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.meeting-manage-menu .meeting-info-wrapper .minfo-block .context-title {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: var(--theme-color-C);
+    font-size: 16px;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list .user-list {
+    width: 100%;
+    height: 150px;
+    position: relative;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list .user-list::-webkit-scrollbar {
+    display: none;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list .user-list .users-aligner {
+    min-width: 100%;
+    height: 80%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list .user-list .users-aligner .participate-user-block {
+    width: 80px;
+    height: 100%; 
+    float: left;
+    background-color: #C9C9C91A;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    margin-left: 20px;
+    position: relative;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list .user-list .users-aligner .participate-user-block .user-image {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: white;
+    border-radius: 25px;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list .user-list .users-aligner .participate-user-block .user-name {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.meeting-manage-menu .meeting-info-wrapper .invited-list .limit-notice {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    color: var(--theme-color-C);
+    font-size: 14px;
+    width: 100%;
+    height: fit-content;
+    position: relative;
+    top: 40px;
+    text-align: left;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .meeting-time {
+    width: 100%;
+    height: 150px;
+    position: relative;
+    /* background-color: thistle; */
+}
+
+.meeting-manage-menu .meeting-info-wrapper .meeting-time-display-wrap {
+    width: 100%;
+    height: 60px;
+    position: relative;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%);
+    overflow: hidden;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .meeting-time-display {
+    width: 100%;
+    height: 110px;
+    position: relative;  
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list {
+    width: 100%;
+    height: 150px;
+    position: relative;
+    /* background-color: thistle; */
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap {
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    padding-bottom: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap::-webkit-scrollbar {
+    display: none;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap .filters-aligner {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap .filters-aligner .filter-block {
+    width: 80px;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    float: left;
+    margin-right: 20px;
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap .filters-aligner .filter-block .filter-icon-wrap {
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap .filters-aligner .filter-block .filter-icon-wrap .filter-icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap .filters-aligner .filter-block .filter-name {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: black;
+    font-size: 12px; 
+    width: fit-content;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}

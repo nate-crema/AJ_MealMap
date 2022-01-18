@@ -5,16 +5,14 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 // components
 import ManageMeeting from './Manage/ManageMeeting';
 
-function Manage() {
-
-    const history = useHistory();
+function Manage({ history }) {
 
     return <Switch>
         <Route
             key="record_reviewed"
             path="/manage/meeting"
             exact={true}
-            render={() => <ManageMeeting/>}
+            render={() => <ManageMeeting history={ history } />}
         />
         <Route>
             { () => window.onload = () => history.push("/") }

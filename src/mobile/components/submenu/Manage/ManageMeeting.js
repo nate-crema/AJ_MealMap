@@ -8,7 +8,7 @@ import calenderBackground from "../../../../assets/img/calender-background.png";
 // css
 import "../../../../css/mobile_comp/ManageMeeting.css";
 
-function MeetingInvitation({ info, shareable, onShareStart, onShareEnd }) {
+function MeetingInvitation({ info, shareable, onShareStart, onShareEnd, onClick }) {
     
     const meeting_created = {
         year: info.date.getFullYear(),
@@ -158,6 +158,7 @@ function MeetingInvitation({ info, shareable, onShareStart, onShareEnd }) {
 
     const _clickHandler = (e) => {
         e.stopPropagation();
+        if ( onClick ) onClick();
     }
 
     useEffect(() => {
@@ -215,7 +216,7 @@ function MeetingInvitation({ info, shareable, onShareStart, onShareEnd }) {
     </div>
 }
 
-function ManageMeeting({ props }) {
+function ManageMeeting({ history }) {
 
     const { stat } = useSelector(state => state.map);
     const dispatch = useDispatch();
@@ -234,6 +235,8 @@ function ManageMeeting({ props }) {
                 const meetings_result = [
                     {
                         _id: "test_meeting_1",
+                        dId: "usr_meeting_a", // display id: 가변 약속 id; 요청시점에 따라 변경 & 단위시간마다 갱신
+                        sess: "[abcdefg]", // dId와 sess를 통해 약속 특정이 가능해야 함
                         date: new Date(), // 기록시간
                         organizer: {
                             name: "ㅁㅁㅁ",
@@ -308,6 +311,8 @@ function ManageMeeting({ props }) {
                     },
                     {
                         _id: "test_meeting_2",
+                        dId: "usr_meeting_b",
+                        sess: "[abcdefg]",
                         date: new Date(), // 기록시간
                         organizer: {
                             name: "ㅁㅁㅁ",
@@ -429,6 +434,11 @@ function ManageMeeting({ props }) {
         auto_scroll.current = false;
         
     }
+
+    const setMeetingInfo = ( info ) => {
+        // console.log(history, history.push, info);
+        history.push(`/manage/meeting?meetingId=${ info.dId }`, info.sess);
+    }
     
 
     // 아래로 내리기: 메뉴 나가기
@@ -449,6 +459,7 @@ function ManageMeeting({ props }) {
                     shareable={ v._id === selected }
                     onShareStart={ () => setIsSharingOnprocess(true) }
                     onShareEnd={ () => setIsSharingOnprocess(false) }
+                    onClick={ () => setMeetingInfo(v) }
                 />) }
             </div>
         </div>
