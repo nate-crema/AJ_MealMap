@@ -15,7 +15,7 @@ function Search({ swipeEvent, results }) {
     const [ ment, setMent ] = useState("음식점의 이름이나 초성, 카테고리를 검색할 수 있어요!");
     
     const _swipeDownHandler = (direct_mode) => {
-        dispatch({ type: "mobile/SETCOMP", comp: null });
+        dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
     }
 
     useEffect(() => {

@@ -242,7 +242,7 @@ function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp, swipeEvent 
 
     // user touch-action handler
     const _swipeDownHandler = () => {
-        dispatch({ type: "mobile/SETCOMP", comp: null });
+        dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
     }
 
     // swipe events: registration
@@ -326,7 +326,7 @@ function Login({ bottomCompHandler, onPinInput, onPinInputEnd, minp, swipeEvent 
                     img: login_res?.uinfo?.img,
                     authorize: login_res.res.authorize
                 })
-                dispatch({ type: "mobile/SETCOMP", mode: Bcomp.mode === "login" ? null : Bcomp.mode });
+                dispatch({ type: "mobile/SETCOMP", comp: { mode: Bcomp.mode === "login" ? { mode: null } : Bcomp.mode } });
             }, 1500);
         } else switch(login_res) {
             case UNF: setMent("사용자를 찾을 수 없어요. 다시 시도해주세요."); break;

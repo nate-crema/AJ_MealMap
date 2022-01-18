@@ -436,7 +436,7 @@ function ManageMeeting({ props }) {
     // 좌우 스와이프: 초대장 넘기기
     // 터치: 초대장 내용 상세보기
 
-    return <div className="meetingcard-list-handler" onClick={() => dispatch({ type: "mobile/SETCOMP", comp: null })}>
+    return <div className="meetingcard-list-handler" onClick={() => dispatch({ type: "mobile/SETCOMP", comp: { mode: null } })}>
         <div className="meeting-invitations-wrapper" ref={swipeRef} onScroll={_scrollHandler} style={{
             overflowX: ( is_sharing_onprocess ) ? "hidden" : "scroll"
         }}>

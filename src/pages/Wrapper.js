@@ -1,6 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
-
+import { useEffect, useState, useRef, useCallback } from "react";
+import { BrowserRouter as Router, Route, Switch, withRouter, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
@@ -53,17 +52,72 @@ function Wrapper({ history, location }) {
 
     // Handling Route
 
+    const router = [
+        { // menu id: 0
+            name: "main",
+            url: "/",
+            mobile_comp: { mode: null }
+        },
+        { // menu id: 1
+            name: "friend",
+            url: "/friend",
+            mobile_comp: { mode: "friend" }
+        },
+        { // menu id: 2
+            name: "route",
+            url: "/route",
+            mobile_comp: { mode: "route" }
+        },
+        { // menu id: 3
+            name: "review",
+            url: "/review",
+            mobile_comp: { mode: "review" }
+        },
+        { // menu id: 4
+            name: "search",
+            url: "/search",
+            mobile_comp: { mode: "search" }
+        },
+        { // menu id: 5
+            name: "nearby",
+            url: "/nearby",
+            mobile_comp: { mode: "nearby" }
+        },
+        { // menu id: 6
+            name: "meeting manage",
+            url: "/manage/meeting",
+            mobile_comp: { mode: "[sub].manage.meeting" }
+        }
+    ]
+
     const { menu: { menu, mopen }, user: { uinfo } } = g_state;
-    const setMenu = (menu) => dispatch({ type: "menu/SETMENU", menu });
+    const setMenu = (menu) => {
+        console.log(router[menu]);
+        if (!router[menu]) return;
+        dispatch({ type: "menu/SETMENU", menu });
+        dispatch({ type: "mobile/SETCOMP", comp: router[menu].mobile_comp });
+    };
 
-    const [ inited, setInitialized ] = useState(false);
+    const [ prev_location, setPrevLocation ] = useState("");
 
-    history.listen((history, action) => {
-        console.log(`history changed`);
+    const _routeChangeHandler = useCallback((history, action) => {
+        console.log(`history changed`, prev_location, history.pathname, history.pathname === prev_location);
+        if (history.pathname === prev_location) return;
+        else setPrevLocation( history.pathname );
+        const routed_urls = router.map(v => v.url);
+        console.log(history);
+        if (routed_urls.includes(history.pathname)) 
+            setMenu(routed_urls.indexOf(history.pathname));
         // console.log(history, window.location, location, action);
-    })
+    }, [ prev_location ]);
+    
+    useEffect(() => {
+        _routeChangeHandler({ pathname: window.location.pathname })
+    }, [ window.location.href ])
 
-    useEffect(() => setInitialized(true), [ ]);
+    useEffect(() => {
+        // history.push(window.location.pathname);
+    }, [ ]);
 
     // Handling Login
 
@@ -118,10 +172,10 @@ function Wrapper({ history, location }) {
                     (width > 800) ? <>
                         {/* <Notification/>
                         <MenuBar/> */}
-                    </> : <Router>
+                    </> : <>
                         <MobileTop width={width} height={height}/>
                         <LeftMenu width={width} height={height}/>
-                        <MobileBottom width={width} height={height}/>
+                        <MobileBottom width={width} height={height} history={history}/>
                         <Switch>
                             <Route
                                 key="record"
@@ -138,7 +192,7 @@ function Wrapper({ history, location }) {
                                 </>}
                             />
                         </Switch>
-                    </Router>
+                    </>
                 }
                 <div className="map_service" style={{
                     width: (!(width > 800)) && "100%",

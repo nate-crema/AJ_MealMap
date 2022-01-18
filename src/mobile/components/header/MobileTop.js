@@ -56,7 +56,7 @@ export const MobileTop = function({ width, height }) {
 
     useEffect(() => {
         if (isActive && Bcomp?.mode !== "search") dispatch({ type: "mobile/SETCOMP", comp: { mode: "search" } });
-        else if (!isActive && keyword.length == 0 && Bcomp?.mode == "search") dispatch({ type: "mobile/SETCOMP", comp: null });
+        else if (!isActive && keyword.length == 0 && Bcomp?.mode == "search") dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
     }, [ keyword.length, isActive ]);
 
     const _updateSearchResult = async (v) => {

@@ -65,7 +65,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
                 return ps;
             } else if (!ps && (!prev || direct_mode == "close")) {
                 // close menu
-                dispatch({ type: "mobile/SETCOMP", comp: null });
+                dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
                 return false;
             } else if (prev || direct_mode == "default") {
                 // defaultize menu

@@ -16,7 +16,7 @@ export const setAlert = createAction({ type: SETALERT });
 
 // Initial State Definition
 const initState = {
-    bottom_comp: null,
+    bottom_comp: { mode: null },
     alert_object: null,
     mealfriend: {
         stage: 0,

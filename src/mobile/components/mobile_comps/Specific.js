@@ -27,7 +27,7 @@ function Specific({ swipeEvent, id }) {
     }
 
     const _downHandler = () => {
-        dispatch({ type: "mobile/SETCOMP", comp: null });
+        dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
     }
 
     const _rightHandler = (x, i) => {

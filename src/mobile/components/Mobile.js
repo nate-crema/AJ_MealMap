@@ -93,7 +93,7 @@ export const MobileBottom = function({ width, height }) {
         mBottomRef.current.querySelectorAll(".img path").forEach(v => v.style.fill = "var(--theme-color-C)");
         mBottomRef.current.querySelectorAll("span").forEach(v => v.style.color = "var(--theme-color-C)");
         dispatch({ type: "map/SETLIST", list: [] });
-        dispatch({ type: "mobile/SETCOMP", comp: null });
+        dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
         if (isMobile() && stat) dispatch({ type: "map/SETMCLICK", active: true });
     }
 
@@ -254,7 +254,7 @@ export const MobileBottom = function({ width, height }) {
     // bottom menu control
     const openMenu = (menu) => {
         if (Bcomp) {
-            dispatch({ type: "mobile/SETCOMP", comp: null });
+            dispatch({ type: "mobile/SETCOMP", comp: { mode: null } });
             return setTimeout(() => {
                 openMenu(menu);
             }, 150);
