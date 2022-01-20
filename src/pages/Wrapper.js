@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { BrowserRouter as Router, Route, Switch, withRouter, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import io from "socket.io-client";
 
 // css
 import "../css/Wrapper.css";
@@ -90,7 +91,7 @@ function Wrapper({ history, location }) {
         }
     ]
 
-    const { menu: { menu, mopen }, user: { uinfo } } = g_state;
+    const { menu: { menu, mopen }, user: { uinfo }, socket: { socket } } = g_state;
     const setMenu = (menu) => {
         console.log(router[menu]);
         if (!router[menu]) return;
@@ -111,9 +112,27 @@ function Wrapper({ history, location }) {
         _routeChangeHandler({ pathname: window.location.pathname })
     }, [ window.location.href ])
 
+    // routing state assign
     useEffect(() => {
         history.push(window.location.pathname);
     }, [ ]);
+
+    // connect with socket server
+
+    const connectSocket = ( url ) => { 
+        const new_socket = io("localhost:3001");
+        dispatch({ type: "socket/SETSOCKET", socket: new_socket });
+    }
+
+    useEffect(() => {
+        let socketurl;
+        if ( process.env.NODE_ENV === "development" ) socketurl = "localhost:3001";
+        else socketurl = "api.ajoumeal.com";
+        
+        if ( !socket ) setTimeout(() => connectSocket( socketurl ), 100);
+    }, []);
+
+    
 
     // Handling Login
 

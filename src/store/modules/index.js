@@ -6,6 +6,7 @@ import menu from './menu';
 import map from './map';
 import mobile from './mobile';
 import notification from './notification';
+import socket from './socket';
 
 export default combineReducers({ 
     search,
@@ -14,5 +15,6 @@ export default combineReducers({
     menu,
     map,
     mobile,
-    notification
+    notification,
+    socket,
 });

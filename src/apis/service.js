@@ -9,6 +9,19 @@ const getNotification = async () => {
     }
 }
 
+const activeMenu = async ( menu ) => {
+    try {
+        const { data: res } = await axios.post(`/service/access`, {
+            menu,
+            // trackid: // active when build
+        })
+        return res;
+    } catch(e) {
+        console.error(e);
+    }
+}
+
 export default {
-    getNotification
+    getNotification,
+    activeMenu
 }

@@ -1,0 +1,336 @@
+.friend-list {
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.friend-list .friend-menu {
+    width: calc(100% - 20px - 10px);
+    height: 20px;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    display: grid;
+    grid-template-columns: 35% 25% 10% 15% 15%;
+    padding: 10px;
+    overflow: hidden;
+    /* animation common option */
+    animation-duration: .3s;
+    animation-timing-function: ease;
+}
+
+.friend-list .friend-menu.menu-open {
+    animation-name: menu-open;
+}
+
+.friend-list .friend-menu.menu-close {
+    animation-name: menu-close;
+    animation-fill-mode: both;
+}
+
+.friend-list .friend-menu .menutext {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    width: auto;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.friend-list .friend-menu .menutext.menu-function {
+    color: var(--theme-color-C);
+}
+
+.friend-list .friend-menu .menutext.menu-block {
+    color: #999999;
+}
+
+.friend-list .friend-menu .menutext.menu-erase {
+    color: #a10f0f;
+}
+
+.friend-list .friend-search {
+    width: calc(100% - 40px - 10px);
+    height: 30px;
+    position: relative;
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: rgb(250, 250, 250);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    overflow: hidden;
+    /* animation common option */
+    animation-duration: .3s;
+    animation-timing-function: ease;
+}
+
+.friend-list .friend-search .placeholder {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(150, 150, 150);
+    white-space: nowrap;
+    
+    /* transition common option */
+    transition: all .15s ease;
+}
+
+.friend-list .friend-search input {
+    width: calc(100% - 40px);
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0);
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(150, 150, 150);
+    white-space: nowrap;
+    outline: none;
+    border: none;
+}
+
+.friend-list .friend-blocks {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    /* transition common option */
+    transition: all .3s cubic-bezier(0, 0.06, 0.25, 1); 
+}
+
+/* friend-block */
+.friend-block {
+    width: calc(100% - 10px);
+    height: 60px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    margin-bottom: 10px;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+
+    /* animation common option */
+    animation-name: friend-block-open;
+    animation-duration: .2s;
+    animation-timing-function: ease;
+    
+    /* font common option */
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+.friend-block:first-child {
+    margin-top: 10px;
+}
+
+.friend-block .profile-img {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    border-radius: 20px;
+    background-color: lightblue;
+    background-size: cover;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.friend-block .user-name {
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.friend-block .department {
+    width: 50%;
+    height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 150px;
+    transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.friend-block .department .college {
+    position: absolute;
+    top: 0;
+
+    transition: all .2s ease;
+}
+
+.friend-block .department .major {
+    position: absolute;
+    bottom: 0;
+
+    transition: all .2s ease;
+}
+
+.friend-block .checkbox {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: #F7F7F7;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    stroke-dasharray: 35;
+    stroke-dashoffset: 35;
+
+    /* transition common option */
+    transition: all .3s cubic-bezier(0, 0.06, 0.25, 1); 
+
+    /* animation common option */
+    animation-duration: .5s;
+    animation-fill-mode: both;
+}
+
+.friend-block .checkbox.check {
+    animation-name: checkbox-boxcheck-check;
+}
+
+.friend-block .checkbox.uncheck {
+    animation-name: checkbox-boxcheck-uncheck;
+}
+
+.friend-block .checkbox svg {
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* animation common option */
+    animation-duration: .3s;
+    animation-fill-mode: both;
+}
+
+.friend-block .checkbox svg.check {
+    animation-name: checkbox-strokecheck-check;
+}
+
+.friend-block .checkbox svg.uncheck {
+    animation-name: checkbox-strokecheck-uncheck;
+}
+
+@keyframes menu-open {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+
+    to {
+        height: 20px;
+        opacity: 1;
+    }
+}
+
+@keyframes menu-close {
+    from {
+        height: 20px;
+        opacity: 1;
+    }
+    
+    to {
+        height: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes friend-block-open {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+    to {
+        height: 60px;
+        opacity: 1;
+    }
+}
+
+@keyframes friend-block-close {
+    from {
+        height: 60px;
+        opacity: 1;
+    }
+    to {
+        height: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes checkbox-boxcheck-check {
+    from {
+        background-color: #F7F7F7;
+    }
+    to {
+        background-color: var(--theme-color-C);
+    }
+}
+
+@keyframes checkbox-boxcheck-uncheck {
+    from {
+        background-color: var(--theme-color-C);
+    } 
+    to {
+        background-color: #F7F7F7;
+    }
+}
+
+@keyframes checkbox-strokecheck-check {
+    from {
+        /* transform: rotateZ(90deg) translate(-50%, -50%); */
+        stroke-dashoffset: 35;
+        stroke: var(--theme-color-C);
+    }
+    to {
+        /* transform: rotateZ(0deg) translate(-50%, -50%); */
+        stroke-dashoffset: 0;
+        stroke: white;
+    }
+}
+
+@keyframes checkbox-strokecheck-uncheck {
+    from {
+        /* transform: rotateZ(0deg) translate(-50%, -50%); */
+        stroke-dashoffset: 0;
+        stroke: white;
+    }
+    99.95% {
+        /* transform: rotateZ(-90deg) translate(-50%, -50%); */
+        stroke-dashoffset: -35;
+        stroke: var(--theme-color-C);
+    }
+    to {
+        /* transform: rotateZ(90deg) translate(-50%, -50%); */
+        stroke-dashoffset: 35;
+    }
+}
