@@ -230,7 +230,8 @@ export const BottomRender = function({ width, height, mBottomRef, history }) {
             if (ddbar_enable) dropdownBarRef.current.style.display = "block";
             setTimeout(() => {
                 compDisplayerRef.current.style.width = "80%";
-                compDisplayerRef.current.style.height = '80%';
+                // compDisplayerRef.current.style.height = '80%';
+                compDisplayerRef.current.style.height = 'calc(100% - 60px)';
 
                 if (cover_all) {
                     mbCompRef.current.style.height = (opensize.replace("px", "")*1 + 50) + "px" || "300px";

@@ -24,5 +24,6 @@ export const MobileBottom = function({ width, height, history }) {
     return <>
         <BottomMenu mBottomRef={ mBottomRef } history={ history } />
         <BottomRender mBottomRef={ mBottomRef } width={ width } height={ height } history={ history } />
+        <MobileNotification/>
     </>
 }

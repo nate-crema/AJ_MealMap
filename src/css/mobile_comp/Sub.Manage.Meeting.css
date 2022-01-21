@@ -226,3 +226,12 @@
     left: 50%;
     transform: translate(-50%);
 }
+
+/* Mobile Alert: participant editor */
+
+.friend-selector {
+    height: 150px;
+    position: relative;
+    bottom: unset !important;
+    top: 30px;
+}

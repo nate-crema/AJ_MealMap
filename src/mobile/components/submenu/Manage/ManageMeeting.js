@@ -408,7 +408,7 @@ function ManageMeeting({ history }) {
         const timestamp = new Date().getTime();
         lscrolled.current = timestamp;
         return setTimeout(() => {
-            _invitationSelector( timestamp, e) ;
+            _invitationSelector(timestamp, e) ;
         }, 100);
     }
     

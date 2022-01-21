@@ -7,6 +7,7 @@ import { meeting, user } from '../../../apis';
 // components
 import DateSelector from '../../../components/DateSelector';
 import FilterIcon from '../FilterIcon';
+import Friendlist from '../../../components/FriendList';
 
 // css
 import "../../../css/mobile_comp/Sub.Manage.Meeting.css";
@@ -43,6 +44,8 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
     const [ menu_open, setMenuOpen ] = useState(false); // menu open state
     const [ meeting_info, setMeetingInfo ] = useState(null); // meeting info
     const [ participant_limit, setParticipantLimit ] = useState(0); // meeting participants limit
+
+    const [ friend_selected, setFriendSelected ] = useState([]); // selected friend's id list
 
     const [ timedisplay_animate, setTimedisplayAnimate ] = useState(false) // animation: time display
     const manage_session_close = useRef(true);
@@ -138,7 +141,148 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
         }
     }, [ menu_open ])
 
+
+    // get friend list
+    const getFriendList = async () => {
+        return [
+            {
+                _id: "uid_0",
+                info: {
+                    name: "방재훈",
+                    pn: "01012345678",
+                    college: "정보통신대학",
+                    major: "국방디지털융합학과",
+                    img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80",
+                },
+                connected: true,
+                start: new Date("2022-01-01").getTime()
+            },
+            {
+                _id: "uid_1",
+                info: {
+                    name: "박상현",
+                    pn: "01000003030",
+                    college: "의과대학",
+                    major: "의예과",
+                    img: null,
+                },
+                connected: true,
+                start: new Date("2022-01-01").getTime()
+            },
+            {
+                _id: "uid_2",
+                info: {
+                    name: "김건모",
+                    pn: "01000003030",
+                    college: "의과대학",
+                    major: "의예과",
+                    img: null,
+                },
+                connected: true,
+                start: new Date("2022-01-01").getTime()
+            },
+            {
+                _id: "uid_3",
+                info: {
+                    name: "길멃",
+                    pn: "01000003030",
+                    college: "의과대학",
+                    major: "의예과",
+                    img: null,
+                },
+                connected: true,
+                start: new Date("2022-01-01").getTime()
+            },
+            {
+                _id: "uid_4",
+                info: {
+                    name: "Ritta Siruang",
+                    pn: "01000003030",
+                    college: "의과대학",
+                    major: "의예과",
+                    img: null,
+                },
+                connected: true,
+                start: new Date("2022-01-01").getTime()
+            },
+            {
+                _id: "uid_5",
+                info: {
+                    name: "ㄱㄱㄱ",
+                    pn: "01000003030",
+                    college: "의과대학",
+                    major: "의예과",
+                    img: null,
+                },
+                connected: true,
+                start: new Date("2022-01-01").getTime()
+            },
+            {
+                _id: "uid_6",
+                info: {
+                    name: "ㄱㄱㄱ",
+                    pn: "01000003030",
+                    college: "의과대학",
+                    major: "의예과",
+                    img: null,
+                },
+                connected: true,
+                start: new Date("2022-01-01").getTime()
+            }
+        ]
+    }
+
+
     // meeting management: handle editing meeting info
+        
+        // Editor: participant
+        
+        const openParticipantEditor = async () => {
+
+            // load friends list
+            const friends = await getFriendList();
+
+            dispatch({ type: "mobile/SETALERT", alert_object: {
+                type: "component",
+                title: ( participant_limit - meeting_info.participants.length === 0 ) ? 
+                        "더이상 초대할 수 없어요"
+                        : "약속에 누구를 초대할까요?",
+                ment: ( participant_limit === 0 ) ? "원하는 친구를 선택해주시면 약속에 이미 참여한 다른분들께 물어보고 빠르게 초대할게요!" 
+                : ( participant_limit - meeting_info.participants.length === 0 ) ? "질병관리청 사회적 거리두기 강화조치에 따라 더이상 약속인원을 추가할 수 없어요"
+                : `약속에 최대 ${ participant_limit - meeting_info.participants.length }명까지 추가할 수 있어요`,
+                style: {
+                    alerter_height: "450px",
+                    titleColor: "var(--theme-color-C)"
+                },
+                component: <Friendlist className="friend-selector"
+                    friend_list={ friends }
+                    list_mode="selection"
+                    blockClickHandler={( id ) => {
+                        setFriendSelected(p => {
+                            let arr = [ ...p ];
+                            const idx = arr.indexOf(id);
+                            if (idx === -1) {
+                                arr.push(id);
+                                return arr;
+                            } else {
+                                arr.splice(idx, 1);
+                                return arr;
+                            }
+                        })
+
+                        // default action block
+                        return false;
+                    }}
+                    select_state={[ friend_selected, setFriendSelected ]}
+                />,
+                selection: [
+                    { text: "공유 허용", style: { color: "white", backgroundColor: "var(--theme-color-C)" }, focus: true, onClick: () => {} },
+                    { text: "공유 차단", style: { color: "var(--theme-color-C)" }, focus: true, onClick: () => {} },
+                ],
+                onBackgroundClick: ( close_alert ) => close_alert()
+            } })
+        }
+
     const openEditor = ( opentype ) => {
         switch(opentype) {
             case "participants":
@@ -214,7 +358,7 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                 onTouchStart={_touchStartHandler}
                 onScroll={_scrollHandler}
             >
-                <div className="invited-list minfo-block" onClick={() => openEditor("participants")}>
+                <div className="invited-list minfo-block" onClick={() => openParticipantEditor()}>
                     <span className="context-title">약속에 초대된 사람</span>
                     <div className="user-list">
                         <div className="users-aligner" style={{
@@ -247,7 +391,7 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                         </>}
                     </span>
                 </div>
-                <div className="meeting-time minfo-block" onClick={() => openEditor("time")}>
+                <div className="meeting-time minfo-block" onClick={() => {}}>
                     <span className="context-title">약속시간</span>
                     <div className="meeting-time-display-wrap">
                         <DateSelector
@@ -265,7 +409,7 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                         />
                     </div>
                 </div>
-                <div className="filtered-list minfo-block" onClick={() => openEditor("filters")}>
+                <div className="filtered-list minfo-block" onClick={() => {}}>
                     <span className="context-title">설정된 밥집 검색조건</span>
                     <div className="filters-wrap">
                         <div className="filters-aligner" style={{

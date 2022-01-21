@@ -12,11 +12,8 @@ import near from "../../../assets/img/near.svg";
 import person from "../../../assets/img/person.svg";
 
 // menu component
-import Friendlist from './Friend/Friendlist';
-
-// component
-import MobileBtn from "./MobileBtn";
-import TimePicker from '../TimePicker';
+import MealFriend from './Friend/MealFriend';
+import FriendManage from './Friend/FriendManage';
 
 function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
 
@@ -26,6 +23,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
     const [ is_open, setIsOpen ] = useState(true);
     const [ is_maximize, setIsMaximize ] = useState(false);
     const [ progressing_stat, setPS ] = useState(false);
+    const [ swipe_active, setSwipeActive ] = useState(true);
 
     const titleImgRef = useRef(<></>);
     const titleRef = useRef(<></>);
@@ -83,20 +81,19 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
 
     // swipe events: registration
     useEffect(() => {
-        swipeEvent.addEventListener("toUp", _swipeUpHandler);
-        swipeEvent.addEventListener("toDown", _swipeDownHandler);
-
+        if (swipe_active) {
+            swipeEvent.addEventListener("toUp", _swipeUpHandler);
+            swipeEvent.addEventListener("toDown", _swipeDownHandler);
+        }
         return () => {
             swipeEvent.removeEventListener("toUp", _swipeUpHandler);
             swipeEvent.removeEventListener("toDown", _swipeDownHandler);
         }
-    }, []);
+    }, [ swipe_active ]);
 
     // menu control
 
     const [ menu_title, setMT ] = useState("친구");
-    const [ msg, setMsg ] = useState("몇시에 만날까요?");
-    const [ rand_color, setRC ] = useState([(Math.random()*1000), (Math.random()*1000), (Math.random()*1000)]);
 
     // menu auto-continuation
     useEffect(() => {
@@ -137,13 +134,6 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
         } else  {
             titleRef.current.style.left = null;
         }
-
-        if (menu_id === 1.5) {
-            swipeEvent.addEventListener("toRight", _movePrev);
-            return () => {
-                swipeEvent.removeEventListener("toRight", _movePrev);
-            }
-        }
     }
 
     const menus = [
@@ -151,60 +141,6 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
         { img: near, title: "주변친구", onClick: () => setMenu(2)},
         { img: friend_edit, title: "친구관리", onClick: () => setMenu(3)}
     ]
-
-    // menu1: go to menu1.5 (select friend from list)
-    const _openSelectList = () => {
-        // document.querySelector(".mealfriend").classList.toggle("sliding-r");
-        document.querySelector(".mealfriend").classList.toggle("sliding-l");
-        swipeEvent.removeEventListener("toUp", _swipeUpHandler);
-        swipeEvent.removeEventListener("toDown", _swipeDownHandler);
-        setTimeout(() => {
-            setMenu(1.5);
-        }, 300);
-    }
-
-    // menu1: go to menu1.7 (select time)
-    const _timeSelection = () => {
-        document.querySelector(".mealfriend").classList.toggle("sliding-l");
-        swipeEvent.removeEventListener("toUp", _swipeUpHandler);
-        swipeEvent.removeEventListener("toDown", _swipeDownHandler);
-        setTimeout(() => {
-            setMenu(1.7);
-        }, 300);
-    }
-
-    // menu1: break meeting
-    const _breakMeeting = () => {
-        dispatch({ type: "mobile/SETMFRIEND", friends: [] });
-        setMenu(false);
-        titleImgRef.current.src = "";
-        setMT("친구");
-        _swipeUpHandler("default");
-    }
-
-    // menu1.5: return to menu1
-    const _movePrev = () => {
-        if (progressing_stat !== 1.5) return;
-        swipeEvent.addEventListener("toUp", _swipeUpHandler);
-        swipeEvent.addEventListener("toDown", _swipeDownHandler);
-        document.querySelectorAll(".add-user").forEach((v, i) => v.classList.toggle("sliding-r"));
-        document.querySelectorAll(".add-user").forEach((v, i) => v.classList.toggle("sliding-l"));
-        setTimeout(() => {
-            setMenu(1);
-            // document.querySelectorAll(".mealfriend").forEach((v, i) => v.classList.toggle("sliding-r"));
-            // document.querySelectorAll(".mealfriend").forEach((v, i) => v.classList.toggle("sliding-l"));
-        }, 300);
-    }
-
-    // menu1.5: select handler
-    const _selectHandler = (id) => {
-        const i = mealfriend.list.indexOf(id);
-        if (i === -1) dispatch({ type: "mobile/SETMFRIEND", friends: [ ...mealfriend.list, id ] });
-        else {
-            mealfriend.list.splice(i, 1);
-            dispatch({ type: "mobile/SETMFRIEND", friends: mealfriend.list });
-        }
-    }
 
     // test information
     const userinfo = {
@@ -261,62 +197,19 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
             </div>
         }
         {
-            (progressing_stat === 1) && <>
-                <div className="mealfriend">
-                    <div className="friends-list">
-                        { (mealfriend.list.length > 0) ? mealfriend.list.map((id, i) => {
-                            
-                            const uinfo = userinfo.friend.find(v => v._id === id);
-
-                            return <div className="friend-block" key={i}>
-                                <div className="profile-wrap" style={{
-                                    backgroundColor: `rgba(${((rand_color[0]+(i/userinfo.friend.length*10))%255)},${((rand_color[1]+(i/userinfo.friend.length*10))%255)},${((rand_color[2]+(i/userinfo.friend.length*10))%255)},${(i/userinfo.friend.length)+0.1})`
-                                }}>
-                                    <img src={uinfo.img || person}/>
-                                </div>
-                                <span className="user-name">{ uinfo.name }</span>
-                            </div>
-                        }) : <span className="non-selected">아직 모은 사람이 없어요</span> }
-                    </div>
-                    <MobileBtn text="친구 추가" className="add-friend-btn" type="0" action={_openSelectList} style={{
-                        width: (!(mealfriend.list.length > 0)) && "100%"
-                    }}/>
-                    { (mealfriend.list.length > 0) && <MobileBtn text="시간 정하기" className="set-time-btn" type="0" action={_timeSelection}/> }
-                    <MobileBtn text="모임 취소" className="break-meeting-btn" type="1" action={_breakMeeting}/>
-                </div>
-            </>
-        }
-        {
-            (progressing_stat === 1.5) && <>
-                    <div className="select-list add-user sliding-l">
-                        { userinfo.friend.map((uinfo, i) => 
-                        <div className="userlist-block" key={uinfo._id} onClick={() => _selectHandler(uinfo._id)}>
-                            <div className="profile-wrap" style={{
-                                backgroundColor: `rgba(${((rand_color[0]+(i/userinfo.friend.length*10))%255)},${((rand_color[1]+(i/userinfo.friend.length*10))%255)},${((rand_color[2]+(i/userinfo.friend.length*10))%255)},${(i/userinfo.friend.length)+0.1})`
-                            }}>
-                                <img src={uinfo.img || person}/>
-                            </div>
-                            <span className="user-name">{ uinfo.name }</span>
-                            <div className="major-info">
-                                <p className="user-subschool">{ uinfo.subschool.length > 6 ? uinfo.subschool.substr(0, 5) + "..." : uinfo.subschool }</p>
-                                <p className="user-major">{ uinfo.major.length > 6 ? uinfo.major.substr(0, 5) + "..." : uinfo.major }</p>
-                            </div>
-                            <div className="checkbox" style={{
-                                backgroundColor: mealfriend.list.includes(uinfo._id) && "var(--theme-color-C)"
-                            }}></div>
-                        </div>
-                        ) }
-                    </div>
-                    <MobileBtn text="추가 완료" className="add-friend-complete-btn add-user sliding-l" type="0" action={_movePrev}/>
-            </>
-        }
-        {
-            (progressing_stat === 1.7) && <>
-                <div className="time-selection sliding-l">
-                    <span className="msg">{ msg }</span>
-                    <TimePicker className="meet-time-picker" bottomCompHandler={(mode_id) => bottomCompHandler(mode_id < 0 ? sizes.oh_default : sizes.maximize)}/>
-                    <MobileBtn text="알림 발송" className="send-noti-btn sliding-l" type="0"/>
-                </div>
+            ( progressing_stat === 1 ) && <>
+                <MealFriend 
+                    swipeEvent={ swipeEvent }
+                    bottomCompHandler={ bottomCompHandler }
+                    swipe_state={ [ swipe_active, setSwipeActive ] }
+                    menuBack={() => {
+                        dispatch({ type: "mobile/SETMFRIEND", friends: [] });
+                        setMenu(false);
+                        titleImgRef.current.src = "";
+                        setMT("친구");
+                        _swipeUpHandler("default");
+                    }}
+                />
             </>
         }
 
@@ -328,7 +221,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
 
         {
             (progressing_stat === 3) && <>
-                <Friendlist/>
+                <FriendManage swipe_state={ [ swipe_active, setSwipeActive ] }/>
             </>
         }
     </div>;

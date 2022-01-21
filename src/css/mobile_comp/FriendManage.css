@@ -1,0 +1,139 @@
+.friend-manage {
+    width: calc(100% - 20px);
+    height: calc(100% - 90px);
+    position: relative;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.friend-manage .friend-option {
+    width: calc(100% - 20px - 10px);
+    height: 20px;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    display: grid;
+    grid-template-columns: 35% 25% 10% 15% 15%;
+    padding: 10px;
+    overflow: hidden;
+    /* animation common option */
+    animation-duration: .3s;
+    animation-timing-function: ease;
+}
+
+.friend-manage .friend-option.menu-open {
+    animation-name: menu-open;
+}
+
+.friend-manage .friend-option.menu-close {
+    animation-name: menu-close;
+    animation-fill-mode: both;
+}
+
+.friend-manage .friend-option .menutext {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    width: auto;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.friend-manage .friend-option .menutext.menu-function {
+    color: var(--theme-color-C);
+}
+
+.friend-manage .friend-option .menutext.menu-block {
+    color: #999999;
+}
+
+.friend-manage .friend-option .menutext.menu-erase {
+    color: #a10f0f;
+}
+
+.friend-manage .friend-search {
+    width: calc(100% - 40px - 10px);
+    height: 30px;
+    position: relative;
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: rgb(250, 250, 250);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    overflow: hidden;
+    /* animation common option */
+    animation-duration: .3s;
+    animation-timing-function: ease;
+}
+
+.friend-manage .friend-search.menu-open {
+    animation-name: menu-open;
+}
+
+.friend-manage .friend-search.menu-close {
+    animation-name: menu-close;
+    animation-fill-mode: both;
+}
+
+.friend-manage .friend-search .placeholder {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(150, 150, 150);
+    white-space: nowrap;
+    
+    /* transition common option */
+    transition: all .15s ease;
+}
+
+.friend-manage .friend-search input {
+    width: calc(100% - 40px);
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0);
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(150, 150, 150);
+    white-space: nowrap;
+    outline: none;
+    border: none;
+}
+
+@keyframes menu-open {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes menu-close {
+    from {
+        opacity: 1;
+    }
+    
+    to {
+        height: 0;
+        opacity: 0;
+    }
+}
