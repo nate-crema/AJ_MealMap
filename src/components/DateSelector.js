@@ -224,7 +224,7 @@ function ScrollSelector({
         if ( selectables[mode][lang].length < (scroll_position + 1) ) scroll_position = selectables[mode][lang].length-1;
         // console.log(scroll_position);
         
-        updateScrollUI( scroll_position, selection_area_size );
+        const scrolled = updateScrollUI( scroll_position, selection_area_size );
 
         // check value validity
         if ( (["month", "day"].includes(mode) && selected.month && selected.day ) && !checkValidity( selected.month, selected.day ) ) 
@@ -234,13 +234,28 @@ function ScrollSelector({
     const updateScrollUI = ( scroll_position, selection_area_size ) => {
         // adjust scroll position
         auto_scroll.current = true;
-        swipeRef.current.scrollTop = scroll_position * selection_area_size - 12;
+        console.log("selection_area_size", selection_area_size)
+        // if (selection_area_size === 0) selection_area_size = document.querySelector("div.selectable-value.r").clientHeight;
+        let scroll_value = scroll_position * selection_area_size - 12
+        console.log('update scroll to: ', scroll_value);
+        swipeRef.current.scrollTop = scroll_value;
         auto_scroll.current = false;
 
         // update current selected state
-        // console.log(selectables, mode, lang, scroll_position);
+        console.log(selectables, mode, lang, scroll_position);
         setSelected(prev => ({ ...prev, [ mode ]: selectables[mode][lang][scroll_position].value }));
         setScrolling(false);
+
+        console.log( swipeRef?.current, swipeRef?.current?.scrollTop, scroll_value, scroll_position === 0 );
+
+        setTimeout(() => {
+            if ( scroll_position === 0 ) return;
+            if ( swipeRef?.current && ( swipeRef?.current?.scrollTop !== scroll_value ) ) {
+                updateScrollUI( scroll_position, selection_area_size );
+            }
+        }, 300);
+
+        return scroll_value;
     }
 
     const checkValidity = ( v1, v2 ) => {
@@ -273,7 +288,7 @@ function ScrollSelector({
         >
             <span className="selectable-value" style={{
                 padding: "0",
-                height: "20px"
+                height: "25px"
             }}> </span>
             { selectables[mode][lang].map((v, i) => <>
                 <span key={i} className={ "selectable-value r" + ( ( selected[mode] === v.value ) ? " selected" : "" ) } style={{
@@ -291,7 +306,11 @@ function ScrollSelector({
 
 function DateSelector({ 
     // date-selector defalut props
-    inputValue, action,
+    inputValue, 
+    // inner button action when clicked
+    action,
+    // outer action when all values inputed
+    onValueSucceed,
     // for-css options
     className,
     // language settings
@@ -324,6 +343,12 @@ function DateSelector({
         if (inputValue.includes("date")) endpoint++;
         if ( Object.keys(selected).length === endpoint ) setSubmitAvailable(true);
     }, [ selected ]);
+
+    // run outer action when value succeed
+    useEffect(() => {
+        if ( !submit_available ) return;
+        if ( onValueSucceed ) return onValueSucceed( selected );
+    }, [ submit_available ]);
 
     useEffect(() => {
         // set editable state

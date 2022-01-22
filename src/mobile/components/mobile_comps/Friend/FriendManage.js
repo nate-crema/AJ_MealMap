@@ -35,7 +35,7 @@ function FriendManage({
 
 
     // animation control
-    const [  optionAnimationActive, setOptionAnimationActive ] = useState(false);
+    const [ optionAnimationActive, setOptionAnimationActive ] = useState(false);
 
 
     // option control

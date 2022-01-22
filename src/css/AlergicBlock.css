@@ -1,0 +1,45 @@
+.filter-block {
+    width: 80px;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    float: left;
+    margin-right: 20px;
+}
+
+.filter-block .filter-icon-wrap {
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.filter-block .filter-icon-wrap .filter-icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.filter-block .filter-name {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: black;
+    font-size: 12px; 
+    width: fit-content;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}

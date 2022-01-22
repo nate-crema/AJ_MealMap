@@ -3,11 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // api
 import { meeting, user } from '../../../apis';
+import AlergicBlock from '../../../components/AlergicBlock';
 
 // components
 import DateSelector from '../../../components/DateSelector';
-import FilterIcon from '../FilterIcon';
-import Friendlist from '../../../components/FriendList';
 
 // css
 import "../../../css/mobile_comp/Sub.Manage.Meeting.css";
@@ -44,8 +43,6 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
     const [ menu_open, setMenuOpen ] = useState(false); // menu open state
     const [ meeting_info, setMeetingInfo ] = useState(null); // meeting info
     const [ participant_limit, setParticipantLimit ] = useState(0); // meeting participants limit
-
-    const [ friend_selected, setFriendSelected ] = useState([]); // selected friend's id list
 
     const [ timedisplay_animate, setTimedisplayAnimate ] = useState(false) // animation: time display
     const manage_session_close = useRef(true);
@@ -111,7 +108,7 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
 
     const _scrollHandler = (e) => {
         // time-display animation
-        if ((e.target.offsetHeight + e.target.scrollTop) > 350) setTimedisplayAnimate(true);
+        if ((e.target.offsetHeight + e.target.scrollTop) > 450) setTimedisplayAnimate(true);
     }
 
     const _touchStartHandler = (e) => {
@@ -142,105 +139,51 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
     }, [ menu_open ])
 
 
-    // get friend list
-    const getFriendList = async () => {
-        return [
-            {
-                _id: "uid_0",
-                info: {
-                    name: "방재훈",
-                    pn: "01012345678",
-                    college: "정보통신대학",
-                    major: "국방디지털융합학과",
-                    img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80",
-                },
-                connected: true,
-                start: new Date("2022-01-01").getTime()
-            },
-            {
-                _id: "uid_1",
-                info: {
-                    name: "박상현",
-                    pn: "01000003030",
-                    college: "의과대학",
-                    major: "의예과",
-                    img: null,
-                },
-                connected: true,
-                start: new Date("2022-01-01").getTime()
-            },
-            {
-                _id: "uid_2",
-                info: {
-                    name: "김건모",
-                    pn: "01000003030",
-                    college: "의과대학",
-                    major: "의예과",
-                    img: null,
-                },
-                connected: true,
-                start: new Date("2022-01-01").getTime()
-            },
-            {
-                _id: "uid_3",
-                info: {
-                    name: "길멃",
-                    pn: "01000003030",
-                    college: "의과대학",
-                    major: "의예과",
-                    img: null,
-                },
-                connected: true,
-                start: new Date("2022-01-01").getTime()
-            },
-            {
-                _id: "uid_4",
-                info: {
-                    name: "Ritta Siruang",
-                    pn: "01000003030",
-                    college: "의과대학",
-                    major: "의예과",
-                    img: null,
-                },
-                connected: true,
-                start: new Date("2022-01-01").getTime()
-            },
-            {
-                _id: "uid_5",
-                info: {
-                    name: "ㄱㄱㄱ",
-                    pn: "01000003030",
-                    college: "의과대학",
-                    major: "의예과",
-                    img: null,
-                },
-                connected: true,
-                start: new Date("2022-01-01").getTime()
-            },
-            {
-                _id: "uid_6",
-                info: {
-                    name: "ㄱㄱㄱ",
-                    pn: "01000003030",
-                    college: "의과대학",
-                    major: "의예과",
-                    img: null,
-                },
-                connected: true,
-                start: new Date("2022-01-01").getTime()
-            }
-        ]
-    }
-
-
     // meeting management: handle editing meeting info
         
         // Editor: participant
-        
-        const openParticipantEditor = async () => {
 
-            // load friends list
-            const friends = await getFriendList();
+        const inviteFriends = async ( ids ) => {
+            console.log(ids);
+
+            try {
+                // send invite friends request
+                
+                // display confirmed alert
+                dispatch({ type: "mobile/SETALERT", alert_object: {
+                    type: "selectable",
+                    title: "추가한 친구가 공유되었어요",
+                    ment: `약속에 초대된 사람들에게 물어보고 추가한 친구에게 초대장을 보낼게요!`,
+                    style: {
+                        alerter_height: "280px",
+                        titleColor: "var(--theme-color-C)"
+                    },
+                    selection: [
+                        { text: "확인", style: { color: "white", backgroundColor: "var(--theme-color-C)" }, focus: true, onClick: () => {} },
+                    ],
+                    onBackgroundClick: ( close_session ) => close_session()
+                } })
+            } catch(e) {
+                console.error(e);   
+                
+                // display errored alert
+                dispatch({ type: "mobile/SETALERT", alert_object: {
+                    type: "selectable",
+                    title: "초대 실패",
+                    ment: `친구 초대요청을 생성하던 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.`,
+                    style: {
+                        alerter_height: "300px",
+                        titleColor: "#aa2200"
+                    },
+                    selection: [
+                        { text: "확인", style: { color: "black" }, focus: true, onClick: () => {} },
+                    ],
+                    onBackgroundClick: ( close_session ) => close_session()
+                } })
+            }
+        }
+        
+        const openParticipantEditor = async () => {            
 
             dispatch({ type: "mobile/SETALERT", alert_object: {
                 type: "component",
@@ -254,30 +197,124 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                     alerter_height: "450px",
                     titleColor: "var(--theme-color-C)"
                 },
-                component: <Friendlist className="friend-selector"
-                    friend_list={ friends }
-                    list_mode="selection"
-                    blockClickHandler={( id ) => {
-                        setFriendSelected(p => {
-                            let arr = [ ...p ];
-                            const idx = arr.indexOf(id);
-                            if (idx === -1) {
-                                arr.push(id);
-                                return arr;
-                            } else {
-                                arr.splice(idx, 1);
-                                return arr;
-                            }
-                        })
-
-                        // default action block
-                        return false;
-                    }}
-                    select_state={[ friend_selected, setFriendSelected ]}
-                />,
+                component: "FriendList",
+                onComponentCustomAction: {
+                    blockClickHandler: ( id, friend_list, friend_selected ) => {
+                        if ( !friend_selected.includes( id ) )
+                            // == if this click occur 'user-add'
+                            return ( friend_selected.length < participant_limit - meeting_info.participants.length )
+                        else
+                            // == if this click occur 'user-remove'
+                            return true;
+                    }
+                },
                 selection: [
-                    { text: "공유 허용", style: { color: "white", backgroundColor: "var(--theme-color-C)" }, focus: true, onClick: () => {} },
-                    { text: "공유 차단", style: { color: "var(--theme-color-C)" }, focus: true, onClick: () => {} },
+                    { 
+                        text: "초대",
+                        displayFilter: ( comp_value ) => comp_value.length > 0,
+                        style: { 
+                            color: "white",
+                            backgroundColor: "var(--theme-color-C)"
+                        },
+                        focus: true,
+                        onClick: ( states ) => {
+                            const { friend_selected } = states;
+                            inviteFriends( friend_selected );
+
+                            // disable default function 
+                            return false;
+                        }
+                    },
+                    { 
+                        text: "취소",
+                        displayFilter: ( comp_value ) => comp_value.length === 0,
+                        style: {
+                            color: "var(--theme-color-C)"
+                        },
+                        focus: true
+                    },
+                ],
+                onBackgroundClick: ( close_alert ) => close_alert()
+            } })
+        }
+
+        const requestTimeEdit = async ( time ) => {
+            console.log(time);
+
+            try {
+                // send invite friends request
+                
+                // display confirmed alert
+                dispatch({ type: "mobile/SETALERT", alert_object: {
+                    type: "selectable",
+                    title: "변경할 약속시간이 전달되었어요",
+                    ment: `약속에 초대된 사람들에게 물어보고 변경되면 알려드릴게요!`,
+                    style: {
+                        alerter_height: "280px",
+                        titleColor: "var(--theme-color-C)"
+                    },
+                    selection: [
+                        { text: "확인", style: { color: "white", backgroundColor: "var(--theme-color-C)" }, focus: true, onClick: () => {} },
+                    ],
+                    onBackgroundClick: ( close_session ) => close_session()
+                } })
+            } catch(e) {
+                console.error(e);   
+                
+                // display errored alert
+                dispatch({ type: "mobile/SETALERT", alert_object: {
+                    type: "selectable",
+                    title: "요청 실패",
+                    ment: `시간 변경을 요청하던 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.`,
+                    style: {
+                        alerter_height: "300px",
+                        titleColor: "#aa2200"
+                    },
+                    selection: [
+                        { text: "확인", style: { color: "black" }, focus: true, onClick: () => {} },
+                    ],
+                    onBackgroundClick: ( close_session ) => close_session()
+                } })
+            }
+        }
+        
+        const openTimeEditor = async () => {            
+
+            dispatch({ type: "mobile/SETALERT", alert_object: {
+                type: "component",
+                title: "약속시간을 몇시로 변경할까요?",
+                ment: "변경이 가능한지 약속에 초대된 사람들에게 물어보고 알려드릴게요",
+                style: {
+                    alerter_height: "450px",
+                    titleColor: "var(--theme-color-C)",
+                    mentColor: "var(--theme-color-C)",
+                },
+                component: "TimeSelector",
+                selection: [
+                    { 
+                        text: "변경",
+                        displayFilter: ( comp_value ) => ( comp_value.hour !== undefined && comp_value.minute !== undefined && comp_value.ampm !== undefined ),
+                        style: { 
+                            color: "white",
+                            backgroundColor: "var(--theme-color-C)"
+                        },
+                        focus: true,
+                        onClick: ( states ) => {
+                            const { time_selected } = states;
+                            requestTimeEdit( time_selected );
+
+                            // disable default function 
+                            return false;
+                        }
+                    },
+                    { 
+                        text: "취소",
+                        displayFilter: ( comp_value ) => !( comp_value.hour !== undefined && comp_value.minute !== undefined && comp_value.ampm !== undefined ),
+                        style: {
+                            color: "var(--theme-color-C)"
+                        },
+                        focus: true
+                    },
                 ],
                 onBackgroundClick: ( close_alert ) => close_alert()
             } })
@@ -359,22 +396,48 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                 onScroll={_scrollHandler}
             >
                 <div className="invited-list minfo-block" onClick={() => openParticipantEditor()}>
-                    <span className="context-title">약속에 초대된 사람</span>
-                    <div className="user-list">
-                        <div className="users-aligner" style={{
-                            width: `${ ( 80 + 20 ) * meeting_info.participants.length + 20 }px`
-                        }}>
-                            { meeting_info.participants.map(({ user, confirmed }) => <div className="participate-user-block" style={{
-                                backgroundColor: 
-                                    ( confirmed === 0 ) ? "#B400001A" :
-                                    ( confirmed === 1 ) ? "#005AB41A" :
-                                    null
+                    <div className="invited-list-subblock block-A">
+                        <span className="context-title">약속에 초대된 사람</span>
+                        <div className="user-list">
+                            <div className="users-aligner" style={{
+                                width: `${ ( 80 + 20 ) * meeting_info.participants.filter(v => v.confirmed >= 0).length + 20 }px`
                             }}>
-                                <div className="user-image" style={{
-                                    backgroundImage: `url(${ user.img })`
-                                }}/>
-                                <span className="user-name">{ user.name }</span>
-                            </div>) }
+                                { meeting_info.participants.filter(v => v.confirmed >= 0).map(({ user, confirmed }) => 
+                                    <div className="participate-user-block-A" style={{
+                                        backgroundColor: 
+                                            ( confirmed === 0 ) ? "#B400001A" :
+                                            ( confirmed === 1 ) ? "#005AB41A" :
+                                            null
+                                    }}>
+                                        <div className="user-image" style={{
+                                            backgroundImage: `url(${ user.img })`
+                                        }}/>
+                                        <span className="user-name">{ user.name }</span>
+                                    </div>) 
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div className="invited-list-subblock block-B">
+                        <span className="context-title">초대승인을 대기중인 사람</span>
+                        <div className="user-list">
+                            <div className="users-aligner" style={{
+                                width: `${ ( 80 + 20 ) * meeting_info.participants.filter(v => v.confirmed < 0).length + 20 }px`
+                            }}>
+                                { meeting_info.participants.filter(v => v.confirmed < 0).map(({ user, confirmed }) => 
+                                    <div className="participate-user-block-B" style={{
+                                        backgroundColor: 
+                                            ( confirmed === 0 ) ? "#B400001A" :
+                                            ( confirmed === 1 ) ? "#005AB41A" :
+                                            null
+                                    }}>
+                                        <span className="user-name">{ user.name }</span>
+                                    </div>) 
+                                }
+                                {
+                                    meeting_info.participants.filter(v => v.confirmed < 0).length === 0 && <span className="invite-standby-null">초대승인을 대기중인 사람이 없어요!</span>
+                                }
+                            </div>
                         </div>
                     </div>
                     <span className="limit-notice">
@@ -391,7 +454,7 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                         </>}
                     </span>
                 </div>
-                <div className="meeting-time minfo-block" onClick={() => {}}>
+                <div className="meeting-time minfo-block" onClick={() => openTimeEditor()}>
                     <span className="context-title">약속시간</span>
                     <div className="meeting-time-display-wrap">
                         <DateSelector
@@ -415,16 +478,11 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                         <div className="filters-aligner" style={{
                             width: `${ ( 80 + 20 ) * meeting_info.participants.length + 20 }px`
                         }}>
-                            { meeting_info.filter.map( ({ filterInfo, assign_count, auth }) => <>
-                                <div className="filter-block">
-                                    <div className="filter-icon-wrap" style={{
-                                        boxShadow: assign_count === 0 ? "rgb(0 108 255 / 50%) 0px 2px 5px" : "rgb(190 51 51 / 50%) 0px 2px 5px"
-                                    }}>
-                                        <FilterIcon className="filter-icon" id={ filterInfo.type } color={ assign_count === 0 ? "var(--theme-color-C)" : "#BE3333" }/>
-                                    </div>
-                                    <span className="filter-name">{ filterInfo.name } { ( assign_count === 0 ) ? "허용" : "제외" }</span>
-                                </div>
-                            </> ) }
+                            { meeting_info.filter.map( ({ filterInfo, assign_count, auth }) => <AlergicBlock
+                                filterInfo={ filterInfo }
+                                assign_count={ assign_count }
+                                auth={ auth }
+                            /> ) }
                         </div>
                     </div>
                 </div>

@@ -250,7 +250,7 @@ export const BottomRender = function({ width, height, mBottomRef, history }) {
     
             return () => {
                 setBO(true);
-                bgRef.current.removeEventListener("click", _bgClickHandler);
+                if (bgRef.current) bgRef.current.removeEventListener("click", _bgClickHandler);
                 // mbCompRef.current.removeEventListener("mousedown", _swipeStartHandler);
                 // mbCompRef.current.removeEventListener("mouseup", _swipeOngoingHandler);
             }
