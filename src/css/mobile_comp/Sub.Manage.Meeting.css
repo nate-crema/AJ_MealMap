@@ -230,14 +230,6 @@
     display: none;
 }
 
-.meeting-manage-menu .meeting-info-wrapper .filtered-list .filters-wrap .filters-aligner {
-    min-width: 100%;
-    height: 100%;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 /* Mobile Alert: participant editor */
 
 .friend-selector {
@@ -253,4 +245,20 @@
     position: relative;
     top: 60px;
     /* background-color: thistle; */
+}
+
+.filter-selector-wrap {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.filter-selector-wrap::-webkit-scrollbar {
+    display: none;
 }

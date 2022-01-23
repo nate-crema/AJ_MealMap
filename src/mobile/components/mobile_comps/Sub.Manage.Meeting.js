@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // api
 import { meeting, user } from '../../../apis';
-import AlergicBlock from '../../../components/AlergicBlock';
+import { AlergicBlock, AlergicBlockList } from '../../../components/AlergicBlock';
 
 // components
 import DateSelector from '../../../components/DateSelector';
@@ -320,69 +320,74 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
             } })
         }
 
-    const openEditor = ( opentype ) => {
-        switch(opentype) {
-            case "participants":
-                return dispatch({ type: "mobile/SETALERT", alert_objet: {
-                    type: "prompt/component",
-                    stage_control: [
-                        ( escape ) => ({
-                            title: ( participant_limit - meeting_info.participants.length === 0 ) ? 
-                                    "더이상 초대할 수 없어요"
-                                    : "약속에 누구를 초대할까요?",
-                            ment: ( participant_limit === 0 ) ? "원하는 친구를 선택해주시면 약속에 이미 참여한 다른분들께 물어보고 빠르게 초대할게요!" 
-                            : ( participant_limit - meeting_info.participants.length === 0 ) ? "질병관리청 사회적 거리두기 강화조치에 따라 더이상 약속인원을 추가할 수 없어요"
-                            : `약속에 최대 ${ participant_limit - meeting_info.participants.length }명까지 추가할 수 있어요`,
-                            comp: <></>,
-                            selection: ( participant_limit - meeting_info.participants.length === 0 )
-                            ? [ { text: "확인", style: { color: "var(--theme-color-C)" }, focus: true, onClick: escape } ]
-                            : [
-                                { text: "취소", style: { color: "var(--theme-color-C)" }, focus: true, onClick: escape },
-                                { text: "다음", style: { color: "var(--theme-color-C)" }, focus: true, onClick: 1 },
-                            ]
-                        }),
-                        async ( escape, selected ) => {
-                            try {
-                                // register participant-add request on meeting state
-                                const result = await meeting.registerRequest( meeting_info._id, "partcipant", selected );
-                                
-                                if (result) return {
-                                    title: "추가한 친구가 공유되었어요",
-                                    ment: `약속에 초대된 사람들에게 먼저 물어보고 추가한 친구${ selected.length > 1 ? "들" : "" }에게 초대장을 보낼게요!`,
-                                    selection: [ { text: "확인", style: { color: "var(--theme-color-C)" }, focus: true, onClick: escape } ]
-                                }
-                                
-                                throw new Error(result);
+        const openAlergicFilterEditor = async ( alergic_list ) => {
+            const editable_count = alergic_list.filter(v => v.auth).length;
+            console.log(`editable_count: ${ editable_count }`)
 
-                            } catch(e) {
-                                console.error(e);
-                                return {
-                                    title: "문제가 발생했어요",
-                                    ment: "잠시후 다시 시도해주세요. 문제가 계속되면 관리자에게 문의해주세요",
-                                    selection: [ { text: "확인", style: { color: "black" }, focus: true, onClick: escape } ]
-                                }
-                            }
+            if ( editable_count === 0 ) dispatch({ type: "mobile/SETALERT", alert_object: {
+                type: "component",
+                title: "'알러지 필터'를 수정할 수 없어요",
+                ment: "밥집 조건 중 '알러지 필터'는 해당 알러지를 가지고 있는 사람만 수정할 수 있어요. 즐거운 밥약속을 위해 이해해주세요!",
+                style: {
+                    alerter_height: "350px",
+                    titleColor: "var(--theme-color-C)",
+                    mentColor: "var(--theme-color-C)",
+                },
+                component: "FilterSelector_Unavailable",
+                selection: [
+                    { 
+                        text: "확인", 
+                        style: { 
+                            color: "white",
+                            backgroundColor: "var(--theme-color-C)"
                         },
-                    ]
-                } })
-            case "time":
-                return dispatch({ type: "mobile/SETALERT", alert_objet: {
-                    type: "prompt/time",
-                    stage_control: [
+                        focus: true
+                    }
+                ],
+                onBackgroundClick: ( close_alert ) => close_alert()
+            } })
+            else dispatch({ type: "mobile/SETALERT", alert_object: {
+                type: "component",
+                title: "해제할 알러지 필터를 선택해주세요",
+                ment: "자신이 가지고 있는 알러지에 대한 필터만 해제가 가능해요. 필터를 해제하면 메뉴별 경고도 함께 꺼지므로 신중히 선택해주세요.",
+                style: {
+                    alerter_height: "500px",
+                    titleColor: "var(--theme-color-C)",
+                    mentColor: "var(--theme-color-C)",
+                },
+                component: "FilterSelector",
+                component_states: {
+                    filter: [ ...meeting_info.filter.map(v => ({ ...v, state: null })) ]
+                },
+                component_functions: {
+                    onClick: ( filter_info ) => {
+                        console.log( "common", filter_info );
+                    },
+                    onAlergicFilterClick: ( { _id }, updateState ) => {
+                        const filter_info = meeting_info?.filter.find(v => v.filterInfo._id === _id);
                         
-                    ]
-                } })
-            case "filters":
-                return dispatch({ type: "mobile/SETALERT", alert_objet: {
-                    type: "prompt/component",
-                    stage_control: [
+                        // block un-authorize user's changing
+                        if ( !filter_info.auth ) return undefined;
                         
-                    ]
-                } })
-            default:
-                return;
+                        // update value
+                        const update_result = updateState();
+
+                        console.log( "alergic", _id, update_result );
+                    }
+                },
+                selection: [
+                    { 
+                        text: "닫기",
+                        style: { 
+                            color: "var(--theme-color-C)",
+                            backgroundColor: "white"
+                        },
+                        focus: true
+                    }
+                ],
+                onBackgroundClick: ( close_alert ) => close_alert()
+            } })
         }
-    }
 
     return <div className="meeting-manage-menu">
         <div className="title-area">
@@ -472,18 +477,15 @@ function BottomManageMeeting({ swipeEvent, history, bottomCompHandler }) {
                         />
                     </div>
                 </div>
-                <div className="filtered-list minfo-block" onClick={() => {}}>
+                <div className="filtered-list minfo-block">
                     <span className="context-title">설정된 밥집 검색조건</span>
                     <div className="filters-wrap">
-                        <div className="filters-aligner" style={{
-                            width: `${ ( 80 + 20 ) * meeting_info.participants.length + 20 }px`
-                        }}>
-                            { meeting_info.filter.map( ({ filterInfo, assign_count, auth }) => <AlergicBlock
-                                filterInfo={ filterInfo }
-                                assign_count={ assign_count }
-                                auth={ auth }
-                            /> ) }
-                        </div>
+                        <AlergicBlockList 
+                            meeting_info={ meeting_info }
+                            mode="display"
+                            // onClick={ () => openFilterEditor( false, meeting_info?.filter ) }
+                            onAlergicFilterClick={ ( filter_info ) => openAlergicFilterEditor( meeting_info?.filter ) }
+                        />
                     </div>
                 </div>
             </div>

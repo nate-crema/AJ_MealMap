@@ -7,6 +7,7 @@ import "../../../css/mobile_comp/MobileAlert.css";
 // component
 import Friendlist from '../../../components/FriendList';
 import DateSelector from '../../../components/DateSelector';
+import { AlergicBlockList } from '../../../components/AlergicBlock';
 
 function AlertInnerBtn({ options, state, closeAlert }) {
 
@@ -40,7 +41,7 @@ function MobileAlert() {
 
     useEffect(() => {
         // alert state control
-        console.log(alert_object);
+        // console.log(alert_object);
         if (alert_object) {
             setIsActive(true);
 
@@ -67,6 +68,13 @@ function MobileAlert() {
                             {
                                 statename: "time_selected",
                                 initial: []
+                            } 
+                        ]
+                    } else if ( alert_object?.component === "FilterSelector" ) {
+                        innerComponentStates = [
+                            {
+                                statename: "filter",
+                                initial: alert_object?.component_states?.filter
                             } 
                         ]
                     }
@@ -96,12 +104,12 @@ function MobileAlert() {
         const [ compState, setInnerComponentState ] = useState({});
         const setCompState = ( component, state_name, value ) => {
             if (typeof value !== "function") {
-                console.log(`${ component }'s Alert Component State update: [${ state_name }: ${ value }]`);
+                // console.log(`${ component }'s Alert Component State update: [${ state_name }: ${ value }]`);
                 setInnerComponentState( prev => ( { ...prev, [ component ]: { ...prev[ component ], [ state_name ]: value } } ) );
             } else {
                 setInnerComponentState( prev => {
                     const calced_value = value( prev[ component ][ state_name ] );
-                    console.log(`${ component }'s Alert Component State update: [${ state_name }: (calced)]`, calced_value);
+                    // console.log(`${ component }'s Alert Component State update: [${ state_name }: (calced)]`, calced_value);
                     return {
                         ...prev,
                         [ component ]: {
@@ -210,10 +218,10 @@ function MobileAlert() {
         useEffect(() => {
             if ( innerCompMode && alert_object?.selection ) {
                 // calculate rendering selections
-                setSelections( p => alert_object?.selection.filter(v => v.displayFilter(
+                setSelections( p => alert_object?.selection.filter(v => v.displayFilter ? v.displayFilter(
                     innerCompMode === "FriendList" ? compState.FriendList.friend_selected :
                     innerCompMode === "TimeSelector" ? compState.TimeSelector.time_selected : ""
-                )) );
+                ) : true ));
             } else setSelections( alert_object?.selection );
         }, [ compState, innerCompMode ]);
 
@@ -288,6 +296,46 @@ function MobileAlert() {
                                         setCompState( "TimeSelector", "time_selected", value );
                                     } }
                                     button={false}
+                                />
+                            </div> :
+
+                            ( innerCompMode === "FilterSelector" ) ? <div className="filter-selector-wrap">
+                                <AlergicBlockList
+                                    meeting_info={ { filter: compState.FilterSelector.filter } }
+                                    mode="edit"
+                                    onClick={ ( filter_info ) => {
+                                        if ( alert_object?.component_functions?.onClick ) {
+                                            let rv = alert_object?.component_functions?.onClick( filter_info );
+                                            if ( rv !== undefined ) setCompState( "FilterSelector", "filter", [
+                                                ...compState.FilterSelector.filter,
+                                                ...rv
+                                            ] );
+                                        }
+                                        
+                                    } }
+                                    onAlergicFilterClick={ ( filter_info ) => {
+                                        if ( alert_object?.component_functions?.onAlergicFilterClick ) {
+                                            alert_object?.component_functions?.onAlergicFilterClick( filter_info, () => {
+
+                                                // find filter value
+                                                const filter = [ ...compState.FilterSelector.filter ];
+                                                const index = filter.indexOf(filter.find(v => v.filterInfo._id === filter_info._id));
+
+                                                // console.log(filter, index, filter[index]);
+
+                                                // save select result
+                                                if ( filter[index].state !== true ) filter[index].disable_count++;
+                                                else filter[index].disable_count--;
+                                                filter[index].state = filter[index].state !== true;
+
+                                                // update state
+                                                setCompState( "FilterSelector", "filter", filter );
+
+                                                return filter[index];
+                                            } );
+                                        }
+                                        
+                                    } }
                                 />
                             </div> :
 

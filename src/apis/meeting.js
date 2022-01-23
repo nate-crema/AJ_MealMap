@@ -62,32 +62,49 @@ const getInfo = async ( dId, state ) => {
             ],
             filter: [ // 적용 필터
                 {
+                    cat: "alergic",
                     filterInfo: {
                         _id: "fid_0",
                         type: "crap",
                         name: "갑각류"
                     },
-                    assign_count: 0,
+                    assign_count: 1, // 해당 필터 사용자 수
+                    disable_count: 0, // 필터해제 동의 사용자 수
                     auth: true
                 },
                 {
+                    cat: "alergic",
                     filterInfo: {
                         _id: "fid_1",
                         type: "milk",
                         name: "우유"
                     },
                     assign_count: 3,
-                    auth: true
+                    disable_count: 0,
+                    auth: false
                 },
                 {
+                    cat: "alergic",
                     filterInfo: {
                         _id: "fid_3",
                         type: "bread",
                         name: "빵류"
                     },
-                    assign_count: 1,
+                    assign_count: 2,
+                    disable_count: 0,
                     auth: true
-                }
+                },
+                {
+                    cat: "alergic",
+                    filterInfo: {
+                        _id: "fid_4",
+                        type: "peanut",
+                        name: "견과류"
+                    },
+                    assign_count: 2,
+                    disable_count: 1,
+                    auth: true
+                },
             ],
             request: []
         };

@@ -1,12 +1,261 @@
+/* Notification */
+
 .mobile-notis {
     width: 90%;
-    height: 100px;
+    height: fit-content;
     /* height: auto; */
     position: absolute;
     top: 100px;
     left: 50%;
     transform: translate(-50%);
-    background-color: black;
-    z-index: 150;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 3000;
     transition: all .2s ease;
+}
+
+.mobile-notis-background {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2500;
+}
+
+
+/* NotificationBlock */
+
+.uni-noti-wrap {
+    width: 100%;
+    height: 60px;
+    border-radius: 20px;
+    margin-top: 10px;
+    overflow: hidden;
+    transition: all .35s ease;
+    z-index: 3000;
+    position: relative;
+}
+
+.uni-noti-wrap .noti-block {
+    width: 95%;
+    height: 95%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    background-color: white;
+    border: 1px solid var(--theme-color-C);
+    transition: all .2s ease;
+
+    /* animation common option */
+    animation-fill-mode: both;
+}
+
+.uni-noti-wrap .noti-block.onTouching {
+    animation-name: on-longtouch;
+    animation-duration: .8s;
+}
+
+.uni-noti-wrap .noti-block:first-child {
+    margin-top: 0;
+}
+
+.uni-noti-wrap .noti-block .inner-content {
+    width: 90%;
+    height: fit-content;
+    position: relative;
+    top: 12px;
+    left: 50%;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 30px auto;
+    transition: all .5s cubic-bezier(0.27, 1.51, 0.25, 1);
+}
+
+.uni-noti-wrap .noti-block .inner-content svg {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.uni-noti-wrap .noti-block .inner-content .noti-title {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--theme-color-C);
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    left: 20px;
+    transform: translate(0, -50%);    
+    margin: 0;
+    -webkit-user-select: none;
+    user-select: none;
+    word-break: keep-all;
+}
+
+.uni-noti-wrap .noti-block .noti-splitbar {
+    width: 90%;
+    height: 2px;
+    position: relative;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 2px;
+    background-color: var(--theme-color-C);
+}
+
+.uni-noti-wrap .noti-block .noti-content-wrap {
+    width: 90%;
+    height: 40%;
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translate(-50%);
+    -webkit-user-select: none;
+    user-select: none;
+    word-break: keep-all;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.uni-noti-wrap .noti-block .noti-content-wrap .noti-content {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: black;
+}
+
+.uni-noti-wrap .noti-block .noti-content-wrap .noti-content p {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.uni-noti-wrap .noti-block .noti-buttons {
+    width: 90%;
+    height: 120px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-template-rows: repeat(2, calc(50% - 10px));
+    gap: 20px;
+
+    /* animatino common option */
+    animation-name: fade-in;
+    animation-duration: .5s; 
+    animation-fill-mode: both;
+}
+
+.uni-noti-wrap .noti-btns {
+    width: 100px;
+    height: 95%;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(2, calc(50% - 5px));
+    gap: 10px;
+    overflow: hidden;
+    transition: all .2s ease;
+}
+
+.uni-noti-wrap .noti-btns .noti-btn {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: gray;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.uni-noti-wrap .noti-btns .noti-btn.noti-info {
+    background-color: #1B5BAE;
+}
+
+.uni-noti-wrap .noti-btns .noti-btn.noti-trash {
+    background-color: #A81E1E;
+}
+
+.uni-noti-wrap .noti-btns .noti-btn svg {
+    fill: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* NotificationInnerBtn */
+
+.noti-inner-btn {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 
+        0px 2px 10px rgb(0 0 0 / 30%), 
+        inset 0px 2px 10px rgb(0 0 0 / 0%);
+    transition: all .2s ease;
+
+    /* animation setting */
+    /* animation-name: btn-display;
+    animation-duration: .5s;
+    animation-fill-mode: both; */
+}
+
+.noti-inner-btn:active {
+    box-shadow: 
+        0px 2px 10px rgb(0 0 0 / 0%), 
+        inset 0px 2px 10px rgb(0 0 0 / 30%);
+}
+
+.noti-inner-btn span {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    word-break: keep-all;
+    text-align: center;
+}
+
+@keyframes on-longtouch {
+    from {
+        width: 95%;
+        height: 95%;
+    }
+    20% {
+        width: 93%;
+        height: 93%;
+    }
+    100% {
+        width: 99%;
+        height: 99%;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
