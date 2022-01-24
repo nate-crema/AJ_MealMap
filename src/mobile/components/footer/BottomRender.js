@@ -15,7 +15,15 @@ import Login from '../mobile_comps/Login';
 import Review from '../mobile_comps/Review';
 import BottomManageMeeting from '../mobile_comps/Sub.Manage.Meeting';
 
-export const BottomRender = function({ width, height, mBottomRef, history }) {
+export const BottomRender = function({
+    width, height,
+    mBottomRef,
+    history,
+    // security keyboard
+    setKO,
+    MKBState: [ m_kboard, setMK ],
+    MITState: [ m_itype, setMIT ],
+}) {
 
     const { user: { uinfo }, map: { stat }, mobile: { bottom_comp: Bcomp, mealfriend } } = useSelector(state => state);
     const dispatch = useDispatch();
@@ -31,8 +39,6 @@ export const BottomRender = function({ width, height, mBottomRef, history }) {
     const [ eventTimeB, setETB ] = useState(0);
     const [ swipe_start, setSS ] = useState([-100, -100]);
     const [ mobile_init, setMobileInit ] = useState(false);
-    const [m_kboard, setMK] = useState("");
-    const [m_itype, setMIT] = useState(0);
 
     const mbCompRef = useRef(<></>);
     const bgRef = useRef(<></>);
@@ -310,9 +316,6 @@ export const BottomRender = function({ width, height, mBottomRef, history }) {
     const closeMenu = (menu) => {
         // history.push('/');
     }
-
-    // keyboard state control
-    const [ keyboard_open, setKO ] = useState(false);
     
     const openKeyboard = () => {
         setKO(true);

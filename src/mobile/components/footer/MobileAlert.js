@@ -223,7 +223,7 @@ function MobileAlert() {
                     innerCompMode === "TimeSelector" ? compState.TimeSelector.time_selected : ""
                 ) : true ));
             } else setSelections( alert_object?.selection );
-        }, [ alert_object?.type, compState, innerCompMode ]);
+        }, [ alert_object?.type, alert_object?.selection, compState, innerCompMode ]);
 
     // test
     /*

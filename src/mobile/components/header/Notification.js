@@ -371,7 +371,9 @@ function Notification({ props }) {
 
 
     return <>
-        <div className="mobile-notis">
+        <div className="mobile-notis" style={{
+            zIndex: isNoticeBlockOpen && "5000"
+        }}>
                 {
                     ( common_notice ) && <NotificationBlock
                         content={ common_notice }
@@ -389,6 +391,7 @@ function Notification({ props }) {
         </div>
         <div className="mobile-notis-background" style={{
             display: isNoticeBlockOpen ? "initial" : "none",
+            zIndex: isNoticeBlockOpen && "4500"
         }} onClick={(e) => setIsNoticeBlockOpen(false)}
         ></div>
     </>;
