@@ -104,14 +104,14 @@ function LeftMenu() {
                 </div>
                 <UserProfile value={ uinfo }/>
                 <div className="submenus">
-                    <SelectionCategory title="기록" contents={[
+                    {/* <SelectionCategory title="기록" contents={[
                         { title: "검색기록", onClick: () => {} },
                         { title: "리뷰기록", onClick: () => {} },
-                    ]}/>
+                    ]}/> */}
                     <SelectionCategory title="관리" contents={[
                         { title: "밥약속관리", onClick: () => moveMenu("manage", "meeting") },
-                        { title: "친구관리", onClick: () => {} },
-                        { title: "계정관리", onClick: () => {} },
+                        // { title: "친구관리", onClick: () => {} },
+                        // { title: "계정관리", onClick: () => {} },
                     ]}/>
                 </div>
                 <div className="logout-selection" onClick={ function() {} }>
