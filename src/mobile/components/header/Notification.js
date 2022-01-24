@@ -22,6 +22,15 @@ function NotificationBlock({
     deleteNotification
 }) {
 
+    const dispatch = useDispatch();
+
+    // notification open state
+    const isOpenRef = useRef();
+
+    useEffect(() => {
+        isOpenRef.current = isOpen;
+    }, [ isOpen ]);
+
     // long touch control
     const isOnTouch = useRef(false);
     const [ isOnTouchState, setIsOnTouchState ] = useState(false);
@@ -50,6 +59,14 @@ function NotificationBlock({
 
     // notification block disable control
     const [ disable, setDisable ] = useState(false);
+
+    const closeNotification = ( delay ) => {
+        setIsOpen(false);
+        setTimeout(() => {
+            setDisable(true);
+            deleteNotification();
+        }, delay === false ? 0 : 200);
+    }
 
 
     // swipe detection
@@ -155,8 +172,13 @@ function NotificationBlock({
     const _notiBtnDisplayHandler = (e, isEndHandler) => {
         console.log(swiped_pos_ref.current, e);
 
+        if ( isOpenRef.current ) return;
         if ( isEndHandler ) {
-            if ( swiped_pos_ref.current === "toLeft" && e/2 > 40 ) setSwipeDegree(100);
+            if ( swiped_pos_ref.current === "toLeft" && e/2 > 120 ) {
+                closeNotification(false);
+                setSwipeDegree(450);
+            }
+            else if ( swiped_pos_ref.current === "toLeft" && e/2 > 40 ) setSwipeDegree(100);
             else setSwipeDegree(0);
         } else {
             if ( swiped_pos_ref.current === "toLeft" && e/2 > 120 ) setSwipeDegree(300);
@@ -169,6 +191,27 @@ function NotificationBlock({
     const _swipeEndHandler = useCallback((e) => {
         _notiBtnDisplayHandler(swiped_degree, true);
     }, [ swiped_degree ]);
+
+    
+    // notification buttons control
+
+    const _notiDeleteBtnHandler = (e) => {
+        dispatch({ type: "mobile/SETALERT", alert_object: {
+            type: "selectable",
+            title: "공지를 메인화면에서 지울까요?",
+            ment: `지워진 공지는 전체메뉴의 '공지'에서 언제든지 다시볼 수 있어요. (다음부터 바로 지우고 싶다면 왼쪽으로 끝까지 밀어주세요!)`,
+            style: {
+                alerter_height: "330px",
+                titleColor: "#aa2200",
+                mentColor: "black",
+            },
+            selection: [
+                { text: "취소", style: { color: "black", backgroundColor: "white" }, focus: true, onClick: () => {} },
+                { text: "확인", style: { color: "#aa2200", backgroundColor: "white" }, focus: true, onClick: () => closeNotification(false) },
+            ],
+            onBackgroundClick: ( close_session ) => close_session()
+        } })
+    }
 
 
     return <div className="uni-noti-wrap" style={{
@@ -242,13 +285,7 @@ function NotificationBlock({
                         <NotificationInnerBtn style={{
                             backgroundColor: `white`,
                             color: `black`,
-                        }} onClick={ () => {
-                            setIsOpen(false);
-                            setTimeout(() => {
-                                setDisable(true);
-                                deleteNotification();
-                            }, 200);
-                        } }>그만보기</NotificationInnerBtn>
+                        }} onClick={ () => closeNotification() }>그만보기</NotificationInnerBtn>
                         <NotificationInnerBtn style={{
                             backgroundColor: `var(--theme-color-C)`,
                             color: `white`,
@@ -262,10 +299,13 @@ function NotificationBlock({
             width: `${ swiped_degree }px`,
             gridTemplateColumns: 
                 ( swiped_degree >= 300 ) ?
-                    `${ 300 - ( swiped_degree / 3 ) }px ${ swiped_degree / 3 }px`
+                    `0px ${ swiped_degree }px`
                     : null
         }}>
-            <div className="noti-btn noti-info">
+            <div className="noti-btn noti-info" onClick={ () => {
+                setSwipeDegree(0);
+                setIsOpen(true);
+            } }>
                 <svg id="info_1_" data-name="info (1)" width="15.214" height="15.214" viewBox="0 0 15.214 15.214">
                     <g id="Group_100" data-name="Group 100">
                         <g id="Group_99" data-name="Group 99">
@@ -284,7 +324,7 @@ function NotificationBlock({
                     </g>
                 </svg>
             </div>
-            <div className="noti-btn noti-trash">
+            <div className="noti-btn noti-trash" onClick={ _notiDeleteBtnHandler } >
                 <svg id="delete" width="12.619" height="15.538" viewBox="0 0 12.619 15.538">
                     <path id="Path_30" data-name="Path 30" d="M222.762,154.7a.364.364,0,0,0-.364.364v6.877a.364.364,0,0,0,.728,0v-6.877A.364.364,0,0,0,222.762,154.7Zm0,0" transform="translate(-214.306 -149.074)" fill="#f5f5f5"/>
                     <path id="Path_31" data-name="Path 31" d="M104.762,154.7a.364.364,0,0,0-.364.364v6.877a.364.364,0,0,0,.728,0v-6.877A.364.364,0,0,0,104.762,154.7Zm0,0" transform="translate(-100.599 -149.074)" fill="#f5f5f5"/>

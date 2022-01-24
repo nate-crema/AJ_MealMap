@@ -194,8 +194,9 @@ function ScrollSelector({
     useEffect(() => {
         // assign initial value scrollUI
         console.log(init[mode]);
-        if ( init_assign && init[mode] !== undefined ) {
+        if ( init_assign && selection_area && init[mode] !== undefined ) {
             const v = selectables[mode][lang].find(_v => _v.value === init[mode]); 
+            console.log(v, selectables[mode][lang].indexOf(v));
             setTimeout(() => {
                 updateScrollUI(selectables[mode][lang].indexOf(v), selection_area);
             }, 300);
@@ -203,23 +204,29 @@ function ScrollSelector({
     }, [ init_assign, selection_area ])
 
     const swipeRef = useRef();
+    const swipeWrapRef = useRef();
     const lscrolled = useRef(new Date().getTime());
 
     const _scrollHandler = ( e, selection_area_size ) => {
         setScrolling(true);
         const timestamp = new Date().getTime();
         lscrolled.current = timestamp;
-        return setTimeout(() => {
+        
+        // run scrollAction when scrolling is non-automatic
+        if ( !auto_scroll.current ) return setTimeout(() => {
             _scrollAction( timestamp, e, selection_area_size ) ;
         }, 300);
     }
 
     const _scrollAction = ( timestamp, e, selection_area_size ) => {
         // check is scroll action ends
+        // console.log('action: autoscrolled? => ', auto_scroll.current);
         if ( lscrolled.current !== timestamp || auto_scroll.current ) return;
 
         // get scroll position
-        let scroll_position = Math.round(e.target.scrollTop/selection_area_size);
+        // console.log( e.target.scrollTop / selection_area_size )
+        const adjust_value = 0.2;
+        let scroll_position = Math.round( e.target.scrollTop / selection_area_size - adjust_value );
         // console.log(scroll_position, selectables[mode]);
         if ( selectables[mode][lang].length < (scroll_position + 1) ) scroll_position = selectables[mode][lang].length-1;
         // console.log(scroll_position);
@@ -232,25 +239,38 @@ function ScrollSelector({
     }
 
     const updateScrollUI = ( scroll_position, selection_area_size ) => {
+        // handle component pre-unmounted
+        if ( !swipeRef.current || !swipeWrapRef.current ) return;
+        
         // adjust scroll position
-        auto_scroll.current = true;
-        console.log("selection_area_size", selection_area_size)
-        // if (selection_area_size === 0) selection_area_size = document.querySelector("div.selectable-value.r").clientHeight;
-        let scroll_value = scroll_position * selection_area_size - 12
-        console.log('update scroll to: ', scroll_value);
-        swipeRef.current.scrollTop = scroll_value;
-        auto_scroll.current = false;
+            auto_scroll.current = true;
+            // console.log('[ updateScrollUI ] action: autoscrolled? => ', auto_scroll.current);
 
+            const top_nullarea_size = 71;
+            const selectarea_prevpostarea_size = swipeWrapRef.current.offsetHeight * 27 / 100;
+            const selectarea_realsize = swipeWrapRef.current.offsetHeight * 46 / 100;
+            const selected_size = scroll_position === 0 ? 41 : 33;
+            const selected_topbottom_padding = scroll_position === 0 ? 8 : 4;
+            const selectarea_design_margin = ( selectarea_realsize - selected_size ) / 2;
+
+            let scroll_value = top_nullarea_size + scroll_position * selection_area_size - ( selectarea_design_margin + selectarea_prevpostarea_size ) + selected_topbottom_padding;
+            console.log(`scroll setted to: ${ scroll_value }px`)
+            swipeRef.current.scrollTop = scroll_value;
+            setTimeout(() => {
+                auto_scroll.current = false;
+                // console.log('[ updateScrollUI ] action: autoscrolled? => ', auto_scroll.current);
+            }, 300);
+        
         // update current selected state
-        console.log(selectables, mode, lang, scroll_position);
-        setSelected(prev => ({ ...prev, [ mode ]: selectables[mode][lang][scroll_position].value }));
-        setScrolling(false);
-
-        console.log( swipeRef?.current, swipeRef?.current?.scrollTop, scroll_value, scroll_position === 0 );
-
+            // console.log(selectables, mode, lang, scroll_position);
+            setSelected(prev => ({ ...prev, [ mode ]: selectables[mode][lang][scroll_position].value }));
+            setScrolling(false);
+            
+            // console.log( swipeRef?.current, swipeRef?.current?.scrollTop, scroll_value, scroll_position === 0 );
+        
         setTimeout(() => {
-            if ( scroll_position === 0 ) return;
-            if ( swipeRef?.current && ( swipeRef?.current?.scrollTop !== scroll_value ) ) {
+            console.log ( `calculated: ${ scroll_value } | setted: ${ swipeRef.current.scrollTop }` );
+            if ( swipeRef?.current && ( ( swipeRef?.current?.scrollTop - scroll_value > 1 ) || ( scroll_value - swipeRef?.current?.scrollTop > 1 ) ) ) {
                 updateScrollUI( scroll_position, selection_area_size );
             }
         }, 300);
@@ -276,7 +296,7 @@ function ScrollSelector({
         updating[1](scrolling);
     }, [ scrolling ]);
 
-    return <div className='scroll-selector-wrap'>
+    return <div className='scroll-selector-wrap' ref={ swipeWrapRef }>
         <div className="value-focus-bar bar-top"></div>
         <div className="value-focus-bar bar-bottom"></div>
         <div className={ `scroll-selector selector-${ mode }` }
@@ -288,7 +308,7 @@ function ScrollSelector({
         >
             <span className="selectable-value" style={{
                 padding: "0",
-                height: "25px"
+                height: "71px"
             }}> </span>
             { selectables[mode][lang].map((v, i) => <>
                 <span key={i} className={ "selectable-value r" + ( ( selected[mode] === v.value ) ? " selected" : "" ) } style={{
@@ -298,7 +318,7 @@ function ScrollSelector({
             </>) }
             <span className="selectable-value" style={{
                 padding: "0",
-                height: "70px"
+                height: "71px"
             }}> </span>
         </div>
     </div>

@@ -44,7 +44,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
         setPS(ps => {
             if (ps || direct_mode === "max") {
                 // maximize menu
-                bottomCompHandler(sizes.maximize);
+                bottomCompHandler(sizes.sub_maximize);
                 setIsMaximize(true);
             } else if (!prev || direct_mode === "default") {
                 // defaultize menu
@@ -123,9 +123,6 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
                     bottomCompHandler(sizes.sub_maximize);
                     break;
 
-                case 1.7:
-                    // bottomCompHandler(sizes.default);
-                    break;
                 case 1:
                 default:
                     _swipeUpHandler("max");

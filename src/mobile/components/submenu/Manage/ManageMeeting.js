@@ -115,6 +115,7 @@ function MeetingInvitation({ info, shareable, onShareStart, onShareEnd, onClick 
         }
     }, [])
 
+
     // card sharing handler
 
     const [ bg_automize, setBGAutomize ] = useState(false);
@@ -122,6 +123,8 @@ function MeetingInvitation({ info, shareable, onShareStart, onShareEnd, onClick 
     const [ maximum_bg, setMaxBg ] = useState(0);
     const [ swiped_pos, setSwipedPos ] = useState(null);
     const cardRef = useRef();
+
+    const [ deviceorientationActive, setDeviceOrientationActive ] = useState(false);
 
     const _cardDesignHandler = useCallback((e) => {
         setSharingBg(e);
@@ -134,6 +137,7 @@ function MeetingInvitation({ info, shareable, onShareStart, onShareEnd, onClick 
                 // swiped
                 setBGAutomize(true);
                 setSharingBg(maximum_bg);
+                startSwipeSharing();
                 onShareStart();
                 setTimeout(() => {
                     setSharingBg(0);
@@ -155,6 +159,35 @@ function MeetingInvitation({ info, shareable, onShareStart, onShareEnd, onClick 
             
         }
     }, [ sharing_bg, swiped_pos ])
+
+    const startSwipeSharing = () => {
+        setDeviceOrientationActive(true);
+    }
+
+    const orientationHandler = (e) => {
+        console.log("detected: deviceorientation");
+        // console.log(e);
+
+        const {
+            alpha, // ?????
+            beta: device_front_tangent, // 기기 정면 기울기 (기기 y축 회전)
+            gamma: device_side_tangent // 기기 측면 기울기 (기기 x축 회전)
+        } = e;
+
+        console.log( `tangented ${ device_front_tangent }deg to front, ${ device_side_tangent }deg to side)` )
+    }
+    
+    useEffect(() => {
+        // get Accelator value
+        if (deviceorientationActive) window.addEventListener("deviceorientation", orientationHandler); 
+        return () => {
+            window.removeEventListener("deviceorientation", orientationHandler);
+        }
+    }, [ deviceorientationActive ])
+    
+
+
+    // card default actions handler
 
     const _clickHandler = (e) => {
         e.stopPropagation();

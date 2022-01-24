@@ -17,6 +17,7 @@ import person from "../../../../assets/img/person.svg";
 // component
 import MobileBtn from "../MobileBtn";
 import TimePicker from '../../TimePicker';
+import DateSelector from '../../../../components/DateSelector';
 
 function MealFriend({ swipeEvent, bottomCompHandler = () => {},
     swipe_state: [ swipe_active, setSwipeActive ],
@@ -55,7 +56,7 @@ function MealFriend({ swipeEvent, bottomCompHandler = () => {},
         // menu css control
 
         useEffect(() => {
-            if (meeting_stat === 1) {
+            if ([ 1, 2 ].includes(meeting_stat)) {
                 swipeEvent.addEventListener("toRight", _movePrev);
                 return () => {
                     swipeEvent.removeEventListener("toRight", _movePrev);
@@ -67,7 +68,7 @@ function MealFriend({ swipeEvent, bottomCompHandler = () => {},
 
         // menu0: go to menu1 (select friend from list)
         const _openSelectList = () => {
-            // document.querySelector(".mealfriend").classList.toggle("sliding-r");
+            document.querySelector(".mealfriend").classList.toggle("sliding-r");
             mealFriendRef.current.classList.toggle("sliding-l");
             setSwipeActive(false);
             setTimeout(() => {
@@ -77,6 +78,8 @@ function MealFriend({ swipeEvent, bottomCompHandler = () => {},
 
         // menu0: go to menu2 (select time)
         const _timeSelection = () => {
+            document.querySelectorAll(".mealfriend").forEach((v, i) => v.classList.toggle("sliding-r"));
+            document.querySelectorAll(".mealfriend").forEach((v, i) => v.classList.toggle("sliding-l"));
             mealFriendRef.current.classList.toggle("sliding-l");
             setSwipeActive(false);
             setTimeout(() => {
@@ -93,11 +96,17 @@ function MealFriend({ swipeEvent, bottomCompHandler = () => {},
         const _movePrev = () => {
             // if (meeting_stat !== 1) return;
             setSwipeActive(true);
-            document.querySelectorAll(".add-user").forEach((v, i) => v.classList.toggle("sliding-r"));
-            document.querySelectorAll(".add-user").forEach((v, i) => v.classList.toggle("sliding-l"));
             setTimeout(() => {
-                setMeetingStat(0);
-            }, 300);
+                document.querySelectorAll(".add-user").forEach((v, i) => v.classList.toggle("sliding-r"));
+                document.querySelectorAll(".add-user").forEach((v, i) => v.classList.toggle("sliding-l"));
+                document.querySelectorAll(".mealfriend").forEach((v, i) => v.classList.toggle("sliding-r"));
+                document.querySelectorAll(".mealfriend").forEach((v, i) => v.classList.toggle("sliding-l"));
+                document.querySelectorAll(".time-selection").forEach((v, i) => v.classList.toggle("sliding-r"));
+                document.querySelectorAll(".time-selection").forEach((v, i) => v.classList.toggle("sliding-l"));
+                setTimeout(() => {
+                    setMeetingStat(0);
+                }, 200);
+            }, 200);
         }
 
         // menu1: select handler
@@ -134,6 +143,13 @@ function MealFriend({ swipeEvent, bottomCompHandler = () => {},
             socket.on("menu/active[res]", responseSocketActivation);
         }
     }, [ auth_requested ]);
+
+    // DateSelector state control
+    const [ picked_info, setPickedInfo ] = useState(null);
+    
+    useEffect(() => {
+        console.log(picked_info);
+    }, [ picked_info ]);
 
     // test
     useEffect(() => {
@@ -235,7 +251,7 @@ function MealFriend({ swipeEvent, bottomCompHandler = () => {},
     return <>
         {
             (meeting_stat === 0) && <>
-                <div className="mealfriend" ref={ mealFriendRef }>
+                <div className="mealfriend sliding-l" ref={ mealFriendRef }>
                     <div className="friends-list">
                         { (mealfriend.list.length > 0)
                         ? ( friend_list_loaded )
@@ -293,7 +309,22 @@ function MealFriend({ swipeEvent, bottomCompHandler = () => {},
             (meeting_stat === 2) && <>
                 <div className="time-selection sliding-l">
                     <span className="msg">{ msg }</span>
-                    <TimePicker className="meet-time-picker" bottomCompHandler={(mode_id) => bottomCompHandler(mode_id < 0 ? sizes.oh_default : sizes.maximize)}/>
+                    {/* <TimePicker className="meet-time-picker" bottomCompHandler={(mode_id) => bottomCompHandler(mode_id < 0 ? sizes.oh_default : sizes.maximize)}/> */}
+                    <div className="timeselector-wrap">
+                        <DateSelector
+                            className="meet-time-picker"
+                            inputValue={[ "am/pm", "time" ]}
+                            button={false}
+                            onValueSucceed={ ( value ) => setPickedInfo(value) }
+                            displayKO={true}
+                            init={{
+                                hour: ( (new Date().getHours() + 1) % 12 ) - 1 || 12,
+                                minute: ( Math.floor(new Date().getMinutes() / 10) + 1 ) * 10,
+                                ampm: ( Math.floor( new Date().getHours() / 12 ) > 0 ) ? 2 : 1
+                            }}
+                            init_assign={true}
+                        />
+                    </div>
                     <MobileBtn text="알림 발송" className="send-noti-btn sliding-l" type="0"/>
                 </div>
             </>
