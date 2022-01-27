@@ -15,7 +15,7 @@ import person from "../../../assets/img/person.svg";
 import MealFriend from './Friend/MealFriend';
 import FriendManage from './Friend/FriendManage';
 
-function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
+function Friend({ history, swipeEvent, bottomCompHandler = () => {} }) {
 
     const { mealfriend, meet_time } = useSelector(state => state.mobile);
     const dispatch = useDispatch();
@@ -206,6 +206,7 @@ function Friend({ swipeEvent, bottomCompHandler = () => {} }) {
                         setMT("친구");
                         _swipeUpHandler("default");
                     }}
+                    history={ history }
                 />
             </>
         }

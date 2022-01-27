@@ -19,10 +19,12 @@ function FriendManage({
     const dispatch = useDispatch();
 
     const [ friend_list, setFriendList ] = useState( uinfo?.friend || [] ); // 친구목록
+    const [ friend_list_loaded, setFriendListLoaded ] = useState(false); // 친구목록 로드여부
+    const [ friend_list_receiving, setFriendListReceiving ] = useState(false); // 친구목록 실시간 수신 활성상태
     const [ friend_category, setFriendCategory ] = useState( {} ); // 친구분류 (검색속도 향상을 위한 단과대/학과별 전처리)
     const [ friend_list_display, setFriendListDisplay ] = useState( [] ); // 표시되는 친구목록
-    const [ selected, setSelected ] = useState([]);
-    const [ list_mode, setListMode ] = useState("search");
+    const [ selected, setSelected ] = useState([]); // 선택한 친구
+    const [ list_mode, setListMode ] = useState("search"); // 리스팅 모드 ( 화면에 표시하는 모드 ( search | selection ) )
 
     // searcher states
     const [ search_keyword, setSearchKeyword ] = useState(""); // 입력된 검색어
@@ -87,6 +89,47 @@ function FriendManage({
             socket.on("menu/active[res]", responseSocketActivation);
         }
     }, [ auth_requested ]);
+
+
+    // send friend list request
+    useEffect(() => {
+        if ( !friend_list_loaded && authId && authKey ) {
+            socket.emit("friend/getList", { authorize: { authId, authKey } });
+            setFriendListReceiving(true);
+        }
+    }, [ authId, authKey ]);
+
+    // get friend list updates
+    const updateFriendList = ( response ) => {
+        const { result, reason, data } = response;
+        console.log( result, reason, data );
+        if ( [ "closed", "failed" ].includes( result ) ) {
+            setFriendListReceiving( false );
+            dispatch({
+                type: "mobile/SETALERT",
+                alert_object: {
+                    type: "selectable",
+                    title: "실시간 친구목록을 불러올 수 없어요",
+                    ment: "보안인증이 정상적으로 이루어지지 않아 실시간으로 친구목록을 불러올 수 없어요. 다시 시도하려면 앱을 다시 실행해주세요.",
+                    style: {
+                        alerter_height: "350px",
+                        titleColor: "var(--theme-color-C)"
+                    },
+                    selection: [
+                        { text: "확인", style: { color: "white", backgroundColor: "var(--theme-color-C)" }, focus: true, onClick: () => { window.location.reload() } },
+                    ]
+                }
+            })
+        }
+        else if ( [ "updated", "created" ].includes( result ) ) {
+            setFriendList( data );
+            if ( result === "created" ) setFriendListLoaded( true );
+        }
+    }
+    
+    useEffect(() => {
+        socket.on("friend/getList[res]", updateFriendList);
+    }, []);
 
     
     // friend-option handler
@@ -319,103 +362,6 @@ function FriendManage({
         if ( e.currentTarget.scrollTop === 0 ) setSwipeActive(true);
         else setSwipeActive(false);
     }
-
-    // test
-    useEffect(() => {
-        setTimeout(() => {
-            // setMenu(true);
-            setFriendList([
-                {
-                    _id: "uid_0",
-                    info: {
-                        name: "방재훈",
-                        pn: "01012345678",
-                        college: "정보통신대학",
-                        major: "국방디지털융합학과",
-                        img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80",
-                    },
-                    connected: true,
-                    start: new Date("2022-01-01").getTime()
-                },
-                {
-                    _id: "uid_1",
-                    info: {
-                        name: "박상현",
-                        pn: "01000003030",
-                        college: "의과대학",
-                        major: "의예과",
-                        img: null,
-                    },
-                    connected: true,
-                    start: new Date("2022-01-01").getTime()
-                },
-                {
-                    _id: "uid_2",
-                    info: {
-                        name: "김건모",
-                        pn: "01000003030",
-                        college: "의과대학",
-                        major: "의예과",
-                        img: null,
-                    },
-                    connected: true,
-                    start: new Date("2022-01-01").getTime()
-                },
-                {
-                    _id: "uid_3",
-                    info: {
-                        name: "길멃",
-                        pn: "01000003030",
-                        college: "의과대학",
-                        major: "의예과",
-                        img: null,
-                    },
-                    connected: true,
-                    start: new Date("2022-01-01").getTime()
-                },
-                {
-                    _id: "uid_4",
-                    info: {
-                        name: "Ritta Siruang",
-                        pn: "01000003030",
-                        college: "의과대학",
-                        major: "의예과",
-                        img: null,
-                    },
-                    connected: true,
-                    start: new Date("2022-01-01").getTime()
-                },
-                {
-                    _id: "uid_5",
-                    info: {
-                        name: "ㄱㄱㄱ",
-                        pn: "01000003030",
-                        college: "의과대학",
-                        major: "의예과",
-                        img: null,
-                    },
-                    connected: true,
-                    start: new Date("2022-01-01").getTime()
-                },
-                {
-                    _id: "uid_6",
-                    info: {
-                        name: "ㄱㄱㄱ",
-                        pn: "01000003030",
-                        college: "의과대학",
-                        major: "의예과",
-                        img: null,
-                    },
-                    connected: true,
-                    start: new Date("2022-01-01").getTime()
-                }
-            ])
-            // setTimeout(() => {
-            //     setMenu(false);
-            // }, 1000);
-        }, 1000);
-    }, []);
-
 
     return <div className="friend-manage">
         { openOption ? <>

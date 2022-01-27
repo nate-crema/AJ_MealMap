@@ -275,7 +275,7 @@
 
 .friend-menu .time-selection {
     width: 100%;
-    height: 100%;
+    height: 80%;
     position: relative;
     top: 0;
     left: 50%;
@@ -294,6 +294,7 @@
     left: 0;
 }
 
+.friend-menu .time-selection .dateselector-wrap,
 .friend-menu .time-selection .timeselector-wrap {
     width: 100%;
     height: 150px;
@@ -304,19 +305,11 @@
     overflow: hidden;
 }
 
-.friend-menu .time-selection .timeselector-wrap .meet-time-picker {
-    /* width: 100%;
-    height: 250px;
-    position: relative;
-    top: 50%;
-    left: 50%; */
-}
-
 .friend-menu .send-noti-btn {
     width: 100%;
     height: 70px;
-    position: relative;
-    top: 120px;
+    position: absolute;
+    bottom: 0px;
     left: 50%;
     transform: translate(-50%);
 }

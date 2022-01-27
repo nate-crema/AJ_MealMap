@@ -269,6 +269,9 @@ function ScrollSelector({
             // console.log( swipeRef?.current, swipeRef?.current?.scrollTop, scroll_value, scroll_position === 0 );
         
         setTimeout(() => {
+            // handle component pre-unmounted
+            if ( !swipeRef.current || !swipeWrapRef.current ) return;
+            
             console.log ( `calculated: ${ scroll_value } | setted: ${ swipeRef.current.scrollTop }` );
             if ( swipeRef?.current && ( ( swipeRef?.current?.scrollTop - scroll_value > 1 ) || ( scroll_value - swipeRef?.current?.scrollTop > 1 ) ) ) {
                 updateScrollUI( scroll_position, selection_area_size );
@@ -366,9 +369,10 @@ function DateSelector({
 
     // run outer action when value succeed
     useEffect(() => {
+        console.log(selected);
         if ( !submit_available ) return;
         if ( onValueSucceed ) return onValueSucceed( selected );
-    }, [ submit_available ]);
+    }, [ selected, submit_available ]);
 
     useEffect(() => {
         // set editable state
@@ -377,7 +381,15 @@ function DateSelector({
 
     return <>
         <div className={ className + " timeinfo_selector" } style={{
-            // gridTemplateColumns: `repeat(${ inputValue.length }, 33%)`
+            gridTemplateColumns: 
+                ( inputValue.length === 2 
+                    && ( inputValue.includes("time") || inputValue.includes("date") )
+                ) ? `calc(33.33% - 20px) 10px calc(33.33% - 20px) 33.33%` :
+                ( inputValue.length === 1 
+                    && ( inputValue.includes("time") || inputValue.includes("date") )
+                ) ? `calc(50% - 15px) 10px calc(50% - 15px)` :
+                ( inputValue.length === 1 ) ? `auto` :
+                null
         }}>
             { inputValue.includes("time") && <>
                 <ScrollSelector 

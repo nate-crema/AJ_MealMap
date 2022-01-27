@@ -26,8 +26,11 @@ const initState = {
         stage: 0,
         accepted: [],
         meet_time: {
-            h: 0,
-            m: 0
+            month: 0,
+            day: 0,
+            hour: 0,
+            ampm: 0,
+            minute: 0
         },
         list: []
     }
@@ -84,14 +87,17 @@ export default handleActions({
             }
         }
     },
-    [ SETMTIME ]: (state, { h, m }) => {
+    [ SETMTIME ]: (state, { month, day, hour, ampm, minute }) => {
     return {
             ...state,
             mealfriend: {
                 ...state.mealfriend,
                 meet_time: {
-                    h, 
-                    m
+                    month: month || state.mealfriend.meet_time.month,
+                    day: day || state.mealfriend.meet_time.day,
+                    hour: hour || state.mealfriend.meet_time.hour,
+                    ampm: ampm || state.mealfriend.meet_time.ampm,
+                    minute: minute || state.mealfriend.meet_time.minute
                 }
             }
         }

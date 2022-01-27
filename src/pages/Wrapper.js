@@ -120,7 +120,7 @@ function Wrapper({ history, location }) {
     // connect with socket server
 
     const connectSocket = ( url ) => { 
-        const new_socket = io("localhost:3001");
+        const new_socket = io(url);
         dispatch({ type: "socket/SETSOCKET", socket: new_socket });
     }
 

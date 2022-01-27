@@ -348,6 +348,7 @@ export const BottomRender = function({
                             
                             ( Bcomp.mode === "friend" ) ? <Friend swipeEvent={_swipeEvent} 
                                 bottomCompHandler={(opensize) => _bcompHandler({ bg_blaclize: false, action: true, opensize, ddbar_enable: true, alignment_top: false })}
+                                history={ history }
                             /> :
                             
                             ( Bcomp.mode === "review" ) ?  <Review swipeEvent={_swipeEvent} 

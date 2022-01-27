@@ -18,7 +18,7 @@ const getInfo = async ( dId, state ) => {
                 major: "사이버보안학과",
                 img: { type: String },
             }, // 주최자
-            meet_time: new Date("2022-02-01 10:00:00"), // 약속시간
+            meet_time: new Date("2022-02-01 10:20:00"), // 약속시간
             participants: [ // 참가인원
                 {
                     user: {
@@ -123,6 +123,18 @@ const getParticipantLimit = async ( timestamp ) => {
     }
 }
 
+const createMeeting = async ( participants, meet_time ) => {
+    try {
+        const result = await axios.post(`/meeting`, {
+            participants,
+            meet_time
+        });
+        return result.data;
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 const registerRequest = async ( meeting_id, type, value_object ) => {
     return true;
 }
@@ -130,5 +142,6 @@ const registerRequest = async ( meeting_id, type, value_object ) => {
 export default {
     getInfo,
     getParticipantLimit,
+    createMeeting,
     registerRequest
 }
