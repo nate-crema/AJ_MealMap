@@ -1,0 +1,20 @@
+/* Global */
+
+* {
+    /* font option: global */
+    font-family: "Noto Sans KR", sans-serif;
+    color: var(--theme-color-C);
+    
+    /* transition option: global */
+    transition: all .2s cubic-bezier(0, 1, 1, 1);
+}
+
+:root {
+    --theme-color-A: #002B52;
+    --theme-color-B: #00407B;
+    --theme-color-C: #005BAE;
+    --theme-color-D: #006ED3;
+    --theme-color-E: #008BAE;
+}
+
+/* App */

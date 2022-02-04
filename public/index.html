@@ -3,80 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <script src="node_modules/devtools-detect/index.js"></script>
-
-    <script type="module">
-      // Check if it's open
-      console.log('Is DevTools open:', window.devtools.isOpen);
-    
-      // Check it's orientation, `undefined` if not open
-      console.log('DevTools orientation:', window.devtools.orientation);
-    
-      // Get notified when it's opened/closed or orientation changes
-      window.addEventListener('devtoolschange', event => {
-        console.log('Is DevTools open:', event.detail.isOpen);
-        console.log('DevTools orientation:', event.detail.orientation);
-      });
-    </script>
-
-    <style>
-      #footer-support {
-        width: 100%;
-        height: 50px;
-        background-color: #eeeeeeb9;
-        z-index: 10000000000;
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%);
-        overflow: hidden;
-      }
-
-      #footer-support div {
-        position: absolute;
-        width: 40%;
-        height: 80%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      #footer-support #text-support {
-        font-family: "Noto Sans KR", sans-serif;
-        font-weight: 500;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        white-space: nowrap;
-        color: black;
-      }
-
-      #footer-support #d2-img {
-        width: auto;
-        height: 80%;
-        float: right;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      
-      @media (max-width: 1500px) {
-        #footer-support div {
-          width: 90%;
-        }
-        #footer-support #text-support {
-          background-color: #eeeeeeb9;
-          z-index: 500;
-        }
-      }
-
-    </style>
-    
     <meta
       name="description"
       content="Web site created using create-react-app"
@@ -87,22 +18,29 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <style>
-      #root {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
-    <title>AJOU MEALMAP</title>
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
   </head>
   <body>
-    <noscript>밀맵을 사용하기 위해서는 반드시 ES6 js 실행이 필요합니다. 사용가능한 환경에서 다시 접속해주세요.</noscript>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <footer id="footer-support">
-      <div>
-        <span id="text-support">이 서비스는 Whois와 Naver D2의 지원을 받아 제작되었습니다.</span>
-        <img id="d2-img" src="%PUBLIC_URL%/naver_d2_support.png"/>
-      </div>
-    </footer>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
   </body>
 </html>

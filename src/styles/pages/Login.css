@@ -1,0 +1,146 @@
+.catch-phrase {
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    white-space: nowrap;
+    
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    animation: fade-in .4s cubic-bezier(0.3, 0, 0.3, 1);
+    animation-delay: 1.6s;
+    animation-fill-mode: both;
+}
+
+.login-contents {
+    width: 80%;
+    height: 300px;
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translate(-50%);
+
+    animation: fade-in .2s cubic-bezier(0.3, 0, 0.3, 1);
+    animation-delay: 2s;
+    animation-fill-mode: both;
+}
+
+.login-contents .stage-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.login-contents .stage-ment {
+    font-size: 14px;
+    font-weight: 300;
+    position: relative;
+    top: 20px;
+}
+
+.login-contents .stage-ment p {
+    margin: 0;
+}
+
+.login-contents .stage-rendering {
+    width: 100%;
+    height: 120px;
+    position: relative;
+    top: 70px;
+    left: 0;    
+}
+
+.login-contents .stage-rendering.stage-fade-in {
+    animation: stage-fade-in .3s cubic-bezier(0, 1, 1, 1);
+}
+
+.login-contents .stage-rendering.stage-fade-out {
+    animation: stage-fade-out .3s cubic-bezier(0, 1, 1, 1);
+    animation-fill-mode: both;
+}
+
+.login-contents .stage-rendering.button-display {
+    width: 70%;
+}
+
+/* stage: 0 */
+.login-contents .stage-rendering .portal-id-input {
+    position: absolute;
+    transform: translate(-50%, 0);
+    top: 0;
+}
+
+.login-contents .stage-rendering .name-input {
+    position: absolute;
+    transform: translate(-50%, 0);
+    top: unset;
+    bottom: 0;
+}
+
+
+.login-contents .login_button {
+    width: calc(30% - 10px);
+    height: 120px;
+    float: right;
+    position: relative;
+    top: 10px;
+    transform: translateY(-50%);
+
+    border-radius: 20px;
+    background-color: var(--theme-color-C);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+
+    overflow: hidden;
+}
+
+.login-contents .login_button.open {
+    width: calc(30% - 10px);
+}
+
+.login-contents .login_button.close {
+    width: 0;
+}
+
+.login-contents .login_button span {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+
+/* animate option */
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        top: 45%;
+    }
+    40% {
+        opacity: 0;
+    }
+    to {
+
+    }
+}
+
+@keyframes stage-fade-in {
+    from {
+        opacity: 0;
+        left: -10px;
+    }
+    to {
+    }
+}
+
+@keyframes stage-fade-out {
+    from {
+    }
+    to {
+        opacity: 0;
+        left: 10px;
+    }
+}

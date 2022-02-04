@@ -1,0 +1,127 @@
+.global-selection-wrap {
+    width: calc( 100% + 2px );
+    height: 60px;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+
+    transition: all .2s cubic-bezier(0, 1, 1, 1);
+    overflow: hidden;
+}
+
+.global-selection-wrap .global-selection {
+    width: calc( 100% - 4px );
+    height: 45px;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%);
+
+    border-radius: 20px;
+    border: 1px solid var(--theme-color-C);
+    background-color: white;
+    transition: all .2s cubic-bezier(0.5, 0.5, 0, 1);
+}
+
+.global-selection-wrap .global-selection .text-hider {
+    width: 0px;
+    height: 10px;
+    background-color: white;
+    transition: all .2s cubic-bezier(0.5, 0.5, 0, 1);
+    position: absolute;
+    top: -5px;
+    left: 25px;
+}
+
+.global-selection-wrap .global-selection .global-selection-placeholder {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: gray;
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translate(0, -50%);
+    transition: all .2s cubic-bezier(0.5, 0.5, 0, 1);
+    white-space: nowrap;
+}
+
+.global-selection-wrap .global-selection .global-selection-tag {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--theme-color-C);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 60px);
+    height: calc(100% - 10px);
+    transition: all .2s cubic-bezier(0.5, 0.5, 0, 1);
+    outline: none;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.global-selection-wrap .selection-area {
+    width: calc( 100% - 4px );
+    height: 130px;
+    position: relative;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    
+    background-color: white;
+    border: 1px solid var(--theme-color-C);
+    border-radius: 20px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.global-selection-wrap .selection-area .global-selection-block {
+    width: 90%;
+    height: 50px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    margin-top: 5px;
+    margin-bottom: 5px;
+    
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3),
+                inset 0 0 5px rgba(0, 0, 0, 0);
+
+    animation-name: selection-block-in;
+    animation-duration: .3s;
+    animation-timing-function: cubic-bezier(0, 1, 1, 1);
+}
+
+.global-selection-wrap .selection-area .global-selection-block:active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0),
+                inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.global-selection-wrap .selection-area .global-selection-block .selection-value {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+}
+
+/* animate option */
+
+@keyframes selection-block-in {
+    from {
+        height: 0;
+    }
+    to {
+        
+    }
+}

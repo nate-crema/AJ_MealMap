@@ -1,0 +1,55 @@
+.welcome-animation {
+    width: 60%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    transition: all .2s ease;
+    /* background-color: black; */
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    z-index: -100;
+}
+
+.service-logo {
+    width: 30%;
+    min-width: 80px; 
+    max-width: 150px; 
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-name: stroke-anim;
+    animation-duration: 2s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.5, 0.5, 0, 1);
+    stroke-dasharray: 500;
+}
+
+footer .service-name {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: var(--theme-color-C);
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+@keyframes stroke-anim {
+    from {
+        stroke-dashoffset: 500;
+    }
+    80% {
+        stroke-dashoffset: 1000;
+        top: 50%;
+    }
+    100% {
+        stroke-dashoffset: 1000;
+        top: 25%;
+    }
+}
