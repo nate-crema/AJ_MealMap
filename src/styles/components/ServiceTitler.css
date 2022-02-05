@@ -1,0 +1,85 @@
+.common-titler {
+    width: 100%;
+    height: 50px;
+    position: relative;
+}
+
+.common-titler .titler-text {
+    font-family: "Noto Sans KR", sans-serif;
+    color: black;
+    
+    position: absolute;
+    left: 0;
+
+    animation: fadeIn .3s cubic-bezier(0, 1, 1, 1);
+}
+
+.common-titler .titler-text.titler-title {
+    font-size: 16px;
+    font-weight: 500;
+
+    top: 0;
+}
+
+.common-titler .titler-text.titler-ment {
+    font-size: 14px;
+    font-weight: 300;
+
+    bottom: 0;
+}
+
+.common-titler .titler-title.fadeIn {
+    animation-name: title-fadeIn;
+}
+
+.common-titler .titler-title.fadeOut {
+    animation-name: title-fadeOut;
+    animation-fill-mode: both;
+}
+
+.common-titler .titler-ment.fadeIn {
+    animation-name: ment-fadeIn;
+}
+
+.common-titler .titler-ment.fadeOut {
+    animation-name: ment-fadeOut;
+    animation-fill-mode: both;
+}
+
+/* animate option */
+
+@keyframes title-fadeIn {
+    from {
+        top: -10px;
+        opacity: 0;
+    }
+    to { 
+    }
+}
+
+@keyframes title-fadeOut {
+    from {
+    }
+    to {
+        top: 10px;
+        opacity: 0;
+    }
+}
+
+@keyframes ment-fadeIn {
+    from {
+        bottom: 10px;
+        opacity: 0;
+    }
+    to { 
+    }
+}
+
+@keyframes ment-fadeOut {
+    from {
+    }
+    to {
+        bottom: -10px;
+        opacity: 0;
+    }
+}

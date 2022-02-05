@@ -8,5 +8,5 @@ module.exports = {
             tsConfigPath: 'tsconfig.paths.json',
             debug: false,
         },
-    }, ],
+    }, ]
 };

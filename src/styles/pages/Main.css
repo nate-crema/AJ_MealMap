@@ -1,0 +1,9 @@
+.main-area {
+    width: 80%;
+    height: calc( 100% - ( 90px + 60px ) );
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translate(-50%);
+    
+}

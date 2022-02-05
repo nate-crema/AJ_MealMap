@@ -8,6 +8,8 @@
             "@styles/*": ["src/styles/*"],
             "@assets/*": ["src/assets/*"],
             "@interfaces/*": ["src/interfaces/*"],
+            "@connection/*": ["src/connection/*"],
+            "@api/*": ["src/api/*"],
             "@recoil/*": ["src/recoil/*"]
         }
     }

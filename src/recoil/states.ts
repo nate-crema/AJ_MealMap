@@ -1,7 +1,8 @@
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
-import { Login } from "@src/interfaces/recoil/State";
+import { Login, Location } from "@src/interfaces/recoil/State";
+import { RestaurantList } from "@src/interfaces/Restaurant";
 /*
 
 testState: atom({
@@ -15,12 +16,12 @@ export default new ( function( this: any ): void {
 
     // State: login
 
-    this.name = atom<String>({
+    this.name = atom<string>({
         key: "nameState",
         default: ""
     });
 
-    this.portalId = atom<String>({
+    this.portalId = atom<string>({
         key: "portalIdState",
         default: ""
     });
@@ -30,7 +31,7 @@ export default new ( function( this: any ): void {
         default: new Date
     });
 
-    this.isLogined = atom<Boolean>({
+    this.isLogined = atom<boolean>({
         key: "isLoginedState",
         default: false
     });
@@ -43,6 +44,25 @@ export default new ( function( this: any ): void {
             expires: get( this.expires ),
             isLogined: get( this.isLogined )
         })
-    })
+    });
+
+    // State: Location
+
+    this.location = atom<Location>({
+        key: "locationState",
+        default: {
+            lat: -1,
+            long: -1,
+            address: ""
+        }
+    });
+
+    // State: Restaurants
+
+    this.restaurants = atom<RestaurantList>({
+        key: "restaurants",
+        default: {}
+    });
+
   
 } as any );

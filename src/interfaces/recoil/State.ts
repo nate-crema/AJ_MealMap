@@ -2,8 +2,14 @@
 import React from "react";
 
 export interface Login {
-    isLogined: Boolean,
-    name: String,
-    portalId: String,
+    isLogined: boolean,
+    name: string,
+    portalId: string,
     expires: Date | any
+}
+
+export interface Location {
+    lat: number,
+    long: number,
+    address: string
 }
