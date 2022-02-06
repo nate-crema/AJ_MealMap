@@ -51,6 +51,9 @@ const Locator: React.FC<LocatorProps> = ({  }) => {
     
     const geolocationErrorHandler = ( error: GeolocationPositionError ): void => {
         console.log( error );
+        setDisplay( false );
+        setMent( "확인할 수 없음" );
+        setDisplay( true );
     }
     
     const regionInfoHandler = ( result: any, status: number ): void => {
@@ -60,9 +63,18 @@ const Locator: React.FC<LocatorProps> = ({  }) => {
 
     useEffect((): void => {
         // get location info
-        if ( navigator.geolocation ) navigator.geolocation.getCurrentPosition( geolocationHandler, geolocationErrorHandler, {
-            enableHighAccuracy: true
-        } );
+        if ( navigator.geolocation ) {
+            setDisplay( false );
+            setMent( "확인중" );
+            setDisplay( true );
+            navigator.geolocation.getCurrentPosition( geolocationHandler, geolocationErrorHandler, {
+                enableHighAccuracy: true
+            } );
+        } else {
+            setDisplay( false );
+            setMent( "확인할 수 없음" );
+            setDisplay( true );
+        }
     }, []);
 
     

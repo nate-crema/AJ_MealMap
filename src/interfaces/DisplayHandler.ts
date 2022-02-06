@@ -1,4 +1,4 @@
-// Interface Declaration: DisplayHandler
+// Interface Declaration: DisplayHandler ( comp )
 import React from "react";
 
 // Component

@@ -30,10 +30,11 @@ const Main: React.FC = () => {
         const title: string = `${ name }님 안녕하세요!`;
         let ment: string = "맛있는 식사 하세요 ;)";
         const hour: number = new Date().getHours();
-        if ( hour < 10 ) ment = "맛있는 아침식사 하세요 ;)";
+        if ( hour < 4 ) ment = "맛있게 먹는 야식은 0칼로리래요 😉";
+        else if ( hour < 10 ) ment = "맛있는 아침식사 하세요 ;)";
         else if ( hour < 15 ) ment = "맛있는 점심식사 하세요 ;)";
         else if ( hour < 22 ) ment = "즐거운 저녁식사 하세요 ;)";
-        else ment = "맛있게 먹는 야식은 0칼로리래요 (소곤소곤)";
+        else ment = "맛있게 먹는 야식은 0칼로리래요 😉";
 
         setTitle( title );
         setMent( ment );

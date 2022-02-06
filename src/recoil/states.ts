@@ -2,7 +2,8 @@ import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
 import { Login, Location } from "@src/interfaces/recoil/State";
-import { RestaurantList } from "@src/interfaces/Restaurant";
+import { RestaurantList, RID } from "@src/interfaces/Restaurant";
+import { SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
 /*
 
 testState: atom({
@@ -63,6 +64,25 @@ export default new ( function( this: any ): void {
         key: "restaurants",
         default: {}
     });
+
+    // States: Subdisplay
+
+    this.subdisplayMountMode = atom<SubdisplayMountMode>({
+        key: "SubdisplayMounState",
+        default: "UNMOUNTED"
+    })
+
+    this.subdisplayDisplayMode = atom<SubdisplayDisplayMode>({
+        key: "SubdisplayDisplayState",
+        default: "CLOSED"
+    })
+
+    // States: Specific
+
+    this.restaurantSpecific = atom<RID | undefined>({
+        key: "retaurantSpecificState",
+        default: undefined
+    })
 
   
 } as any );

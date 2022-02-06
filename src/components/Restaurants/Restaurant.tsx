@@ -14,11 +14,12 @@ import { getRestaurant, getRestaurantList } from "@src/api/service";
 
 
 // interfaces
-import { RestaurantList, RestaurantCompInfo } from "@src/interfaces/Restaurant";
+import { RestaurantList, RestaurantCompInfo, RID } from "@interfaces/Restaurant";
 import { APIError, APIStatus, RestaurantAPIResult } from "@interfaces/api/service";
+import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
 
 type RestaurantProps = {
-    id: string
+    id: RID
 }
 
 
@@ -44,8 +45,18 @@ const Restaurant: React.FC<RestaurantProps> = ({ id }) => {
         } )();
     }, [ id ]);
 
+
+    // restaurant block click handler
+    const setRestaurantSpecific = useSetRecoilState<RID | undefined>( states.restaurantSpecific )
+    const setSubdisplayDisplayMode = useSetRecoilState<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
+
+    const _blockClickHandler = () => {
+        setRestaurantSpecific( id );
+        setSubdisplayDisplayMode( "INFO/READ" );
+    }
+
     return ( info.loaded ) ?
-        <div className="restaurant-block">
+        <div className="restaurant-block" onClick={ _blockClickHandler } >
             <div className="restaurant-image">
                 { info.img.map( ( url: string, i: number, imgs ) => ( i <= 4 ) && <div style={
                     Object.assign(

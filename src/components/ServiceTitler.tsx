@@ -15,7 +15,9 @@ type ServiceTitlerProps = {
     title: string,
     ment: string,
     className?: string,
-    style?: CSSProperties
+    style?: CSSProperties,
+    titleStyle?: CSSProperties,
+    mentStyle?: CSSProperties
 }
 
 
@@ -24,7 +26,7 @@ const ServiceTitler: React.FC<ServiceTitlerProps> = ({
     // component option
     title, ment,
     // DOM Option
-    className, style
+    className, style, titleStyle, mentStyle
 }) => {
 
     // text change control
@@ -51,8 +53,14 @@ const ServiceTitler: React.FC<ServiceTitlerProps> = ({
     }, [ ment ]);
 
     return <div className={ "common-titler" + ( className ? ` ${ className }` : "" ) } style={ style }>  
-        <span className={ "titler-text titler-title" + ( titleDisplay ? " fadeIn" : " fadeOut" ) }>{ titleText }</span>
-        <span className={ "titler-text titler-ment" + ( mentDisplay ? " fadeIn" : " fadeOut" ) }>{ mentText }</span>
+        <span
+            className={ "titler-text titler-title" + ( titleDisplay ? " fadeIn" : " fadeOut" ) }
+            style={ titleStyle }
+        >{ titleText }</span>
+        <span
+            className={ "titler-text titler-ment" + ( mentDisplay ? " fadeIn" : " fadeOut" ) }
+            style={ mentStyle }
+        >{ mentText }</span>
     </div>
 };
 

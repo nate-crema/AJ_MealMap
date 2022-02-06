@@ -1,3 +1,15 @@
+.application-control {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    overflow: hidden;
+
+    transition: .5s cubic-bezier(0, 1, 1, 1);
+}
+
 .application {
     width: 100%;
     height: 100%;
@@ -6,12 +18,35 @@
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 
-    transition: all .2s cubic-bezier(0, 1, 1, 1);
+    transition: all .5s cubic-bezier(0, 1, 1, 1);
 }
 
 .application.size_short {
     width: 450px;
     height: 96%;
     border-radius: 20px;
+}
+
+.application.subdisplay-unmounted {
+    left: 10px;
+    transform: translate(0, -50%);
+}
+
+.application.mounted {
+
+}
+
+.application.unmounted {
+    float: right;
+    left: unset;
+    right: 10px;
+    transform: translate(0, -50%);
+}
+
+@media ( min-width: 950px ) {
+    .application-control {
+        width: 950px;
+    }
 }

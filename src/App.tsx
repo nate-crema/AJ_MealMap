@@ -15,16 +15,16 @@ import Main from './pages/Main';
 
 const App: React.FC = () => {
 
-  return <DisplayHandler>
-    <RecoilRoot>
-      <Router>
+  return <RecoilRoot>
+    <Router>
+      <DisplayHandler>
         <Routes>
           <Route path="/login" element={ <Login/> }/>
           <Route path="/" element={ <Main/> }/>
         </Routes>
-      </Router>
-    </RecoilRoot>
-  </DisplayHandler>
+      </DisplayHandler>
+    </Router>
+  </RecoilRoot>
 };
 
 export default App

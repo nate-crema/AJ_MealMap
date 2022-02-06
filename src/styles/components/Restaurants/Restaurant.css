@@ -11,6 +11,12 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 
     overflow: hidden;
+    cursor: pointer;
+}
+
+.restaurant-block:hover {
+    width: calc( 100% - 5px );
+    height: 185px;
 }
 
 .restaurant-block .restaurant-image {

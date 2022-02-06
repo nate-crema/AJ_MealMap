@@ -1,4 +1,4 @@
-// Interface Declaration: service api
+// Interface Declaration: service ( api )
 import { RestaurantList, RestaurantCompInfo } from "../Restaurant";
 
 // API
