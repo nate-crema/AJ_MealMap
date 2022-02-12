@@ -14,12 +14,12 @@ import { getRestaurant, getRestaurantList } from "@src/api/service";
 
 
 // interfaces
-import { RestaurantList, RestaurantCompInfo, RID } from "@interfaces/Restaurant";
+import { RestaurantList, RestaurantCompInfo, RestaurantID } from "@interfaces/Restaurant";
 import { APIError, APIStatus, RestaurantAPIResult } from "@interfaces/api/service";
 import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
 
 type RestaurantProps = {
-    id: RID
+    id: RestaurantID
 }
 
 
@@ -47,7 +47,7 @@ const Restaurant: React.FC<RestaurantProps> = ({ id }) => {
 
 
     // restaurant block click handler
-    const setRestaurantSpecific = useSetRecoilState<RID | undefined>( states.restaurantSpecific )
+    const setRestaurantSpecific = useSetRecoilState<RestaurantID | undefined>( states.restaurantSpecific )
     const setSubdisplayDisplayMode = useSetRecoilState<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
 
     const _blockClickHandler = () => {

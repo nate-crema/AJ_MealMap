@@ -2,7 +2,7 @@ import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
 import { Login, Location } from "@src/interfaces/recoil/State";
-import { RestaurantList, RID } from "@src/interfaces/Restaurant";
+import { RestaurantList, RestaurantID } from "@src/interfaces/Restaurant";
 import { SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
 /*
 
@@ -79,7 +79,7 @@ export default new ( function( this: any ): void {
 
     // States: Specific
 
-    this.restaurantSpecific = atom<RID | undefined>({
+    this.restaurantSpecific = atom<RestaurantID | undefined>({
         key: "retaurantSpecificState",
         default: undefined
     })

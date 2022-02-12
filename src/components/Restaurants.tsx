@@ -47,7 +47,7 @@ const Restaurants: React.FC<RestaurantsProps> = ({ type }) => {
     return <div className="restaurants-list">
         {
             Object.values(restaurants).map( 
-                restaurant => <Restaurant key={ restaurant.rid } id={ restaurant.rid }/>
+                restaurant => <Restaurant key={ restaurant.restaurant_id } id={ restaurant.restaurant_id }/>
             )
         }
     </div>

@@ -38,10 +38,10 @@ const DisplayHandler: React.FC<DisplayHandlerProps> = ({ children }) => {
     const subdisplayDisplayMode = useRecoilValue<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
 
     useEffect((): void => {
-        if ( size.width > 950 ) setSubdisplayMountMode( "UNMOUNTED" );
+        if ( size.width > 850 ) setSubdisplayMountMode( "UNMOUNTED" );
         else setSubdisplayMountMode( "MOUNTED" );
 
-        if ( size.width > 500 ) setPacking( true );
+        if ( size.width > 400 ) setPacking( true );
         else setPacking( false );
     }, [ size ]);
 

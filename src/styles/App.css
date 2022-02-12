@@ -4,6 +4,7 @@
     /* font option: global */
     font-family: "Noto Sans KR", sans-serif;
     color: var(--theme-color-C);
+    user-select: none;
     
     /* transition option: global */
     transition: all .2s cubic-bezier(0, 1, 1, 1);

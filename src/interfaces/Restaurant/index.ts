@@ -1,19 +1,22 @@
 // Interface Declaration: Restaurant ( data )
 import React from "react";
+import { RestaurantReview } from "./Review";
 
 // RESTAURANT
 
-export type RID = string;
+export type RestaurantID = string;
 
 export type RestaurantInfo = {
-    rid: RID,
+    restaurant_id: RestaurantID,
     name: string,
     cat: string,
     cat_list: Array<string>,
     img: Array<string>,
+    contact?: string,
     duration: number,
     common_review: string,
     short_review?: string,
+    reviews: Array<RestaurantReview>,
     location: {
         lat: number,
         long: number,

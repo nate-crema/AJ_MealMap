@@ -1,0 +1,28 @@
+.menu-content .content-icn-wrap {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.menu-content .content-icn-wrap .content-icn {
+    width: auto;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu-content .content-value {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--theme-color-C);
+
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+}

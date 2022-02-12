@@ -24,7 +24,7 @@
 }
 
 .application.size_short {
-    width: 450px;
+    width: 400px;
     height: 96%;
     border-radius: 20px;
 }
@@ -45,8 +45,8 @@
     transform: translate(0, -50%);
 }
 
-@media ( min-width: 950px ) {
+@media ( min-width: 850px ) {
     .application-control {
-        width: 950px;
+        width: 850px;
     }
 }
