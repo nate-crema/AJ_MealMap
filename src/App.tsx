@@ -20,7 +20,7 @@ const App: React.FC = () => {
       <DisplayHandler>
         <Routes>
           <Route path="/login" element={ <Login/> }/>
-          <Route path="/" element={ <Main/> }/>
+          <Route path="/*" element={ <Main/> }/>
         </Routes>
       </DisplayHandler>
     </Router>

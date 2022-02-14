@@ -37,7 +37,7 @@ const Restaurants: React.FC<RestaurantsProps> = ({ type }) => {
 
     useEffect(() => {
         ( async () => {
-            if ( lat < 0 || long < 0 ) return;
+            // if ( lat < 0 || long < 0 ) return;
             const restaurant_list = await getRestaurantInfos();
             console.log(restaurant_list);
             setRestaurants( restaurant_list );

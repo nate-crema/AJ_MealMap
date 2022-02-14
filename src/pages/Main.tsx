@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
@@ -12,9 +13,12 @@ import '@styles/pages/Main.css';
 import Locator from "@src/components/Locator";
 import ServiceTitler from "@src/components/ServiceTitler";
 import Restaurants from "@src/components/Restaurants";
+import ReviewEntrypoint from "@components/ReviewEntrypoint";
 
 
 // interfaces
+import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
+import { RestaurantID } from "@interfaces/Restaurant";
 
 const Main: React.FC = () => {
 
@@ -40,12 +44,43 @@ const Main: React.FC = () => {
         setMent( ment );
     }, []);
 
+
+    // url control
+    const location = useLocation();
+    const setRestaurantSpecific = useSetRecoilState<RestaurantID | undefined>( states.restaurantSpecific )
+    const setSubdisplayDisplayMode = useSetRecoilState<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
+
+    const displayRestaurantSpecific = ( id: RestaurantID ) => {
+        setRestaurantSpecific( id );
+        setSubdisplayDisplayMode( "INFO/READ" );
+    }
+
+    const displayReviewWriter = () => {
+        console.log("REVIEW/WRITE");
+        setSubdisplayDisplayMode( "REVIEW/WRITE" );
+    }
+
+    const unDisplayRestaurantSpecific = () => {
+        setRestaurantSpecific( undefined );
+        setSubdisplayDisplayMode( "CLOSED" );
+    }
+
+    useEffect(() => {
+        const paths = location.pathname.split("/");
+        if ( paths.length > 2 ) {
+            const [ _, func_path, func_params ] = paths;
+            if ( func_path === "restaurant" ) displayRestaurantSpecific( func_params );
+        } else if ( paths.length > 1 && paths[1] === "review" ) displayReviewWriter();
+        else unDisplayRestaurantSpecific();
+    }, [ location ]);
+
     return <>
         <Locator/>
         <div className="main-area">
             <ServiceTitler title={ title } ment={ ment } />
             <Restaurants type="display"/>
         </div>
+        <ReviewEntrypoint/>
     </>
 };
 

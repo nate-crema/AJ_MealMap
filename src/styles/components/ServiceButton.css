@@ -1,0 +1,27 @@
+.service-button {
+    position: relative;
+
+    border-radius: 20px;
+    box-shadow:
+        0 0 5px rgba(0, 0, 0 ,0.3),
+        inset 0 0 5px rgba(0, 0, 0 ,0);
+    
+    transition: all .1s cubic-bezier(0, 1, 1, 1);
+}
+
+.service-button:active {
+    box-shadow:
+        0 0 5px rgba(0, 0, 0, 0),
+        inset 0 0 5px rgba(0, 0, 0 , 0.3);
+}
+
+.service-button .service-button-text {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

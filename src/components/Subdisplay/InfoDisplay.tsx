@@ -4,6 +4,9 @@ import { useState, useEffect, useRef, useMemo, useCallback, SyntheticEvent } fro
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
 import states from "@recoil/states";
 
+// api
+import { APIResult, getRestaurant } from "@api/service";
+
 // css
 import '@styles/components/Subdisplay/InfoDisplay.css';
 
@@ -15,18 +18,20 @@ import ServiceTitler from "../ServiceTitler";
 import InfoHeader from "./InfoDisplay/InfoHeader";
 import BasicInfo from "./InfoDisplay/InfoMenu/BasicInfo";
 import ReviewBrief from "./InfoDisplay/InfoMenu/ReviewBrief";
+import ActionBtn from "./InfoDisplay/InfoMenu/ActionBtn";
 
 // interfaces
 import { RestaurantList, RestaurantInfo, RestaurantID } from "@interfaces/Restaurant";
 import { RestaurantReview } from "@interfaces/Restaurant/Review";
+import { RestaurantAPIResult } from "@interfaces/api/service";
 
 type touchState = "na" | "toUp" | "toDown";
 type changeState = "standby" | "fadeIn" | "fadeOut";
 
 type InfoMenuProps = {
-    contact?: string,
-    duration?: string,
-    reviews?: Array<RestaurantReview>,
+    contact?: string
+    duration?: string
+    reviews?: Array<RestaurantReview>
     setMinimize: Function
 }
 
@@ -54,7 +59,7 @@ const InfoMenu: React.FC<InfoMenuProps> = ({ contact, duration, reviews, setMini
         }
         else if ( touchState === "toDown" && ( menu > -1 ) ) {
             setMenuChanging( [ touchState, "fadeOut" ] );
-            console.log( menu );
+            // console.log( menu );
             if ( menu === 0 ) setMinimize( true );
             setTimeout(() => {
                 setMenu( p => p-1 );
@@ -101,7 +106,7 @@ const InfoMenu: React.FC<InfoMenuProps> = ({ contact, duration, reviews, setMini
             {
                 MENU_EQUAL(0) ? <BasicInfo contact={ contact || "연락처정보 없음" } duration={ duration || "거리정보 없음" }/> :
                 MENU_EQUAL(1) ? <ReviewBrief reviews={ reviews || [] } /> :
-                MENU_EQUAL(2) ? <></> :
+                MENU_EQUAL(2) ? <ActionBtn/> :
                 <></>
             }
         </div>
@@ -115,15 +120,24 @@ const InfoBlock: React.FC<InfoBlockProps> = ({ restaurant }) => {
 
     const [ minimize, setMinimize ] = useState<boolean>( false );
 
-    useEffect(() => console.log( minimize ), [ minimize ]);
-
-    return <div className="info-block" style={{ height: minimize ? "30px" : undefined }} >
-        <InfoHeader title={ restaurant.name } cat={ restaurant.cat } worktime={[ "15:00", "16:00" ]}/>
-        <InfoMenu 
-            contact={ restaurant?.contact }
-            reviews={ restaurant?.reviews }
-            setMinimize={ setMinimize }
-        />
+    return <div
+        className={ "info-block" + ( minimize ? " minimized" : " non-minimized" ) }
+        style={{ height: minimize ? "50px" : undefined }}
+        onClick={ () => setMinimize( false ) }
+    >
+        {
+            ( minimize ) ? <div className="minimize-wrap">
+                <span className="walk-distance">{ restaurant.duration ? `약 ${ Math.floor( restaurant.duration / 60 ) }분 거리` : "소요시간 계산불가" }</span>
+                { ( window.innerWidth > 400 ) && <span className="review-oneline">{ restaurant.short_review || restaurant.common_review }</span> }
+            </div> : <div className="animation-wrap">
+                <InfoHeader title={ restaurant.name } cat={ restaurant.cat } worktime={[ "15:00", "16:00" ]}/>
+                <InfoMenu 
+                    contact={ restaurant?.contact }
+                    reviews={ restaurant?.reviews }
+                    setMinimize={ setMinimize }
+                />
+            </div>
+        }
     </div>
 };
 
@@ -135,11 +149,18 @@ const InfoDisplay: React.FC = () => {
     const restaurants = useRecoilValue<RestaurantList>( states.restaurants );
 
     useEffect(() => {
-        if ( !selected_rid ) return;
-        const loaded_restaurant: RestaurantInfo = restaurants[ selected_rid ];
-        if ( !loaded_restaurant ) return;
-
-        setRestaurant( loaded_restaurant );
+        ( async () => {
+            if ( !selected_rid ) return;
+            let loaded_restaurant: RestaurantInfo = restaurants[ selected_rid ];
+            if ( !loaded_restaurant ) {
+                const restaurant_result: RestaurantAPIResult = await getRestaurant( selected_rid );
+                if ( restaurant_result.result !== APIResult.FAILED ) {
+                    loaded_restaurant = restaurant_result.data;
+                } else return;
+            }
+            console.log( loaded_restaurant );
+            setRestaurant( loaded_restaurant );
+        } )()
     }, [ selected_rid ]);
     
 
@@ -149,7 +170,6 @@ const InfoDisplay: React.FC = () => {
 
     useEffect(() => {
         if ( !restaurant ) return;
-        console.log( restaurant );
 
         setRestaurantName( restaurant.name );
         setTagReview( restaurant.short_review || restaurant.common_review );

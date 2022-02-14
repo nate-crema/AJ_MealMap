@@ -2,7 +2,7 @@ import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
 import { Login, Location } from "@src/interfaces/recoil/State";
-import { RestaurantList, RestaurantID } from "@src/interfaces/Restaurant";
+import { RestaurantList, RestaurantID } from "@interfaces/Restaurant";
 import { SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
 /*
 

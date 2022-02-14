@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/InfoDisplay/ReviewBrief.css';
+import '@styles/components/Subdisplay/InfoDisplay/InfoMenu/ReviewBrief.css';
 
 // components
 
@@ -39,6 +39,7 @@ const ReviewTagComp: React.FC<ReviewTagCompProps> = ({ tag_name }) => {
     const reviewtags_dp: ReviewTagsDisplay = {
         "price": "가격",
         "taste": "맛",
+        "amount": "양",
         "kind": "친절함",
         "interior": "인테리어",
         "distance": "거리",

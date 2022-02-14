@@ -100,8 +100,9 @@
 
 @keyframes subdisplay-component-opened {
     from {
-        bottom: -100%;
+        /* bottom: -100%; */
         opacity: 0;
+        transform: translate(-50%, 100%);
     }
     to {}
 }
@@ -109,7 +110,8 @@
 @keyframes subdisplay-component-closed {
     from {}
     to {
-        bottom: -100%;
+        /* bottom: -100%; */
         opacity: 0;
+        transform: translate(-50%, 100%);
     }
 }

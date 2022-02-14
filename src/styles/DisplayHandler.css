@@ -1,6 +1,11 @@
 .application-control {
+
+    --application-control-width: 850px;
+    --application-width: 400px;
+
     width: 100%;
-    height: 100vh;
+    max-width: var( --application-control-width );
+    height: 100%;
     position: fixed;
     top: 0;
     left: 50%;
@@ -8,15 +13,19 @@
     overflow: hidden;
 
     transition: .5s cubic-bezier(0, 1, 1, 1);
+
+    background-color: white;
 }
 
 .application {
     width: 100%;
+    max-width: var(--application-width);
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    transform: 
+        translateX( calc( var(--application-control-width) / 2 - 50% ) )
+        translateY(-50%);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     overflow: hidden;
 
@@ -24,18 +33,19 @@
 }
 
 .application.size_short {
-    width: 400px;
     height: 96%;
     border-radius: 20px;
 }
 
 .application.subdisplay-unmounted {
-    left: 10px;
-    transform: translate(0, -50%);
+    transform: 
+        translateX(10px)
+        translateY(-50%);
+    will-change: transform opacity;
 }
 
 .application.mounted {
-
+    will-change: transform opacity;
 }
 
 .application.unmounted {
@@ -45,8 +55,8 @@
     transform: translate(0, -50%);
 }
 
-@media ( min-width: 850px ) {
+@media ( max-width: 850px ) {
     .application-control {
-        width: 850px;
+        --application-control-width: 100vw;
     }
 }

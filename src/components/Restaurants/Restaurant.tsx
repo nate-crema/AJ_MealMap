@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
@@ -17,6 +18,7 @@ import { getRestaurant, getRestaurantList } from "@src/api/service";
 import { RestaurantList, RestaurantCompInfo, RestaurantID } from "@interfaces/Restaurant";
 import { APIError, APIStatus, RestaurantAPIResult } from "@interfaces/api/service";
 import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
+
 
 type RestaurantProps = {
     id: RestaurantID
@@ -47,18 +49,16 @@ const Restaurant: React.FC<RestaurantProps> = ({ id }) => {
 
 
     // restaurant block click handler
-    const setRestaurantSpecific = useSetRecoilState<RestaurantID | undefined>( states.restaurantSpecific )
-    const setSubdisplayDisplayMode = useSetRecoilState<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
+    const navigate = useNavigate();
 
-    const _blockClickHandler = () => {
-        setRestaurantSpecific( id );
-        setSubdisplayDisplayMode( "INFO/READ" );
+    const displayRestaurantSpecific = () => {
+        navigate(`/restaurant/${ id }`);
     }
 
     return ( info.loaded ) ?
-        <div className="restaurant-block" onClick={ _blockClickHandler } >
+        <div className="restaurant-block" onClick={ displayRestaurantSpecific } >
             <div className="restaurant-image">
-                { info.img.map( ( url: string, i: number, imgs ) => ( i <= 4 ) && <div style={
+                { info.img.map( ( url: string, i: number, imgs: Array<string> ) => ( i <= 4 ) && <div style={
                     Object.assign(
                         [ 0, 1 ].includes( imgs.length ) ? {
                             gridColumnStart: 1,

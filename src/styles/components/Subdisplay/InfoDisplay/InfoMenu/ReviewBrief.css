@@ -10,9 +10,6 @@
     grid-template-rows: 100%;
     grid-template-columns: repeat(2, calc( 50% - 5px ));
     gap: 10px;
-
-    background-color: lightblue;
-    
 }
 
 /* BriefComp */
@@ -45,6 +42,9 @@
     position: absolute;
     bottom: 0;
     left: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* ReviewTagComp */
@@ -61,6 +61,7 @@
 
     font-weight: 300;
     font-size: 12px;
+    white-space: nowrap;
 
     border-radius: 10px;
 }

@@ -32,10 +32,11 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ contact, duration }) => {
 
     return <>
     {
-        menu_contents.map( content => <div 
+        menu_contents.map( ( content, i ) => <div 
             className="menu-content" 
             onClick={ content?.onClick } 
             style={{ cursor: ( content?.onClick ) ? "pointer" : undefined }}
+            key={ i }
         >
             <div className="content-icn-wrap">
                 <img className="content-icn" src={ content.icn } />

@@ -3,12 +3,12 @@ import { RestaurantList, RestaurantCompInfo } from "../Restaurant";
 
 // API
 
-export type APISuccess = "SUCCESS";
+export type APISuccess = "SUCCEED";
 export type APIError = "FAILED";
 export type APIStatus = APISuccess | APIError;
 
 export type APIStatusList = {
-    SUCCESS: APIStatus,
+    SUCCEED: APIStatus,
     FAILED: APIStatus
 }
 
@@ -16,12 +16,14 @@ export type RestaurantListAPIResult = {
     result: APISuccess,
     list: RestaurantList
 } | {
-    result: APIError
+    result: APIError,
+    list?: any
 };
 
 export type RestaurantAPIResult = {
     result: APISuccess,
     data: RestaurantCompInfo
 } | {
-    result: APIError
+    result: APIError,
+    data?: any
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
@@ -18,8 +19,9 @@ import InfoDisplay from "./Subdisplay/InfoDisplay";
 const Subdisplay: React.FC = () => {
 
     // subdisplay display control
-    const [ type, setType ] = useRecoilState<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
-    const closeSubdisplay = () => setType( "CLOSED" );
+    const type = useRecoilValue<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
+    const navigate = useNavigate();
+    const closeSubdisplay = () => navigate("/");
 
     // subdisplay mount control
     const mounted = useRecoilValue<SubdisplayMountMode>( states.subdisplayMountMode );
@@ -41,9 +43,9 @@ const Subdisplay: React.FC = () => {
                 ( type === "INFO/READ" ) ? <>
                     <InfoDisplay/>
                 </> : 
-                ( type === "REVIEW/WRITE" ) ? <>
+                ( type === "REVIEW/WRITE" ) ? <div>
 
-                </> : 
+                </div> : 
                 <></>
             }
         </div>

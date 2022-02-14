@@ -2,9 +2,13 @@ import axios from "@connection/request";
 
 // interface
 
-import { RestaurantListAPIResult, RestaurantAPIResult } from "@interfaces/api/service";
+import { RestaurantListAPIResult, RestaurantAPIResult, APIStatusList } from "@interfaces/api/service";
 import { RestaurantList } from "@interfaces/Restaurant";
 
+export const APIResult: APIStatusList = {
+    SUCCEED: "SUCCEED",
+    FAILED: "FAILED"
+}
 
 // dummy data
 
@@ -187,26 +191,26 @@ const dummy_data: RestaurantList = {
 
 const dummy_response: { getRestaurantList: RestaurantListAPIResult, getRestaurant: { [ key: string ]: RestaurantAPIResult } } = {
     getRestaurantList: {
-        result: "SUCCESS",
+        result: APIResult.SUCCEED,
         list: dummy_data
     },
     getRestaurant: {
         "TEST_1": {
-            result: "SUCCESS",
+            result: APIResult.SUCCEED,
             data: {
                 loaded: true,
                 ...dummy_data["TEST_1"]
             }
         },
         "TEST_2": {
-            result: "SUCCESS",
+            result: APIResult.SUCCEED,
             data: {
                 loaded: true,
                 ...dummy_data["TEST_2"]
             }
         },
         "TEST_3": {
-            result: "SUCCESS",
+            result: APIResult.SUCCEED,
             data: {
                 loaded: true,
                 ...dummy_data["TEST_3"]
@@ -221,7 +225,7 @@ export const getRestaurantList = async ( lat: number, long: number ): Promise<Re
     //     return resul37.27921955685363;
     // } catch( e: any )37.27921955685363{
     //     console.error(e);
-    //     return { result: "FAILED" };
+    //     return { result: APIResult.SUCCEED;
     // }
     return dummy_response[ "getRestaurantList" ];
 }
@@ -232,7 +236,7 @@ export const getRestaurant = async ( id: string ): Promise<RestaurantAPIResult> 
     //     return result;
     // } catch( e: any ) {
     //     console.error(e);
-    //     return { result: "FAILED" };
+    //     return { result: APIResult.SUCCEED;
     // }
     return dummy_response["getRestaurant"][ id ];
 }
