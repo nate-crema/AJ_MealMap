@@ -1,0 +1,60 @@
+.review-writer-area {
+    width: calc( 100% - 80px );
+    height: calc( 100% - 60px );
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.review-writer-area .review-writer-titler {
+    height: 70px;
+    position: absolute;
+    top: 0;
+    left: 0;   
+}
+
+.review-writer-area .review-writer-stagecomp {
+    width: 100%;
+    height: calc( 100% - 80px );
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* ReviewWriter: MapHandler */
+.review-writer-area .review-writer-stagecomp .map-displayer.map-displayer-reviewwriter {
+    width: 100%;
+    height: calc( 100% - ( 50px + 50px ) );
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+/* animate option */
+.review-writer-stagecomp.displayIn {
+    animation: displayIn .35s cubic-bezier(0, 1, 1, 1);
+}
+
+.review-writer-stagecomp.displayOut {
+    animation: displayOut .35s cubic-bezier(0, 1, 1, 1);
+}
+
+@keyframes displayIn {
+    from {
+        opacity: 0;
+        left: 10px;
+    }
+    to {}
+}
+
+@keyframes displayOut {
+    from {}
+    to {
+        opacity: 0;
+        left: -10px;
+    }
+}

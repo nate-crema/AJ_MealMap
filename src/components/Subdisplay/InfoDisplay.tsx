@@ -24,6 +24,8 @@ import ActionBtn from "./InfoDisplay/InfoMenu/ActionBtn";
 import { RestaurantList, RestaurantInfo, RestaurantID } from "@interfaces/Restaurant";
 import { RestaurantReview } from "@interfaces/Restaurant/Review";
 import { RestaurantAPIResult } from "@interfaces/api/service";
+import MapHandler from "../MapHandler";
+import { MapHandlerCommonOptions, MapHandlerOptionDisplay } from "@src/interfaces/MapHandler";
 
 type touchState = "na" | "toUp" | "toDown";
 type changeState = "standby" | "fadeIn" | "fadeOut";
@@ -154,7 +156,7 @@ const InfoDisplay: React.FC = () => {
             let loaded_restaurant: RestaurantInfo = restaurants[ selected_rid ];
             if ( !loaded_restaurant ) {
                 const restaurant_result: RestaurantAPIResult = await getRestaurant( selected_rid );
-                if ( restaurant_result.result !== APIResult.FAILED ) {
+                if ( restaurant_result.result === APIResult.SUCCEED && restaurant_result.data.loaded ) {
                     loaded_restaurant = restaurant_result.data;
                 } else return;
             }
@@ -177,29 +179,17 @@ const InfoDisplay: React.FC = () => {
 
 
     // map display control
-    const [ map_display, setMapDisplay ] = useState<boolean>( false );
-    const mapRef = useRef<HTMLDivElement>( null );
-    const kakaoMapObject = useRef<any>( null );
+    const [ map_option, setMapOption ] = useState<MapHandlerOptionDisplay>({ location: { lat: -1, long: -1 }, level: 1, markers: [] });
 
     useEffect((): void => {
         if ( !restaurant ) return;
         const { location: { lat, long } } = restaurant;
-
-        // adjust latitude value for InfoBlock display
-        const restaurantPositonObject = new window.kakao.maps.LatLng( lat, long );
-        const restaurantDisplayPositonObject = new window.kakao.maps.LatLng( lat - ( 20 / ( 111 * 1000 ) ), long );
-        kakaoMapObject.current = new window.kakao.maps.Map( mapRef.current, {
-            center: restaurantDisplayPositonObject,
-            level: 1
-        } );
-
-        // display marker
-        const restaurantMarkerImage = new window.kakao.maps.MarkerImage( MarkerImg, new window.kakao.maps.Size( 30, 45 ), { offset: new window.kakao.maps.Point( 15, 45 ) } );
-        const restaurantMarker = new window.kakao.maps.Marker({
-            position: restaurantPositonObject,
-            image: restaurantMarkerImage
-        })
-        restaurantMarker.setMap( kakaoMapObject.current );
+        
+        setMapOption({ location: { lat: lat - ( 20 / ( 111 * 1000 ) ), long }, level: 1, markers: [
+            { 
+                position: new window.kakao.maps.LatLng( lat, long ),
+                image: new window.kakao.maps.MarkerImage( MarkerImg, new window.kakao.maps.Size( 30, 45 ), { offset: new window.kakao.maps.Point( 15, 45 ) } ) }
+        ] });
 
     }, [ restaurant ]);
 
@@ -212,7 +202,10 @@ const InfoDisplay: React.FC = () => {
             title={ restaurant_name } titleStyle={{ fontSize: "20px", fontWeight: "700" }}
             ment={ tag_review } mentStyle={{ fontSize: "16px" }}
         />
-        <div className="map-displayer" ref={ mapRef }/>
+        <MapHandler
+            className="map-displayer-infodisplay"
+            type="display"
+            option={ map_option } />
         { ( restaurant ) && <InfoBlock restaurant={ restaurant } /> }
     </div>
 };

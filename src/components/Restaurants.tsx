@@ -11,19 +11,24 @@ import '@styles/components/Restaurants.css';
 import { getRestaurantList } from "@api/service";
 
 // components
-
+import Restaurant from "./Restaurants/Restaurant";
 
 // interfaces
 import { RestaurantListAPIResult } from "@interfaces/api/service";
-import { RestaurantList } from "@interfaces/Restaurant";
+import { RestaurantCompInfo, RestaurantInfo, RestaurantList } from "@interfaces/Restaurant";
 import { Location } from "@interfaces/recoil/State";
-import Restaurant from "./Restaurants/Restaurant";
+import { RestaurantCompDisplayType, RestaurantCompReviewType, RestaurantCompType } from "@interfaces/Restaurant/comp";
+
 type RestaurantsProps = {
-    type: string
+    mode: RestaurantCompReviewType
+    onBlockClick?: ( info: string | null, index: number ) => void
+} | {
+    mode: RestaurantCompDisplayType
+    onBlockClick?: ( info: RestaurantCompInfo | null, index: number ) => void
 }
 
 
-const Restaurants: React.FC<RestaurantsProps> = ({ type }) => {
+const Restaurants: React.FC<RestaurantsProps> = ({ mode, onBlockClick }) => {
 
     // restaurant list control
     const { lat, long } = useRecoilValue<Location>( states.location );
@@ -43,12 +48,32 @@ const Restaurants: React.FC<RestaurantsProps> = ({ type }) => {
             setRestaurants( restaurant_list );
         } )()
     }, [ lat, long ]);
+
+
+    // restaurant block click handler
+    const restaurantBlockClickHandler = ( info: RestaurantCompInfo, index: number ) => {
+        if ( !info.loaded || !onBlockClick ) return;
+        return onBlockClick( info.restaurant_id as (string & RestaurantCompInfo) | null, index );
+    };
     
-    return <div className="restaurants-list">
+    return <div className={ `restaurants-list listmode-${ mode }` }>
         {
             Object.values(restaurants).map( 
-                restaurant => <Restaurant key={ restaurant.restaurant_id } id={ restaurant.restaurant_id }/>
+                ( restaurant, index: number ) => <Restaurant
+                    key={ restaurant.restaurant_id }
+                    id={ restaurant.restaurant_id }
+                    mode={ mode }
+                    onClick={ ( mode === "review" ) ? ( info ) => restaurantBlockClickHandler( info, index ) : undefined }
+                />
             )
+        }
+        {
+            (mode === "review") && <div className="restaurant-notfound restaurant-block"
+                key={ "restaurant_notfound" }
+                onClick={ onBlockClick ? ( () => onBlockClick( null, -1 ) ) : undefined }
+            >
+                <span>찾는 식당이 없어요</span>
+            </div>
         }
     </div>
 };

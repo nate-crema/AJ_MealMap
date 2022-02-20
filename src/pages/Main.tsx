@@ -78,7 +78,7 @@ const Main: React.FC = () => {
         <Locator/>
         <div className="main-area">
             <ServiceTitler title={ title } ment={ ment } />
-            <Restaurants type="display"/>
+            <Restaurants mode="display"/>
         </div>
         <ReviewEntrypoint/>
     </>

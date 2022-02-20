@@ -7,13 +7,13 @@ import states from "@recoil/states";
 
 // css
 import '@styles/components/Subdisplay.css';
-import { SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
-import InfoDisplay from "./Subdisplay/InfoDisplay";
 
 // components
-
+import InfoDisplay from "./Subdisplay/InfoDisplay";
+import ReviewWriter from "./Subdisplay/ReviewWriter";
 
 // interfaces
+import { SubdisplayDisplayMode, SubdisplayMountMode } from "@interfaces/Subdisplay";
 
 
 const Subdisplay: React.FC = () => {
@@ -43,9 +43,9 @@ const Subdisplay: React.FC = () => {
                 ( type === "INFO/READ" ) ? <>
                     <InfoDisplay/>
                 </> : 
-                ( type === "REVIEW/WRITE" ) ? <div>
-
-                </div> : 
+                ( type === "REVIEW/WRITE" ) ? <>
+                    <ReviewWriter/>
+                </> : 
                 <></>
             }
         </div>

@@ -2,8 +2,9 @@ import axios from "@connection/request";
 
 // interface
 
-import { RestaurantListAPIResult, RestaurantAPIResult, APIStatusList } from "@interfaces/api/service";
-import { RestaurantList } from "@interfaces/Restaurant";
+import { RestaurantListAPIResult, RestaurantAPIResult, APIStatusList, ReviewQuestionAPIResult } from "@interfaces/api/service";
+import { RestaurantID, RestaurantList } from "@interfaces/Restaurant";
+import { ReviewQuestion } from "@src/interfaces/ReviewWriter";
 
 export const APIResult: APIStatusList = {
     SUCCEED: "SUCCEED",
@@ -189,7 +190,309 @@ const dummy_data: RestaurantList = {
     },
 }
 
-const dummy_response: { getRestaurantList: RestaurantListAPIResult, getRestaurant: { [ key: string ]: RestaurantAPIResult } } = {
+const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
+    "TEST_1": [
+        {
+            qid: "QID_RESTAURANT_QUESTION",
+            ment: "어디를 다녀오셨나요?",
+            size: "LARGE",
+            answer: { type: "selection-restaurant" }
+        },
+        {
+            qid: "QID_1",
+            ment: "위치가 어디쯤인가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection-location"
+            }
+        }, // when newplace
+        {
+            qid: "QID_2",
+            ment: "이중에 알고있는 정보가 있나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // when newplace
+        {
+            qid: "QID_3",
+            ment: "언제 다녀오셨나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        },
+        {
+            qid: "QID_4",
+            ment: "가격은 어떤가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // price
+        {
+            qid: "QID_5",
+            ment: "맛은 어때요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // taste
+        {
+            qid: "QID_6",
+            ment: "음식양은 많이 주나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // amount
+        {
+            qid: "QID_7",
+            ment: "친절했나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // kind
+        {
+            qid: "QID_8",
+            ment: "학교에서 가기에 어떤가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // distance
+        {
+            qid: "QID_9",
+            ment: "들어가는데 오래 걸렸나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // enter_waiting
+        {
+            qid: "QID_10",
+            ment: "음식이 나오는 시간은요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // food_waiting
+    ],
+    "TEST_2": [
+        {
+            qid: "QID_RESTAURANT_QUESTION",
+            ment: "어디를 다녀오셨나요?",
+            size: "LARGE",
+            answer: { type: "selection-restaurant" }
+        },
+        {
+            qid: "QID_1",
+            ment: "위치가 어디쯤인가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // when newplace
+        {
+            qid: "QID_2",
+            ment: "이중에 알고있는 정보가 있나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // when newplace
+        {
+            qid: "QID_3",
+            ment: "언제 다녀오셨나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        },
+        {
+            qid: "QID_4",
+            ment: "가격은 어떤가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // price
+        {
+            qid: "QID_5",
+            ment: "맛은 어때요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // taste
+        {
+            qid: "QID_6",
+            ment: "음식양은 많이 주나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // amount
+        {
+            qid: "QID_7",
+            ment: "친절했나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // kind
+        {
+            qid: "QID_8",
+            ment: "학교에서 가기에 어떤가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // distance
+        {
+            qid: "QID_9",
+            ment: "들어가는데 오래 걸렸나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // enter_waiting
+        {
+            qid: "QID_10",
+            ment: "음식이 나오는 시간은요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // food_waiting
+    ],
+    "TEST_3": [
+        {
+            qid: "QID_RESTAURANT_QUESTION",
+            ment: "어디를 다녀오셨나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection-restaurant"
+            }
+        },
+        {
+            qid: "QID_1",
+            ment: "위치가 어디쯤인가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // when newplace
+        {
+            qid: "QID_2",
+            ment: "이중에 알고있는 정보가 있나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // when newplace
+        {
+            qid: "QID_3",
+            ment: "언제 다녀오셨나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        },
+        {
+            qid: "QID_4",
+            ment: "가격은 어떤가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // price
+        {
+            qid: "QID_5",
+            ment: "맛은 어때요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // taste
+        {
+            qid: "QID_6",
+            ment: "음식양은 많이 주나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // amount
+        {
+            qid: "QID_7",
+            ment: "친절했나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // kind
+        {
+            qid: "QID_8",
+            ment: "학교에서 가기에 어떤가요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // distance
+        {
+            qid: "QID_9",
+            ment: "들어가는데 오래 걸렸나요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // enter_waiting
+        {
+            qid: "QID_10",
+            ment: "음식이 나오는 시간은요?",
+            size: "LARGE",
+            answer: {
+                type: "selection",
+                selection: []
+            }
+        }, // food_waiting
+    ],
+}
+
+const dummy_response: { 
+    getRestaurantList: RestaurantListAPIResult,
+    getRestaurant: { [ key: string ]: RestaurantAPIResult },
+    getReviewQuestion: { [ key: RestaurantID ]: ReviewQuestionAPIResult }
+} = {
     getRestaurantList: {
         result: APIResult.SUCCEED,
         list: dummy_data
@@ -216,6 +519,20 @@ const dummy_response: { getRestaurantList: RestaurantListAPIResult, getRestauran
                 ...dummy_data["TEST_3"]
             }
         },
+    },
+    getReviewQuestion: {
+        "TEST_1": {
+            result: APIResult.SUCCEED,
+            data: dummy_question[ "TEST_1" ]
+        },
+        "TEST_2": {
+            result: APIResult.SUCCEED,
+            data: dummy_question[ "TEST_2" ]
+        },
+        "TEST_3": {
+            result: APIResult.SUCCEED,
+            data: dummy_question[ "TEST_3" ]
+        }
     }
 }
 
@@ -239,4 +556,15 @@ export const getRestaurant = async ( id: string ): Promise<RestaurantAPIResult> 
     //     return { result: APIResult.SUCCEED;
     // }
     return dummy_response["getRestaurant"][ id ];
+}
+
+export const getReviewQuestion = async ( restaurant_id: RestaurantID ): Promise<ReviewQuestionAPIResult> => {
+    // try {
+    //     const { data: result }: { data: ReviewQuestionAPIResult } = await axios.get(`/review/questions?rid=${ restaurant_id }`);
+    //     return result;
+    // } catch( e: any ) {
+    //     console.error(e);
+    //     return { result: APIResult.SUCCEED;
+    // }
+    return dummy_response["getReviewQuestion"][ restaurant_id ];
 }

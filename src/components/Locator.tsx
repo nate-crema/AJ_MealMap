@@ -98,7 +98,7 @@ const Locator: React.FC<LocatorProps> = ({  }) => {
             setTimeout(() => {
                 setMent( new_ment );
                 setDisplay( true );
-                setLocationInfoGlobal({ lat: location[0]?.x || 0, long: location[0]?.y || 0, address: new_ment })
+                setLocationInfoGlobal({ lat: location[0]?.y || 0, long: location[0]?.x || 0, address: new_ment })
             }, 200);
         }
     }, [ location ] );
