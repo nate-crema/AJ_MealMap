@@ -14,6 +14,7 @@ import ReviewWriter from "./Subdisplay/ReviewWriter";
 
 // interfaces
 import { SubdisplayDisplayMode, SubdisplayMountMode } from "@interfaces/Subdisplay";
+import Alert from "./Alert";
 
 
 const Subdisplay: React.FC = () => {
@@ -27,6 +28,7 @@ const Subdisplay: React.FC = () => {
     const mounted = useRecoilValue<SubdisplayMountMode>( states.subdisplayMountMode );
 
     return <>
+        <Alert/>
         <div
             className={ 
                 "subdisplay-background-shader"

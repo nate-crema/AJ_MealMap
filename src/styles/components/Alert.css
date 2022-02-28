@@ -1,0 +1,107 @@
+.service-alert-comp {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+
+.service-alert-comp .service-alert-background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateY(10px);
+
+    background-color: black;
+    opacity: 0;
+}
+
+.service-alert-comp .service-alert-background.bg-active {
+    animation: bg-active .35s cubic-bezier(0, 1, 1, 1);
+    animation-fill-mode: both;
+}
+
+.service-alert-comp .service-alert-background.bg-deactive {
+    animation: bg-deactive .35s cubic-bezier(0, 1, 1, 1);
+    animation-fill-mode: both;
+}
+
+.service-alert-comp .service-alert-wrap {
+    width: 100%;
+    height: 0;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: white;
+
+    transition: all .25s cubic-bezier(0, 1, 1, 1);
+
+    overflow-y: hidden;
+}
+
+.service-alert-comp .service-alert-wrap .alert-contents {
+    width: calc( 100% - 80px );
+    height: calc( 100% - 60px );
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.service-alert-comp .service-alert-wrap .alert-contents .alert-title {
+    font-size: 22px;
+    font-weight: 700;
+    word-break: keep-all;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.service-alert-comp .service-alert-wrap .alert-contents .alert-descriptions {
+    font-size: 18px;
+    font-weight: 300;
+
+    position: absolute;
+    top: 50px;
+    left: 0;
+}
+
+.service-alert-comp .service-alert-wrap .alert-contents .alert-descriptions p {
+    word-break: keep-all;
+    
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.service-alert-comp .service-alert-wrap .alert-contents .alert-buttons {
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    left: 0;    
+}
+
+/* animate control */
+@keyframes bg-active {
+    from {}
+    to {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bg-deactive {
+    from {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+    to {}
+}

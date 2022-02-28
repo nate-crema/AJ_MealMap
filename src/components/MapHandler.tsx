@@ -20,21 +20,40 @@ type MapHandlerProps = {
 
 const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandlerModeInput) > = ({ className, style, type, option }) => {
 
+    // global states control
     const { lat, long } = useRecoilValue<{ lat: number, long: number }>( states.location );
 
+
+    // map reference object control
     const mapRef = useRef<HTMLDivElement | null>( null );
     const kakaoMapObject = useRef<any>( null );
     
-    const [ markers, setMarkers ] = useState<Array<any>>( [] );
-    const clicked_marker = useRef<any>( null );
 
-    const clickable = useRef<boolean>( true );
-    const { onPlaceClicked, location = { lat, long }, level } = useMemo( () => option, [ option ]);
+    // map function control: marker
+    const [ markers, setMarkers ] = useState<Array<any>>( [] );
 
     useEffect(() => setMarkers( option.markers || [] ), [ option ]);
 
+    useEffect(() => {
+        // display marker
+        if ( markers && markers?.length > 0 ) markers.forEach( (v) => v.setMap( kakaoMapObject.current ) );
+    }, [ markers ])
+
+    useEffect(() => {
+        setMarkers((option.markers || []).map( ({ position, image }) => 
+            new window.kakao.maps.Marker({ position, image })
+        ))
+    }, [ option.markers ]);
+
+
+    // map function control: click
+    const { onPlaceClicked, location = { lat, long }, level } = useMemo( () => option, [ option ]);
+    const clicked_marker = useRef<any>( null );
+    const clickable = useRef<boolean>( true );
+
     const clickHandler = useCallback( ( e: any ) => {
         if ( onPlaceClicked && clickable.current ) {
+            clickable.current = false;
             const position = new window.kakao.maps.LatLng( e.latLng.getLat(), e.latLng.getLng() );
             
             if ( clicked_marker.current ) clicked_marker.current.setMap( null );
@@ -55,6 +74,8 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
         }
     }, [ onPlaceClicked ] );
 
+
+    // map function control: animation
     function levelResizer() {
         clickable.current = false;
         let prev_level = kakaoMapObject.current.getLevel();
@@ -70,6 +91,8 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
         }
     }
 
+
+    // map initializement
     useEffect(() => {
         // reset prev map
         for ( let i: number = 0; i < +(mapRef.current?.children?.length || 0); i++ ) {
@@ -89,19 +112,6 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
             window.kakao.maps.event.removeListener( kakaoMapObject.current, 'click', clickHandler );
         }
     }, [ location?.lat, location?.long ]);
-
-
-    // marker control
-    useEffect(() => {
-        // display marker
-        if ( markers && markers?.length > 0 ) markers.forEach( (v) => v.setMap( kakaoMapObject.current ) );
-    }, [ markers ])
-
-    useEffect(() => {
-        setMarkers((option.markers || []).map( ({ position, image }) => 
-            new window.kakao.maps.Marker({ position, image })
-        ))
-    }, [ option.markers ]);
 
     return <div className={ "map-displayer" + ( className ? ` ${ className }` : "" ) } style={ style } ref={ mapRef }/>
 };

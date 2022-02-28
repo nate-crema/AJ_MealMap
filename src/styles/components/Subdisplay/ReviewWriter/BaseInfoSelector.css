@@ -1,0 +1,92 @@
+.base-info-selector {
+    width: calc( 100% - 4px );
+    height: calc( 100% - 20px );
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%);
+    
+    display: grid;
+    grid-template-columns: repeat( 2, calc( 50% - 5px ) );
+    gap: 10px;
+
+    /* background-color: lightblue; */
+}
+
+.base-info-selector .time-selector-wrap {
+    width: 100%;
+    height: 80%;
+    max-height: 200px;
+    
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    overflow: hidden;
+}
+
+.base-info-selector .baseinfo-nextstep {
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+/* BaseInfoSelection */
+.base-info-selection {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    cursor: pointer;
+    
+    transition: all .3s cubic-bezier(0, 1, 1, 1);
+}
+
+.base-info-selection:hover {
+    width: calc( 100% + 2px );
+    height: calc( 100% + 2px );
+}
+
+.base-info-selection .selection-icn {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%);
+    
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
+.base-info-selection .selection-icn svg {
+    width: auto;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.base-info-selection .selection-text {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--theme-color-C);
+    
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}

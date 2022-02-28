@@ -11,7 +11,7 @@ import '@styles/components/Subdisplay/ReviewWriter.css';
 import { APIResult, getRestaurantList, getReviewQuestion } from "@api/service";
 
 // constant
-import { AnswerID, QuestionID, RestaurantWhereQuestionID, ReviewQuestionPreAnswerTypes } from "@interfaces/ReviewWriter";
+import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, RestaurantWhereQuestionID, ReviewPresetAnswerTypes, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
 
 // components
 import ServiceTitler from "../ServiceTitler";
@@ -23,8 +23,31 @@ import { ComponentOpenState } from "@interfaces/Subdisplay";
 import { ReviewAnswer, ReviewQuestion } from "@interfaces/ReviewWriter";
 import { RestaurantCompInfo, RestaurantID, RestaurantList } from "@src/interfaces/Restaurant";
 import MapSelector from "./ReviewWriter/MapSelector";
+import BaseInfoSelector from "./ReviewWriter/BaseInfoSelector";
+import { alertOption } from "@src/interfaces/recoil/State";
 
 const ReviewWriter: React.FC = () => {
+
+    // global alert control
+    const setGlobalAlert = useSetRecoilState( states.alert );
+
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setGlobalAlert({
+    //             active: true,
+    //             title: { text: "test-title" },
+    //             descriptions: [
+    //                 { text: "test description: paragraph A", style: { color: "var(--theme-color-C)" } },
+    //                 { text: "test description: paragraph B", style: { color: "#22ffff" } },
+    //                 { text: "test description: paragraph C", style: { color: "black" } },
+    //             ],
+    //             buttons: [
+    //                 { text: "확인" }
+    //             ],
+    //             size: "half"
+    //         } as alertOption)
+    //     }, 1000)
+    // }, [  ])
 
     // review common control
     const [ review_state, setReviewState ] = useState( 0 );
@@ -38,18 +61,18 @@ const ReviewWriter: React.FC = () => {
         }, 300);
     }, [ review_state ]);
     
-    // review info control
 
+    // review info control
     const [ question_list, setQuestionList ] = useState<Array<ReviewQuestion>>([]);
     const [ question_result, setQuestionResult ] = useState<Array<ReviewAnswer>>([]);
-
-    const { lat, long } = useRecoilValue( states.location );
 
     const answerHandler = useCallback( ( value: any ) => {
         const { qid, answer: { type, selection } } = question_list[ review_state ];
         console.log( "answerHandler", qid, value );
 
-        if ( type === "writing" ) pushQuestionResult( { qid, answer: value as string } );
+        if ( type === "writing-single" ) pushQuestionResult( { qid, answer: value as string } );
+        else if ( type === "writing-multiple" ) pushQuestionResult( { qid, answer: value as Array<string> } );
+        else if ( type === "base-info" ) pushQuestionResult( { qid, subAnswers: value } );
         else if ( [ "selection-date", "selection-location" ].includes( type ) ) pushQuestionResult( { qid, answer: value } );
         else pushQuestionResult( { qid, aid: value as AnswerID | null } );
 
@@ -107,12 +130,22 @@ const ReviewWriter: React.FC = () => {
                     : 
                     question_list[ review_state ].answer.type === "selection" ?
                         <Selector 
-                            selections={ question_list[ review_state ].answer?.selection || [] }
+                            selections={ ( question_list[ review_state ].answer?.selection || [] ) as Array<ReviewSelectionFormat> }
                             onAnswered={ answerHandler }
                         />
                     : 
                     question_list[ review_state ].answer.type === "selection-location" ?
-                        <MapSelector onAnswered={ answerHandler } />                   
+                        <MapSelector 
+                            onSelected={ () => setMent("위치가 이곳인가요?") }
+                            onAnswered={ answerHandler }
+                        />                   
+                    : 
+                    question_list[ review_state ].answer.type === "base-info" ?
+                        <BaseInfoSelector 
+                            selection={ ( question_list[ review_state ].answer.selection || [] ) as Array<BaseInfoSelectionFormat> }
+                            onSelected={ ( ment: string ) => setMent( ( ment === "[default]" ) ? question_list[ review_state ].ment : ment ) }
+                            onAnswered={ answerHandler }
+                        />
                     : <></>
                 : <></>
             }

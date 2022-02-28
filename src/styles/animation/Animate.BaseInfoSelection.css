@@ -1,0 +1,69 @@
+.base-info-selection:hover > .selection-icn svg { 
+    animation: baseinfo-selectionicn-reanim .5s cubic-bezier(0.5, 0.5, 0, 1);
+    animation-fill-mode: both;
+}
+
+.base-info-selection:hover > .selection-icn svg path[fill="var(--theme-color-C)"] { 
+    animation: baseinfo-selectionpath-reanim .5s cubic-bezier(0.5, 0.5, 0, 1);
+    animation-delay: 0;
+    animation-fill-mode: both;
+}
+
+.base-info-selection .selection-icn svg {
+    animation: baseinfo-selectionicn-anim .8s cubic-bezier(0.5, 0.5, 0, 1);
+    animation-fill-mode: both;
+}
+
+.base-info-selection .selection-icn svg path[fill="var(--theme-color-C)"] {
+    animation: baseinfo-selectionpath-anim .3s cubic-bezier(0.5, 0.5, 1, 0);
+    animation-delay: .8s;
+    animation-fill-mode: both;
+}
+
+.base-info-selection .selection-text {
+    animation: baseinfo-selectiontext-anim .5s cubic-bezier(0, 1, 1, 1);
+    animation-delay: 1s;
+    animation-fill-mode: both;
+}
+
+@keyframes baseinfo-selectionicn-anim {
+    from {
+        stroke-dasharray: 400;
+        stroke-dashoffset: 500;
+    }
+    to {
+        stroke-dasharray: 500;
+        stroke-dashoffset: 1000;
+    }
+}
+
+@keyframes baseinfo-selectionicn-reanim {
+    from {
+        stroke-dasharray: 500;
+        stroke-dashoffset: 1000;
+    }
+    10% {
+        stroke-dasharray: 400;
+        stroke-dashoffset: 500;
+    }
+    to {
+        stroke-dasharray: 500;
+        stroke-dashoffset: 1000;
+    }
+}
+
+@keyframes baseinfo-selectionpath-anim {
+    from { opacity: 0 }
+    to {}
+}
+
+@keyframes baseinfo-selectionpath-reanim {
+    from {}
+    50% { opacity: 0 }
+    to {}
+}
+
+@keyframes baseinfo-selectiontext-anim {
+    from { opacity: 0 }
+    to {}
+}

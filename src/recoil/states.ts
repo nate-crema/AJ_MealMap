@@ -1,7 +1,7 @@
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
-import { Login, Location } from "@src/interfaces/recoil/State";
+import { Login, Location, alertOption } from "@src/interfaces/recoil/State";
 import { RestaurantList, RestaurantID } from "@interfaces/Restaurant";
 import { SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
 /*
@@ -82,6 +82,14 @@ export default new ( function( this: any ): void {
     this.restaurantSpecific = atom<RestaurantID | undefined>({
         key: "retaurantSpecificState",
         default: undefined
+    })
+
+
+    // States: alert
+
+    this.alert = atom<alertOption>({
+        key: "alertState",
+        default: { active: false }
     })
 
   

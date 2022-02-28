@@ -1,0 +1,16 @@
+.map-displayer-reviewwriter {
+    width: 100%;
+    height: calc( 100% - ( 50px + 50px ) );
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.mapselector-nextstep {
+    width: calc( 100% - 4px );
+    height: 70px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+}

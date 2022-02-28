@@ -1,0 +1,1 @@
+export type ServiceButtonThemes = "defalut" | "main-selection" | "sub-selection" | "warn-main-selection" | "warn-sub-selection";

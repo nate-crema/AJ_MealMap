@@ -6,7 +6,7 @@ import states from "@recoil/states";
 
 // css
 import '@styles/pages/Login.css';
-import '@styles/Animate.Logo.css';
+import '@styles/animation/Animate.Logo.css';
 
 // components
 import GlobalInput from "@src/components/GlobalInput";
@@ -76,8 +76,8 @@ const Login: React.FC<LoginProps> = ({  }) => {
 
     
     // stage texts control
-    const [ title, setTitle ] = useState<String>( "" );
-    const [ ment, setMent ] = useState<String>( "" );
+    const [ title, setTitle ] = useState<string>( "" );
+    const [ ment, setMent ] = useState<string>( "" );
 
     useEffect(() => {
         switch( stage ) {
@@ -103,21 +103,21 @@ const Login: React.FC<LoginProps> = ({  }) => {
     
         
     // value input control
-    const [ globalInputPhWidth, setGlobalInputPhWidth ] = useState<String>( "120px" );
-    const [ globalInputFocus, setGlobalInputFocus ] = useState<Boolean>( false );
-    const [ globalInputChangeable, setGlobalInputChangeable ] = useState<Boolean>( true );
+    const [ globalInputPhWidth, setGlobalInputPhWidth ] = useState<string>( "120px" );
+    const [ globalInputFocus, setGlobalInputFocus ] = useState<boolean>( false );
+    const [ globalInputChangeable, setGlobalInputChangeable ] = useState<boolean>( true );
 
-    const [ namePhWidth, setNamePhWidth ] = useState<String>( "35px" );
-    const [ nameFocus, setNameFocus ] = useState<Boolean>( false );
-    const [ nameChangeable, setNameChangeable ] = useState<Boolean>( true );
+    const [ namePhWidth, setNamePhWidth ] = useState<string>( "35px" );
+    const [ nameFocus, setNameFocus ] = useState<boolean>( false );
+    const [ nameChangeable, setNameChangeable ] = useState<boolean>( true );
 
-    const name = useRecoilValue<String>( states.name );
-    const portalId = useRecoilValue<String>( states.portalId );
+    const name = useRecoilValue<string>( states.name );
+    const portalId = useRecoilValue<string>( states.portalId );
 
 
     // stage display control
-    const [ stage_display, setStageDisplay ] = useState<Boolean>( true );
-    const [ button_display, setButtonDisplay ] = useState<Boolean>( false );
+    const [ stage_display, setStageDisplay ] = useState<boolean>( true );
+    const [ button_display, setButtonDisplay ] = useState<boolean>( false );
 
     useEffect(() => {
         // console.log( name.length, portalId.length );
@@ -160,10 +160,6 @@ const Login: React.FC<LoginProps> = ({  }) => {
 
                             type="text"
                             changeable={ globalInputChangeable }
-
-                            _ref={ undefined }
-                            onBlur={ undefined }
-                            onFocus={ undefined }
                         />
                         <GlobalInput
                             placeholder="이름"
@@ -175,10 +171,6 @@ const Login: React.FC<LoginProps> = ({  }) => {
 
                             type="text"
                             changeable={ nameChangeable }
-
-                            _ref={ undefined }
-                            onBlur={ undefined }
-                            onFocus={ undefined }
                         />
                     </> : ( stage === 1 ) ? <>
                         <GlobalInput

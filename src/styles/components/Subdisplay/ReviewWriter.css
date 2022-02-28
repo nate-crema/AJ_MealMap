@@ -24,15 +24,6 @@
     overflow-y: auto;
 }
 
-/* ReviewWriter: MapHandler */
-.review-writer-area .review-writer-stagecomp .map-displayer.map-displayer-reviewwriter {
-    width: 100%;
-    height: calc( 100% - ( 50px + 50px ) );
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
 
 /* animate option */
 .review-writer-stagecomp.displayIn {

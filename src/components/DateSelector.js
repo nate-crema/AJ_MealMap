@@ -204,6 +204,7 @@ function ScrollSelector({
     const lscrolled = useRef(new Date().getTime());
 
     const _scrollHandler = ( e, selection_area_size ) => {
+        console.log(auto_scroll.current);
         setScrolling(true);
         const timestamp = new Date().getTime();
         lscrolled.current = timestamp;
@@ -268,8 +269,8 @@ function ScrollSelector({
             // handle component pre-unmounted
             if ( !swipeRef.current || !swipeWrapRef.current ) return;
             
-            console.log ( `calculated: ${ scroll_value } | setted: ${ swipeRef.current.scrollTop }` );
-            if ( swipeRef?.current && ( ( swipeRef?.current?.scrollTop - scroll_value > 1 ) || ( scroll_value - swipeRef?.current?.scrollTop > 1 ) ) ) {
+            console.log ( `calculated: ${ scroll_value } | setted: ${ swipeRef.current.scrollTop } | maximum: ${ ( selected_size + selected_topbottom_padding ) } ${ selectables[mode][lang].length }` );
+            if ( swipeRef?.current && ( ( selected_size + selected_topbottom_padding ) * selectables[mode][lang].length >= scroll_value ) && ( ( swipeRef?.current?.scrollTop - scroll_value > 1 ) || ( scroll_value - swipeRef?.current?.scrollTop > 1 ) ) ) {
                 updateScrollUI( scroll_position, selection_area_size );
             }
         }, 300);
@@ -334,8 +335,6 @@ function DateSelector({
     displayKO,
     // value editing control
     editable: _editable = true, 
-    // button display settings
-    button,
     // initial value settings
     init, 
     // animation timing settings

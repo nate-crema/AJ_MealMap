@@ -1,0 +1,49 @@
+.answerhandler-writor-wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.answerhandler-writor-wrap .multiple-inputs {
+    width: 100%;
+    height: calc( 100% - 90px );
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    overflow-y: auto;
+}
+
+.answerhandler-writor-wrap .multiple-inputs .service-input {
+    width: calc( 100% - 10px );
+    height: 80px;
+    
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: unset;
+}
+
+.answerhandler-writor-wrap .multiple-inputs .service-input .value-writor {
+    width: 100%;
+    height: 60px;
+    
+    position: relative;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.answerhandler-writor-wrap .input-control-btns {
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    
+    display: grid;
+    grid-template-columns: repeat(2, calc( 50% - 5px ));
+    gap: 10px;
+}

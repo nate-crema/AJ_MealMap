@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, MouseEventHandler } from "react";
+import { useState, useEffect, useRef, MouseEventHandler, CSSProperties } from "react";
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
@@ -9,15 +9,14 @@ import '@styles/components/ServiceButton.css';
 
 // components
 
-
 // interfaces
-type ServiceButtonTheme = "defalut" | "main-selection" | "sub-selection" | "warn-main-selection" | "warn-sub-selection";
+import { ServiceButtonThemes } from "@interfaces/ServiceButton";
 
 type ServiceButtonProps = {
     text: string,
     className?: string,
-    style?: CSSStyleSheet,
-    theme: ServiceButtonTheme,
+    style?: CSSProperties,
+    theme: ServiceButtonThemes,
     onClick?: MouseEventHandler
 }
 
@@ -30,13 +29,16 @@ const themes = {
 }
 
 
-const ServiceButton: React.FC<ServiceButtonProps> = ({ text, className, style, theme, onClick }) => {
+const ServiceButton: React.FC<ServiceButtonProps> = ({ text, className, style = {}, theme, onClick }) => {
+
     return <div
         className={ "service-button" + ( className ? ( " " + className ) : "" ) }
         style={{ ...style, ...themes[ theme ] }}
         onClick={ onClick }
     >
-        <span className="service-button-text" style={{ color: themes[ theme ].color }}>{ text }</span>
+        <span className="service-button-text" 
+            style={{ color: themes[ theme ].color, fontSize: style?.fontSize, fontWeight: style?.fontWeight }}
+        >{ text }</span>
     </div>
 };
 
