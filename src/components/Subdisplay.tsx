@@ -13,19 +13,36 @@ import InfoDisplay from "./Subdisplay/InfoDisplay";
 import ReviewWriter from "./Subdisplay/ReviewWriter";
 
 // interfaces
-import { SubdisplayDisplayMode, SubdisplayMountMode } from "@interfaces/Subdisplay";
+import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@interfaces/Subdisplay";
 import Alert from "./Alert";
 
+const SUBDISPLAY_SIZE_PRESETS: {
+    [ keys in ComponentOpenState ]: string
+} = {
+    "SMALL": "calc( 80vh / 4 + 10px )",
+    "HALF_SMALL": "calc( 80vh / 8 * 3 )",
+    "MEDIUM": "calc( 80vh / 2 )",
+    "HALF_MEDIUM": "calc( 80vh / 4 * 3 )",
+    "QUARTER_MEDIUM": "calc( 80vh / 8 * 7 )",
+    "LARGE": "calc( 80vh )"
+};
 
 const Subdisplay: React.FC = () => {
+    
+    // subdisplay sizing control
+    const [ subdisplay_size, setSubdisplaySize ] = useRecoilState<ComponentOpenState>( states.subdisplayDisplaySize );
 
     // subdisplay display control
     const type = useRecoilValue<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
     const navigate = useNavigate();
-    const closeSubdisplay = () => navigate("/");
+    const closeSubdisplay = () => {
+        setSubdisplaySize( "LARGE" );
+        navigate("/");
+    }
 
     // subdisplay mount control
     const mounted = useRecoilValue<SubdisplayMountMode>( states.subdisplayMountMode );
+
 
     return <>
         <Alert/>
@@ -40,7 +57,9 @@ const Subdisplay: React.FC = () => {
             "subdisplay-component"
             + ( mounted === "UNMOUNTED" ? " unmounted" : " mounted" )
             + ( type === "CLOSED" ? " closed" : " opened" )
-        }>
+        } style={{
+            height: (type !== "CLOSED") ? ( SUBDISPLAY_SIZE_PRESETS[ subdisplay_size ] ) : undefined
+        }}>
             {
                 ( type === "INFO/READ" ) ? <>
                     <InfoDisplay/>

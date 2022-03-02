@@ -5,100 +5,112 @@
     top: 0;
     left: 0;
 
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
 }
 
-.worktime-selector .categories {
+.worktime-selector .worktime-inputmode-control {
+    width: 100%;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.worktime-selector .worktime-inputmode-control .input_cat {
     width: 100%;
     height: 30px;
     position: relative;
     top: 0;
     left: 0;
-    background-color: azure;
-}
-
-.worktime-selector .categories .category {
-    width: 80px;
-    height: 100%;
-    position: relative;
-    float: right;
-
-    margin: 0 10px;
-    /* background-color: lightpink; */
-}
-
-.worktime-selector .categories .category .cat-palate {
-    width: 20px;
-    height: 20px;
-    border-radius: 25px; 
-
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY( -50% );
-}
-
-.worktime-selector .categories .category .cat-desctext {
-    font-weight: 300;
-    font-size: 14px;
-    color: black;
-
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY( -50% );
-}
-
-.worktime-selector .timeline-wrap {
-    width: 100%;
-    height: calc( 100% - 50px );
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
-.worktime-selector .timeline-wrap .timeline-typetext {
-    font-size: 14px;
-    font-weight: 300;
-    color: black;
-}
-
-.worktime-selector .timeline-wrap .timeline {
-    width: calc( 100% - 10px );
-    height: 60px;
+    
+    display: inline-block;
+    margin: 5px 0;
+    
+    background-color: rgb(250, 250, 250);
     border-radius: 5px;
+}
 
-    background-color: #ddd;
+.worktime-selector .worktime-inputmode-control .input_cat .selection-background {
+    width: 80px;
+    height: 90%;
+    position: absolute;
+    top: 50%;
+    left: calc( 120px + ( ( 100% - 120px ) / 2 ) );
+    transform: translateY(-50%);
 
+    background-color: #ccc;
+    border-radius: 6px;
+}
+
+.worktime-selector .worktime-inputmode-control .input_cat .cat_title {
+    font-weight: 500;
+    font-size: 16px;
+    color: black;
+    text-align: left;
+    
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.worktime-selector .worktime-inputmode-control .input_cat .cat_modes  {
+    width: calc( 100% - 120px );
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.worktime-selector .worktime-inputmode-control .input_cat .cat_modes .cat_submode {
+    font-weight: 300;
+    font-size: 14px;
+    color: black;
+    text-align: center;
+    
+    display: inline-block;
+
+    width: 50%;
+    height: fit-content;
+    
     position: relative;
-    margin: 10px auto;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
+.worktime-selector .worktime-selector-comp-wrap {
+    width: 80%;
+    height: 180px;
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translate(-50%);
+    
     overflow: hidden;
 }
 
-.worktime-selector .timeline-wrap .timeline-selected {
-    width: 0;
-    height: 100%;
-    position: absolute;
-    top: 0;
-}
-
-.worktime-selector .timeline-wrap .timeline .timeline-texts {
+.worktime-selector .worktime-selector-comp-wrap .worktime-fader {
     width: 100%;
-    height: 50%;
+    height: 40px;
     position: absolute;
-    top: 0;
-    left: 0;
+
+    z-index: 1000;
 }
 
-.worktime-selector .timeline-wrap .timeline .timeline-texts .timeline-bar {
-    width: 1px;
-    height: 100%;
-    position: relative;
+.worktime-selector .worktime-selector-comp-wrap .worktime-fader.fader-top {
     top: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 70%, rgba(255,255,255,0) 100%);
+}
 
-    display: inline-block;
-    background-color: black;
+.worktime-selector .worktime-selector-comp-wrap .worktime-fader.fader-bottom {
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 70%, rgba(255,255,255,0) 100%);
+}
 
-    margin-left: calc( ( 100% - 12px ) / 12 );
+.worktime-selector .worktime-selector-finish-button {
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
 }

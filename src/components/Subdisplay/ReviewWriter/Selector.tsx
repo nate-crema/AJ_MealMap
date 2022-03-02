@@ -18,10 +18,18 @@ type SelectorProps = {
 
 
 const Selector: React.FC<SelectorProps> = ({ selections, onAnswered }) => {
+
     return <div className="answerhandler-selector-wrap">
-        <div className="answerhandler-selector">
+        <div className="answerhandler-selector" style={{
+            height: `calc( 70px * ${ Math.floor( selections.length / 2 ) } + 60px )`,
+            gridTemplateRows: `repeat( ${ Math.floor( selections.length / 2 ) }, 60px )`
+        }}>
             { selections.map( selection => 
-                <div className="selection-block">
+                <div
+                    key={ selection.aid }
+                    className="selection-block"
+                    onClick={ () => onAnswered( selection.aid ) } 
+                >
                     <span>{ selection.selectionText }</span>
                 </div>
             ) }

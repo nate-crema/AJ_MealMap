@@ -6,157 +6,121 @@ import states from "@recoil/states";
 
 // css
 import '@styles/components/Subdisplay/ReviewWriter/WorktimeSelector.css';
+import DateSelector from "@src/components/DateSelector";
+import ServiceButton from "@src/components/ServiceButton";
 
 // components
 
 // interfaces
-type catType = "work" | "rest" | "close";
+type catType = "work" | "rest";
+type modeType = "from" | "to";
+
+type inputTimesType = { [ keys in catType ]: { [ keys in modeType ]: { h: number, m: number } } };
 
 type WorktimeSelectorProps = {
+    selected: inputTimesType | undefined,
     onAnswered: ( answer: any ) => any
 }
 
-const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ onAnswered }) => {
+const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswered }) => {
 
-    // category control
-    const [ curr_cat, setCurrCat ] = useState<catType>( "work" );
-    const TIME_CATS = [
-        { type: "work", color: "lightblue", text: "영업시간" },
-        { type: "rest", color: "lightpink", text: "휴식시간" },
-        { type: "close", color: "lightgray", text: "마감시간" },
-    ];
+    // inputmode control
+    const INPUT_MODES: Array<{ type: catType, title: string, isMultiple: boolean, submodes: Array<{ type: modeType, text: string }> }> = [
+        { type: "work", title: "영업시간", isMultiple: false, submodes: [ { type: "from", text: "시작시간" }, { type: "to", text: "종료시간" } ] },
+        { type: "rest", title: "휴식시간", isMultiple: true, submodes: [ { type: "from", text: "시작시간" }, { type: "to", text: "종료시간" } ] }
+    ]
 
-    // timeline control
-    const [ timeline_type, setTimelineType ] = useState<"am" | "pm">( "am" );
-    const TIMELINES = [
-        { type: "am", display: "오전" },
-        { type: "pm", display: "오후" }
-    ];
+    const [ input_cat, setInputCat ] = useState<catType>( "work" );
+    const [ input_mode, setInputMode ] = useState<modeType>( "from" );
 
-    // selecting control
-    const selecting = useRef<boolean>( false );
-    const selectedPosition = useRef<number>( 0 );
-
-    const [ selectedRange , setSelectedRange ] = useState<{ [ keys in catType ]: { from: number, to: number } }>({
-        work: { from: 0, to: 0 },
-        rest: { from: 0, to: 0 },
-        close: { from: 0, to: 0 }
-    });
-
-    const [ timeline_layout, setTimelineLayout ] = useState<DOMRect>();
-
-    const TIMELINE_CELLWIDTH = useMemo( () => (timeline_layout?.width || 0) / 12, [ timeline_layout ] );
-
-    const getUserPointerLocation = ( e: any ) => {
-        console.log(e?.pageX || e.touches);
-        return e?.pageX || e.touches[0].clientX;
-    }
-
-    const updateTimelineType = ( e: MouseEvent | TouchEvent ) => {
-        console.log(e.target);
-        const timeline_type_current: "pm" | "am" = ( e.currentTarget.id || "am" ) as "pm" | "am";
-        setTimelineType( timeline_type_current );
-        return timeline_type_current;
-    }
-
-    const findSelectPosition = useCallback(( e: MouseEvent | TouchEvent, type: "start" | "move" ) => {
-        if ( !selecting.current ) return;
-        
-        const timeline_layout_current = e.currentTarget.getBoundingClientRect();
-        setTimelineLayout( timeline_layout_current );
-
-        const timeline_type_current = updateTimelineType( e );
-        console.log( "timeline_type_current", timeline_type_current );
-
-        const { width: timeline_width, left: timeline_left } = timeline_layout_current;
-        const rel_clickpoint = Math.floor(( getUserPointerLocation( e ) - timeline_left ) / timeline_width * 100);
-        const time_clickvalue = Math.ceil( rel_clickpoint / 100 * 12 ) + ( ( timeline_type_current === "pm" ) ? 12 : 0 );
-        
-        setSelectedRange( p => ({ ...p, [ curr_cat ]: { ...p[ curr_cat ], [ ( type === "start" ) ? "from" : "to" ]: time_clickvalue } }) );
-        // console.log( timeline_type );
-        console.log( time_clickvalue );
-    }, [ timeline_type ]);
-
-    const timelineMouseDownHandler = ( e: MouseEvent ) => {
-        try {
-            // pass when touch event trigger mouse down event handler
-            document.createEvent("TouchEvent");
-        } catch(_) {
-            e.stopPropagation();
-            setSelectedRange({
-                work: { from: 0, to: 0 },
-                rest: { from: 0, to: 0 },
-                close: { from: 0, to: 0 }
-            })
-            selecting.current = true;
-            findSelectPosition( e, "start" );
+    // inputed value control
+    const [ initAssign, setInitAssign ] = useState<boolean>( false );
+    const [ input_times, setInputTimes ] = useState<inputTimesType>( {
+        work: {
+            from: { h: -1, m: -1 },
+            to: { h: -1, m: -1 }
+        },
+        rest: {
+            from: { h: -1, m: -1 },
+            to: { h: -1, m: -1 }
         }
+    } );
+
+    const onTimeInputHandler = useCallback( ( result: any ) => {
+        setInputTimes( p => ( { ...p, [ input_cat ]: { ...p[ input_cat ], [ input_mode ]: { h: ( result.hour + ( ( result.ampm - 1 ) * 12 ) ), m: result.minute } } } ) );
+    }, [ input_cat, input_mode ]);
+
+    useEffect(() => {
+        console.log( "input_times", input_times );
+    }, [ input_times ]);
+
+    // prev_input value assign
+    useEffect(() => {
+        if ( selected ) {
+            setInputTimes( selected );
+            setInitAssign( false );
+            setTimeout(() => {
+                setInitAssign( true );
+            }, 300);
+        }
+    }, [ selected ]);
+
+    // button click handler
+    const buttonClickHandler = () => {
+        onAnswered( input_times );
     }
 
-    const timelineTouchStartHandler = ( e: TouchEvent ) => {
-        e.stopPropagation();
-        setSelectedRange({
-            work: { from: 0, to: 0 },
-            rest: { from: 0, to: 0 },
-            close: { from: 0, to: 0 }
-        })
-        selecting.current = true;
-        findSelectPosition( e, "start" );
-    }
-
-    const timelineMouseUpHandler = ( e: MouseEvent ) => {
-        console.log("mouse up");
-        e.stopPropagation();
-        selecting.current = false;
-        findSelectPosition( e, "move" );
-    }
-
-    const timelineMouseMoveHandler = useCallback(( e: MouseEvent | TouchEvent ) => {
-        console.log("move", selecting.current);
-        if ( !selecting.current ) return;
-        findSelectPosition( e, "move" );
-    }, [ timeline_type ])
-
-    const timelineMouseOverHandler = ( i: number ) => {
-        // console.log("OVER", i);
-        setTimelineType( i ? "pm" : "am" );
-    }
-    
-    
-    return <div className="worktime-selector"
-        onMouseUp={ timelineMouseUpHandler }
-        onMouseMove={ timelineMouseMoveHandler }
-        onTouchMove={ timelineMouseMoveHandler }
-    >
-        <div className="categories">
-            { TIME_CATS.map( cat => <div className="category cat-worktime">
-                <div className="cat-palate" style={{ backgroundColor: cat.color }}/>
-                <span className="cat-desctext">{ cat.text }</span>
-            </div> ) }
-        </div>
-        <div className="timeline-wrap">
-            {
-                TIMELINES.map( ( time_info, i ) => <>
-                    <span className="timeline-typetext">{ time_info.display }</span>
-                    <div className="timeline"
-                        id={ i ? "pm" : "am" }
-                        onMouseDown={ timelineMouseDownHandler }
-                        onTouchStart={ timelineTouchStartHandler }
-                        onMouseOver={ () =>timelineMouseOverHandler(i) }
-                    >
-                        <div className="timeline-selected" style={{
-                            backgroundColor: TIME_CATS.find( v => v.type === curr_cat )?.color,
-                            left: `${ ( selectedRange[ curr_cat ].from - ( i * 12 ) ) * ( TIMELINE_CELLWIDTH - 1 || 0 ) }px`,
-                            width: `calc(${ (( selectedRange[ curr_cat ].to)  - ( i * 12 ) - ( selectedRange[ curr_cat ].from - ( i * 12 ) )) * ( TIMELINE_CELLWIDTH - 1 || 0 ) }px)`
-                        }}/>
-                        <div className="timeline-texts">
-                            { Array.from({ length: 11 }).map( _ => <div className="timeline-bar"/> ) }
-                        </div>
+    return <div className="worktime-selector">
+        <div className="worktime-inputmode-control">
+            { INPUT_MODES.map( modes => <>
+                <div className="input_cat">
+                    <div className="selection-background" style={{
+                        width: modes.type === input_cat ? undefined : "0",
+                        transform: `translate( ${ input_mode === "from" ? "-80px" : input_mode === "to" ? "0" : "" }, -50% )`
+                    }}/>
+                    <span className="cat_title">{ modes.title }</span>
+                    <div className="cat_modes">
+                        { modes.submodes.map( v => <span className="cat_submode" onClick={ () => {
+                            setInitAssign( false );
+                            setInputCat( modes.type );
+                            setInputMode( v.type );
+                            setTimeout(() => {
+                                setInitAssign( true );
+                            }, 300);
+                        } }>{ v.text }</span> ) }
                     </div>
-                </>
-                )
-            }
+                </div>
+            </> ) }
         </div>
+        <div className="worktime-selector-comp-wrap">
+            <div className="worktime-fader fader-top"/>
+            <DateSelector
+                inputValue={[ "time", "am/pm" ]}
+                onValueSucceed={ onTimeInputHandler }
+                className="worktime-selector-comp"
+
+                displayKO={ "ko" }
+                init={ 
+                    ( !Object.values(input_times[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
+                    ( {
+                        hour: 
+                            input_times[ input_cat ][ input_mode ].h === 0 ? 12 :
+                            input_times[ input_cat ][ input_mode ].h === 12 ? 12 :
+                            input_times[ input_cat ][ input_mode ].h % 12,
+                        minute: input_times[ input_cat ][ input_mode ].m,
+                        ampm: ( input_times[ input_cat ][ input_mode ].h >= 12 ) ? 2 : 1
+                    } )
+                    : undefined 
+                }
+                init_assign={ initAssign }
+            />
+            <div className="worktime-fader fader-bottom"/>
+        </div>
+        <ServiceButton text="선택완료" theme="main-selection"
+            className="worktime-selector-finish-button"
+            style={{ fontSize: "16px" }}
+            onClick={ buttonClickHandler }
+        />
     </div>
 };
 

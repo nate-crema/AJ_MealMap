@@ -189,13 +189,15 @@ function ScrollSelector({
 
     useEffect(() => {
         // assign initial value scrollUI
-        console.log(init[mode]);
+        console.log("init value assign:", init[mode]);
         if ( init_assign && selection_area && init[mode] !== undefined ) {
             const v = selectables[mode][lang].find(_v => _v.value === init[mode]); 
             console.log(v, selectables[mode][lang].indexOf(v));
             setTimeout(() => {
                 updateScrollUI(selectables[mode][lang].indexOf(v), selection_area);
             }, 300);
+        } else if ( init_assign === true ) {
+            updateScrollUI(-1, selection_area);
         }
     }, [ init_assign, selection_area ])
 
@@ -235,9 +237,12 @@ function ScrollSelector({
             displayInvalidity();
     }
 
-    const updateScrollUI = ( scroll_position, selection_area_size ) => {
+    const updateScrollUI = ( scroll_position, selection_area_size, repeat_count ) => {
         // handle component pre-unmounted
-        if ( !swipeRef.current || !swipeWrapRef.current ) return;
+        if ( !swipeRef.current || !swipeWrapRef.current ) {
+            setScrolling(false);
+            return;
+        } else setScrolling( true );
         
         // adjust scroll position
             auto_scroll.current = true;
@@ -250,17 +255,18 @@ function ScrollSelector({
             const selected_topbottom_padding = scroll_position === 0 ? 8 : 4;
             const selectarea_design_margin = ( selectarea_realsize - selected_size ) / 2;
 
-            let scroll_value = top_nullarea_size + scroll_position * selection_area_size - ( selectarea_design_margin + selectarea_prevpostarea_size ) + selected_topbottom_padding;
+            let scroll_value = ( scroll_position !== -1 ) ? top_nullarea_size + scroll_position * selection_area_size - ( selectarea_design_margin + selectarea_prevpostarea_size ) + selected_topbottom_padding : 0;
             console.log(`scroll setted to: ${ scroll_value }px`)
             swipeRef.current.scrollTop = scroll_value;
             setTimeout(() => {
                 auto_scroll.current = false;
+                setScrolling(false);
                 // console.log('[ updateScrollUI ] action: autoscrolled? => ', auto_scroll.current);
             }, 300);
         
         // update current selected state
             // console.log(selectables, mode, lang, scroll_position);
-            setSelected(prev => ({ ...prev, [ mode ]: selectables[mode][lang][scroll_position].value }));
+            setSelected(prev => ({ ...prev, [ mode ]: ( scroll_position !== -1 ) ? selectables[mode][lang][scroll_position].value : null }));
             setScrolling(false);
             
             // console.log( swipeRef?.current, swipeRef?.current?.scrollTop, scroll_value, scroll_position === 0 );
@@ -271,7 +277,8 @@ function ScrollSelector({
             
             console.log ( `calculated: ${ scroll_value } | setted: ${ swipeRef.current.scrollTop } | maximum: ${ ( selected_size + selected_topbottom_padding ) } ${ selectables[mode][lang].length }` );
             if ( swipeRef?.current && ( ( selected_size + selected_topbottom_padding ) * selectables[mode][lang].length >= scroll_value ) && ( ( swipeRef?.current?.scrollTop - scroll_value > 1 ) || ( scroll_value - swipeRef?.current?.scrollTop > 1 ) ) ) {
-                updateScrollUI( scroll_position, selection_area_size );
+                if ( repeat_count < 15 ) updateScrollUI( scroll_position, selection_area_size, repeat_count++ || 1 );
+                else setScrolling( false );
             }
         }, 300);
 
@@ -294,6 +301,7 @@ function ScrollSelector({
 
     useEffect(() => {
         updating[1](scrolling);
+        console.log( "scrolling status: ", scrolling );
     }, [ scrolling ]);
 
     return <div className='scroll-selector-wrap' ref={ swipeWrapRef }>
@@ -311,9 +319,8 @@ function ScrollSelector({
                 height: "71px"
             }}> </span>
             { selectables[mode][lang].map((v, i) => <>
-                <span key={i} className={ "selectable-value r" + ( ( selected[mode] === v.value ) ? " selected" : "" ) } style={{
-                    padding: ( (i === 0) && selected[mode] === v.value ) && "12px 0px 0px 0px",
-                    color: scrolling && "var(--theme-color-C)"
+                <span key={i} className={ "selectable-value r" + ( ( selected[mode] === v.value ) ? " selected" : "" ) + ( ( scrolling ) ? " onScrolling" : " nonScrolling" ) } style={{
+                    padding: ( (i === 0) && selected[mode] === v.value ) && "12px 0px 0px 0px"
                 }}>{ v.display }</span>
             </>) }
             <span className="selectable-value" style={{

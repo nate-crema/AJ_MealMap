@@ -20,6 +20,7 @@ type SMALL = "SMALL";
 type HALF_SMALL = "HALF_SMALL";
 type MEDIUM = "MEDIUM";
 type HALF_MEDIUM = "HALF_MEDIUM";
+type QUARTER_MEDIUM = "QUARTER_MEDIUM";
 type LARGE = "LARGE";
 
-export type ComponentOpenState = SMALL | HALF_SMALL | MEDIUM | HALF_MEDIUM | LARGE;
+export type ComponentOpenState = SMALL | HALF_SMALL | MEDIUM | HALF_MEDIUM | QUARTER_MEDIUM | LARGE;

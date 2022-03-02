@@ -230,7 +230,7 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
                             qid: "QID_Restaurant_Menu",
                             ment: "이 식당의 메뉴들을 아시는만큼 알려주세요",
                             size: "MEDIUM",
-                            answer: { type: "writing-multiple", placeholders: [{ text: "메뉴명", width: "40px", necessary: false } ] }
+                            answer: { type: "writing-multiple", placeholders: [{ text: "메뉴명", width: "60px", necessary: false } ] }
                         }                     
                     },
                     {
@@ -252,73 +252,172 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
             ment: "언제 다녀오셨나요?",
             size: "LARGE",
             answer: {
-                type: "selection",
-                selection: []
+                type: "selection-time"
             }
         },
         {
             qid: "QID_4",
             ment: "가격은 어떤가요?",
-            size: "LARGE",
+            size: "HALF_MEDIUM",
             answer: {
                 type: "selection",
-                selection: []
+                selection: [
+                    {
+                        qid: "QID_4",
+                        aid: "AID_1",
+                        selectionText: "비싸요",
+                        value: 2
+                    },
+                    {
+                        qid: "QID_4",
+                        aid: "AID_2",
+                        selectionText: "적당해요",
+                        value: 1
+                    },
+                    {
+                        qid: "QID_4",
+                        aid: "AID_3",
+                        selectionText: "가성비에요",
+                        value: 0
+                    },
+                ]
             }
         }, // price
         {
             qid: "QID_5",
             ment: "맛은 어때요?",
-            size: "LARGE",
+            size: "HALF_MEDIUM",
             answer: {
                 type: "selection",
-                selection: []
+                selection: [
+                    {
+                        qid: "QID_5",
+                        aid: "AID_1",
+                        selectionText: "진짜 맛있었어요",
+                        value: 3
+                    },
+                    {
+                        qid: "QID_5",
+                        aid: "AID_2",
+                        selectionText: "먹을만 했어요",
+                        value: 2
+                    },
+                    {
+                        qid: "QID_5",
+                        aid: "AID_3",
+                        selectionText: "그럭저럭이었어요",
+                        value: 1
+                    },
+                    {
+                        qid: "QID_5",
+                        aid: "AID_4",
+                        selectionText: "별로였어요",
+                        value: 0
+                    },
+                ]
             }
         }, // taste
         {
             qid: "QID_6",
-            ment: "음식양은 많이 주나요?",
-            size: "LARGE",
+            ment: "음식양은 어떤가요?",
+            size: "HALF_MEDIUM",
             answer: {
                 type: "selection",
-                selection: []
+                selection: [
+                    {
+                        qid: "QID_6",
+                        aid: "AID_1",
+                        selectionText: "무한리필이에요",
+                        value: 2
+                    },
+                    {
+                        qid: "QID_6",
+                        aid: "AID_2",
+                        selectionText: "양이 많아요",
+                        value: 1
+                    },
+                    {
+                        qid: "QID_6",
+                        aid: "AID_3",
+                        selectionText: "적당해요",
+                        value: 0
+                    },
+                    {
+                        qid: "QID_6",
+                        aid: "AID_4",
+                        selectionText: "조금 적어요",
+                        value: -1
+                    },
+                    {
+                        qid: "QID_6",
+                        aid: "AID_5",
+                        selectionText: "부족해요",
+                        value: -2
+                    },
+                ]
             }
         }, // amount
         {
             qid: "QID_7",
             ment: "친절했나요?",
-            size: "LARGE",
+            size: "HALF_MEDIUM",
             answer: {
                 type: "selection",
-                selection: []
+                selection: [
+                    {
+                        qid: "QID_7",
+                        aid: "AID_1",
+                        selectionText: "친절해요",
+                        value: 3
+                    },
+                    {
+                        qid: "QID_7",
+                        aid: "AID_2",
+                        selectionText: "그럭저럭이에요",
+                        value: 2
+                    },
+                    {
+                        qid: "QID_7",
+                        aid: "AID_3",
+                        selectionText: "불친절해요",
+                        value: -1
+                    },
+                    {
+                        qid: "QID_7",
+                        aid: "AID_4",
+                        selectionText: "잘 모르겠어요",
+                        value: 0
+                    },
+                ]
             }
         }, // kind
-        {
-            qid: "QID_8",
-            ment: "학교에서 가기에 어떤가요?",
-            size: "LARGE",
-            answer: {
-                type: "selection",
-                selection: []
-            }
-        }, // distance
-        {
-            qid: "QID_9",
-            ment: "들어가는데 오래 걸렸나요?",
-            size: "LARGE",
-            answer: {
-                type: "selection",
-                selection: []
-            }
-        }, // enter_waiting
-        {
-            qid: "QID_10",
-            ment: "음식이 나오는 시간은요?",
-            size: "LARGE",
-            answer: {
-                type: "selection",
-                selection: []
-            }
-        }, // food_waiting
+        // {
+        //     qid: "QID_8",
+        //     ment: "학교에서 가기에 어떤가요?",
+        //     size: "LARGE",
+        //     answer: {
+        //         type: "selection",
+        //         selection: []
+        //     }
+        // }, // distance
+        // {
+        //     qid: "QID_9",
+        //     ment: "들어가는데 오래 걸렸나요?",
+        //     size: "LARGE",
+        //     answer: {
+        //         type: "selection",
+        //         selection: []
+        //     }
+        // }, // enter_waiting
+        // {
+        //     qid: "QID_10",
+        //     ment: "음식이 나오는 시간은요?",
+        //     size: "LARGE",
+        //     answer: {
+        //         type: "selection",
+        //         selection: []
+        //     }
+        // }, // food_waiting
     ],
     "TEST_2": [
         {

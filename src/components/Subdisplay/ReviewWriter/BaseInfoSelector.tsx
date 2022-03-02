@@ -49,9 +49,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                         transform="translate(-449.552 -551.398)"
                         fill="none"
                         stroke="var(--theme-color-C)"
-                        stroke-linecap="round"
-                        stroke-miterlimit="10"
-                        stroke-width="1"
+                        strokeLinecap="round"
+                        strokeMiterlimit="10"
+                        strokeWidth="1"
                     />
                 </svg>
             </>
@@ -74,9 +74,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                             d="M529.441,572.541l-5.453-.472a24.4,24.4,0,0,0-4.2,0l-14,1.21A1.28,1.28,0,0,1,504.395,572V553.475a1.282,1.282,0,0,1,1.171-1.277l14.218-1.229a24.4,24.4,0,0,1,4.2,0l14.218,1.229a1.282,1.282,0,0,1,1.171,1.277v10.692"
                             fill="none"
                             stroke="var(--theme-color-C)"
-                            stroke-linecap="round"
-                            stroke-miterlimit="10"
-                            stroke-width="1"
+                            strokeLinecap="round"
+                            strokeMiterlimit="10"
+                            strokeWidth="1"
                         />
                         <line
                             id="QID_Restaurant_Menu_SVG_WAFFLE-Line_66"
@@ -86,9 +86,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                             transform="translate(525.614 555.655)"
                             fill="none"
                             stroke="var(--theme-color-C)"
-                            stroke-linecap="round"
-                            stroke-miterlimit="10"
-                            stroke-width="1"
+                            strokeLinecap="round"
+                            strokeMiterlimit="10"
+                            strokeWidth="1"
                         />
                         <line 
                             id="QID_Restaurant_Menu_SVG_WAFFLE-Line_67"
@@ -98,9 +98,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                             transform="translate(525.614 561.69)"
                             fill="none"
                             stroke="var(--theme-color-C)"
-                            stroke-linecap="round"
-                            stroke-miterlimit="10"
-                            stroke-width="1"
+                            strokeLinecap="round"
+                            strokeMiterlimit="10"
+                            strokeWidth="1"
                         />
                         <line 
                             id="QID_Restaurant_Menu_SVG_WAFFLE-Line_68"
@@ -110,9 +110,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                             transform="translate(525.614 567.709)"
                             fill="none"
                             stroke="var(--theme-color-C)"
-                            stroke-linecap="round"
-                            stroke-miterlimit="10"
-                            stroke-width="1"
+                            strokeLinecap="round"
+                            strokeMiterlimit="10"
+                            strokeWidth="1"
                         />
                         <path 
                             id="QID_Restaurant_Menu_SVG_WAFFLE-Path_3"
@@ -165,9 +165,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                                 d="M593.078,576.918a15.741,15.741,0,1,1,5.549-8.215"
                                 fill="none"
                                 stroke="var(--theme-color-C)"
-                                stroke-linecap="round"
-                                stroke-miterlimit="10"
-                                stroke-width="1"
+                                strokeLinecap="round"
+                                strokeMiterlimit="10"
+                                strokeWidth="1"
                             />
                             <line
                                 id="QID_Restaurant_Worktime-Line_69"
@@ -177,9 +177,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                                 transform="translate(583.431 563.364)"
                                 fill="none"
                                 stroke="var(--theme-color-C)"
-                                stroke-linecap="round"
-                                stroke-miterlimit="10"
-                                stroke-width="1"
+                                strokeLinecap="round"
+                                strokeMiterlimit="10"
+                                strokeWidth="1"
                             />
                             <line
                                 id="QID_Restaurant_Worktime-Line_70"
@@ -189,9 +189,9 @@ const BaseInfoIcnAdminister: React.FC<{ qid: QuestionID }> = ({ qid }) => {
                                 transform="translate(576.88 555.283)"
                                 fill="none"
                                 stroke="var(--theme-color-C)"
-                                stroke-linecap="round"
-                                stroke-miterlimit="10"
-                                stroke-width="1"
+                                strokeLinecap="round"
+                                strokeMiterlimit="10"
+                                strokeWidth="1"
                             />
                         </g>
                     </g>
@@ -256,7 +256,7 @@ const BaseInfoSelector: React.FC<BaseInfoSelectorProps> = ({ selection: selectio
     }, [ selected_answer ]);
 
     useEffect(() => {
-        console.log( selected_answer );
+        console.log( "selected_answer", selected_answer );
     }, [ selected_answer ]);
 
     return <div className="base-info-selector"
@@ -270,6 +270,7 @@ const BaseInfoSelector: React.FC<BaseInfoSelectorProps> = ({ selection: selectio
                 {
                     selected_question.subQuestion.answer.type === "writing-multiple" ?
                         <Writor
+                            key="Writor"
                             placeholder={ selected_question.subQuestion.answer.placeholders || [] }
                             prevValues={ selected_answer[ selected_question?.aid ] || null }
                             maxInput={ selected_question.subQuestion.answer.maxInput || 0 }
@@ -278,21 +279,27 @@ const BaseInfoSelector: React.FC<BaseInfoSelectorProps> = ({ selection: selectio
                     : 
                     selected_question.subQuestion.answer.type === "selection" ?
                         <Selector 
+                            key="Selector"
                             selections={ ( selected_question.subQuestion.answer?.selection || [] ) as Array<ReviewSelectionFormat> }
                             onAnswered={ answerHandler }
                         />
                     :
                     selected_question.subQuestion.answer.type === "selection-worktime" ?
-                        <WorktimeSelector onAnswered={ onAnswered } />
+                        <WorktimeSelector 
+                            key="WorktimeSelector"
+                            selected={ selected_answer[ selected_question.aid ] }
+                            onAnswered={ answerHandler }
+                        />
                     :
                     selected_question.subQuestion.answer.type === "selection-location" ?
                         <MapSelector 
+                            key="MapSelector"
                             onAnswered={ answerHandler }
                         />
                     : <></>
                 }
             </> : <>
-                { selections.map( selection => <BaseInfoSelection info={ selection } onClick={ selectionClickHandler } /> ) }
+                { selections.map( selection => <BaseInfoSelection key={ selection.aid } info={ selection } onClick={ selectionClickHandler } /> ) }
                 <ServiceButton className="baseinfo-nextstep" style={{ fontSize: "16px" }} text="다음" theme="main-selection" onClick={ baseInfoInputEndHandler }/>
             </>
         }

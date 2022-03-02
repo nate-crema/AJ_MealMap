@@ -17,14 +17,17 @@ import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, Rest
 import ServiceTitler from "../ServiceTitler";
 import Restaurants from "../Restaurants";
 import Selector from "./ReviewWriter/Selector";
+import DateSelector from "../DateSelector";
+import MapSelector from "./ReviewWriter/MapSelector";
+import BaseInfoSelector from "./ReviewWriter/BaseInfoSelector";
 
 // interfaces
 import { ComponentOpenState } from "@interfaces/Subdisplay";
 import { ReviewAnswer, ReviewQuestion } from "@interfaces/ReviewWriter";
-import { RestaurantCompInfo, RestaurantID, RestaurantList } from "@src/interfaces/Restaurant";
-import MapSelector from "./ReviewWriter/MapSelector";
-import BaseInfoSelector from "./ReviewWriter/BaseInfoSelector";
-import { alertOption } from "@src/interfaces/recoil/State";
+import { RestaurantCompInfo, RestaurantID, RestaurantList } from "@interfaces/Restaurant";
+import { alertOption } from "@interfaces/recoil/State";
+import ReviewDateSelector from "./ReviewWriter/ReviewDateSelector";
+import { useNavigate } from "react-router-dom";
 
 const ReviewWriter: React.FC = () => {
 
@@ -50,9 +53,14 @@ const ReviewWriter: React.FC = () => {
     // }, [  ])
 
     // review common control
+    const setSubdisplaySize = useSetRecoilState<ComponentOpenState>( states.subdisplayDisplaySize );
+    const navigate = useNavigate();
+
     const [ review_state, setReviewState ] = useState( 0 );
     const [ review_display, setReviewDisplay ] = useState<boolean>( true );
     const [ ment, setMent ] = useState<string>("");
+
+    const [ review_finished, setReviewFinished ] = useState<boolean>( false );
 
     useEffect(() => {
         setReviewDisplay( false );
@@ -68,7 +76,7 @@ const ReviewWriter: React.FC = () => {
 
     const answerHandler = useCallback( ( value: any ) => {
         const { qid, answer: { type, selection } } = question_list[ review_state ];
-        console.log( "answerHandler", qid, value );
+        console.log( "ReviewWriter: answerHandler", qid, value );
 
         if ( type === "writing-single" ) pushQuestionResult( { qid, answer: value as string } );
         else if ( type === "writing-multiple" ) pushQuestionResult( { qid, answer: value as Array<string> } );
@@ -76,12 +84,31 @@ const ReviewWriter: React.FC = () => {
         else if ( [ "selection-date", "selection-location" ].includes( type ) ) pushQuestionResult( { qid, answer: value } );
         else pushQuestionResult( { qid, aid: value as AnswerID | null } );
 
-        setReviewState( p => ( p > 0 ) ? p+1 : p );
+        updateReviewStage();
     }, [ question_list, review_state ] );
 
     const pushQuestionResult = ( value: ReviewAnswer ) => {
         return setQuestionResult( p => [ ...p, value ] );
     }
+
+    const updateReviewStage = useCallback( () => {
+        if ( 
+            question_list[ review_state + 1 ] && 
+            review_state > 0
+        ) setReviewState( review_state + 1 );
+        else if ( review_state > 0 ) {
+            setQuestionList([]);
+            setTimeout(() => {
+                setMent("리뷰해주셔서 감사합니다! 잘 정리해서 통계에 반영할게요");
+                setSubdisplaySize( "MEDIUM" );
+                setReviewFinished( true );
+                setTimeout(() => {
+                    navigate("/");
+                    setSubdisplaySize( "LARGE" );
+                }, 2000);
+            }, 100);
+        }
+    }, [ question_list, review_state ] );
 
     useEffect(() => {
         if ( review_state !== 0 ) return;
@@ -105,12 +132,15 @@ const ReviewWriter: React.FC = () => {
         } )()
     }, [ review_state, question_result ]);
 
-    useEffect(() => console.log( question_list, question_result ), [ question_list, question_result ]);
+    // useEffect(() => console.log( question_list, question_result ), [ question_list, question_result ]);
 
 
     // ment control
     useEffect( () => {
-        if ( question_list.length > 0 ) setMent(question_list[ review_state ].ment);
+        if ( question_list.length > 0 ) {
+            setMent(question_list[ review_state ].ment);
+            setSubdisplaySize( question_list[ review_state ].size );
+        }
         else setMent("");
     }, [ review_state, question_list ] );
 
@@ -119,6 +149,7 @@ const ReviewWriter: React.FC = () => {
     return <div className="review-writer-area">
         <ServiceTitler
             className="review-writer-titler"
+            style={{ height: review_finished ? "90px" : undefined  }}
             title="리뷰 추가하기" titleStyle={{ fontSize: "20px", fontWeight: "700" }}
             ment={ ment } mentStyle={{ fontSize: "16px" }}
         />
@@ -140,6 +171,11 @@ const ReviewWriter: React.FC = () => {
                             onAnswered={ answerHandler }
                         />                   
                     : 
+                    question_list[ review_state ].answer.type === "selection-time" ?
+                        <ReviewDateSelector
+                            onAnswered={ answerHandler }
+                        />
+                    :
                     question_list[ review_state ].answer.type === "base-info" ?
                         <BaseInfoSelector 
                             selection={ ( question_list[ review_state ].answer.selection || [] ) as Array<BaseInfoSelectionFormat> }
@@ -147,6 +183,7 @@ const ReviewWriter: React.FC = () => {
                             onAnswered={ answerHandler }
                         />
                     : <></>
+                : ( review_finished ) ? <></>
                 : <></>
             }
         </div>

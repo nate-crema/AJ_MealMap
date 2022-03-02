@@ -62,9 +62,17 @@
 
 .timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.selected {
     font-weight: 700;
-    color: var(--theme-color-C);
+    color: var(--theme-color-C) !important;
     font-size: 20px;
     padding: 2px 0px;
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.onScrolling {
+    color: var(--theme-color-C);
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.nonScrolling {
+    color: gray;
 }
 
 .timeinfo_selector .value-focus-bar {
