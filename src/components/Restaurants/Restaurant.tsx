@@ -16,7 +16,7 @@ import { getRestaurant, getRestaurantList } from "@src/api/service";
 
 // interfaces
 import { RestaurantList, RestaurantCompInfo, RestaurantID, RestaurantInfo } from "@interfaces/Restaurant";
-import { APIError, APIStatus, RestaurantAPIResult } from "@interfaces/api/service";
+import { RestaurantAPIResult } from "@interfaces/api/service";
 import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
 import { RestaurantCompType } from "@src/interfaces/Restaurant/comp";
 

@@ -58,7 +58,7 @@ const Subdisplay: React.FC = () => {
             + ( mounted === "UNMOUNTED" ? " unmounted" : " mounted" )
             + ( type === "CLOSED" ? " closed" : " opened" )
         } style={{
-            height: (type !== "CLOSED") ? ( SUBDISPLAY_SIZE_PRESETS[ subdisplay_size ] ) : undefined
+            height: (type !== "CLOSED" && mounted !== "UNMOUNTED") ? ( SUBDISPLAY_SIZE_PRESETS[ subdisplay_size ] ) : undefined
         }}>
             {
                 ( type === "INFO/READ" ) ? <>

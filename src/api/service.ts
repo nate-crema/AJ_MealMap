@@ -2,7 +2,8 @@ import axios from "@connection/request";
 
 // interface
 
-import { RestaurantListAPIResult, RestaurantAPIResult, APIStatusList, ReviewQuestionAPIResult } from "@interfaces/api/service";
+import { RestaurantListAPIResult, RestaurantAPIResult, ReviewQuestionAPIResult } from "@interfaces/api/service";
+import { APIStatusList } from "@interfaces/api";
 import { RestaurantID, RestaurantList } from "@interfaces/Restaurant";
 import { ReviewQuestion } from "@src/interfaces/ReviewWriter";
 

@@ -22,8 +22,8 @@ export default new ( function( this: any ): void {
         default: ""
     });
 
-    this.portalId = atom<string>({
-        key: "portalIdState",
+    this.emailId = atom<string>({
+        key: "emailIdState",
         default: ""
     });
 
@@ -41,7 +41,7 @@ export default new ( function( this: any ): void {
         key: "loginSelector",
         get: ( { get } ) => ({
             name: get( this.name ),
-            portalId: get( this.portalId ),
+            emailId: get( this.emailId ),
             expires: get( this.expires ),
             isLogined: get( this.isLogined )
         })

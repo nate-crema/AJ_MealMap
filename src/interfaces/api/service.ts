@@ -1,17 +1,9 @@
 // Interface Declaration: service ( api )
+import { APISuccess, APIError } from "@interfaces/api";
 import { RestaurantList, RestaurantCompInfo } from "../Restaurant";
 import { ReviewQuestion } from "../ReviewWriter";
 
 // API
-
-export type APISuccess = "SUCCEED";
-export type APIError = "FAILED";
-export type APIStatus = APISuccess | APIError;
-
-export type APIStatusList = {
-    SUCCEED: APISuccess
-    FAILED: APIError
-}
 
 export type RestaurantListAPIResult = {
     result: APISuccess

@@ -6,7 +6,7 @@ import { ServiceButtonThemes } from "../ServiceButton";
 export type Login = {
     isLogined: boolean
     name: string
-    portalId: string
+    emailId: string
     expires: Date | any
 }
 

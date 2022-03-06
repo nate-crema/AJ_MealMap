@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, MouseEvent } from "react";
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
@@ -8,11 +8,15 @@ import states from "@recoil/states";
 import '@styles/pages/Login.css';
 import '@styles/animation/Animate.Logo.css';
 
+// api
+import { serviceLogin as serviceLoginAPI } from "../api/auth";
+
 // components
 import GlobalInput from "@src/components/GlobalInput";
 
 // interfaces
 import { Login as LoginType } from "../interfaces/recoil/State";
+import { ServiceLoginAPIResult } from "@src/interfaces/api/auth";
 type LoginProps = {
     
 }
@@ -83,7 +87,7 @@ const Login: React.FC<LoginProps> = ({  }) => {
         switch( stage ) {
             case 0:
                 setTitle("재학생 로그인");
-                setMent("아주대학교 재학생만 이용할 수 있어요\n통합ID와 이름으로 로그인 해주세요");
+                setMent("아주대학교 재학생만 이용할 수 있어요\n이메일과 이름으로 로그인 해주세요");
                 break;
             case 1:
                 setTitle(`${ login.name }님 안녕하세요 =)`);
@@ -112,7 +116,7 @@ const Login: React.FC<LoginProps> = ({  }) => {
     const [ nameChangeable, setNameChangeable ] = useState<boolean>( true );
 
     const name = useRecoilValue<string>( states.name );
-    const portalId = useRecoilValue<string>( states.portalId );
+    const emailId = useRecoilValue<string>( states.emailId );
 
 
     // stage display control
@@ -120,17 +124,36 @@ const Login: React.FC<LoginProps> = ({  }) => {
     const [ button_display, setButtonDisplay ] = useState<boolean>( false );
 
     useEffect(() => {
-        // console.log( name.length, portalId.length );
-        if ( name.length === 0 || portalId.length === 0 ) return setButtonDisplay( false );
+        // console.log( name.length, emailId.length );
+        if ( name.length === 0 || emailId.length === 0 ) return setButtonDisplay( false );
         setButtonDisplay( true );
-    }, [ name, portalId ]);
+    }, [ name, emailId ]);
 
 
     // login click control
     
-    const _loginButtonHandler = () => {
-        setStage( p => p+1 );
-    }
+    const _loginButtonHandler = useCallback( async ( e: MouseEvent ) => {
+        e.stopPropagation();
+        if ( stage === 0 ) {
+            const login_result: ServiceLoginAPIResult = await serviceLoginAPI( emailId, name );
+            console.log(login_result);
+            if ( login_result.result === "Logined" ) {
+                setLogin({
+                    isLogined: true,
+                    name: login_result.userinfo.name,
+                    emailId,
+                    expires: new Date(login_result.expires)
+                })
+                setStage(2);
+            } else if ( login_result.result === "Pending" ) {
+                setStage(1);
+            } else {
+                setStage(1);
+            }
+        }
+    }, [ stage, emailId, name ]);
+
+    useState();
     
 
 
@@ -151,8 +174,9 @@ const Login: React.FC<LoginProps> = ({  }) => {
                 {
                     ( stage === 0 ) ? <>
                         <GlobalInput
-                            placeholder="아주대학교 통합ID"
-                            value="portalId"
+                            placeholder="아주대학교 이메일"
+                            onInputDisplayText="@ajou.ac.kr"
+                            value="emailId"
                             className={ "portal-id-input" }
 
                             phWidth={ [ globalInputPhWidth, setGlobalInputPhWidth ] }
@@ -175,7 +199,7 @@ const Login: React.FC<LoginProps> = ({  }) => {
                     </> : ( stage === 1 ) ? <>
                         <GlobalInput
                             placeholder="단과대학"
-                            value="portalId"
+                            value="emailId"
                             className={ "portal-id-input" }
 
                             phWidth={ [ globalInputPhWidth, setGlobalInputPhWidth ] }
@@ -209,7 +233,10 @@ const Login: React.FC<LoginProps> = ({  }) => {
                     </> : <></>
                 }
             </div>
-            <div className={ "login_button" + ( button_display ? " open" : " close" ) } onClick={ _loginButtonHandler }>
+            <div 
+                className={ "login_button" + ( button_display ? " open" : " close" ) }
+                onClick={ _loginButtonHandler }
+            >
                 <span>로그인</span>
             </div>
         </div>

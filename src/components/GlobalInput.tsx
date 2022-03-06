@@ -12,6 +12,7 @@ import "@styles/components/GlobalInput.css";
 type GlobalInputCommonProps = {
     className?: string
     placeholder?: string
+    onInputDisplayText?: string
     phWidth?: [ string, Function ]
     type?: "text" | "number"
     _ref?: RefObject<HTMLDivElement>
@@ -30,7 +31,7 @@ type GlobalInputProps = GlobalInputCommonProps & ({
 })
 
 const GlobalInput: React.FC<GlobalInputProps> = ({ 
-    className, placeholder, phWidth: [ phWidth, setPhWidth ] = [ "", () => {} ], type, value, valueState, _ref, changeable, focusState,
+    className, placeholder, phWidth: [ phWidth, setPhWidth ] = [ "", () => {} ], type, value, valueState, _ref, changeable, focusState, onInputDisplayText,
     onBlur, onFocus
 }) => {
 
@@ -136,6 +137,7 @@ const GlobalInput: React.FC<GlobalInputProps> = ({
     return <div className={'global-input ' + (className || "")} onClick={indirectFocus} ref={_ref || undefined}>
         <div className="text-hider" ref={thRef}></div>
         <span className="global-input-placeholder" ref={phRef} onClick={indirectFocus}>{ ph }</span>
+        <span className="global-input-onInputDisplayText" style={{ opacity: focused ? 1 : 0 }} onClick={indirectFocus}>{ onInputDisplayText || "" }</span>
         <input type={"text"} ref={inpRef} className="global-input-tag"
             onChange={(e) => setV(e.target.value)}
             onFocus={ inputFocused }
