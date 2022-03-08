@@ -9,14 +9,17 @@ import '@styles/pages/Login.css';
 import '@styles/animation/Animate.Logo.css';
 
 // api
-import { serviceLogin as serviceLoginAPI } from "../api/auth";
+import { serviceLogin as serviceLoginAPI, serviceRegister as serviceRegisterAPI } from "../api/auth";
 
 // components
-import GlobalInput from "@src/components/GlobalInput";
+import GlobalInput from "@components/GlobalInput";
+import ServiceButton from "@components/ServiceButton";
 
 // interfaces
-import { Login as LoginType } from "../interfaces/recoil/State";
-import { ServiceLoginAPIResult } from "@src/interfaces/api/auth";
+import { Location } from "@interfaces/recoil/State";
+import { Login as LoginType } from "@interfaces/recoil/State";
+import { LoginResultsFailedNotFound, ServiceLoginAPIResult } from "@interfaces/api/auth";
+import ColDepFloatSelector from "@src/components/Login/ColDepFloatSelector";
 type LoginProps = {
     
 }
@@ -73,37 +76,65 @@ const Login: React.FC<LoginProps> = ({  }) => {
     // stage control
     const [ stage, setStage ] = useState( 0 );
     const [ login, setLogin ] = useRecoilState<LoginType>( states.login );
-
-    useEffect(() => {
-        if ( stage === 1 && (Math.random() * 10)%2 ) setStage( 2 );
-    }, [ stage ]);
-
     
-    // stage texts control
-    const [ title, setTitle ] = useState<string>( "" );
-    const [ ment, setMent ] = useState<string>( "" );
+    const [ title, setTitleText ] = useState<string>( "재학생 로그인" );
+    const [ ment, setMentText ] = useState<string>( "아주대학교 재학생만 이용할 수 있어요\n이메일과 이름으로 로그인 해주세요" );
+    
+    const [ onTitleDisplay, setOnTitleDisplay ] = useState<boolean>( true );
+    const [ onMentDisplay, setOnMentDisplay ] = useState<boolean>( true );
+
+    const [ init, setInit ] = useState<boolean>( false );
+
+    const [ stage_display, setStageDisplay ] = useState<boolean>( true );
+    const [ button_display, setButtonDisplay ] = useState<boolean>( false );
+
+    const setTitle = ( value: string ) => {
+        setOnTitleDisplay( false );
+        setTimeout(() => {
+            setTitleText( value );
+            setOnTitleDisplay( true );
+        }, 300);
+    };
+
+    const setMent = ( value: string ) => {
+        setOnMentDisplay( false );
+        setTimeout(() => {
+            setMentText( value );
+            setOnMentDisplay( true );
+        }, 300);
+    };
+
+    const setStageWithTexts = ( stage: number ) => {
+        setStageDisplay( false );
+        setTimeout(() => {
+            setStage( stage );
+            switch( stage ) {
+                case 0:
+                    setTitle( "재학생 로그인" );
+                    setMent( "아주대학교 재학생만 이용할 수 있어요\n이메일과 이름으로 로그인 해주세요" );
+                    break;
+                case 2:
+                    setTitle("로그인 실패");
+                    setMent(`${ name }님의 계정을 확인하지 못했어요`);
+                    break;
+                case 3:
+                    setTitle("회원가입");
+                    setMent(`재학중이신 단과대학과 학과를 선택해주세요`);
+                    break;
+                case 4:
+                    setTitle("회원가입");
+                    setMent(`${ name }님의 계정으로 방금 인증번호 메일을 보냈어요!\n인증번호를 확인해 입력해주세요.`);
+                    break;
+            }
+            setTimeout(() => {
+                setStageDisplay( true );
+            }, 200);
+        }, 100);
+    }
 
     useEffect(() => {
-        switch( stage ) {
-            case 0:
-                setTitle("재학생 로그인");
-                setMent("아주대학교 재학생만 이용할 수 있어요\n이메일과 이름으로 로그인 해주세요");
-                break;
-            case 1:
-                setTitle(`${ login.name }님 안녕하세요 =)`);
-                setMent("보안을 위해 재학 학과 인증을 진행할게요\n이 정보는 보안목적 이외에 사용되지 않아요");
-                break;
-            case 2:
-                if ( login.isLogined ) {
-                    setTitle("로그인 성공");
-                    setMent(`${ login.name }님 안녕하세요!\n환영합니다 :)`);
-                } else {
-                    setTitle("로그인 실패");
-                    setMent(`입력하신 정보로 로그인에 실패했어요. 다시 로그인해주세요.`);
-                }
-                break;
-        }
-    }, [ stage, login ]);
+        setTimeout(() => setInit(true), 2200)
+    }, []);
     
         
     // value input control
@@ -115,25 +146,45 @@ const Login: React.FC<LoginProps> = ({  }) => {
     const [ nameFocus, setNameFocus ] = useState<boolean>( false );
     const [ nameChangeable, setNameChangeable ] = useState<boolean>( true );
 
+    const [ authCodePhWidth, setAuthCodePhWidth ] = useState<string>( "65px" );
+    const [ authCodeFocus, setAuthCodeFocus ] = useState<boolean>( false );
+    const [ authCodeChangeable, setAuthCodeChangeable ] = useState<boolean>( true );
+
     const name = useRecoilValue<string>( states.name );
     const emailId = useRecoilValue<string>( states.emailId );
-
-
-    // stage display control
-    const [ stage_display, setStageDisplay ] = useState<boolean>( true );
-    const [ button_display, setButtonDisplay ] = useState<boolean>( false );
+    const [ authCode, setAuthCode ] = useState<string>( "" );
 
     useEffect(() => {
-        // console.log( name.length, emailId.length );
-        if ( name.length === 0 || emailId.length === 0 ) return setButtonDisplay( false );
-        setButtonDisplay( true );
-    }, [ name, emailId ]);
+        if ( stage === 0 ) {
+            if ( name.length === 0 || emailId.length === 0 ) return setButtonDisplay( false );
+            return setButtonDisplay( true );
+        }
+    }, [ stage, name, emailId ]);
 
-
-    // login click control
     
-    const _loginButtonHandler = useCallback( async ( e: MouseEvent ) => {
+    // user location control
+    const [ location, setLocation ] = useState<Location>();
+
+    const userLocationAPISucceed = ( position: GeolocationPosition ) => {
+        setLocation({
+            lat: position.coords.latitude,
+            long: position.coords.longitude,
+            address: ""
+        })
+    }
+
+    useEffect(() => {
+        if ( !window.navigator.geolocation ) return;
+        window.navigator.geolocation.getCurrentPosition( userLocationAPISucceed, null, {
+            enableHighAccuracy: true
+        } );
+    }, []);
+
+
+    // button clicks control
+    const loginClickHandler = useCallback( async ( e: MouseEvent ) => {
         e.stopPropagation();
+        setButtonDisplay( false );
         if ( stage === 0 ) {
             const login_result: ServiceLoginAPIResult = await serviceLoginAPI( emailId, name );
             console.log(login_result);
@@ -144,28 +195,45 @@ const Login: React.FC<LoginProps> = ({  }) => {
                     emailId,
                     expires: new Date(login_result.expires)
                 })
-                setStage(2);
+                setStage(200);
             } else if ( login_result.result === "Pending" ) {
-                setStage(1);
-            } else {
-                setStage(1);
+                setStage(100);
+            } else if ( login_result.result === "Failed" ) {
+                if ( login_result.reason === LoginResultsFailedNotFound ) {
+                    setStageWithTexts(2);
+                }
             }
         }
     }, [ stage, emailId, name ]);
 
-    useState();
+    const reloginClickHandler = () => {
+        setStageWithTexts(0);
+    };
+
+    const registerMoverClickHandler = () => {
+        // serviceRegisterAPI( location );
+        setStageWithTexts(3);
+    };
+
+    const registerClickHandler = () => {
+
+    }
+
+    // register click control
     
 
-
+    
 
     return <>
         <span className="catch-phrase">아주대학교 밥집지도<br/>아대밀맵</span>
         <AnimateLogo/>
-        <div className="login-contents">
-            <span className="stage-title">{ title }</span>
-            <span className="stage-ment">{ ment.split("\n").map( ment_line => <>
-                <p>{ ment_line }</p>
-            </> ) }</span>
+        <div className="login-contents" style={{ animation: init ? "none" : "" }}>
+            <span className="stage-title" style={{ opacity: onTitleDisplay ? 1 : 0 }}>{ title }</span>
+            <div className="stage-ment" style={{
+                height: `${ 20 * ment.split("\n").length }px`
+            }}>{ ment.split("\n").map( ment_line => <>
+                <p style={{ opacity: onMentDisplay ? 1 : 0 }}>{ ment_line }</p>
+            </> ) }</div>
             <div className={ 
                 "stage-rendering"
                 + ( ( stage_display === true ) ? " stage-fade-in" : " stage-fade-out" )
@@ -228,14 +296,40 @@ const Login: React.FC<LoginProps> = ({  }) => {
                             onFocus={ undefined }
                         />
                         
-                    </> : ( stage === 2 ) ? <>
-                        
-                    </> : <></>
+                    </> : ( stage === 2 ) ? <div className="account-unknown">
+                        <ServiceButton text="다시 로그인" theme="sub-selection" style={{ fontSize: "14px" }} onClick={ reloginClickHandler } key="relogin-button"/>
+                        <ServiceButton text="회원가입" theme="main-selection" style={{ fontSize: "14px" }} onClick={ registerMoverClickHandler } key="register-move-button"/>
+                    </div> : ( stage === 3 ) ? <>
+                        <ColDepFloatSelector/>
+                    </> : ( stage === 4 ) ? <div className="register">
+                        <GlobalInput
+                            placeholder="인증번호"
+                            valueState={[ authCode, setAuthCode ]}
+                            className={ "auth-code-input" }
+
+                            phWidth={ [ authCodePhWidth, setAuthCodePhWidth ] }
+                            focusState={ authCodeFocus }
+
+                            type="text"
+                            changeable={ authCodeChangeable }
+                        />
+                        <ServiceButton
+                            key="register-button"
+                            className="register-button"
+                            style={{
+                                fontSize: "14px",
+                                opacity: ( authCode.length === 6 ) ? 1 : 0
+                            }}
+                            text="가입하기" theme="main-selection"
+                            onClick={ registerClickHandler }
+                        />
+                    </div> 
+                    : <></>
                 }
             </div>
             <div 
                 className={ "login_button" + ( button_display ? " open" : " close" ) }
-                onClick={ _loginButtonHandler }
+                onClick={ loginClickHandler }
             >
                 <span>로그인</span>
             </div>

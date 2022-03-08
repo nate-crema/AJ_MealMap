@@ -92,6 +92,7 @@ const Writor: React.FC<WritorProps> = ({ placeholder = [{ text: "", width: "0px"
                         <GlobalInput
                             className="value-writor"
                             valueState={ [ values[i] || "", ( value: any ) => setValue( value, i ) ] }
+                            prevValueSync={ true }
                             placeholder={ ( i < ( placeholder?.length || 1 ) ) ? placeholder[ i ].text : placeholder[ ( placeholder.length || 1 )-1 ].text }
                             phWidth={[ 
                                 ( i < ( placeholder?.length || 1 ) ) ? placeholder[ i ].width : placeholder[ ( placeholder.length || 1 )-1 ].width,

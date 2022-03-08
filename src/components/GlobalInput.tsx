@@ -11,6 +11,7 @@ import "@styles/components/GlobalInput.css";
 
 type GlobalInputCommonProps = {
     className?: string
+    prevValueSync?: boolean
     placeholder?: string
     onInputDisplayText?: string
     phWidth?: [ string, Function ]
@@ -31,7 +32,7 @@ type GlobalInputProps = GlobalInputCommonProps & ({
 })
 
 const GlobalInput: React.FC<GlobalInputProps> = ({ 
-    className, placeholder, phWidth: [ phWidth, setPhWidth ] = [ "", () => {} ], type, value, valueState, _ref, changeable, focusState, onInputDisplayText,
+    className, prevValueSync, placeholder, phWidth: [ phWidth, setPhWidth ] = [ "", () => {} ], type, value, valueState, _ref, changeable, focusState, onInputDisplayText,
     onBlur, onFocus
 }) => {
 
@@ -48,13 +49,14 @@ const GlobalInput: React.FC<GlobalInputProps> = ({
 
     // sync prev value
     useEffect(() => {
-        if ( !init && valueState && valueState[0].length > 0 ) {
+        if ( valueState ) console.log(init, valueState);
+        if ( prevValueSync === true && !init && valueState && valueState[0].length > 0 ) {
             console.log("valueState", valueState);
             inpRef.current?.focus();
             setV( valueState[0] );
             inpRef.current?.blur();
         }
-    }, [ init, valueState ]);
+    }, [ init, valueState, prevValueSync ]);
 
     // sync value's change with parent
     useEffect(() => {
