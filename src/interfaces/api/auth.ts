@@ -11,14 +11,25 @@ export type APIStatusList = {
     FAILED: APIError
 }
 
+const LoginResultLogined = "Logined" as const;
+const LoginResultPending = "Pending" as const;
+const LoginResultFailed = "Failed" as const;
+export const LoginResultConstants = {
+    LOGINED: LoginResultLogined,
+    PENDING: LoginResultPending,
+    FAILED: LoginResultFailed
+};
 
-export type LoginResultsSucceed = "Logined";
-export type LoginResultsPending = "Pending";
-export type LoginResultsFailed = "Failed";
-export type LoginResults = LoginResultsSucceed | LoginResultsPending | LoginResultsFailed;
+export type LoginResultsSucceed = typeof LoginResultLogined;
+export type LoginResultsPending = typeof LoginResultPending;
+export type LoginResultsFailed = typeof LoginResultFailed;
+export type LoginResultTypes = LoginResultsSucceed | LoginResultsPending | LoginResultsFailed;
 
 export const LoginResultsFailedNotFound = "User Not Found";
-export type LoginResultsFailedNotFoundType = "User Not Found";
+export const LoginResultFailedReasons = {
+    NOT_FOUND: LoginResultsFailedNotFound
+};
+export type LoginResultsFailedNotFoundType = typeof LoginResultsFailedNotFound;
 
 export type LoginResultsFailedTypes = LoginResultsFailedNotFoundType;
 
@@ -36,17 +47,20 @@ export type ServiceLoginAPIResult = {
     expires: string
 } | {
     result: LoginResultsPending
-    userinfo: undefined | null
-    expires: undefined | null
 } | {
     result: LoginResultsFailed
     reason: LoginResultsFailedTypes | string
 }
 
-export type ServiceRegisterAPIResult = {
-    result: boolean
+export type ServiceRegisterMailAPIResult = {
+    result: APISuccess
+} | {
+    result: APIError
 }
 
-export type ServiceCodeValidChkAPIResult = {
-    result: boolean
+export type ServiceRegiserUserAPIResult = {
+    result: APISuccess
+} | {
+    result: APIError,
+    reason?: string
 }
