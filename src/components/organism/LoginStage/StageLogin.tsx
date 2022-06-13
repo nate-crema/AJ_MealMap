@@ -12,7 +12,7 @@ import '@styles/animation/Animate.Logo.css';
 import { serviceLogin } from "@api/auth";
 
 // components
-import GlobalInput from "@components/GlobalInput";
+import GlobalInput from "@src/components/molecule/Input/GlobalInput";
 
 // interfaces
 import { Login as LoginType } from "@interfaces/recoil/State";

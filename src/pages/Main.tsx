@@ -10,10 +10,10 @@ import '@styles/pages/Main.css';
 
 
 // components
-import Locator from "@src/components/Locator";
-import ServiceTitler from "@src/components/ServiceTitler";
-import Restaurants from "@src/components/Restaurants";
-import ReviewEntrypoint from "@components/ReviewEntrypoint";
+import Locator from "@molecule/Locator";
+import ServiceTitler from "@molecule/Titler";
+import Restaurants from "@template/Restaurants";
+import ReviewEntrypoint from "@molecule/ReviewEntrypoint/ReviewEntrypoint";
 
 
 // interfaces

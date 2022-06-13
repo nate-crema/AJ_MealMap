@@ -7,7 +7,7 @@ import states from "@recoil/states";
 // css
 import '@styles/components/Login/StageAuthBelong.css';
 import { LoginStageCompProps } from "@src/interfaces/Login/StageComponents";
-import DepartSelector, { SelectionValueType } from "@src/components/DepartSelector";
+import DepartSelector, { SelectionValueType } from "@molecule/Selectors/DepartSelector";
 import { DepartedUserInfo, UserDepartAPIResult } from "@src/interfaces/api/univ";
 import { checkUserDepart as checkUserDepartAPI } from "@src/api/univ";
 

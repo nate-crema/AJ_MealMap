@@ -10,7 +10,7 @@ import '@styles/DisplayHandler.css';
 // interfaces
 import { DisplayHandlerProps, WindowSize } from "./interfaces/DisplayHandler";
 import { SubdisplayDisplayMode, SubdisplayMountMode } from './interfaces/Subdisplay';
-import Subdisplay from './components/Subdisplay';
+import Subdisplay from './components/template/Subdisplay';
 
 
 const DisplayHandler: React.FC<DisplayHandlerProps> = ({ children }) => {

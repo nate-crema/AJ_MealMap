@@ -8,7 +8,7 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay/InfoDisplay/InfoMenu/ActionBtn.css';
 
 // components
-import ServiceButton from "@components/ServiceButton";
+import ServiceButton from "@atom/Button";
 
 // interfaces
 

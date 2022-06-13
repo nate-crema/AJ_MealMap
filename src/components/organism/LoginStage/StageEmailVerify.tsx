@@ -11,8 +11,8 @@ import '@styles/components/Login/StageEmailVerify.css';
 import { serviceRegisteringMail as serviceRegisteringMailAPI, serviceRegisterUser } from "@src/api/auth";
 
 // components
-import GlobalInput from "@components/GlobalInput";
-import ServiceButton from "@components/ServiceButton";
+import GlobalInput from "@molecule/Input/GlobalInput";
+import ServiceButton from "@atom/Button";
 
 // interfaces
 import { LoginStageCompProps } from "@interfaces/Login/StageComponents";

@@ -8,12 +8,12 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay/ReviewWriter/Writor.css';
 
 // components
-import GlobalInput from "@src/components/GlobalInput";
+import GlobalInput from "@molecule/Input/GlobalInput";
 
 // interfaces
 import { MapOnPlaceClickedFunction } from "@interfaces/MapHandler";
-import ServiceButton from "@src/components/ServiceButton";
-import { alertOption } from "@src/interfaces/recoil/State";
+import ServiceButton from "@atom/Button";
+import { alertOption } from "@interfaces/recoil/State";
 
 type WritorProps = {
     placeholder?: Array<{ text: string, width: string, necessary: boolean }>

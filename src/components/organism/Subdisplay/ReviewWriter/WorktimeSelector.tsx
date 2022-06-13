@@ -6,8 +6,8 @@ import states from "@recoil/states";
 
 // css
 import '@styles/components/Subdisplay/ReviewWriter/WorktimeSelector.css';
-import DateSelector from "@src/components/DateSelector";
-import ServiceButton from "@src/components/ServiceButton";
+import DateSelector from "@src/components/molecule/Selectors/DateSelector";
+import ServiceButton from "@src/components/atom/Button";
 
 // components
 

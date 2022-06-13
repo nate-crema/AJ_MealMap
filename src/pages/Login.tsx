@@ -10,12 +10,12 @@ import '@styles/pages/Login.css';
 // api
 
 // components
-import AnimateLogo from "@components/Login/animate/AnimateLogo";
+import AnimateLogo from "@molecule/LogoAnimate";
 
-import StageLogin from "@components/Login/stage/StageLogin";
-import StageAuthDepart from "@src/components/Login/stage/StageAuthBelong";
-import StageJoinSelection from "@components/Login/stage/StageJoinSelection";
-import StageEmailVerify from "@components/Login/stage/StageEmailVerify";
+import StageLogin from "@organism/LoginStage/StageLogin";
+import StageAuthDepart from "@organism/LoginStage/StageAuthBelong";
+import StageJoinSelection from "@organism/LoginStage/StageJoinSelection";
+import StageEmailVerify from "@organism/LoginStage/StageEmailVerify";
 
 // interfaces
 

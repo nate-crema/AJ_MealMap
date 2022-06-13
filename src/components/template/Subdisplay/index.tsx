@@ -9,12 +9,12 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay.css';
 
 // components
-import InfoDisplay from "./Subdisplay/InfoDisplay";
-import ReviewWriter from "./Subdisplay/ReviewWriter";
+import InfoDisplay from "../../organism/Subdisplay/InfoDisplay";
+import ReviewWriter from "../../organism/Subdisplay/ReviewWriter";
 
 // interfaces
 import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@interfaces/Subdisplay";
-import Alert from "./Alert";
+import Alert from "../../molecule/Alert";
 
 const SUBDISPLAY_SIZE_PRESETS: {
     [ keys in ComponentOpenState ]: string

@@ -14,10 +14,10 @@ import { APIResult, getRestaurantList, getReviewQuestion } from "@api/service";
 import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, RestaurantWhereQuestionID, ReviewPresetAnswerTypes, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
 
 // components
-import ServiceTitler from "../ServiceTitler";
-import Restaurants from "../Restaurants";
+import ServiceTitler from "../../molecule/Titler";
+import Restaurants from "../Restaurant";
 import Selector from "./ReviewWriter/Selector";
-import DateSelector from "../DateSelector";
+import DateSelector from "../../molecule/Selectors/DateSelector";
 import MapSelector from "./ReviewWriter/MapSelector";
 import BaseInfoSelector from "./ReviewWriter/BaseInfoSelector";
 
@@ -157,7 +157,7 @@ const ReviewWriter: React.FC = () => {
             {
                 ( question_list.length > 0 ) ?
                     question_list[ review_state ].answer.type === "selection-restaurant" ?
-                        <Restaurants mode="review" onBlockClick={ answerHandler }/>
+                        <Restaurants mode="review" onClick={answerHandler} id={""}/>
                     : 
                     question_list[ review_state ].answer.type === "selection" ?
                         <Selector 

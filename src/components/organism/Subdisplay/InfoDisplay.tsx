@@ -14,7 +14,7 @@ import '@styles/components/Subdisplay/InfoDisplay.css';
 import MarkerImg from '@assets/Marker.png';
 
 // components
-import ServiceTitler from "../ServiceTitler";
+import ServiceTitler from "../../molecule/Titler";
 import InfoHeader from "./InfoDisplay/InfoHeader";
 import BasicInfo from "./InfoDisplay/InfoMenu/BasicInfo";
 import ReviewBrief from "./InfoDisplay/InfoMenu/ReviewBrief";
@@ -24,7 +24,7 @@ import ActionBtn from "./InfoDisplay/InfoMenu/ActionBtn";
 import { RestaurantList, RestaurantInfo, RestaurantID } from "@interfaces/Restaurant";
 import { RestaurantReview } from "@interfaces/Restaurant/Review";
 import { RestaurantAPIResult } from "@interfaces/api/service";
-import MapHandler from "../MapHandler";
+import MapHandler from "../../molecule/MapHandler/MapHandler";
 import { MapHandlerCommonOptions, MapHandlerOptionDisplay } from "@src/interfaces/MapHandler";
 
 type touchState = "na" | "toUp" | "toDown";

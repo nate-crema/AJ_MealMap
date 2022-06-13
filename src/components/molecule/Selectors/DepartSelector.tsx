@@ -9,7 +9,7 @@ import '@styles/components/DepartSelector.css';
 import '@styles/components/SelectorInput.css';
 import { getUnivMajorSelectionList as getUnivMajorSelectionListAPI } from "@src/api/univ";
 import { UnivMajorSelectionList } from "@src/interfaces/api/univ";
-import ServiceButton from "./ServiceButton";
+import ServiceButton from "@atom/Button";
 
 // interfaces
 

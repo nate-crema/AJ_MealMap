@@ -11,7 +11,7 @@ import '@styles/components/Restaurants.css';
 import { getRestaurantList } from "@api/service";
 
 // components
-import Restaurant from "./Restaurants/Restaurant";
+import Restaurant from "../../organism/Restaurant";
 
 // interfaces
 import { RestaurantListAPIResult } from "@interfaces/api/service";
@@ -59,11 +59,12 @@ const Restaurants: React.FC<RestaurantsProps> = ({ mode, onBlockClick }) => {
     return <div className={ `restaurants-list listmode-${ mode }` }>
         {
             Object.values(restaurants).map( 
+               
                 ( restaurant, index: number ) => <Restaurant
                     key={ restaurant.restaurant_id }
                     id={ restaurant.restaurant_id }
                     mode={ mode }
-                    onClick={ ( mode === "review" ) ? ( info ) => restaurantBlockClickHandler( info, index ) : undefined }
+                    onClick={ ( mode === "review" ) ? ( info: RestaurantCompInfo ) => restaurantBlockClickHandler( info, index ) : undefined }
                 />
             )
         }

@@ -8,9 +8,9 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay/ReviewWriter/MapSelector.css';
 
 // components
-import MapHandler from "../../MapHandler";
+import MapHandler from "../../../molecule/MapHandler/MapHandler";
 import { MapOnPlaceClickedFunction } from "@src/interfaces/MapHandler";
-import ServiceButton from "@src/components/ServiceButton";
+import ServiceButton from "@src/components/atom/Button";
 
 // interfaces
 type MapSelectorProps = {
