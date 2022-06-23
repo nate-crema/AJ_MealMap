@@ -6,71 +6,69 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Restaurants/Restaurant.css';
+import './style.css';
 
 // api
-import { getRestaurant, getRestaurantList } from "@src/api/service";
+import { getShop, getShopList } from "@src/api/service";
 
 // components
 
 
 // interfaces
-import { RestaurantList, RestaurantCompInfo, RestaurantID, RestaurantInfo } from "@interfaces/Restaurant";
-import { RestaurantAPIResult } from "@interfaces/api/service";
-import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
-import { RestaurantCompType } from "@src/interfaces/Restaurant/comp";
+import { ShopAPIResult } from "@interfaces/api/service";
+import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import { ShopCompType } from "@interfaces/Shop/comp";
 
 
-type RestaurantProps = {
-    id: RestaurantID
-    mode: RestaurantCompType
-    onClick?: ( info: RestaurantCompInfo ) => void
+type ShopProps = {
+    id: ShopIDType
+    mode: ShopCompType
+    onClick?: ( info: ShopServiceType ) => void
 }
 
 
-const Restaurant: React.FC<RestaurantProps> = ({ id, mode, onClick }) => {
+const Shop: React.FC<ShopProps> = ({ id, mode, onClick }) => {
 
-    // restaurant info control
-    const restaurants = useRecoilValue<RestaurantList>( states.restaurants );
-    const [ info, setInfo ] = useState<RestaurantCompInfo>( { loaded: false } );
+    // Shop info control
+    const shops = useRecoilValue<Array<ShopServiceType>>( states.shops );
+    const [ info, setInfo ] = useState<ShopServiceType | null>( null );
 
-    const getRestaurantInfo = async (): Promise<RestaurantCompInfo> => {
-        const restaurant: RestaurantAPIResult = await getRestaurant( id );
-        if ( restaurant.result === "FAILED" ) return { loaded: false };
-        return restaurant.data;
+    const getShopInfo = async (): Promise<ShopServiceType | null> => {
+        const Shop: ShopAPIResult = await getShop( id );
+        if ( Shop.result === "FAILED" ) return null;
+        return Shop.data;
     }
 
     useEffect(() => {
         ( async (): Promise<void> => {
-            const restaurant = restaurants[ id ] || await getRestaurantInfo();
-            setInfo({
-                loaded: true,
-                ...restaurant
-            });
+            // 식당정보 조회 (전체 리스트에서 가져오고, 없으면 개별요청)
+            const shop = shops.filter( v => v.shopID === id )[0] || await getShopInfo();
+            // state설정
+            setInfo( shop );
         } )();
     }, [ id ]);
 
 
-    // restaurant block click handler
+    // Shop block click handler
     const navigate = useNavigate();
 
-    const restaurantBlockClickHandler = useCallback( () => {
-        if ( onClick ) return onClick( info );
-        displayRestaurantSpecific();
+    const ShopBlockClickHandler = useCallback( () => {
+        if ( onClick && info ) return onClick( info );
+        displayShopSpecific();
     }, [ info ] );
     
-    const displayRestaurantSpecific = () => {
-        navigate(`/restaurant/${ id }`);
+    const displayShopSpecific = () => {
+        navigate(`/Shop/${ id }`);
     }
 
-    return ( info.loaded ) ?
-        <div className="restaurant-block" onClick={ restaurantBlockClickHandler } style={{
+    return ( info ) ?
+        <div className="shop-block" onClick={ ShopBlockClickHandler } style={{
             height: ( mode === "review" ) ? "50px" : "180px"
         }}>
             {
                 ( mode === "display" ) && <>
-                    <div className="restaurant-image">
-                        { info.img.map( ( url: string, i: number, imgs: Array<string> ) => ( i <= 4 ) && <div style={
+                    <div className="shop-image">
+                        { ( Object.values(info.imgs).length > 0 ) ? Object.values(info.imgs).map( ( url: string, i: number, imgs: Array<string> ) => ( i <= 4 ) && <div style={
                             Object.assign(
                                 [ 0, 1 ].includes( imgs.length ) ? {
                                     gridColumnStart: 1,
@@ -103,17 +101,17 @@ const Restaurant: React.FC<RestaurantProps> = ({ id, mode, onClick }) => {
                                     gridRowEnd: ( !i ) ? 3 : Math.floor( ( i - 1 ) / 2 ) + 1
                                 }
                             , { backgroundImage: `url(${ url })`, backgroundPosition: "center" })
-                        } key={ i }/> ) }
+                        } key={ i }/> ) : "" }
                     </div>
                 </>
             }
-            <div className="restaurant-text">
-                <span className="restaurant-title">{ info.name }</span>
-                <span className="restaurant-duration">걸어서 { Math.floor( info.duration / 60 ) }분</span>
-                <span className="restaurant-review">{ info.short_review || info.common_review }</span>
+            <div className="shop-text">
+                <span className="shop-title">{ info.name }</span>
+                {/* <span className="shop-duration">걸어서 { Math.floor( info.duration / 60 ) }분</span>
+                <span className="shop-review">{ info.short_review || info.common_review }</span> */}
             </div>
         </div>
     : <></>
 };
 
-export default Restaurant
+export default Shop

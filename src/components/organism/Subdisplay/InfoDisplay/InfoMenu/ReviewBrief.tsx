@@ -10,7 +10,7 @@ import '@styles/components/Subdisplay/InfoDisplay/InfoMenu/ReviewBrief.css';
 // components
 
 // interfaces
-import { RestaurantReview, ReviewCategory, ReviewType } from "@interfaces/Restaurant/Review";
+import { ShopReview, ReviewCategory, ReviewType } from "@interfaces/service/service.data.types/Review";
 
 type ReviewTagCompProps = {
     tag_name: ReviewCategory
@@ -22,7 +22,7 @@ type BriefCompProps = {
 }
 
 type ReviewBriefProps = {
-    reviews: Array<RestaurantReview>
+    reviews: Array<ShopReview>
 }
 
 type ReviewTagStatistic = {

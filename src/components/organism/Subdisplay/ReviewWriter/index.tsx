@@ -8,26 +8,25 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay/ReviewWriter.css';
 
 // api
-import { APIResult, getRestaurantList, getReviewQuestion } from "@api/service";
+import { APIResult, getReviewQuestion } from "@api/service";
 
 // constant
-import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, RestaurantWhereQuestionID, ReviewPresetAnswerTypes, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
+import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, ShopWhereQuestionID, ReviewPresetAnswerTypes, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
 
 // components
-import ServiceTitler from "../../molecule/Titler";
-import Restaurants from "../Restaurant";
-import Selector from "./ReviewWriter/Selector";
-import DateSelector from "../../molecule/Selectors/DateSelector";
-import MapSelector from "./ReviewWriter/MapSelector";
-import BaseInfoSelector from "./ReviewWriter/BaseInfoSelector";
+import ServiceTitler from "../../../molecule/Titler";
+import Shops from "../../Shop";
+import Selector from "./Selector";
+import DateSelector from "../../../molecule/Selectors/DateSelector";
+import MapSelector from "./MapSelector";
+import BaseInfoSelector from "./BaseInfoSelector";
 
 // interfaces
 import { ComponentOpenState } from "@interfaces/Subdisplay";
 import { ReviewAnswer, ReviewQuestion } from "@interfaces/ReviewWriter";
-import { RestaurantCompInfo, RestaurantID, RestaurantList } from "@interfaces/Restaurant";
-import { alertOption } from "@interfaces/recoil/State";
-import ReviewDateSelector from "./ReviewWriter/ReviewDateSelector";
+import ReviewDateSelector from "./ReviewDateSelector";
 import { useNavigate } from "react-router-dom";
+import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
 
 const ReviewWriter: React.FC = () => {
 
@@ -112,10 +111,10 @@ const ReviewWriter: React.FC = () => {
 
     useEffect(() => {
         if ( review_state !== 0 ) return;
-        const restaurant_id: RestaurantID | undefined = question_result.find( v => ( v.qid === RestaurantWhereQuestionID ) )?.aid || "" as RestaurantID;
-        console.log( restaurant_id );
-        if ( restaurant_id ) ( async () => {
-            const qlist_result = await getReviewQuestion( restaurant_id );
+        const Shop_id: ShopIDType | undefined = question_result.find( v => ( v.qid === ShopWhereQuestionID ) )?.aid || "" as ShopIDType;
+        console.log( Shop_id );
+        if ( Shop_id ) ( async () => {
+            const qlist_result = await getReviewQuestion( Shop_id );
             console.log(qlist_result);
             if ( qlist_result.result === APIResult.SUCCEED ) setQuestionList( qlist_result.data );
             setReviewState( 1 );
@@ -123,10 +122,10 @@ const ReviewWriter: React.FC = () => {
         else ( async () => {
             setQuestionList([
                 {
-                    qid: "QID_RESTAURANT_QUESTION",
+                    qid: "QID_Shop_QUESTION",
                     ment: "어디를 다녀오셨나요?",
                     size: "LARGE",
-                    answer: { type: "selection-restaurant" }
+                    answer: { type: "selection-Shop" }
                 },
             ]);
         } )()
@@ -156,8 +155,8 @@ const ReviewWriter: React.FC = () => {
         <div className={ "review-writer-stagecomp " + ( review_display ? "displayIn" : "displayOut" ) }>
             {
                 ( question_list.length > 0 ) ?
-                    question_list[ review_state ].answer.type === "selection-restaurant" ?
-                        <Restaurants mode="review" onClick={answerHandler} id={""}/>
+                    question_list[ review_state ].answer.type === "selection-Shop" ?
+                        <Shops mode="review" onClick={answerHandler} id={""}/>
                     : 
                     question_list[ review_state ].answer.type === "selection" ?
                         <Selector 

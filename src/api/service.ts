@@ -2,10 +2,16 @@ import axios from "@connection/request";
 
 // interface
 
-import { RestaurantListAPIResult, RestaurantAPIResult, ReviewQuestionAPIResult } from "@interfaces/api/service";
+import { ShopListAPIResult, ShopAPIResult, ReviewQuestionAPIResult } from "@interfaces/api/service";
 import { APIStatusList } from "@interfaces/api";
-import { RestaurantID, RestaurantList } from "@interfaces/Restaurant";
 import { ReviewQuestion } from "@src/interfaces/ReviewWriter";
+import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import {
+    ShopMainCategoryRestaurant,
+    ShopRestaurantSubCategoryJapan,
+    ShopRestaurantSubCategoryKorean,
+    ShopRestaurantSubCategorySnack
+} from "@constant/service/Shop";
 
 export const APIResult: APIStatusList = {
     SUCCEED: "SUCCEED",
@@ -14,190 +20,61 @@ export const APIResult: APIStatusList = {
 
 // dummy data
 
-const dummy_data: RestaurantList = {
-    "TEST_1": {
-        restaurant_id: "TEST_1",
+const dummy_data: Array<ShopServiceType> = [
+    {
+        shopID: "TEST_1",
         name: "미스터쉐프",
-        cat: "한식",
-        cat_list: [ "한식", "백반" ],
-        img: [
-            "https://lh5.googleusercontent.com/p/AF1QipOECAv1jlX-XO4jyfhmSoic218AvbKi1g0o11qd=w520-h350-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipPWWPcgqW6dHqzUG8Q--QX6gA0tkfNzmM46lrzs=w260-h174-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipP6CzhHav9xakAmOoWNjKFQwvp6FPe_le5kqnO_=w172-h174-n-k-no"
-        ],
-        contact: "031-289-0402",
-        duration: 10 * 60,
-        common_review: "나쁘지 않아요",
-        short_review: "가볍게 먹기 좋아요",
-        reviews: [
-            {
-                review_id: "RID_T1",
-                restaurant_id: "TEST_1",
-                tag_list: [
-                    {
-                        type: "good",
-                        value: "distance"
-                    },
-                    {
-                        type: "good",
-                        value: "kind"
-                    },
-                    {
-                        type: "good",
-                        value: "price"
-                    },
-                    {
-                        type: "bad",
-                        value: "taste"
-                    },
-                    {
-                        type: "bad",
-                        value: "enter_waiting"
-                    },
-                ]
-            },
-            {
-                review_id: "RID_T2",
-                restaurant_id: "TEST_1",
-                tag_list: [
-                    {
-                        type: "good",
-                        value: "kind"
-                    },
-                    {
-                        type: "bad",
-                        value: "price"
-                    },
-                    {
-                        type: "good",
-                        value: "enter_waiting"
-                    },
-                ]
-            },
-            {
-                review_id: "RID_T3",
-                restaurant_id: "TEST_1",
-                tag_list: [
-                    {
-                        type: "good",
-                        value: "distance"
-                    },
-                    {
-                        type: "good",
-                        value: "kind"
-                    }
-                ]
-            },
-        ],
-        location: {
+        category: { main: ShopMainCategoryRestaurant, sub: ShopRestaurantSubCategoryKorean },
+        loc: {
+            address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프",
             lat: 37.27921955685363,
-            long: 127.04266685032984,
-            address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프"
-        }
+            long: 127.04266685032984
+        },
+        contact: {
+            default: "031-289-0402"
+        },
+        imgs: {},
+        menus: {}
     },
-    "TEST_2": {
-        restaurant_id: "TEST_2",
+    {
+        shopID: "TEST_2",
         name: "만고쿠",
-        cat: "일식",
-        cat_list: [ "일식", "덮밥", "가라야케" ],
-        img: [
-            "https://lh5.googleusercontent.com/p/AF1QipOECAv1jlX-XO4jyfhmSoic218AvbKi1g0o11qd=w520-h350-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipPWWPcgqW6dHqzUG8Q--QX6gA0tkfNzmM46lrzs=w260-h174-n-k-no"
-        ],
-        contact: "031-289-0402",
-        duration: 5 * 60,
-        common_review: "맛있어요",
-        short_review: "덮밥이 맛있어요",
-        reviews: [{
-            review_id: "RID_T1",
-            restaurant_id: "TEST_2",
-            tag_list: [
-                {
-                    type: "good",
-                    value: "distance"
-                },
-                {
-                    type: "bad",
-                    value: "kind"
-                },
-                {
-                    type: "good",
-                    value: "price"
-                },
-                {
-                    type: "good",
-                    value: "taste"
-                },
-                {
-                    type: "bad",
-                    value: "enter_waiting"
-                },
-            ]
-        }],
-        location: {
+        category: { main: ShopMainCategoryRestaurant, sub: ShopRestaurantSubCategoryJapan },
+        loc: {
+            address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프",
             lat: 37.27921955685363,
-            long: 127.04266685032984,
-            address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프"
-        }
+            long: 127.04266685032984
+        },
+        contact: {
+            default: "031-289-0402"
+        },
+        imgs: {},
+        menus: {}
     },
-    "TEST_3": {
-        restaurant_id: "TEST_3",
+    {
+        shopID: "TEST_3",
         name: "떡슐랭",
-        cat: "분식",
-        cat_list: [ "분식", "떡볶이" ],
-        img: [
-            "https://lh5.googleusercontent.com/p/AF1QipOECAv1jlX-XO4jyfhmSoic218AvbKi1g0o11qd=w520-h350-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipPWWPcgqW6dHqzUG8Q--QX6gA0tkfNzmM46lrzs=w260-h174-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipOECAv1jlX-XO4jyfhmSoic218AvbKi1g0o11qd=w520-h350-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipPWWPcgqW6dHqzUG8Q--QX6gA0tkfNzmM46lrzs=w260-h174-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipOECAv1jlX-XO4jyfhmSoic218AvbKi1g0o11qd=w520-h350-n-k-no",
-            "https://lh5.googleusercontent.com/p/AF1QipPWWPcgqW6dHqzUG8Q--QX6gA0tkfNzmM46lrzs=w260-h174-n-k-no"
-        ],
-        contact: "031-289-0402",
-        duration: 12 * 60,
-        common_review: "맛있어요",
-        short_review: "세트메뉴가 맛있어요",
-        reviews: [{
-            review_id: "RID_T1",
-            restaurant_id: "TEST_3",
-            tag_list: [
-                {
-                    type: "good",
-                    value: "distance"
-                },
-                {
-                    type: "good",
-                    value: "kind"
-                },
-                {
-                    type: "good",
-                    value: "price"
-                },
-                {
-                    type: "bad",
-                    value: "taste"
-                },
-                {
-                    type: "bad",
-                    value: "enter_waiting"
-                },
-            ]
-        }],
-        location: {
+        category: { main: ShopMainCategoryRestaurant, sub: ShopRestaurantSubCategorySnack },
+        loc: {
+            address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프",
             lat: 37.27921955685363,
-            long: 127.04266685032984,
-            address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프"
-        }
-    },
-}
+            long: 127.04266685032984
+        },
+        contact: {
+            default: "031-289-0402"
+        },
+        imgs: {},
+        menus: {}
+    }
+]
 
-const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
+const dummy_question: { [ key in ShopIDType ]: Array<ReviewQuestion> } = {
     "TEST_1": [
         {
-            qid: "QID_RESTAURANT_QUESTION",
+            qid: "QID_Shop_QUESTION",
             ment: "어디를 다녀오셨나요?",
             size: "LARGE",
-            answer: { type: "selection-restaurant" }
+            answer: { type: "selection-Shop" }
         },
         {
             qid: "QID_1",
@@ -214,10 +91,10 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
                 selection: [
                     {
                         qid: "QID_BASE_INFO",
-                        aid: "QID_Restaurant_Number",
+                        aid: "QID_Shop_Number",
                         selectionText: "연락처",
                         subQuestion: {
-                            qid: "QID_Restaurant_Number",
+                            qid: "QID_Shop_Number",
                             ment: "이 식당의 연락처가 어떻게 되나요?",
                             size: "MEDIUM",
                             answer: { type: "writing-multiple", placeholders: [ { text: "기본 연락처", width: "90px", necessary: true }, { text: "기타 연락처", width: "90px", necessary: false } ] }
@@ -225,10 +102,10 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
                     },
                     {
                         qid: "QID_BASE_INFO",
-                        aid: "QID_Restaurant_Menu",
+                        aid: "QID_Shop_Menu",
                         selectionText: "메뉴",
                         subQuestion: {
-                            qid: "QID_Restaurant_Menu",
+                            qid: "QID_Shop_Menu",
                             ment: "이 식당의 메뉴들을 아시는만큼 알려주세요",
                             size: "MEDIUM",
                             answer: { type: "writing-multiple", placeholders: [{ text: "메뉴명", width: "60px", necessary: false } ] }
@@ -236,10 +113,10 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
                     },
                     {
                         qid: "QID_BASE_INFO",
-                        aid: "QID_Restaurant_Worktime",
+                        aid: "QID_Shop_Worktime",
                         selectionText: "영업시간",
                         subQuestion: {
-                            qid: "QID_Restaurant_Worktime",
+                            qid: "QID_Shop_Worktime",
                             ment: "이 식당의 영업시간을 알려주세요",
                             size: "MEDIUM",
                             answer: { type: "selection-worktime" }
@@ -422,10 +299,10 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
     ],
     "TEST_2": [
         {
-            qid: "QID_RESTAURANT_QUESTION",
+            qid: "QID_Shop_QUESTION",
             ment: "어디를 다녀오셨나요?",
             size: "LARGE",
-            answer: { type: "selection-restaurant" }
+            answer: { type: "selection-Shop" }
         },
         {
             qid: "QID_1",
@@ -520,11 +397,11 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
     ],
     "TEST_3": [
         {
-            qid: "QID_RESTAURANT_QUESTION",
+            qid: "QID_Shop_QUESTION",
             ment: "어디를 다녀오셨나요?",
             size: "LARGE",
             answer: {
-                type: "selection-restaurant"
+                type: "selection-Shop"
             }
         },
         {
@@ -621,35 +498,26 @@ const dummy_question: { [ key in RestaurantID ]: Array<ReviewQuestion> } = {
 }
 
 const dummy_response: { 
-    getRestaurantList: RestaurantListAPIResult,
-    getRestaurant: { [ key: string ]: RestaurantAPIResult },
-    getReviewQuestion: { [ key: RestaurantID ]: ReviewQuestionAPIResult }
+    getShopList: ShopListAPIResult,
+    getShop: { [ key: string ]: ShopAPIResult },
+    getReviewQuestion: { [ key: ShopIDType ]: ReviewQuestionAPIResult }
 } = {
-    getRestaurantList: {
+    getShopList: {
         result: APIResult.SUCCEED,
         list: dummy_data
     },
-    getRestaurant: {
+    getShop: {
         "TEST_1": {
             result: APIResult.SUCCEED,
-            data: {
-                loaded: true,
-                ...dummy_data["TEST_1"]
-            }
+            data: dummy_data.filter( v => v.shopID === "TEST_1" )[0]
         },
         "TEST_2": {
             result: APIResult.SUCCEED,
-            data: {
-                loaded: true,
-                ...dummy_data["TEST_2"]
-            }
+            data: dummy_data.filter( v => v.shopID === "TEST_2" )[0]
         },
         "TEST_3": {
             result: APIResult.SUCCEED,
-            data: {
-                loaded: true,
-                ...dummy_data["TEST_3"]
-            }
+            data: dummy_data.filter( v => v.shopID === "TEST_3" )[0]
         },
     },
     getReviewQuestion: {
@@ -668,35 +536,35 @@ const dummy_response: {
     }
 }
 
-export const getRestaurantList = async ( lat: number, long: number ): Promise<RestaurantListAPIResult> => {
+export const getShopList = async ( lat: number, long: number ): Promise<ShopListAPIResult> => {
     // try {
-    //     const { data: result }: { data: RestaurantListAPIResult } = await axios.post("/restaurant/list", { location: { lat, long } });
+    //     const { data: result }: { data: ShopListAPIResult } = await axios.post("/Shop/list", { location: { lat, long } });
     //     return resul37.27921955685363;
     // } catch( e: any )37.27921955685363{
     //     console.error(e);
     //     return { result: APIResult.SUCCEED;
     // }
-    return dummy_response[ "getRestaurantList" ];
+    return dummy_response[ "getShopList" ];
 }
 
-export const getRestaurant = async ( id: string ): Promise<RestaurantAPIResult> => {
+export const getShop = async ( id: string ): Promise<ShopAPIResult> => {
     // try {
-    //     const { data: result }: { data: RestaurantAPIResult } = await axios.post("/restaurant/list", { id });
+    //     const { data: result }: { data: ShopAPIResult } = await axios.post("/Shop/list", { id });
     //     return result;
     // } catch( e: any ) {
     //     console.error(e);
     //     return { result: APIResult.SUCCEED;
     // }
-    return dummy_response["getRestaurant"][ id ];
+    return dummy_response["getShop"][ id ];
 }
 
-export const getReviewQuestion = async ( restaurant_id: RestaurantID ): Promise<ReviewQuestionAPIResult> => {
+export const getReviewQuestion = async ( Shop_id: ShopIDType ): Promise<ReviewQuestionAPIResult> => {
     // try {
-    //     const { data: result }: { data: ReviewQuestionAPIResult } = await axios.get(`/review/questions?rid=${ restaurant_id }`);
+    //     const { data: result }: { data: ReviewQuestionAPIResult } = await axios.get(`/review/questions?rid=${ Shop_id }`);
     //     return result;
     // } catch( e: any ) {
     //     console.error(e);
     //     return { result: APIResult.SUCCEED;
     // }
-    return dummy_response["getReviewQuestion"][ restaurant_id ];
+    return dummy_response["getReviewQuestion"][ Shop_id ];
 }

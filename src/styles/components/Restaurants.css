@@ -1,4 +1,4 @@
-.restaurants-list {
+.Shops-list {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -8,21 +8,21 @@
     scrollbar-width: none;
 }
 
-.restaurants-list.listmode-display {
+.Shops-list.listmode-display {
     width: 100%;
     height: calc( 100% - 80px );
 }
 
-.restaurants-list.listmode-review {
+.Shops-list.listmode-review {
     width: 100%;
     height: 100%;
 }
 
-.restaurants-list::-webkit-scrollbar {
+.Shops-list::-webkit-scrollbar {
     display: none;
 }
 
-.restaurants-list::before {
+.Shops-list::before {
     content: "";
     width: 100%;
     height: 30px;
@@ -38,7 +38,7 @@
     z-index: 1000;
 }
 
-.restaurants-list::after {
+.Shops-list::after {
     content: "";
     width: 100%;
     height: 30px;
@@ -54,11 +54,11 @@
     z-index: 1000;
 }
 
-.restaurants-list .restaurant-notfound {
+.Shops-list .shop-notfound {
     height: 50px;
 }
 
-.restaurants-list .restaurant-notfound span {
+.Shops-list .shop-notfound span {
     font-weight: 400;
     font-size: 16px;
     

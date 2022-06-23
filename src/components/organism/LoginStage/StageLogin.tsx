@@ -15,7 +15,7 @@ import { serviceLogin } from "@api/auth";
 import GlobalInput from "@src/components/molecule/Input/GlobalInput";
 
 // interfaces
-import { Login as LoginType } from "@interfaces/recoil/State";
+import { Login as LoginType } from "@interfaces/service/recoil/State";
 import { LoginStageCompProps } from "@interfaces/Login/StageComponents";
 import { LoginResultConstants, LoginResultFailedReasons, ServiceLoginAPIResult } from "@interfaces/api/auth";
 

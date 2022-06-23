@@ -13,7 +13,7 @@
     width: fit-content;
 }
 
-.info-block-header .restaurant-title {
+.info-block-header .shop-title {
     font-size: 20px;
     font-weight: 700;
     position: relative;
@@ -21,7 +21,7 @@
     left: 20px;
 }
 
-.info-block-header .restaurant-category {
+.info-block-header .shop-category {
     font-size: 14px;
     font-weight: 300;
     position: relative;
@@ -29,7 +29,7 @@
     left: 20px;
 }
 
-.info-block-header .restaurant-time-remain {
+.info-block-header .shop-time-remain {
     font-size: 16px;
     font-weight: 500;
     text-align: right;

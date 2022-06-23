@@ -1,12 +1,12 @@
 // Interface Declaration: ReviewWriter ( comp )
+import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
 import React, { CSSProperties } from "react";
 import { Type } from "typescript";
-import { RestaurantID } from "../Restaurant";
 import { ComponentOpenState } from "../Subdisplay";
 
 export type QuestionID = string;
 export type AnswerID = string;
-export const RestaurantWhereQuestionID: QuestionID = "QID_RESTAURANT_QUESTION";
+export const ShopWhereQuestionID: QuestionID = "QID_Shop_QUESTION";
 export const BaseInfoQuestionID: QuestionID = "QID_BASE_INFO";
 
 export type ReviewAnswerFormat = {
@@ -29,14 +29,14 @@ export type BaseInfoSelectionFormat = ReviewAnswerFormat & {
     subQuestion: ReviewQuestion
 }
 
-export type RestaurantSelectionFormat = ReviewAnswerFormat & {
+export type ShopSelectionFormat = ReviewAnswerFormat & {
     selectionText: string
-    value: RestaurantID
+    value: ShopIDType
     style?: CSSProperties
 }
 
 export type ReviewPresetAnswerSelection = "selection";
-export type ReviewPresetAnswerSelectionRestaurant = "selection-restaurant";
+export type ReviewPresetAnswerSelectionShop = "selection-Shop";
 export type ReviewPresetAnswerSingleWriting = "writing-single";
 export type ReviewPresetAnswerMultipleWriting = "writing-multiple";
 export type ReviewPresetAnswerSelectionDate = "selection-date";
@@ -46,7 +46,7 @@ export type ReviewPresetAnswerSelectionLocation = "selection-location";
 export type ReviewPresetAnswerBaseInfo = "base-info";
 export type ReviewPresetAnswerTypes = (
     ReviewPresetAnswerSelection |
-    ReviewPresetAnswerSelectionRestaurant |
+    ReviewPresetAnswerSelectionShop |
     ReviewPresetAnswerSingleWriting |
     ReviewPresetAnswerMultipleWriting |
     ReviewPresetAnswerSelectionDate |
@@ -65,7 +65,7 @@ export type ReviewQuestion = {
         selection: Array<ReviewSelectionFormat>
         inputMents?: null
     } | {
-        type: ReviewPresetAnswerSelectionRestaurant
+        type: ReviewPresetAnswerSelectionShop
         selection?: null
         inputMents?: null
     } | {

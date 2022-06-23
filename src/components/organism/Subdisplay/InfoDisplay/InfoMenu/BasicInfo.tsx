@@ -15,7 +15,6 @@ import markerIcn from '@assets/MarkerIcn@2x.png';
 
 
 // interfaces
-import { RestaurantInfo } from "@interfaces/Restaurant";
 
 type BasicInfoProps = {
     contact: string,

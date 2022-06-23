@@ -10,7 +10,7 @@ import '@styles/components/Locator.css';
 // components
 
 // interfaces
-import { Location } from "@src/interfaces/recoil/State";
+import { Location } from "@interfaces/service/recoil/State";
 type LocatorProps = {
     
 }

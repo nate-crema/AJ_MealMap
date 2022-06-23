@@ -65,9 +65,9 @@ const InfoHeader: React.FC<InfoHeaderProps> = ({ title, cat, worktime }) => {
     }, [ worktime ] );
 
     return <div className="info-block-header">
-        <p className="restaurant-title">{ title }</p>
-        <p className="restaurant-category">{ cat }</p>
-        <p className="restaurant-time-remain">{ remain_time_text }</p>
+        <p className="shop-title">{ title }</p>
+        <p className="shop-category">{ cat }</p>
+        <p className="shop-time-remain">{ remain_time_text }</p>
     </div>
 }
 

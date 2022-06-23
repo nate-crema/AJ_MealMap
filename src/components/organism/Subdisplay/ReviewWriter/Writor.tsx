@@ -13,7 +13,7 @@ import GlobalInput from "@molecule/Input/GlobalInput";
 // interfaces
 import { MapOnPlaceClickedFunction } from "@interfaces/MapHandler";
 import ServiceButton from "@atom/Button";
-import { alertOption } from "@interfaces/recoil/State";
+import { alertOption } from "@interfaces/service/recoil/State";
 
 type WritorProps = {
     placeholder?: Array<{ text: string, width: string, necessary: boolean }>

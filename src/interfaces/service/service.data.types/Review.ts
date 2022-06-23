@@ -1,7 +1,7 @@
-// Interface Declaration: Restaurant - Review ( data )
-import { RestaurantID } from ".";
+// Interface Declaration: Shop - Review ( data )
+import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
 
-// RESTAURANT - REVIEW
+// Shop - REVIEW
 
 export type ReviewID = string;
 export type ReviewType = "good" | "bad" ;
@@ -21,8 +21,8 @@ export type ReviewTag = {
     value: ReviewCategory
 }
 
-export type RestaurantReview = {
+export type ShopReview = {
     review_id: ReviewID,
-    restaurant_id: RestaurantID,
+    Shop_id: ShopIDType,
     tag_list: Array<ReviewTag>
 }

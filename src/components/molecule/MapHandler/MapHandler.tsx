@@ -57,11 +57,11 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
             const position = new window.kakao.maps.LatLng( e.latLng.getLat(), e.latLng.getLng() );
             
             if ( clicked_marker.current ) clicked_marker.current.setMap( null );
-            const restaurantMarker = new window.kakao.maps.Marker({
+            const ShopMarker = new window.kakao.maps.Marker({
                 position,
                 image: new window.kakao.maps.MarkerImage( MarkerImg, new window.kakao.maps.Size( 30, 45 ), { offset: new window.kakao.maps.Point( 15, 45 ) } )
             })
-            clicked_marker.current = restaurantMarker;
+            clicked_marker.current = ShopMarker;
 
             clicked_marker.current.setMap( kakaoMapObject.current );
             if ( kakaoMapObject.current ) kakaoMapObject.current.panTo( position );

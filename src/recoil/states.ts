@@ -1,9 +1,9 @@
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
-import { Login, Location, alertOption } from "@src/interfaces/recoil/State";
-import { RestaurantList, RestaurantID } from "@interfaces/Restaurant";
+import { Login, Location, alertOption } from "@interfaces/service/recoil/State";
 import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
+import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 /*
 
 testState: atom({
@@ -58,11 +58,11 @@ export default new ( function( this: any ): void {
         }
     });
 
-    // State: Restaurants
+    // State: Shops
 
-    this.restaurants = atom<RestaurantList>({
-        key: "restaurants",
-        default: {}
+    this.shops = atom<Array<ShopServiceType>>({
+        key: "Shops",
+        default: []
     });
 
     // States: Subdisplay
@@ -84,7 +84,7 @@ export default new ( function( this: any ): void {
 
     // States: Specific
 
-    this.restaurantSpecific = atom<RestaurantID | undefined>({
+    this.shopSpecific = atom<ShopIDType | undefined>({
         key: "retaurantSpecificState",
         default: undefined
     })

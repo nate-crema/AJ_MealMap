@@ -11,7 +11,7 @@ import '@styles/components/Alert.css';
 
 
 // interfaces
-import { alertOption } from "@src/interfaces/recoil/State";
+import { alertOption } from "@interfaces/service/recoil/State";
 import { alertSizeOptions } from "@src/interfaces/Alert";
 import ServiceButton from "../../atom/Button";
 import { ServiceButtonThemes } from "@src/interfaces/ServiceButton";

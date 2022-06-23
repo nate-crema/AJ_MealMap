@@ -1,7 +1,8 @@
+
 // Interface Declaration: recoil/state ( state )
 import React, { CSSProperties } from "react";
-import { alertSizeOptions } from "../Alert";
-import { ServiceButtonThemes } from "../ServiceButton";
+import { alertSizeOptions } from "../../Alert";
+import { ServiceButtonThemes } from "../../ServiceButton";
 
 export type Login = {
     isLogined: boolean

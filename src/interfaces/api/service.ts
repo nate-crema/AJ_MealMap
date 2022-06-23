@@ -1,24 +1,24 @@
 // Interface Declaration: service ( api )
 import { APISuccess, APIError } from "@interfaces/api";
-import { RestaurantList, RestaurantCompInfo } from "../Restaurant";
+import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import { ReviewQuestion } from "../ReviewWriter";
 
 // API
 
-export type RestaurantListAPIResult = {
+export type ShopListAPIResult = {
     result: APISuccess
-    list: RestaurantList
+    list: Array<ShopServiceType>
 } | {
     result: APIError
-    list?: any
+    reason: string
 };
 
-export type RestaurantAPIResult = {
+export type ShopAPIResult = {
     result: APISuccess
-    data: RestaurantCompInfo
+    data: ShopServiceType
 } | {
     result: APIError
-    data?: any
+    reason: string
 }
 
 export type ReviewQuestionAPIResult = {

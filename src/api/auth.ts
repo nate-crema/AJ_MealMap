@@ -4,7 +4,7 @@ import axios from "@connection/request";
 
 import { APIStatusList, StandardAPIResult } from "@interfaces/api";
 import { LoginResultsFailedNotFound, ServiceLoginAPIResult, ServiceRegiserUserAPIResult, ServiceRegisterMailAPIResult } from "@interfaces/api/auth";
-import { Location } from "@interfaces/recoil/State";
+import { Location } from "@interfaces/service/recoil/State";
 
 export const APIResult: APIStatusList = {
     SUCCEED: "SUCCEED",

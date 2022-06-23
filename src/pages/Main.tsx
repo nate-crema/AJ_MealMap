@@ -12,13 +12,13 @@ import '@styles/pages/Main.css';
 // components
 import Locator from "@molecule/Locator";
 import ServiceTitler from "@molecule/Titler";
-import Restaurants from "@template/Restaurants";
-import ReviewEntrypoint from "@molecule/ReviewEntrypoint/ReviewEntrypoint";
+import Shops from "@template/Shops";
+// import ReviewEntrypoint from "@molecule/ReviewEntrypoint/ReviewEntrypoint";
 
 
 // interfaces
 import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
-import { RestaurantID } from "@interfaces/Restaurant";
+import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
 
 const Main: React.FC = () => {
 
@@ -47,11 +47,11 @@ const Main: React.FC = () => {
 
     // url control
     const location = useLocation();
-    const setRestaurantSpecific = useSetRecoilState<RestaurantID | undefined>( states.restaurantSpecific )
+    const setShopSpecific = useSetRecoilState<ShopIDType | undefined>( states.shopSpecific )
     const setSubdisplayDisplayMode = useSetRecoilState<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
 
-    const displayRestaurantSpecific = ( id: RestaurantID ) => {
-        setRestaurantSpecific( id );
+    const displayShopSpecific = ( id: ShopIDType ) => {
+        setShopSpecific( id );
         setSubdisplayDisplayMode( "INFO/READ" );
     }
 
@@ -60,8 +60,8 @@ const Main: React.FC = () => {
         setSubdisplayDisplayMode( "REVIEW/WRITE" );
     }
 
-    const unDisplayRestaurantSpecific = () => {
-        setRestaurantSpecific( undefined );
+    const unDisplayShopSpecific = () => {
+        setShopSpecific( undefined );
         setSubdisplayDisplayMode( "CLOSED" );
     }
 
@@ -69,18 +69,18 @@ const Main: React.FC = () => {
         const paths = location.pathname.split("/");
         if ( paths.length > 2 ) {
             const [ _, func_path, func_params ] = paths;
-            if ( func_path === "restaurant" ) displayRestaurantSpecific( func_params );
+            if ( func_path === "Shop" ) displayShopSpecific( func_params );
         } else if ( paths.length > 1 && paths[1] === "review" ) displayReviewWriter();
-        else unDisplayRestaurantSpecific();
+        else unDisplayShopSpecific();
     }, [ location ]);
 
     return <>
         <Locator/>
         <div className="main-area">
             <ServiceTitler title={ title } ment={ ment } />
-            <Restaurants mode="display"/>
+            <Shops mode="display"/>
         </div>
-        <ReviewEntrypoint/>
+        {/* <ReviewEntrypoint/> */}
     </>
 };
 
