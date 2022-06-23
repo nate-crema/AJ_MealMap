@@ -34,7 +34,22 @@ const dummy_data: Array<ShopServiceType> = [
             default: "031-289-0402"
         },
         imgs: {},
-        menus: {}
+        menus: {},
+        events: {
+            "AJOU_CHONG": {
+                eventer: "담아",
+                logo_img: "https://ajouchong.com/logo.svg",
+                logo_color: "#E2665B",
+                content: {
+                    eventType: 1,
+                    text: "[재학생] 10% 할인",
+                    condition: { "AND": [ "재학생" ] },
+                    discountPriceCalc: ( prevPrice: number ) => {
+                        return prevPrice * 90 / 100;
+                    } // 할인금액 계산함수
+                }
+            }
+        }
     },
     {
         shopID: "TEST_2",
@@ -535,6 +550,15 @@ const dummy_response: {
         }
     }
 }
+
+// CLIENT_SIDE
+export const getShopInfoByShopID = async ( id: ShopIDType ): Promise<ShopServiceType | null> => {
+    const shop: ShopAPIResult = await getShop( id );
+    if (shop.result === APIResult.FAILED) return null;
+    return shop.data;
+}
+
+// API_SIDE
 
 export const getShopList = async ( lat: number, long: number ): Promise<ShopListAPIResult> => {
     // try {

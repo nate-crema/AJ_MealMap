@@ -136,7 +136,6 @@ export type ShopImageType = {
 }
 
 // 상점 메뉴 정보
-
 export type ShopMenusType = {
     [ menuname in string ]: {
         price: number,
@@ -145,6 +144,30 @@ export type ShopMenusType = {
         reviews: Array<string>,
         // alergic: Array<AlergicIDType>
     }
+}
+
+// 상점 행사 정보
+export type EventInfoType = {
+    [ eventer in string ]: {
+        eventer: string,
+        logo_img: string,
+        logo_color: string,
+        content: {
+            text: string,
+            condition: EventApplyConditionType,
+        } & ({
+            //eventType| 0: 금액할인(특정금액 차감) | 1: 금액할인(% 할인) | 2: 메뉴제공 | 3: 향후이용가능 쿠폰제공 | 4: 기타
+            eventType: 0 | 1,
+            discountPriceCalc?: ( prevPrice: number ) => number // 할인금액 계산함수
+        } | {
+            eventType: 2 | 3 | 4,
+            eventApplyAction?: any
+        })
+    }
+}
+
+export type EventApplyConditionType = {
+    [ chk_base in "AND" | "OR" ]?: EventApplyConditionType | Array<string>
 }
 
 // 상점정보
@@ -170,7 +193,8 @@ export type ShopServiceType = {
     loc: ShopLocationType,
     contact: ShopContactType,
     imgs: ShopImageType,
-    menus: ShopMenusType 
+    menus: ShopMenusType,
+    events?: EventInfoType
 }
 
 

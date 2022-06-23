@@ -33,12 +33,6 @@ const Shop: React.FC<ShopProps> = ({ id, mode, onClick }) => {
     const shops = useRecoilValue<Array<ShopServiceType>>( states.shops );
     const [ info, setInfo ] = useState<ShopServiceType | null>( null );
 
-    const getShopInfo = async (): Promise<ShopServiceType | null> => {
-        const Shop: ShopAPIResult = await getShop( id );
-        if ( Shop.result === "FAILED" ) return null;
-        return Shop.data;
-    }
-
     useEffect(() => {
         ( async (): Promise<void> => {
             // 식당정보 조회 (전체 리스트에서 가져오고, 없으면 개별요청)
@@ -115,3 +109,7 @@ const Shop: React.FC<ShopProps> = ({ id, mode, onClick }) => {
 };
 
 export default Shop
+
+function getShopInfo(): ShopServiceType | PromiseLike<ShopServiceType> {
+    throw new Error("Function not implemented.");
+}

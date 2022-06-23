@@ -111,6 +111,9 @@ const InfoDisplay: React.FC = () => {
             title={ shop_name } titleStyle={{ fontSize: "20px", fontWeight: "700" }}
             ment={ tag_review } mentStyle={{ fontSize: "16px" }}
         />
+        <InfoMenu
+            // contact={ shop?.contact }
+        />
     </div>
 };
 
