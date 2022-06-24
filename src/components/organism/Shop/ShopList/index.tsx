@@ -9,18 +9,17 @@ import states from "@recoil/states";
 import './style.css';
 
 // api
-import { getShopList } from "@api/service";
+import { getShopList, getShopListByCoordinate } from "@api/service";
 
 // components
-import Shop from "../../organism/Shop";
+import ShopBlock from "@molecule/Shop/ShopBlock";
 
 // interfaces
-import { ShopListAPIResult } from "@interfaces/api/service";
 import { Location } from "@interfaces/service/recoil/State";
 import { ShopCompDisplayType, ShopCompReview, ShopCompReviewType } from "@interfaces/Shop/comp";
 import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 
-type ShopsProps = {
+type ShopsListProps = {
     mode: ShopCompReviewType
     onBlockClick?: ( info: string | null, index: number ) => void
 } | {
@@ -29,22 +28,16 @@ type ShopsProps = {
 }
 
 
-const Shops: React.FC<ShopsProps> = ({ mode, onBlockClick }) => {
+const ShopList: React.FC<ShopsListProps> = ({ mode, onBlockClick }) => {
 
     // Shop list control
     const { lat, long } = useRecoilValue<Location>( states.location );
     const [ shops, setShops ] = useRecoilState<Array<ShopServiceType>>( states.shops );
 
-    const getShopInfos = async (): Promise<Array<ShopServiceType>> => {
-        const Shop_list: ShopListAPIResult = await getShopList( lat, long );
-        if ( Shop_list.result === "FAILED" ) return [];
-        return Shop_list.list;
-    }
-
     useEffect(() => {
         ( async () => {
             // if ( lat < 0 || long < 0 ) return;
-            const shop_list = await getShopInfos();
+            const shop_list = await getShopListByCoordinate({ lat, long });
             console.log("shop_list", shop_list);
             setShops( shop_list );
         } )()
@@ -66,11 +59,11 @@ const Shops: React.FC<ShopsProps> = ({ mode, onBlockClick }) => {
             );
     };
     
-    return <div className={ `Shops-list listmode-${ mode }` }>
+    return <div className={ `shops-list listmode-${ mode }` }>
         {
             Object.values(shops).map( 
                 ( shop, index: number ) => 
-                    <Shop
+                    <ShopBlock
                         key={ shop.shopID }
                         id={ shop.shopID }
                         mode={ mode }
@@ -89,4 +82,4 @@ const Shops: React.FC<ShopsProps> = ({ mode, onBlockClick }) => {
     </div>
 };
 
-export default Shops
+export default ShopList

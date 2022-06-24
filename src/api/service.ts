@@ -2,10 +2,9 @@ import axios from "@connection/request";
 
 // interface
 
-import { ShopListAPIResult, ShopAPIResult, ReviewQuestionAPIResult } from "@interfaces/api/service";
-import { APIStatusList } from "@interfaces/api";
+import { APIStatusList, StandardAPIResult } from "@interfaces/api";
 import { ReviewQuestion } from "@src/interfaces/ReviewWriter";
-import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import { ServiceCoordinateType, ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import {
     ShopMainCategoryRestaurant,
     ShopRestaurantSubCategoryJapan,
@@ -513,54 +512,82 @@ const dummy_question: { [ key in ShopIDType ]: Array<ReviewQuestion> } = {
 }
 
 const dummy_response: { 
-    getShopList: ShopListAPIResult,
-    getShop: { [ key: string ]: ShopAPIResult },
-    getReviewQuestion: { [ key: ShopIDType ]: ReviewQuestionAPIResult }
+    getShopList: StandardAPIResult<Array<ShopServiceType>>,
+    getShop: { [ key: string ]: StandardAPIResult<ShopServiceType> },
+    getReviewQuestion: { [ key: ShopIDType ]: StandardAPIResult<Array<ReviewQuestion>> }
 } = {
     getShopList: {
+        api_version: "v.0.0.3.alpha",
+        client_version: "v.0.0.3.1",
         result: APIResult.SUCCEED,
-        list: dummy_data
+        status: 200,
+        data: dummy_data
     },
     getShop: {
         "TEST_1": {
+            api_version: "v.0.0.3.alpha",
+            client_version: "v.0.0.3.1",
             result: APIResult.SUCCEED,
+            status: 200,
             data: dummy_data.filter( v => v.shopID === "TEST_1" )[0]
         },
         "TEST_2": {
+            api_version: "v.0.0.3.alpha",
+            client_version: "v.0.0.3.1",
             result: APIResult.SUCCEED,
+            status: 200,
             data: dummy_data.filter( v => v.shopID === "TEST_2" )[0]
         },
         "TEST_3": {
+            api_version: "v.0.0.3.alpha",
+            client_version: "v.0.0.3.1",
             result: APIResult.SUCCEED,
+            status: 200,
             data: dummy_data.filter( v => v.shopID === "TEST_3" )[0]
         },
     },
     getReviewQuestion: {
         "TEST_1": {
+            api_version: "v.0.0.3.alpha",
+            client_version: "v.0.0.3.1",
             result: APIResult.SUCCEED,
+            status: 200, 
             data: dummy_question[ "TEST_1" ]
         },
         "TEST_2": {
+            api_version: "v.0.0.3.alpha",
+            client_version: "v.0.0.3.1",
             result: APIResult.SUCCEED,
+            status: 200, 
             data: dummy_question[ "TEST_2" ]
         },
         "TEST_3": {
+            api_version: "v.0.0.3.alpha",
+            client_version: "v.0.0.3.1",
             result: APIResult.SUCCEED,
+            status: 200, 
             data: dummy_question[ "TEST_3" ]
         }
     }
 }
 
 // CLIENT_SIDE
+export const getShopListByCoordinate = async ( coord: ServiceCoordinateType ): Promise<Array<ShopServiceType>> => {
+    const { lat, long } = coord;
+    const shop_list: StandardAPIResult<Array<ShopServiceType>> = await getShopList( lat, long );
+    if ( shop_list.result === "FAILED" ) return [];
+    return shop_list.data;
+}
+
 export const getShopInfoByShopID = async ( id: ShopIDType ): Promise<ShopServiceType | null> => {
-    const shop: ShopAPIResult = await getShop( id );
+    const shop: StandardAPIResult<ShopServiceType> = await getShop( id );
     if (shop.result === APIResult.FAILED) return null;
     return shop.data;
 }
 
 // API_SIDE
 
-export const getShopList = async ( lat: number, long: number ): Promise<ShopListAPIResult> => {
+export const getShopList = async ( lat: number, long: number ): Promise<StandardAPIResult<Array<ShopServiceType>>> => {
     // try {
     //     const { data: result }: { data: ShopListAPIResult } = await axios.post("/Shop/list", { location: { lat, long } });
     //     return resul37.27921955685363;
@@ -571,7 +598,7 @@ export const getShopList = async ( lat: number, long: number ): Promise<ShopList
     return dummy_response[ "getShopList" ];
 }
 
-export const getShop = async ( id: string ): Promise<ShopAPIResult> => {
+export const getShop = async ( id: string ): Promise<StandardAPIResult<ShopServiceType>> => {
     // try {
     //     const { data: result }: { data: ShopAPIResult } = await axios.post("/Shop/list", { id });
     //     return result;
@@ -582,7 +609,7 @@ export const getShop = async ( id: string ): Promise<ShopAPIResult> => {
     return dummy_response["getShop"][ id ];
 }
 
-export const getReviewQuestion = async ( Shop_id: ShopIDType ): Promise<ReviewQuestionAPIResult> => {
+export const getReviewQuestion = async ( Shop_id: ShopIDType ): Promise<StandardAPIResult<Array<ReviewQuestion>>> => {
     // try {
     //     const { data: result }: { data: ReviewQuestionAPIResult } = await axios.get(`/review/questions?rid=${ Shop_id }`);
     //     return result;
@@ -592,3 +619,7 @@ export const getReviewQuestion = async ( Shop_id: ShopIDType ): Promise<ReviewQu
     // }
     return dummy_response["getReviewQuestion"][ Shop_id ];
 }
+
+// export const getDurationToShop = async ( id: string, coord: ServiceCoordinateType ): Promise<DurationToShopAPIResult> => {
+
+// }

@@ -15,7 +15,7 @@ import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, Shop
 
 // components
 import ServiceTitler from "../../../molecule/Titler";
-import Shops from "../../Shop";
+import ShopList from "../../../organism/Shop/ShopList";
 import Selector from "./Selector";
 import DateSelector from "../../../molecule/Selectors/DateSelector";
 import MapSelector from "./MapSelector";
@@ -156,7 +156,7 @@ const ReviewWriter: React.FC = () => {
             {
                 ( question_list.length > 0 ) ?
                     question_list[ review_state ].answer.type === "selection-Shop" ?
-                        <Shops mode="review" onClick={answerHandler} id={""}/>
+                        <ShopList mode="review" onBlockClick={answerHandler}/>
                     : 
                     question_list[ review_state ].answer.type === "selection" ?
                         <Selector 

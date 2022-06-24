@@ -84,8 +84,12 @@ export default new ( function( this: any ): void {
 
     // States: Specific
 
-    this.shopSpecific = atom<ShopIDType | undefined>({
-        key: "retaurantSpecificState",
+    // this.shopSpecific = atom<ShopIDType | undefined>({
+    //     key: "retaurantSpecificState",
+    //     default: undefined
+    // })
+    this.shopSpecific = atom<ShopServiceType | undefined>({
+        key: "shopSpecificState",
         default: undefined
     })
 

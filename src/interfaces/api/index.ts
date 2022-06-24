@@ -15,10 +15,12 @@ export type StandardAPIResult<S> = {
     api_version: string
     client_version: string
 } & ( {
+    result: APISuccess
     status: 200
     data: S
-    error: null
+    error?: null
 } | {
+    result: APIError
     status: number
     data: null
     error: any

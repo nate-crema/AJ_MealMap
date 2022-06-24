@@ -194,7 +194,7 @@ export type ShopServiceType = {
     contact: ShopContactType,
     imgs: ShopImageType,
     menus: ShopMenusType,
-    events?: EventInfoType
+    events?: EventInfoType,
 }
 
 

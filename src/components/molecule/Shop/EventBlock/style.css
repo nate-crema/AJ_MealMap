@@ -1,0 +1,48 @@
+.event-info {
+    width: calc( 100% - 5px );
+    height: calc( 60px - 5px );
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+
+    background-color: white;
+    border-radius: 20px;
+
+    cursor: pointer;
+}
+
+.event-info .eventer-img-wrap {
+    width: 40px;
+    height: 26px;
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+
+    overflow: hidden;
+}
+
+.event-info .eventer-img-wrap img {
+    height: 100%;
+}
+
+.event-info .event-content {
+    width: calc( 100% - 80px );
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    transform: translateY(-50%);
+}
+
+.event-info .event-content .event-content-text {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: black;
+    
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}

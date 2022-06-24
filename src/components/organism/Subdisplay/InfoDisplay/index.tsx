@@ -55,24 +55,7 @@ type InfoBlockProps = {
 const InfoDisplay: React.FC = () => {
 
     // selected info control
-    const [ selected_rid, setSelectedRid ] = useRecoilState<ShopIDType | undefined>( states.shopSpecific );
-    const [ shop, setshop ] = useState<ShopServiceType | undefined>( undefined );
-    const shops = useRecoilValue<Array<ShopServiceType>>( states.shops );
-
-    useEffect(() => {
-        ( async () => {
-            if ( !selected_rid ) return;
-            let loaded_shop: ShopServiceType = shops.filter( v => v.shopID === selected_rid )[0];
-            if ( !loaded_shop ) {
-                const shop_result: ShopAPIResult = await getShop( selected_rid );
-                if ( shop_result.result === APIResult.SUCCEED ) {
-                    loaded_shop = shop_result.data;
-                } else return;
-            }
-            console.log( "shopinfo loaded:", loaded_shop );
-            setshop( loaded_shop );
-        } )()
-    }, [ selected_rid ]);
+    const [ shop, setShop ] = useRecoilState<ShopServiceType>( states.shopSpecific );
     
 
     // shop_name & tag_review control

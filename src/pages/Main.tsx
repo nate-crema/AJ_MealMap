@@ -12,13 +12,14 @@ import '@styles/pages/Main.css';
 // components
 import Locator from "@molecule/Locator";
 import ServiceTitler from "@molecule/Titler";
-import Shops from "@template/Shops";
+import Shops from "@organism/Shop/ShopList";
 // import ReviewEntrypoint from "@molecule/ReviewEntrypoint/ReviewEntrypoint";
 
 
 // interfaces
 import { SubdisplayDisplayMode } from "@interfaces/Subdisplay";
-import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
+import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import { getShopInfoByShopID } from "@api/service";
 
 const Main: React.FC = () => {
 
@@ -47,11 +48,13 @@ const Main: React.FC = () => {
 
     // url control
     const location = useLocation();
-    const setShopSpecific = useSetRecoilState<ShopIDType | undefined>( states.shopSpecific )
+    const shops = useRecoilValue<Array<ShopServiceType>>( states.shops );
+    const setShopSpecific = useSetRecoilState<ShopServiceType | undefined>( states.shopSpecific )
     const setSubdisplayDisplayMode = useSetRecoilState<SubdisplayDisplayMode>( states.subdisplayDisplayMode );
 
-    const displayShopSpecific = ( id: ShopIDType ) => {
-        setShopSpecific( id );
+    const displayShopSpecific = async ( id: ShopIDType ) => {
+        const shop = shops.filter( v => v.shopID === id )[0] || await getShopInfoByShopID(id);
+        setShopSpecific( shop );
         setSubdisplayDisplayMode( "INFO/READ" );
     }
 
