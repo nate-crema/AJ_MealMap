@@ -26,6 +26,8 @@ const InfoMenu: React.FC<InfoMenuProps> = ({}) => {
 
     return <div className="info-menu">
         <EventBlockWrap className="shop-event" eventInfo={ shopInfo?.events }/>
+        <ShopSpecific className="shop-specs"/>
+        <ImageBlock className="shop-images"/>
     </div>
 }
 

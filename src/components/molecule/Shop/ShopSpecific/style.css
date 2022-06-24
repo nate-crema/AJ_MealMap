@@ -1,0 +1,55 @@
+.shop-specifics {
+    width: 100%;
+    height: auto;    
+
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+
+    background-color: white;
+    border-radius: 20px;
+}
+
+.shop-specifics .shop-specblock {
+    width: auto;
+    height: auto;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: grid;
+    grid-template-rows: 24px auto;
+    grid-template-columns: 30px auto;
+}
+
+.shop-specifics .shop-specblock .icn-wrap {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.shop-specifics .shop-specblock .content-wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shop-specifics .shop-specblock .content-wrap .info-content {
+    font-weight: 300;
+    color: var(--theme-color-C);
+}
+
+.shop-specifics .shop-specblock .content-specific-hyperlink {
+    grid-column: 2 / 3;
+}
+
+.shop-specifics .shop-specblock .content-specific-hyperlink span {
+    color: lightgray;
+}

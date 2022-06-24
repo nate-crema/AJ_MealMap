@@ -32,7 +32,12 @@ const dummy_data: Array<ShopServiceType> = [
         contact: {
             default: "031-289-0402"
         },
-        imgs: {},
+        imgs: {
+            default: "https://mblogthumb-phinf.pstatic.net/MjAxNjEyMDVfMjQ1/MDAxNDgwOTE5MjE2Mzgw.LyzRt6AJabprWIuLZtt-NFYqlTtgLmwMCsHEIuPnDgQg.BkIGa9cwfPCvYDU8lBn1hjsazXZV7qpGVKgH95Lt6Xwg.JPEG.ggg5194/KakaoTalk_20161205_125013806.jpg?type=w2",
+            "1": "https://mblogthumb-phinf.pstatic.net/MjAxNjEyMDVfMTk5/MDAxNDgwOTE5MjE2MTU2.mn9LOjXXNd8KjloV_DJa72jA6gyrscHwF6wHxCIP4XAg.ohLvPOtUfYpglFnQ_SH8oKWDyjdwwJ-TqmjW-nm9QS4g.JPEG.ggg5194/KakaoTalk_20161205_125014066.jpg?type=w2",
+            "2": "https://mblogthumb-phinf.pstatic.net/MjAxNjEyMDVfODQg/MDAxNDgwOTE5MjE1MjU2.0fpRCwcJeK1WvFIsE5cePL8ixbwNDypN1tyH7c4Y-3og.2DxPm0I6Wbqrcmeaj5kZj6mXvpf0wG04lB0DB7E40e8g.JPEG.ggg5194/KakaoTalk_20161205_125011021.jpg?type=w2",
+            "3": "https://mblogthumb-phinf.pstatic.net/MjAxNjEyMDVfMjgx/MDAxNDgwOTE5MjE0Nzg1.-OTbiXhG5VUugKLwaECsq886wHk-01EgpVxiIEbI5q4g.JfOldMO7dCqzInx7cIcRbNMWuBRFcQYLmDqyBeEHXVwg.JPEG.ggg5194/KakaoTalk_20161205_125014935.jpg?type=w2"
+        },
         menus: {},
         events: {
             "AJOU_CHONG": {
@@ -48,6 +53,10 @@ const dummy_data: Array<ShopServiceType> = [
                     } // 할인금액 계산함수
                 }
             }
+        },
+        reviews: {
+            score: 9.5,
+            review_cnt: 15
         }
     },
     {
@@ -63,7 +72,10 @@ const dummy_data: Array<ShopServiceType> = [
             default: "031-289-0402"
         },
         imgs: {},
-        menus: {}
+        menus: {},
+        reviews: {
+            review_cnt: 0
+        }
     },
     {
         shopID: "TEST_3",
@@ -78,7 +90,10 @@ const dummy_data: Array<ShopServiceType> = [
             default: "031-289-0402"
         },
         imgs: {},
-        menus: {}
+        menus: {},
+        reviews: {
+            review_cnt: 0
+        }
     }
 ]
 

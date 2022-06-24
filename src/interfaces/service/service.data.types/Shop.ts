@@ -1,10 +1,12 @@
-import { ShopWorkDateSunday, ShopWorkDateMonday, ShopWorkDateTuesday, ShopWorkDateWednesday, ShopWorkDateThursday, ShopWorkDateFriday, ShopWorkDateSaturday, ShopWorkDateDefault, ShopMainCategoryRestaurant, ShopMainCategoryBar, ShopMainCategoryCafe, ShopMainCategoryCVS, ShopMainCategoryETC, ShopRestaurantSubCategoryMeat, ShopRestaurantSubCategoryJapan, ShopRestaurantSubCategoryPortCutlet, ShopRestaurantSubCategoryItalina, ShopRestaurantSubCategoryChicken, ShopRestaurantSubCategoryKorean, ShopRestaurantSubCategoryNoodle, ShopCafeSubCategoryStarbucks, ShopCafeSubCategoryTwosomePlace, ShopCafeSubCategoryCoffeeBean, ShopCafeSubCategoryPascucci, ShopCafeSubCategoryHollys, ShopCafeSubCategoryAngelInUsCoffee, ShopCafeSubCategoryTomNToms, ShopCafeSubCategoryCaffeBene, ShopCafeSubCategoryMangoSix, ShopCafeSubCategoryCoffineGurunara, ShopCafeSubCategoryEdiya, ShopCafeSubCategoryBaek, ShopCafeSubCategoryEtc, ShopCVSSubCategoryGs25, ShopCVSSubCategoryEmart24, ShopCVSSubCategoryCu, ShopCVSSubCategorySevenEleven, ShopCVSSubCategoryMinistop, ShopCVSSubCategoryEtc, ShopRestaurantSubCategorySnack } from "@src/constant/service/Shop";
+import { ShopWorkDateSunday, ShopWorkDateMonday, ShopWorkDateTuesday, ShopWorkDateWednesday, ShopWorkDateThursday, ShopWorkDateFriday, ShopWorkDateSaturday, ShopWorkDateDefault, ShopMainCategoryRestaurant, ShopMainCategoryBar, ShopMainCategoryCafe, ShopMainCategoryCVS, ShopMainCategoryETC, ShopRestaurantSubCategoryMeat, ShopRestaurantSubCategoryJapan, ShopRestaurantSubCategoryPortCutlet, ShopRestaurantSubCategoryItalina, ShopRestaurantSubCategoryChicken, ShopRestaurantSubCategoryKorean, ShopRestaurantSubCategoryNoodle, ShopCafeSubCategoryStarbucks, ShopCafeSubCategoryTwosomePlace, ShopCafeSubCategoryCoffeeBean, ShopCafeSubCategoryPascucci, ShopCafeSubCategoryHollys, ShopCafeSubCategoryAngelInUsCoffee, ShopCafeSubCategoryTomNToms, ShopCafeSubCategoryCaffeBene, ShopCafeSubCategoryMangoSix, ShopCafeSubCategoryCoffineGurunara, ShopCafeSubCategoryEdiya, ShopCafeSubCategoryBaek, ShopCafeSubCategoryEtc, ShopCVSSubCategoryGs25, ShopCVSSubCategoryEmart24, ShopCVSSubCategoryCu, ShopCVSSubCategorySevenEleven, ShopCVSSubCategoryMinistop, ShopCVSSubCategoryEtc, ShopRestaurantSubCategorySnack, ShopWorkTimeDefaultServiceType } from "@src/constant/service/Shop";
 import { UserIDType } from "./User";
 
 export type ShopIDType = string;
 
 // 위치 정보
-export type ShopLocationType = ServiceCoordinateType;
+export type ShopLocationType = ServiceCoordinateType & Partial<{
+    duration: string  
+}>;
 
 export type ServiceCoordinateType = {
     address?: string,
@@ -146,6 +148,46 @@ export type ShopMenusType = {
     }
 }
 
+// 상점 영업시간 정보
+export const ShopWorkDateServerSunday = "Sunday";
+export const ShopWorkDateServerMonday = "Monday";
+export const ShopWorkDateServerTuesday = "Tuesday";
+export const ShopWorkDateServerWednesday = "Wednesday";
+export const ShopWorkDateServerThursday = "Thursday";
+export const ShopWorkDateServerFriday = "Friday";
+export const ShopWorkDateServerSaturday = "Saturday";
+export const ShopWorkDateServerDefault = "Default";
+
+export type ShopWorkDateServerSundayType = typeof ShopWorkDateServerSunday;
+export type ShopWorkDateServerMondayType = typeof ShopWorkDateServerMonday;
+export type ShopWorkDateServerTuesdayType = typeof ShopWorkDateServerTuesday;
+export type ShopWorkDateServerWednesdayType = typeof ShopWorkDateServerWednesday;
+export type ShopWorkDateServerThursdayType = typeof ShopWorkDateServerThursday;
+export type ShopWorkDateServerFridayType = typeof ShopWorkDateServerFriday;
+export type ShopWorkDateServerSaturdayType = typeof ShopWorkDateServerSaturday;
+export type ShopWorkDateServerDefaultType = typeof ShopWorkDateServerDefault;
+
+export type ShopWorkDateServerListType = 
+    ShopWorkDateServerSundayType |
+    ShopWorkDateServerMondayType |
+    ShopWorkDateServerTuesdayType |
+    ShopWorkDateServerWednesdayType |
+    ShopWorkDateServerThursdayType |
+    ShopWorkDateServerFridayType |
+    ShopWorkDateServerSaturdayType |
+    ShopWorkDateServerDefaultType
+;
+
+export type ShopWorkTimeType = {
+    start_time: {
+        [ day in ShopWorkDateServerListType ]?: ShopWorkTimeDefaultServiceType
+    },    
+    end_time: {
+        [ day in ShopWorkDateServerListType ]?: ShopWorkTimeDefaultServiceType
+    },
+    rest_time: Array<Array<number>>,
+}
+
 // 상점 행사 정보
 export type EventInfoType = {
     [ eventer in string ]: {
@@ -194,6 +236,7 @@ export type ShopServiceType = {
     contact: ShopContactType,
     imgs: ShopImageType,
     menus: ShopMenusType,
+    workTime?: ShopWorkTimeType,
     events?: EventInfoType,
 }
 
