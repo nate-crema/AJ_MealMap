@@ -23,6 +23,6 @@ export type ReviewTag = {
 
 export type ShopReview = {
     review_id: ReviewID,
-    Shop_id: ShopIDType,
+    shop_id: ShopIDType,
     tag_list: Array<ReviewTag>
 }

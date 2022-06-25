@@ -212,6 +212,26 @@ export type EventApplyConditionType = {
     [ chk_base in "AND" | "OR" ]?: EventApplyConditionType | Array<string>
 }
 
+// 상점 리뷰 정보 (통계화 및 익명화된 데이터)
+export type ReviewInfoType = {
+    score?: number,
+    review_cnt: number, 
+    categorized?: Partial<{
+        taste: {
+            cnt: number,
+            score: number
+        },
+        distance: {
+            cnt: number,
+            score: number
+        },
+        price: {
+            cnt: number,
+            score: number
+        }
+    }>
+}
+
 // 상점정보
 export type ShopServiceType = {
     shopID: ShopIDType,
@@ -238,6 +258,7 @@ export type ShopServiceType = {
     menus: ShopMenusType,
     workTime?: ShopWorkTimeType,
     events?: EventInfoType,
+    reviews: ReviewInfoType
 }
 
 
