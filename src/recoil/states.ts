@@ -4,6 +4,7 @@ import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 import { Login, Location, alertOption } from "@interfaces/service/recoil/State";
 import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
 import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import { InfoSpecificOpenInfoType, InfoSpecificOpenSize } from "@interfaces/InfoSpecific";
 /*
 
 testState: atom({
@@ -80,6 +81,13 @@ export default new ( function( this: any ): void {
     this.subdisplayDisplaySize = atom<ComponentOpenState>({
         key: "subdisplayDisplaySizeState",
         default: "LARGE"
+    })
+
+    // States: InfoSpecific
+
+    this.infoSpecificOpenInfo = atom<InfoSpecificOpenInfoType>({
+        key: "infoSpecificOpenInfoState",
+        default: "CLOSED"
     })
 
     // States: Specific

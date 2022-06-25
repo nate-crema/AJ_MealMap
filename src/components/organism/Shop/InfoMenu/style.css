@@ -12,6 +12,8 @@
     overflow-y: auto;
 
     /* background-color: lightslategray; */
+
+    z-index: 100;
 }
     
 .info-menu::-webkit-scrollbar {

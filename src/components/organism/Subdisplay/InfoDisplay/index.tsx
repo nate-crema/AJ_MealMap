@@ -22,6 +22,7 @@ import InfoHeader from "../InfoHeader";
 // import { shopReview } from "@interfaces/shop/Review";
 import { ShopAPIResult } from "@interfaces/api/service";
 import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import InfoSpecific from "@organism/Shop/InfoSpecific";
 
 type InfoBlockProps = {
     shop: ShopServiceType
@@ -94,6 +95,7 @@ const InfoDisplay: React.FC = () => {
             title={ shop_name } titleStyle={{ fontSize: "20px", fontWeight: "700" }}
             ment={ tag_review } mentStyle={{ fontSize: "16px" }}
         />
+        <InfoSpecific/>
         <InfoMenu
             // contact={ shop?.contact }
         />

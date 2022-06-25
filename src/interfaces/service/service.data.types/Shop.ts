@@ -149,23 +149,15 @@ export type ShopMenusType = {
 }
 
 // 상점 영업시간 정보
-export const ShopWorkDateServerSunday = "Sunday";
-export const ShopWorkDateServerMonday = "Monday";
-export const ShopWorkDateServerTuesday = "Tuesday";
-export const ShopWorkDateServerWednesday = "Wednesday";
-export const ShopWorkDateServerThursday = "Thursday";
-export const ShopWorkDateServerFriday = "Friday";
-export const ShopWorkDateServerSaturday = "Saturday";
-export const ShopWorkDateServerDefault = "Default";
 
-export type ShopWorkDateServerSundayType = typeof ShopWorkDateServerSunday;
-export type ShopWorkDateServerMondayType = typeof ShopWorkDateServerMonday;
-export type ShopWorkDateServerTuesdayType = typeof ShopWorkDateServerTuesday;
-export type ShopWorkDateServerWednesdayType = typeof ShopWorkDateServerWednesday;
-export type ShopWorkDateServerThursdayType = typeof ShopWorkDateServerThursday;
-export type ShopWorkDateServerFridayType = typeof ShopWorkDateServerFriday;
-export type ShopWorkDateServerSaturdayType = typeof ShopWorkDateServerSaturday;
-export type ShopWorkDateServerDefaultType = typeof ShopWorkDateServerDefault;
+export type ShopWorkDateServerSundayType = typeof ShopWorkDateSunday;
+export type ShopWorkDateServerMondayType = typeof ShopWorkDateMonday;
+export type ShopWorkDateServerTuesdayType = typeof ShopWorkDateTuesday;
+export type ShopWorkDateServerWednesdayType = typeof ShopWorkDateWednesday;
+export type ShopWorkDateServerThursdayType = typeof ShopWorkDateThursday;
+export type ShopWorkDateServerFridayType = typeof ShopWorkDateFriday;
+export type ShopWorkDateServerSaturdayType = typeof ShopWorkDateSaturday;
+export type ShopWorkDateServerDefaultType = typeof ShopWorkDateDefault;
 
 export type ShopWorkDateServerListType = 
     ShopWorkDateServerSundayType |
@@ -181,11 +173,11 @@ export type ShopWorkDateServerListType =
 export type ShopWorkTimeType = {
     start_time: {
         [ day in ShopWorkDateServerListType ]?: ShopWorkTimeDefaultServiceType
-    },    
+    } & { [ ShopWorkDateDefault ]: ShopWorkTimeDefaultServiceType },    
     end_time: {
         [ day in ShopWorkDateServerListType ]?: ShopWorkTimeDefaultServiceType
-    },
-    rest_time: Array<Array<number>>,
+    } & { [ ShopWorkDateDefault ]: ShopWorkTimeDefaultServiceType },
+    rest_time?: Array<Array<number>>,
 }
 
 // 상점 행사 정보

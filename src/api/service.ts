@@ -57,6 +57,18 @@ const dummy_data: Array<ShopServiceType> = [
         reviews: {
             score: 9.5,
             review_cnt: 15
+        },
+        workTime: {
+            start_time: {
+                "Default": [ 9, 0 ],
+                "Saturday": [ 11, 0 ],
+                "Sunday": [ 13, 0 ],
+            },
+            end_time: {
+                "Default": [ 1, 0 ],
+                "Saturday": [ 23, 0 ],
+                "Sunday": [ 5, 0 ],
+            }
         }
     },
     {

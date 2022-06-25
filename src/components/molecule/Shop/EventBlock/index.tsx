@@ -10,6 +10,7 @@ import './style.css';
 // interfaces
 
 import { EventInfoType } from "@interfaces/service/service.data.types/Shop";
+import { InfoSpecificOpenInfoType } from "@interfaces/InfoSpecific";
 
 type EventBlockProps = {
     eventInfo: EventInfoType[0] & { index: number }
@@ -22,8 +23,10 @@ const VERT_MARGIN_EVENT = 20;
 
 const EventBlock: React.FC<EventBlockProps> = ({ eventInfo }) => {
 
-    const eventBlockClickHandler = ( e: MouseEvent ) => {
+    const setInfoSpecific = useSetRecoilState<InfoSpecificOpenInfoType>( states.infoSpecificOpenInfo );
 
+    const eventBlockClickHandler = ( e: MouseEvent ) => {
+        setInfoSpecific("EVENT");
     }
 
     return <div 

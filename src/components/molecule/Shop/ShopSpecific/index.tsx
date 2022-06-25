@@ -8,6 +8,7 @@ import states from "@recoil/states";
 
 // css
 import './style.css';
+import { InfoSpecificOpenInfoType } from "@interfaces/InfoSpecific";
 
 // interfaces
 type ShopBriefProps = {
@@ -20,9 +21,15 @@ type ShopBriefProps = {
 const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
     
     const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
+    const setInfoSpecific = useSetRecoilState<InfoSpecificOpenInfoType>( states.infoSpecificOpenInfo );
 
     // 상점위치: 소요시간정보 가져오기
     // const 
+
+    // 상세정보 클릭이벤트 핸들링
+    const openInfoSpecific = ( info: InfoSpecificOpenInfoType ) => {
+        setInfoSpecific( info );
+    }
 
     return <div 
         className={"shop-specifics" + ( className ? ` ${ className }` : "" )}
@@ -48,7 +55,7 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
                 <span className="info-content">{ info.loc.duration || "통계정보 수집중" }</span>
             </div>
             <div className="content-specific-hyperlink">
-                <span className="spec-hyper">지도에서 보기</span>
+                <span className="spec-hyper" onClick={ () => openInfoSpecific("LOCATION") }>지도에서 보기</span>
             </div>
         </div>
         <div className="shop-specblock specblock-menu">
@@ -78,7 +85,7 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
                 <span className="info-content">{ info.loc.duration || "정보 수집중" }</span>
             </div>
             <div className="content-specific-hyperlink">
-                <span className="spec-hyper">전체메뉴 보기</span>
+                <span className="spec-hyper" onClick={ () => openInfoSpecific("MENU") }>전체메뉴 보기</span>
             </div>
         </div>
         <div className="shop-specblock specblock-worktime">
@@ -104,7 +111,7 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
                 <span className="info-content">{ info.loc.duration || "시간정보 없음" }</span>
             </div>
             <div className="content-specific-hyperlink">
-                <span className="spec-hyper">{ info.loc.duration ? "전체 영업시간 보기" : "영업시간 추가하기" }</span>
+                <span className="spec-hyper" onClick={ () => openInfoSpecific("WORKTIME") }>{ info.loc.duration ? "전체 영업시간 보기" : "영업시간 추가하기" }</span>
             </div>
         </div>
         <div className="shop-specblock specblock-contact">
@@ -127,7 +134,7 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
                 <span className="info-content">{ info.contact.default ? "지금 전화하기" : "연락처 없음" }</span>
             </div>
             <div className="content-specific-hyperlink">
-                <span className="spec-hyper">{ info.contact ? "연락처 보기" : "연락처 추가" }</span>
+                <span className="spec-hyper" onClick={ () => openInfoSpecific("CONTACT") }>{ info.contact ? "연락처 보기" : "연락처 추가" }</span>
             </div>
         </div>
     </div>

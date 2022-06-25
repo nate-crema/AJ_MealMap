@@ -52,4 +52,5 @@
 
 .shop-specifics .shop-specblock .content-specific-hyperlink span {
     color: lightgray;
+    cursor: pointer;
 }
