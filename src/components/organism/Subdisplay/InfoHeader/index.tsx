@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/InfoDisplay/InfoHeader.css';
+import './style.css';
 
 // components
 

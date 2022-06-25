@@ -8,15 +8,15 @@ import states from "@recoil/states";
 import { APIResult, getShop } from "@api/service";
 
 // css
-import '@styles/components/Subdisplay/InfoDisplay.css';
+import './style.css';
 
 // img
 import MarkerImg from '@assets/Marker.png';
 
 // components
 import ServiceTitler from "../../../molecule/Titler";
-import InfoMenu from "./InfoMenu";
-import InfoHeader from "./InfoHeader";
+import InfoMenu from "../../Shop/InfoMenu";
+import InfoHeader from "../InfoHeader";
 
 // interfaces
 // import { shopReview } from "@interfaces/shop/Review";

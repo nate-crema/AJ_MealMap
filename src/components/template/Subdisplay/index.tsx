@@ -6,7 +6,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay.css';
+import './style.css';
 
 // components
 import InfoDisplay from "../../organism/Subdisplay/InfoDisplay";
