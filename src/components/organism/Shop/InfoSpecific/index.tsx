@@ -37,7 +37,7 @@ const mapped_openinfo: {
     },
     "WORKTIME": {
         text: "영업시간",
-        size: "MEDIUM"
+        size: "LARGE"
     },
     "CONTACT": {
         text: "연락처",

@@ -61,11 +61,17 @@ const dummy_data: Array<ShopServiceType> = [
         workTime: {
             start_time: {
                 "Default": [ 9, 0 ],
+                "Monday": [ 9, 0 ],
+                "Tuesday": [ 8, 0 ],
+                "Wednesday": [ 4, 0 ],
                 "Saturday": [ 11, 0 ],
                 "Sunday": [ 13, 0 ],
             },
             end_time: {
                 "Default": [ 1, 0 ],
+                "Monday": [ 11, 0 ],
+                "Tuesday": [ 12, 0 ],
+                "Wednesday": [ 1, 0 ],
                 "Saturday": [ 23, 0 ],
                 "Sunday": [ 5, 0 ],
             }
