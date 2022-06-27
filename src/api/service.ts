@@ -38,7 +38,63 @@ const dummy_data: Array<ShopServiceType> = [
             "2": "https://mblogthumb-phinf.pstatic.net/MjAxNjEyMDVfODQg/MDAxNDgwOTE5MjE1MjU2.0fpRCwcJeK1WvFIsE5cePL8ixbwNDypN1tyH7c4Y-3og.2DxPm0I6Wbqrcmeaj5kZj6mXvpf0wG04lB0DB7E40e8g.JPEG.ggg5194/KakaoTalk_20161205_125011021.jpg?type=w2",
             "3": "https://mblogthumb-phinf.pstatic.net/MjAxNjEyMDVfMjgx/MDAxNDgwOTE5MjE0Nzg1.-OTbiXhG5VUugKLwaECsq886wHk-01EgpVxiIEbI5q4g.JfOldMO7dCqzInx7cIcRbNMWuBRFcQYLmDqyBeEHXVwg.JPEG.ggg5194/KakaoTalk_20161205_125014935.jpg?type=w2"
         },
-        menus: {},
+        menus: {
+            "제육두루치기": {
+                price: 6000,
+                is_limit: false,
+                reviews: []
+            },
+            "뚝배기불고기": {
+                price: 6500,
+                is_limit: false,
+                reviews: []
+            },
+            "차돌된장찌개": {
+                price: 6000,
+                is_limit: false,
+                reviews: []
+            },
+            "돼지김치찌개": {
+                price: 6000,
+                is_limit: false,
+                reviews: []
+            },
+            "곱창 순두부찌개": {
+                price: 6000,
+                is_limit: false,
+                reviews: []
+            },
+            "치즈 새우알밥": {
+                price: 6000,
+                is_limit: false,
+                reviews: []
+            },
+            "뚝배기부대찌개": {
+                price: 6500,
+                is_limit: false,
+                reviews: []
+            },
+            "알고니 뚝배기": {
+                price: 8000,
+                is_limit: false,
+                reviews: []
+            },
+            "Chef 수제갈비탕": {
+                price: 9500,
+                is_limit: false,
+                reviews: []
+            },
+            "Chef 수제돈까스": {
+                price: 8000,
+                is_limit: false,
+                reviews: []
+            },
+            "냉묵밥": {
+                price: 6000,
+                is_limit: true,
+                reviews: []
+            }
+        },
         events: {
             "AJOU_CHONG": {
                 eventer: "담아",

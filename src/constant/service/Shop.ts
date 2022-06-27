@@ -1,5 +1,7 @@
 // 상점 영업시간 관련
 
+import { ShopWorkDateListType } from "@interfaces/service/service.data.types/Shop";
+
 export const ShopWorkDateSunday = "Sunday";
 export const ShopWorkDateMonday = "Monday";
 export const ShopWorkDateTuesday = "Tuesday";
@@ -8,6 +10,9 @@ export const ShopWorkDateThursday = "Thursday";
 export const ShopWorkDateFriday = "Friday";
 export const ShopWorkDateSaturday = "Saturday";
 export const ShopWorkDateDefault = "Default";
+
+export const WORK_DAYS = [ "일", "월", "화", "수", "목", "금", "토" ];
+export const WORK_DAYS_KEY: Array<ShopWorkDateListType> = [ ShopWorkDateSunday, ShopWorkDateMonday, ShopWorkDateTuesday, ShopWorkDateWednesday, ShopWorkDateThursday, ShopWorkDateFriday, ShopWorkDateSaturday ];
 
 export const ShopWorkDateDBSunday = 0;
 export const ShopWorkDateDBMonday = 1;

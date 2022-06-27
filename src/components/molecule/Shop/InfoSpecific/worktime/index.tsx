@@ -8,7 +8,7 @@ import states from "@recoil/states";
 import './style.css';
 import { InfoSpecificOpenInfoType } from "@interfaces/InfoSpecific";
 import { ShopServiceType, ShopWorkDateListType } from "@interfaces/service/service.data.types/Shop";
-import { ShopWorkDateFriday, ShopWorkDateMonday, ShopWorkDateSaturday, ShopWorkDateSunday, ShopWorkDateThursday, ShopWorkDateTuesday, ShopWorkDateWednesday, ShopWorkTimeDefaultServiceType } from "@constant/service/Shop";
+import {  WORK_DAYS, WORK_DAYS_KEY, ShopWorkTimeDefaultServiceType } from "@constant/service/Shop";
 
 // interfaces
 type WorktimeInfoSpecificProps = {
@@ -16,8 +16,6 @@ type WorktimeInfoSpecificProps = {
 }
 
 // components
-const WORK_DAYS = [ "일", "월", "화", "수", "목", "금", "토" ];
-const WORK_DAYS_KEY: Array<ShopWorkDateListType> = [ ShopWorkDateSunday, ShopWorkDateMonday, ShopWorkDateTuesday, ShopWorkDateWednesday, ShopWorkDateThursday, ShopWorkDateFriday, ShopWorkDateSaturday ];
 
 const WorktimeInfoSpecific: React.FC<WorktimeInfoSpecificProps> = ({}) => {
 

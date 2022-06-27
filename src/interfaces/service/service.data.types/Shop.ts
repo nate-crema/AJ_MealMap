@@ -141,7 +141,7 @@ export type ShopImageType = {
 export type ShopMenusType = {
     [ menuname in string ]: {
         price: number,
-        is_limit: boolean,
+        is_limit: boolean, // 한정판매 메뉴 여부
         // reviews: Array<ReviewIDType>,
         reviews: Array<string>,
         // alergic: Array<AlergicIDType>
@@ -177,7 +177,9 @@ export type ShopWorkTimeType = {
     end_time: {
         [ day in ShopWorkDateServerListType ]?: ShopWorkTimeDefaultServiceType
     } & { [ ShopWorkDateDefault ]: ShopWorkTimeDefaultServiceType },
-    rest_time?: Array<Array<number>>,
+    rest_time?: {
+        [ day in ShopWorkDateServerListType ]?: Array<[ ShopWorkTimeDefaultServiceType, ShopWorkTimeDefaultServiceType ]>
+    },
 }
 
 // 상점 행사 정보
