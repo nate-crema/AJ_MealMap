@@ -8,6 +8,7 @@ import states from "@recoil/states";
 import './style.css';
 import { InfoSpecificOpenInfoType, InfoSpecificOpenSize } from "@interfaces/InfoSpecific";
 import WorktimeInfoSpecific from "@molecule/Shop/InfoSpecific/worktime";
+import MenuInfoSpecific from "@molecule/Shop/InfoSpecific/menu";
 
 const mapped_opensize: {
     [ keys in InfoSpecificOpenSize ]: number
@@ -94,7 +95,8 @@ const InfoSpecific: React.FC<InfoSpecificProps> = () => {
         </div>
         <div className="info-specific-area">
             {
-                ( open_info === "WORKTIME" ) && <WorktimeInfoSpecific/>
+                ( open_info === "WORKTIME" ) ? <WorktimeInfoSpecific/>
+                : ( open_info === "MENU" ) && <MenuInfoSpecific/>
             }
         </div>
     </div>

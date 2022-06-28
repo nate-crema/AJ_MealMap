@@ -40,56 +40,67 @@ const dummy_data: Array<ShopServiceType> = [
         },
         menus: {
             "제육두루치기": {
+                cat: 0,
                 price: 6000,
                 is_limit: false,
                 reviews: []
             },
             "뚝배기불고기": {
+                cat: 0,
                 price: 6500,
                 is_limit: false,
                 reviews: []
             },
             "차돌된장찌개": {
+                cat: 0,
                 price: 6000,
                 is_limit: false,
                 reviews: []
             },
             "돼지김치찌개": {
+                cat: 0,
                 price: 6000,
                 is_limit: false,
                 reviews: []
             },
             "곱창 순두부찌개": {
+                cat: 0,
                 price: 6000,
                 is_limit: false,
                 reviews: []
             },
             "치즈 새우알밥": {
+                cat: 0,
                 price: 6000,
                 is_limit: false,
                 reviews: []
             },
             "뚝배기부대찌개": {
+                cat: 0,
                 price: 6500,
                 is_limit: false,
                 reviews: []
             },
             "알고니 뚝배기": {
+                cat: 0,
                 price: 8000,
                 is_limit: false,
                 reviews: []
             },
             "Chef 수제갈비탕": {
+                cat: 1,
                 price: 9500,
                 is_limit: false,
                 reviews: []
             },
             "Chef 수제돈까스": {
+                cat: 1,
                 price: 8000,
                 is_limit: false,
                 reviews: []
             },
             "냉묵밥": {
+                cat: 0,
                 price: 6000,
                 is_limit: true,
                 reviews: []

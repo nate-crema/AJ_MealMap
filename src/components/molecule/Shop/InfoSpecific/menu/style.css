@@ -1,0 +1,41 @@
+.shop-specinfo-menus {
+    width: calc( 100% - 40px );
+    height: calc( 100% - 95px );
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.shop-specinfo-menus .specinfo-titler {
+    width: 100%;
+    height: 30px;
+
+    position: absolute;
+    top: 0;
+    left: 10px;
+}
+
+.shop-specinfo-menus .specinfo-titler .specinfo-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--theme-color-C);    
+}
+
+.shop-specinfo-menus .menublocks {
+    width: 100%;
+    height: calc(100% - 30px);
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.shop-specinfo-menus .menublocks::-webkit-scrollbar {
+    display: none;
+}

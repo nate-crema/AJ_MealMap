@@ -140,6 +140,8 @@ export type ShopImageType = {
 // 상점 메뉴 정보
 export type ShopMenusType = {
     [ menuname in string ]: {
+        cat?: number, // 메뉴별 분류 카테고리
+        img?: string, // 메뉴별 개별사진
         price: number,
         is_limit: boolean, // 한정판매 메뉴 여부
         // reviews: Array<ReviewIDType>,

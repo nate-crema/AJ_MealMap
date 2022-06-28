@@ -72,8 +72,8 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
             resttime: info.workTime.rest_time ? info.workTime.rest_time[ today ] || [] : []
         };
         const worktime_today_min = {
-            start: worktime_today.start[0] + worktime_today.start[1],
-            end: worktime_today.end[0] + worktime_today.end[1],
+            start: worktime_today.start[0] * 60 + worktime_today.start[1],
+            end: worktime_today.end[0] * 60 + worktime_today.end[1],
             resttime: worktime_today.resttime.map( v => ([ v[0][0] * 60 + v[0][1], v[1][0] * 60 + v[1][1] ]) ),
             resttime_calc: ( curr_min: number ): boolean => {
                 // 입력받은 분단위 현재시간이 휴게시간에 해당하는지 계산
