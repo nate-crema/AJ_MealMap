@@ -42,7 +42,10 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
         clearInterval( menu_text_intervalId.current );
 
         const { menus } = info;
-        if (!menus || Object.keys( menus ).length === 0) return;
+        if (!menus || Object.keys( menus ).length === 0) {
+            setMenuText("메뉴정보없음")
+            return;
+        } else setMenuText("정보수집중...");
 
         menu_text_intervalId.current = setInterval(() => {
             setIsMenutextChanging(true);
@@ -58,7 +61,10 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
     // 영업시간: 현재 영업여부 표시기능 구현
     const [ isWorking, setIsWorking ] = useState<string>("시간정보없음");
     useEffect(() => {
-        if ( !info.workTime ) return; // 영업시간정보 없을 경우 중지
+        if ( !info.workTime ) { // 영업시간정보 없을 경우 중지
+            setIsWorking("시간정보없음");
+            return; 
+        }
 
         const now_min = new Date().getHours() * 60 + new Date().getMinutes();
 
@@ -171,6 +177,8 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
         }
         
     }, [ info ]);
+
+    useEffect(() => console.log( "shopSpecific", info ), [ info ]);
 
     return <div 
         className={"shop-specifics" + ( className ? ` ${ className }` : "" )}
