@@ -172,7 +172,12 @@ const dummy_data: Array<ShopServiceType> = [
             long: 127.04266685032984
         },
         contact: {
-            default: "031-289-0402"
+            default: "031-289-0402",
+            add1: "010-0000-1234",
+            add2: "010-0000-1234",
+            add3: "010-0000-1234",
+            add4: "010-0000-1234",
+            add5: "010-0000-1234",
         },
         imgs: {},
         menus: {},

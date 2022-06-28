@@ -1,0 +1,46 @@
+.contact-block {
+    width: 100%;
+    height: 70px;
+    
+    position: relative;
+
+    margin-top: 20px;
+
+    cursor: pointer;
+}
+
+.contact-block .contact-name-area {
+    width: 100%;
+    height: 20px;
+    
+    position: absolute;
+    top: 0;
+}
+
+.contact-block .contact-name-area .contact-name {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--theme-color-C);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.contact-block .contact-content-area {
+    width: 100%;
+    height: 50px;
+    
+    position: absolute;
+    top: 20px;
+}
+
+.contact-block .contact-content-area .contact-number {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--theme-color-C);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}

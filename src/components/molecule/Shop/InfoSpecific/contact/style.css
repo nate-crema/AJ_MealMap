@@ -1,0 +1,12 @@
+.shop-specinfo-contact {
+    width: calc( 100% - 40px );
+    height: calc( 100% - 95px );
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
