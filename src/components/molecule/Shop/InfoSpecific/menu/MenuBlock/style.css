@@ -48,3 +48,34 @@
     top: 30px;
     margin-left: 15px;
 }
+
+.menu-block .menu-addbtn {
+    width: 100%;
+    height: 100%;
+    
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.menu-block .menu-addbtn .icn-wrap {
+    width: 30%;
+    height: auto;
+    
+    position: absolute;
+    top: calc(50% - 20px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu-block .menu-addbtn span {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--theme-color-C);
+    white-space: nowrap;
+    
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+}

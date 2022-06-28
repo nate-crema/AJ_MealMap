@@ -21,7 +21,7 @@ const MenuInfoSpecific: React.FC<menuInfoSpecificProps> = () => {
     const menus = useMemo( () => Object.keys( info.menus ).map( menu => ({
         name: menu,
         ...info.menus[ menu ]
-    }) ), [ info ] );
+    }) ).concat([ { name: "[[ADD]]", price: 0, is_limit: false, reviews: [] } ]), [ info ] );
 
     useEffect(() => {
         console.log( "menu", info.menus );
@@ -32,7 +32,7 @@ const MenuInfoSpecific: React.FC<menuInfoSpecificProps> = () => {
             <span className="specinfo-title">메뉴</span>
         </div>
         <div className="menublocks">
-            {
+            {                
                 menus.map( (menu, i) => <>
                     <MenuBlock menu={ menu } style={{ marginLeft: i%2 ? "14px" : "7px" }}/>
                 </> )
