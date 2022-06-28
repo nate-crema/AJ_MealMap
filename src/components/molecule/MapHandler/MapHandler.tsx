@@ -16,9 +16,10 @@ import { MapHandlerModeInput, MapHandlerCommonOptions, MapHandlerModeDisplay } f
 type MapHandlerProps = {
     className?: string,
     style?: CSSProperties
+    onMapLoaded?: ( ref: any ) => any // 지도가 로딩된 직후 실행
 }
 
-const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandlerModeInput) > = ({ className, style, type, option }) => {
+const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandlerModeInput) > = ({ className, style, type, option, onMapLoaded }) => {
 
     // global states control
     const { lat, long } = useRecoilValue<{ lat: number, long: number }>( states.location );
@@ -100,11 +101,18 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
             mapRef.current?.removeChild( mapRef.current?.children[i] );
         }
 
+        console.log("MapHandler", location);
+
         // display map
         kakaoMapObject.current = new window.kakao.maps.Map( mapRef.current, {
             center: new window.kakao.maps.LatLng( location.lat, location.long ),
             level: level || 1
         } );
+
+        if ( onMapLoaded ) onMapLoaded( kakaoMapObject );        
+        
+        // HTML Docs 크기 반영
+        kakaoMapObject.current.relayout();
 
         // register click handler
         window.kakao.maps.event.addListener( kakaoMapObject.current, 'click', clickHandler );
