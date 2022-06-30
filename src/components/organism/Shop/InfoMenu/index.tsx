@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo, SyntheticEvent } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, SyntheticEvent, MouseEvent } from "react";
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
@@ -12,6 +12,7 @@ import EventBlockWrap from "@organism/Shop/EventBlockWrap";
 import ShopSpecific from "@molecule/Shop/ShopSpecific";
 import ImageBlock from "@molecule/Shop/ImageBlock";
 import ReviewBlock from "@molecule/Shop/ReviewBlock";
+import { InfoSpecificOpenInfoType } from "@interfaces/InfoSpecific";
 
 // interfaces
 type touchState = "na" | "toUp" | "toDown";
@@ -23,11 +24,17 @@ type InfoMenuProps = {}
 const InfoMenu: React.FC<InfoMenuProps> = ({}) => {
 
     const [ shopInfo, setShopInfo ] = useRecoilState<ShopServiceType>( states.shopSpecific );
+    const setInfoSpecific = useSetRecoilState<InfoSpecificOpenInfoType>( states.infoSpecificOpenInfo );
+
+    // ImageBlock 클릭 이벤트 처리
+    const ImageBlockClickHandler = ( e: MouseEvent ) => {
+        setInfoSpecific( "IMAGE" );
+    }
 
     return <div className="info-menu">
         <EventBlockWrap className="shop-event" eventInfo={ shopInfo?.events }/>
         <ShopSpecific className="shop-specs"/>
-        <ImageBlock className="shop-images"/>
+        <ImageBlock className="shop-images" onClick={ ImageBlockClickHandler } />
         <ReviewBlock className="shop-reviews"/>
     </div>
 }

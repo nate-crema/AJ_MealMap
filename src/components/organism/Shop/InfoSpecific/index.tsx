@@ -12,6 +12,7 @@ import MenuInfoSpecific from "@molecule/Shop/InfoSpecific/menu";
 import EventInfoSpecific from "@molecule/Shop/InfoSpecific/event";
 import ContactInfoSpecific from "@molecule/Shop/InfoSpecific/contact";
 import LocationInfoSpecific from "@molecule/Shop/InfoSpecific/location";
+import ImageInfoSpecific from "@molecule/Shop/InfoSpecific/image";
 
 const mapped_opensize: {
     [ keys in InfoSpecificOpenSize ]: number
@@ -102,7 +103,8 @@ const InfoSpecific: React.FC<InfoSpecificProps> = () => {
                 : ( open_info === "MENU" ) ? <MenuInfoSpecific/>
                 : ( open_info === "EVENT" ) ? <EventInfoSpecific/>
                 : ( open_info === "CONTACT" ) ? <ContactInfoSpecific/>
-                : ( open_info === "LOCATION" ) && <LocationInfoSpecific/>
+                : ( open_info === "LOCATION" ) ? <LocationInfoSpecific/>
+                : ( open_info === "IMAGE" ) && <ImageInfoSpecific/>
             }
         </div>
     </div>

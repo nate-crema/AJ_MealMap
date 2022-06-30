@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, MouseEvent } from "react";
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } from "recoil";
@@ -12,13 +12,14 @@ import { getShopInfoByShopID } from "@api/service";
 // interfaces
 type ImageBlockProps = {
     className?: string,
-    id?: ShopIDType
+    id?: ShopIDType,
+    onClick?: ( e: MouseEvent ) => any
 }
 
 // components
 
 
-const ImageBlock: React.FC<ImageBlockProps> = ({ className, id }) => {
+const ImageBlock: React.FC<ImageBlockProps> = ({ className, id, onClick }) => {
 
     const shops = useRecoilValue<Array<ShopServiceType>>( states.shops );
     const selected_shop = useRecoilValue<ShopServiceType>( states.shopSpecific );
@@ -35,7 +36,13 @@ const ImageBlock: React.FC<ImageBlockProps> = ({ className, id }) => {
         } )()
     }, [ id, selected_shop ]);
 
-    return <div className={ "shop-image" + ( className ? ` ${ className }` : "" ) }>
+    return <div
+        className={ "shop-image" + ( className ? ` ${ className }` : "" ) }
+        onClick={ onClick } 
+        style={{
+            cursor: onClick ? "pointer" : ""
+        }}
+    >
         { info && ( Object.values(info.imgs).length > 0 ) ? 
             Object.values(info.imgs).map( ( url: string, i: number, imgs: Array<string> ) => ( i <= 4 ) && <div style={
             Object.assign(

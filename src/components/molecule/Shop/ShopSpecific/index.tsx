@@ -113,11 +113,22 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
                 return isNowRestime;
             }
         }
+        const didTodayDawntimeWorked = worktime_today_min.start > worktime_today_min.end;
         const didYesterdayDawntimeWorked = worktime_yesterday_min.start > worktime_yesterday_min.end;
+
+        // console.log( "didTodayDawntimeWorked", didTodayDawntimeWorked );
+        // console.log( "didYesterdayDawntimeWorked", didYesterdayDawntimeWorked );
+
+        // console.log( "now_min", now_min );
+        // console.log( "worktime_today_min", worktime_today_min );
 
         if (
             // 오늘 영업시간에 해당하는 경우
-            ( worktime_today_min.start <= now_min && now_min <= worktime_today_min.end )
+            (
+                ( didTodayDawntimeWorked ) ?  // 오늘 야간영업을 하는 요일이라면
+                ( worktime_today_min.start <= now_min && now_min <= 24 * 60 ) : // 시작시간에서 24시 전까지 사이에 해당하는지 확인
+                ( worktime_today_min.start <= now_min && now_min <= worktime_today_min.end ) // 아니면 시작시간에서 종료시간 사이에 해당하는지 확인
+            )
             // 또는
             ||
             // 어제 영업시간에 새벽영업이 포함되고, 오늘 아직 어제의 새벽영업시간에 해당하는 경우
@@ -131,7 +142,9 @@ const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
             const endtime_base = // 이후 계산에 이용될 영업종료 기준시간
                 ( didYesterdayDawntimeWorked && ( now_min <= worktime_yesterday_min.end ) ) ?
                 worktime_yesterday_min.end :
-                worktime_today_min.end;
+                    ( didTodayDawntimeWorked ) ?
+                    (24 * 60) + worktime_today_min.end :
+                    worktime_today_min.end;
 
             const closesttime_base = (resttime_start_base ? Math.min( resttime_start_base[0], endtime_base ) : endtime_base);
 
