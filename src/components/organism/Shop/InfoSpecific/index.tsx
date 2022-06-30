@@ -105,7 +105,8 @@ const InfoSpecific: React.FC<InfoSpecificProps> = () => {
                 : ( open_info === "EVENT" ) ? <EventInfoSpecific/>
                 : ( open_info === "CONTACT" ) ? <ContactInfoSpecific/>
                 : ( open_info === "LOCATION" ) ? <LocationInfoSpecific/>
-                : ( open_info === "IMAGE" ) && <ImageInfoSpecific/>
+                : ( open_info === "IMAGE" ) ? <ImageInfoSpecific/>
+                : ( open_info === "REVIEW" ) && <ReviewInfoSpecific/>
             }
         </div>
     </div>

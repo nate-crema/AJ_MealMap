@@ -132,7 +132,55 @@ const dummy_data: Array<ShopServiceType> = [
         },
         reviews: {
             score: 9.5,
-            review_cnt: 15
+            review_cnt: 15,
+            categorized: {
+                taste: {
+                    name: "맛(염도)",
+                    score: 9.5,
+                    cnt: 8,
+                    spec_score: {
+                        good: {
+                            name: "짜요",
+                            value: 6
+                        },
+                        bad: {
+                            name: "싱거워요",
+                            value: 2
+                        }
+                    }
+                },
+                distance: {
+                    name: "거리(학교)",
+                    score: 9.5,
+                    midcnt: 2,
+                    cnt: 9,
+                    spec_score: {
+                        good: {
+                            name: "가까워요",
+                            value: 6
+                        },
+                        bad: {
+                            name: "멀어요",
+                            value: 1
+                        }
+                    }
+                },
+                price: {
+                    name: "가격",
+                    score: 9.5,
+                    cnt: 5,
+                    spec_score: {
+                        good: {
+                            name: "가성비에요",
+                            value: 0
+                        },
+                        bad: {
+                            name: "비싸요",
+                            value: 5
+                        }
+                    }
+                },
+            }
         },
         workTime: {
             start_time: {

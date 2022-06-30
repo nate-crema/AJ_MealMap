@@ -31,11 +31,16 @@ const InfoMenu: React.FC<InfoMenuProps> = ({}) => {
         setInfoSpecific( "IMAGE" );
     }
 
+    // ReviewBlock 클릭 이벤트 처리
+    const ReviewBlockClickHandler = ( e: MouseEvent ) => {
+        setInfoSpecific( "REVIEW" );
+    }
+
     return <div className="info-menu">
         <EventBlockWrap className="shop-event" eventInfo={ shopInfo?.events }/>
         <ShopSpecific className="shop-specs"/>
         <ImageBlock className="shop-images" onClick={ ImageBlockClickHandler } />
-        <ReviewBlock className="shop-reviews"/>
+        <ReviewBlock className="shop-reviews" onClick={ ReviewBlockClickHandler }/>
     </div>
 }
 

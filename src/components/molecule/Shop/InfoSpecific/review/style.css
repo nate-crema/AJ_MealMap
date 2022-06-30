@@ -1,0 +1,25 @@
+.shop-specinfo-review {
+    width: calc( 100% - 80px );
+    height: calc( 100% - 95px );
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.shop-specinfo-review::-webkit-scrollbar {
+    display: none;
+}
+
+.shop-specinfo-review .review-brief {
+    width: calc( 100% - 5px - 40px );
+    height: 90px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    
+    padding: 20px;
+}

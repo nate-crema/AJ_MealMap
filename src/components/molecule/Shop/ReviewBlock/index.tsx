@@ -11,17 +11,23 @@ import SvgManager from "@assets/svg";
 
 // interfaces
 type ReviewBlockProps = {
-    className?: string
+    className?: string,
+    onClick?: ( e: MouseEvent ) => any
 }
 
 // components
 
 
-const ReviewBlock: React.FC<ReviewBlockProps> = ({ className }) => {
+const ReviewBlock: React.FC<ReviewBlockProps> = ({ className, onClick }) => {
 
     const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
 
-    return <div className={ "shop-reviews" + ( className ? ` ${ className }` : "" ) }>
+    return <div className={ "shop-reviews" + ( className ? ` ${ className }` : "" ) }
+        onClick={ onClick }
+        style={{
+            cursor: onClick ? "pointer" : ""
+        }}
+    >
         <div className="score-statistics">
             <span className="avg-score">{ info.reviews.score || "NA" }</span>
             <span className="review-cnt">리뷰 { info.reviews.review_cnt }개</span>

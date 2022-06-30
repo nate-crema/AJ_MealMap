@@ -1,4 +1,5 @@
 import { ShopWorkDateSunday, ShopWorkDateMonday, ShopWorkDateTuesday, ShopWorkDateWednesday, ShopWorkDateThursday, ShopWorkDateFriday, ShopWorkDateSaturday, ShopWorkDateDefault, ShopMainCategoryRestaurant, ShopMainCategoryBar, ShopMainCategoryCafe, ShopMainCategoryCVS, ShopMainCategoryETC, ShopRestaurantSubCategoryMeat, ShopRestaurantSubCategoryJapan, ShopRestaurantSubCategoryPortCutlet, ShopRestaurantSubCategoryItalina, ShopRestaurantSubCategoryChicken, ShopRestaurantSubCategoryKorean, ShopRestaurantSubCategoryNoodle, ShopCafeSubCategoryStarbucks, ShopCafeSubCategoryTwosomePlace, ShopCafeSubCategoryCoffeeBean, ShopCafeSubCategoryPascucci, ShopCafeSubCategoryHollys, ShopCafeSubCategoryAngelInUsCoffee, ShopCafeSubCategoryTomNToms, ShopCafeSubCategoryCaffeBene, ShopCafeSubCategoryMangoSix, ShopCafeSubCategoryCoffineGurunara, ShopCafeSubCategoryEdiya, ShopCafeSubCategoryBaek, ShopCafeSubCategoryEtc, ShopCVSSubCategoryGs25, ShopCVSSubCategoryEmart24, ShopCVSSubCategoryCu, ShopCVSSubCategorySevenEleven, ShopCVSSubCategoryMinistop, ShopCVSSubCategoryEtc, ShopRestaurantSubCategorySnack, ShopWorkTimeDefaultServiceType } from "@src/constant/service/Shop";
+import { ReviewType } from "./Review";
 import { UserIDType } from "./User";
 
 export type ShopIDType = string;
@@ -209,22 +210,25 @@ export type EventApplyConditionType = {
 }
 
 // 상점 리뷰 정보 (통계화 및 익명화된 데이터)
+export type CategorizedReviewType = {
+    name: string,
+    cnt: number,
+    midcnt?: number,
+    score: number,
+    spec_score?: {
+        [ key in ReviewType ]: {
+            name: string,
+            value: number
+        }
+    },
+    icn?: any
+};
+
 export type ReviewInfoType = {
     score?: number,
     review_cnt: number, 
     categorized?: Partial<{
-        taste: {
-            cnt: number,
-            score: number
-        },
-        distance: {
-            cnt: number,
-            score: number
-        },
-        price: {
-            cnt: number,
-            score: number
-        }
+        [ cat in string ]: CategorizedReviewType
     }>
 }
 
