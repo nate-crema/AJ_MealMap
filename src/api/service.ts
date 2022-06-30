@@ -1,8 +1,9 @@
 import axios from "@connection/request";
+import AssetAxios from "@connection/asset";
 
 // interface
 
-import { APIStatusList, StandardAPIResult } from "@interfaces/api";
+import { APIStatusList, AssetAPIResult, StandardAPIResult } from "@interfaces/api";
 import { ReviewQuestion } from "@src/interfaces/ReviewWriter";
 import { ServiceCoordinateType, ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import {
@@ -736,3 +737,21 @@ export const getReviewQuestion = async ( Shop_id: ShopIDType ): Promise<Standard
 // export const getDurationToShop = async ( id: string, coord: ServiceCoordinateType ): Promise<DurationToShopAPIResult> => {
 
 // }
+
+
+export const getSvgImage = async ( svg_type: string ): Promise<{ result: APIStatusList["SUCCEED"], data: string } | { result: APIStatusList["FAILED"] }> => {
+    try {
+        const { data: code_result }: { data: AssetAPIResult<string> } = await AssetAxios.get(`/api/host/getCode?key=${ svg_type }`);
+        const { data: code } = code_result;
+        
+        const { data }: { data: string } = await AssetAxios.get(`/api/host/icn/${ code }`);
+        
+        return {
+            result: APIResult.SUCCEED,
+            data
+        };
+    } catch( e: any ) {
+        console.error(e);
+        return { result: APIResult.FAILED };
+    }
+}

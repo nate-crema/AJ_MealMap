@@ -13,6 +13,7 @@ import EventInfoSpecific from "@molecule/Shop/InfoSpecific/event";
 import ContactInfoSpecific from "@molecule/Shop/InfoSpecific/contact";
 import LocationInfoSpecific from "@molecule/Shop/InfoSpecific/location";
 import ImageInfoSpecific from "@molecule/Shop/InfoSpecific/image";
+import ReviewInfoSpecific from "@molecule/Shop/InfoSpecific/review";
 
 const mapped_opensize: {
     [ keys in InfoSpecificOpenSize ]: number
@@ -84,7 +85,7 @@ const InfoSpecific: React.FC<InfoSpecificProps> = () => {
     return <div 
         className={ "info-specific-window" + ( open_info === "CLOSED" ? ' window-closed' : '' ) }
         style={{
-            height: `calc((100% - 90px) * ${ mapped_opensize[ mapped_openinfo[ open_info ].size ] } / 100)`
+            height: `calc((100% - 150px) * ${ mapped_opensize[ mapped_openinfo[ open_info ].size ] } / 100)`
         }}
     >
         <div className="window-close-btn" onClick={ closeBtnClickHandler }>

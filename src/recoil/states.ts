@@ -109,5 +109,12 @@ export default new ( function( this: any ): void {
         default: { active: false }
     })
 
+    // States: SvgManager
+    
+    this.svgList = atom<{ [ svg_type in string ]: string }>({
+        key: "svgListState",
+        default: {}
+    })
+
   
 } as any );

@@ -1,6 +1,6 @@
 .info-specific-window {
     width: calc(100% - 2px);
-    height: calc(100% - 90px);
+    height: calc(100% - 150px);
 
     position: absolute;
     bottom: 0;
@@ -29,7 +29,7 @@
     
     position: absolute;
     top: 20px;
-    left: 20px;
+    left: 40px;
 
     background-color: white;
     border-radius: 5px;

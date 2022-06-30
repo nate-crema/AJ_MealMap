@@ -15,6 +15,7 @@ import ReviewWriter from "../../organism/Subdisplay/ReviewWriter";
 // interfaces
 import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@interfaces/Subdisplay";
 import Alert from "../../molecule/Alert";
+import InfoSpecific from "@organism/Shop/InfoSpecific";
 
 const SUBDISPLAY_SIZE_PRESETS: {
     [ keys in ComponentOpenState ]: string
@@ -63,6 +64,7 @@ const Subdisplay: React.FC = () => {
             {
                 ( type === "INFO/READ" ) ? <>
                     <InfoDisplay/>
+                    <InfoSpecific/>
                 </> : 
                 ( type === "REVIEW/WRITE" ) ? <>
                     <ReviewWriter/>
