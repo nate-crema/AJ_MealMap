@@ -12,17 +12,18 @@ export type APIStatusList = {
 }
 
 export type StandardAPIResult<S> = {
-    api_version: string
     client_version: string
 } & ( {
+    api_version: string
     result: APISuccess
     status: 200
     data: S
     error?: null
 } | {
+    api_version?: null
     result: APIError
     status: number
-    data: null
+    data?: null
     error: any
 } )
 

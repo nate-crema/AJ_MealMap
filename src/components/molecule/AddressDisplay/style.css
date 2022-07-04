@@ -1,0 +1,92 @@
+.shop-addressor {
+    width: 80%;
+
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: auto;
+
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+
+    z-index: 1000;
+}
+.shop-addressor.addressor-small {
+    height: 80px;
+}
+.shop-addressor.addressor-large {
+    height: 180px;
+}
+
+.shop-addressor .textarea-wrap {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shop-addressor .textarea-wrap span {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--theme-color-C);
+    word-break: keep-all;
+
+    width: 80%;
+    height: fit-content;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shop-addressor .textarea-wrap p {
+    font-size: 14px;
+    color: var(--theme-color-C);
+    word-break: keep-all;
+
+    margin: 0;
+
+    position: absolute;
+    left: 20px;
+}
+
+.shop-addressor .textarea-wrap p.notice-title {
+    font-weight: 500;
+    top: 20px;
+}
+
+.shop-addressor .textarea-wrap p.notice-desc {
+    font-weight: 300;
+    top: 70px;
+}
+.shop-addressor .textarea-wrap p.notice-update-addr {
+    color: black;
+    font-weight: 500;
+    bottom: 20px;
+}
+
+.shop-addressor .icnarea-wrap {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shop-addressor .icnarea-wrap .icn-wrap {
+    width: 35%;
+    height: fit-content;
+
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    cursor: pointer;
+}

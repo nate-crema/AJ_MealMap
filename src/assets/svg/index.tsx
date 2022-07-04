@@ -57,7 +57,7 @@ const SvgManager: React.FC<SvgManagerProps> = ({ svg_type, style }) => {
             const unparsed_svg = svgList[ svg_type ] || await getSvgFromServer();
             setSvgDoc(unparsed_svg);
         } )()
-    }, []);
+    }, [ svg_type ]);
 
     return <div dangerouslySetInnerHTML={{ __html: svgDoc }}/>;
 };

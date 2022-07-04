@@ -12,6 +12,7 @@ import {
     ShopRestaurantSubCategoryKorean,
     ShopRestaurantSubCategorySnack
 } from "@constant/service/Shop";
+import { ShopAPIResult } from "@interfaces/api/service";
 
 export const APIResult: APIStatusList = {
     SUCCEED: "SUCCEED",
@@ -26,7 +27,7 @@ const dummy_data: Array<ShopServiceType> = [
         name: "미스터쉐프",
         category: { main: ShopMainCategoryRestaurant, sub: ShopRestaurantSubCategoryKorean },
         loc: {
-            address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프",
+            // address: "경기도 수원시 팔달구 우만동 아주로47번길 미스터 쉐프",
             lat: 37.27921955685363,
             long: 127.04266685032984
         },
@@ -787,7 +788,7 @@ export const getShopList = async ( lat: number, long: number ): Promise<Standard
     return dummy_response[ "getShopList" ];
 }
 
-export const getShop = async ( id: string ): Promise<StandardAPIResult<ShopServiceType>> => {
+export const getShop = async ( shopID: ShopIDType ): Promise<StandardAPIResult<ShopServiceType>> => {
     // try {
     //     const { data: result }: { data: ShopAPIResult } = await axios.post("/Shop/list", { id });
     //     return result;
@@ -795,10 +796,25 @@ export const getShop = async ( id: string ): Promise<StandardAPIResult<ShopServi
     //     console.error(e);
     //     return { result: APIResult.SUCCEED;
     // }
-    return dummy_response["getShop"][ id ];
+    return dummy_response["getShop"][ shopID ];
 }
 
-export const getReviewQuestion = async ( Shop_id: ShopIDType ): Promise<StandardAPIResult<Array<ReviewQuestion>>> => {
+export const getSpecificShopInfo = async ( shopID: ShopIDType, type: keyof ShopServiceType ): Promise<StandardAPIResult<Partial<ShopServiceType>>> => {
+    try {
+        const { data: result }: { data: StandardAPIResult<Partial<ShopServiceType>> } = await axios.post(`/service/shop/specific`, { shopID, type });
+        return result;
+    } catch( e: any ) {
+        console.error(e);
+        return {
+            client_version: process.env.REACT_APP_CLIENT_VERSION || "[ client_version ]",
+            result: "FAILED",
+            status: e.request.status || 400,
+            error: e
+        };
+    }
+}
+
+export const getReviewQuestion = async ( shopID: ShopIDType ): Promise<StandardAPIResult<Array<ReviewQuestion>>> => {
     // try {
     //     const { data: result }: { data: ReviewQuestionAPIResult } = await axios.get(`/review/questions?rid=${ Shop_id }`);
     //     return result;
@@ -806,18 +822,52 @@ export const getReviewQuestion = async ( Shop_id: ShopIDType ): Promise<Standard
     //     console.error(e);
     //     return { result: APIResult.SUCCEED;
     // }
-    return dummy_response["getReviewQuestion"][ Shop_id ];
+    return dummy_response["getReviewQuestion"][ shopID ];
+}
+
+export const updateShopLocation = async ( shopID: ShopIDType, loc: ServiceCoordinateType ): Promise<StandardAPIResult<boolean>> => {
+    try {
+        const { data: result }: { data: StandardAPIResult<boolean> } = await axios.patch(`/service/shop/${ shopID }/location`, { loc });
+        return result;
+    } catch( e: any ) {
+        console.error(e.request);
+        return {
+            client_version: process.env.REACT_APP_CLIENT_VERSION || "[ client_version ]",
+            result: "FAILED",
+            status: e.request.status || 400,
+            error: e
+        };
+    }
 }
 
 // export const getDurationToShop = async ( id: string, coord: ServiceCoordinateType ): Promise<DurationToShopAPIResult> => {
 
 // }
 
+export const getSvgImageURI = async ( svg_type: string, searchtype?: string ): Promise<{ result: APIStatusList["SUCCEED"], data: string } | { result: APIStatusList["FAILED"] }> => {
+    try {
+        const { data: code_result }: { data: AssetAPIResult<string> } = await AssetAxios.get(`/api/host/getCode?${ searchtype || "key" }=${ svg_type }`);
+        const { data } = code_result;
+
+        if ( !data ) throw new Error("Invalid svg_type");
+        
+        return {
+            result: APIResult.SUCCEED,
+            data
+        };
+    } catch( e: any ) {
+        console.error(e);
+        return { result: APIResult.FAILED };
+    }
+}
 
 export const getSvgImage = async ( svg_type: string ): Promise<{ result: APIStatusList["SUCCEED"], data: string } | { result: APIStatusList["FAILED"] }> => {
     try {
-        const { data: code_result }: { data: AssetAPIResult<string> } = await AssetAxios.get(`/api/host/getCode?key=${ svg_type }`);
-        const { data: code } = code_result;
+        const uri_result = await getSvgImageURI( svg_type );
+        const { result: uri_search_result } = uri_result;
+        if ( uri_search_result === "FAILED" ) throw new Error("Invalid svg_type");
+
+        const { data: code } = uri_result;
         
         const { data }: { data: string } = await AssetAxios.get(`/api/host/icn/${ code }`);
         

@@ -2,7 +2,7 @@
 import React from "react";
 
 export type MapHandlerCommonOptions = {
-    onPlaceClicked?: ( location: { lat: number, long: number } ) => any
+    onPlaceClicked?: MapOnPlaceClickedFunction
     location?: { lat: number, long: number }
     level?: number
     markers?:  Array<{ position: any, image: any }>
@@ -22,10 +22,10 @@ export type MapOnPlaceClickedFunction = ( location: { lat: number, long: number 
 
 export type MapHandlerModeDisplay = {
     type: "display"
-    option: MapHandlerCommonOptions & MapHandlerOptionDisplay
+    option: Partial<MapHandlerCommonOptions & MapHandlerOptionDisplay>
 }
 
 export type MapHandlerModeInput = {
     type: "input"
-    option: MapHandlerCommonOptions & MapHandlerOptionInput
+    option: Partial<MapHandlerCommonOptions & MapHandlerOptionInput>
 }

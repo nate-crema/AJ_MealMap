@@ -12,6 +12,7 @@ import "@styles/components/MapHandler.css";
 
 // interfaces
 import { MapHandlerModeInput, MapHandlerCommonOptions, MapHandlerModeDisplay } from "@src/interfaces/MapHandler";
+import { getSvgImageURI } from "@api/service";
 
 type MapHandlerProps = {
     className?: string,
@@ -23,7 +24,22 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
 
     // global states control
     const { lat, long } = useRecoilValue<{ lat: number, long: number }>( states.location );
+    
+    // marker image uri
+    const marker_img_uri = useRef<string>("");
 
+    useEffect(() => {
+        ( async () => {
+            const locator_imguri_result = await getSvgImageURI( "locator_mapmode" );
+            if ( locator_imguri_result.result === "FAILED" )
+                throw new Error("URI ERROR");
+
+            const { data: locator_img_code } = locator_imguri_result;
+            const locator_img_uri = process.env.REACT_APP_ASSETSV_URI + "icn/" + locator_img_code;
+            
+            marker_img_uri.current = locator_img_uri;
+        })()
+    }, []);
 
     // map reference object control
     const mapRef = useRef<HTMLDivElement | null>( null );
@@ -60,7 +76,7 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
             if ( clicked_marker.current ) clicked_marker.current.setMap( null );
             const ShopMarker = new window.kakao.maps.Marker({
                 position,
-                image: new window.kakao.maps.MarkerImage( MarkerImg, new window.kakao.maps.Size( 30, 45 ), { offset: new window.kakao.maps.Point( 15, 45 ) } )
+                image: new window.kakao.maps.MarkerImage( marker_img_uri.current, new window.kakao.maps.Size( 30, 45 ), { offset: new window.kakao.maps.Point( 15, 45 ) } )
             })
             clicked_marker.current = ShopMarker;
 
@@ -71,9 +87,13 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
             setTimeout(() => {
                 levelResizer();
             }, 500);
-            
         }
     }, [ onPlaceClicked ] );
+
+    useEffect(() => {
+        // reset prev map
+        clearMap();
+    }, [ onPlaceClicked ]);
 
 
     // map function control: animation
@@ -92,14 +112,19 @@ const MapHandler: React.FC<MapHandlerProps & (MapHandlerModeDisplay | MapHandler
         }
     }
 
-
-    // map initializement
-    useEffect(() => {
+    const clearMap = () => {
         // reset prev map
         for ( let i: number = 0; i < +(mapRef.current?.children?.length || 0); i++ ) {
             console.log( mapRef.current?.children[i] );
             mapRef.current?.removeChild( mapRef.current?.children[i] );
         }
+    }
+
+    // map initializement
+    useEffect(() => {
+
+        // reset prev map
+        clearMap();
 
         console.log("MapHandler", location);
 
