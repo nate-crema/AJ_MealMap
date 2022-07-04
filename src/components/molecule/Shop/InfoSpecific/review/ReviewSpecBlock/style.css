@@ -97,9 +97,11 @@
     background-color: var(--theme-color-C);
 }
 .review-category-specblock .review-percentbar .bar-value.reviewed_good .full-colored {
+    right: 0;
     border-top-left-radius: 4px;
 }
 .review-category-specblock .review-percentbar .bar-value.reviewed_bad .full-colored {
+    left: 0;
     border-top-right-radius: 4px;
 }
 
@@ -169,4 +171,33 @@
 }
 .review-category-specblock .selection-title .right {
     right: 0;
+}
+
+@keyframes percentbar-in {
+    from {
+        opacity: 0;
+        width: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pointer-in {
+    from {
+        opacity: 0;
+        height: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes text-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

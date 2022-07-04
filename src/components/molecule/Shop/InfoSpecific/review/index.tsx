@@ -37,7 +37,7 @@ const ReviewInfoSpecific: React.FC<ReviewInfoSpecificProps> = ({}) => {
     return <div className="shop-specinfo-review">
         <ReviewBlock className="review-brief"/>
         { ( info.reviews.categorized ) && cat_list.map( ( category, index ) => <>
-            <ReviewSpecBlock cat={ category } key={ index }/>
+            <ReviewSpecBlock cat={ category } key={ index } i={ index }/>
         </> )  }
     </div>
 };

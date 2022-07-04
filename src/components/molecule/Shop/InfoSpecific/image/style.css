@@ -44,7 +44,7 @@
     opacity: 0;
 }
 
-.shop-specinfo-image .shop-images-addbtn {
+.shop-specinfo-image .image-add-btn {
     width: 80%;
     height: 50px;
 
@@ -58,31 +58,6 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
 
     cursor: pointer;
-}
-
-.shop-specinfo-image .shop-images-addbtn:active {
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.35);
-}
-
-.shop-specinfo-image .shop-images-addbtn .icn-wrap {
-    width: 20px;
-    height: 20px;
-
-    position: absolute;
-    top: 50%;
-    left: 20%;
-    transform: translateY(-50%);
-}
-
-.shop-specinfo-image .shop-images-addbtn span {
-    font-weight: 500;
-    font-size: 14px;
-    color: var(--theme-color-C);
-
-    position: absolute;
-    top: 50%;
-    right: 20%;
-    transform: translateY(-50%);
 }
 
 @keyframes image-display-in {

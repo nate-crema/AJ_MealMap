@@ -677,6 +677,7 @@ const dummy_response: {
     getShopList: StandardAPIResult<Array<ShopServiceType>>,
     getShop: { [ key: string ]: StandardAPIResult<ShopServiceType> },
     getReviewQuestion: { [ key: ShopIDType ]: StandardAPIResult<Array<ReviewQuestion>> }
+    // getOpenAllowCount: { [ key: ShopIDType ]: StandardAPIResult<> }
 } = {
     getShopList: {
         api_version: "v.0.0.3.alpha",
@@ -730,7 +731,33 @@ const dummy_response: {
             status: 200, 
             data: dummy_question[ "TEST_3" ]
         }
-    }
+    },
+    // getOpenAllowCount: {
+    //     "TEST_1": {
+    //         api_version: "v.0.0.3.alpha",
+    //         client_version: "v.0.0.3.1",
+    //         result: APIResult.SUCCEED,
+    //         status: 200,
+    //         data: {
+    //             "category": {
+    //                 cnt: 3,
+    //                 datum: 5
+    //             },
+    //             "loc": {
+    //                 cnt: 3,
+    //                 datum: 3
+    //             },
+    //             "contact": {
+    //                 cnt: 3,
+    //                 datum: 5
+    //             },
+    //             "workTime": {
+    //                 cnt: 3,
+    //                 datum: 5
+    //             }
+    //         }
+    //     },
+    // }
 }
 
 // CLIENT_SIDE

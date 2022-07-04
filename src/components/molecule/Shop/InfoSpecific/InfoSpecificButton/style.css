@@ -1,0 +1,45 @@
+.infospec-btn {
+    width: 100%;
+    height: 50px;
+
+    position: relative;
+
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+}
+
+.infospec-btn:active {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.35) !important;
+}
+
+.infospec-btn .icn-wrap {
+    width: 20px;
+    height: 20px;
+
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+}
+
+.infospec-btn .icn-wrap svg {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.infospec-btn .btn-title {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--theme-color-C);
+
+    position: absolute;
+    top: 50%;
+    left: calc( 50% + 25px );
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}

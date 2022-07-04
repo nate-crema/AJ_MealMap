@@ -9,6 +9,8 @@ import './style.css';
 import { InfoSpecificOpenInfoType } from "@interfaces/InfoSpecific";
 import { ShopServiceType, ShopWorkDateListType } from "@interfaces/service/service.data.types/Shop";
 import {  WORK_DAYS, WORK_DAYS_KEY, ShopWorkTimeDefaultServiceType } from "@constant/service/Shop";
+import SvgManager from "@assets/svg";
+import InfoSpecificButton from "../InfoSpecificButton";
 
 // interfaces
 type WorktimeInfoSpecificProps = {
@@ -253,6 +255,9 @@ const WorktimeInfoSpecific: React.FC<WorktimeInfoSpecificProps> = ({}) => {
                     </> )
                 }
             </div>
+        </div>
+        <div className="worktime-buttons">
+            <InfoSpecificButton className="worktime-edit-btn" type="plus">영업시간이 이상해요</InfoSpecificButton>
         </div>
     </div>
     :
