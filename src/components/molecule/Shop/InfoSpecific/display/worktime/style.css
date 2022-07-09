@@ -143,6 +143,8 @@
 }
 
 .shop-specinfo-worktime .worktime-buttons .worktime-edit-btn {
+    width: 100%;
+    
     position: absolute;
     bottom: 0;
     left: 50%;

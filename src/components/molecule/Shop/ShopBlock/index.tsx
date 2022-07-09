@@ -59,7 +59,7 @@ const ShopBlock: React.FC<ShopBlockProps> = ({ id, mode, onClick }) => {
             height: ( mode === "review" ) ? "50px" : "180px"
         }}>
             {
-                ( mode === "display" ) && <ImageBlock id={ id }/>
+                ( mode === "display" ) && <ImageBlock info={ info } id={ id }/>
             }
             <div className="shop-text">
                 <span className="shop-title">{ info.name }</span>

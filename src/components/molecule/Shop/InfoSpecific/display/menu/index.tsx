@@ -10,14 +10,15 @@ import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import MenuBlock from "./MenuBlock";
 
 // interfaces
-type menuInfoSpecificProps = {}
+type menuInfoSpecificProps = {
+    info: ShopServiceType
+}
 
 // components
 
 
-const MenuInfoSpecific: React.FC<menuInfoSpecificProps> = () => {
+const MenuInfoSpecific: React.FC<menuInfoSpecificProps> = ({ info }) => {
 
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
     const menus = useMemo( () => Object.keys( info.menus ).map( menu => ({
         name: menu,
         ...info.menus[ menu ]

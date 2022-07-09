@@ -56,7 +56,7 @@ type InfoBlockProps = {
 const InfoDisplay: React.FC = () => {
 
     // selected info control
-    const [ shop, setShop ] = useRecoilState<ShopServiceType>( states.shopSpecific );
+    const [ shop, setShop ] = useRecoilState<ShopServiceType | undefined>( states.shopSpecific );
     
 
     // shop_name & tag_review control

@@ -14,14 +14,14 @@ import InfoSpecificButton from "../InfoSpecificButton";
 
 // interfaces
 type WorktimeInfoSpecificProps = {
-    
+    info: ShopServiceType
 }
 
 // components
 
-const WorktimeInfoSpecific: React.FC<WorktimeInfoSpecificProps> = ({}) => {
+const WorktimeInfoSpecific: React.FC<WorktimeInfoSpecificProps> = ({ info }) => {
 
-    const { workTime } = useRecoilValue<ShopServiceType>( states.shopSpecific );
+    const workTime = useMemo( () => info.workTime, [ info ] );
 
     // 요일 선택기능
     const [ currentDay, setCurrentDay ] = useState<number>( new Date().getDay() );

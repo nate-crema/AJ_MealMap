@@ -1,8 +1,8 @@
 .infospec-btn {
-    width: 100%;
+    width: 80%;
     height: 50px;
 
-    position: relative;
+    position: absolute;
 
     background-color: white;
     border-radius: 20px;

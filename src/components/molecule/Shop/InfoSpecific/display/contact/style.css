@@ -1,0 +1,32 @@
+.shop-specinfo-contact {
+    width: calc( 100% - 80px );
+    height: calc( 100% - 95px );
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.shop-specinfo-contact .contacts-wrap {
+    width: 100%;
+    height: 100%;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.shop-specinfo-contact .contacts-wrap::-webkit-scrollbar {
+    display: none;
+}
+
+.shop-specinfo-contact .contact-add-btn {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(-50%);
+}

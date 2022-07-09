@@ -9,15 +9,16 @@ import './style.css';
 import { CategorizedReviewType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import ReviewBlock from "@molecule/Shop/ReviewBlock";
 import ReviewSpecBlock from "./ReviewSpecBlock";
+import InfoSpecificButton from "../InfoSpecificButton";
 
 // interfaces
-type ReviewInfoSpecificProps = {}
+type ReviewInfoSpecificProps = {
+    info: ShopServiceType
+}
 
 // components
 
-const ReviewInfoSpecific: React.FC<ReviewInfoSpecificProps> = ({}) => {
-
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
+const ReviewInfoSpecific: React.FC<ReviewInfoSpecificProps> = ({ info }) => {
 
     // 리뷰 통계정보 처리
     const cat_list = useMemo<Array<CategorizedReviewType & { cat_keyname: string }>>( () => 
@@ -35,10 +36,13 @@ const ReviewInfoSpecific: React.FC<ReviewInfoSpecificProps> = ({}) => {
     
 
     return <div className="shop-specinfo-review">
-        <ReviewBlock className="review-brief"/>
-        { ( info.reviews.categorized ) && cat_list.map( ( category, index ) => <>
-            <ReviewSpecBlock cat={ category } key={ index } i={ index }/>
-        </> )  }
+        <div className="review-stats-wrap">
+            <ReviewBlock info={ info } className="review-brief"/>
+            { ( info.reviews.categorized ) && cat_list.map( ( category, index ) => <>
+                <ReviewSpecBlock cat={ category } key={ index } i={ index }/>
+            </> )  }
+        </div>
+        <InfoSpecificButton className="review-edit-btn" type="plus">영업시간이 이상해요</InfoSpecificButton>
     </div>
 };
 

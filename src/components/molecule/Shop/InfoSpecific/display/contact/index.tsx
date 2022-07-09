@@ -6,26 +6,30 @@ import states from "@recoil/states";
 
 // css
 import './style.css';
-import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
-import ContactBlock from "./ContactBlock";
-
-// interfaces
-type ContactInfoSpecificProps = {}
 
 // components
+import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import ContactBlock from "./ContactBlock";
+import InfoSpecificButton from "../InfoSpecificButton";
 
+// interfaces
+type ContactInfoSpecificProps = {
+    info: ShopServiceType
+}
 
-const ContactInfoSpecific: React.FC<ContactInfoSpecificProps> = ({}) => {
+const ContactInfoSpecific: React.FC<ContactInfoSpecificProps> = ({ info }) => {
 
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
     const contacts = useMemo( () => Object.keys(info.contact).map( v => ({ contact_name: v, contact: info.contact[v] || "" })), [ info ] );
 
     useEffect(() => console.log( "ContactInfoSpecific", info.contact ), [ info ]);
 
     return <div className="shop-specinfo-contact">
-        { contacts.map( contact_info => <>
-            <ContactBlock contactInfo={ contact_info }/>
-        </> ) }
+        <div className="contacts-wrap">
+            { contacts.map( contact_info => <>
+                <ContactBlock contactInfo={ contact_info }/>
+            </> ) }
+        </div>
+        <InfoSpecificButton className="contact-add-btn" type="plus">연락처 추가하기</InfoSpecificButton>
     </div>
 };
 

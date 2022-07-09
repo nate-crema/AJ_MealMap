@@ -23,11 +23,15 @@ const MenuBlock: React.FC<MenuBlockProps> = ({ menu, style }) => {
     
     const { name, price, img } = useMemo( () => menu, [ menu ]);
 
+    const addBtnClickHandler = () => {
+        
+    }
+
     return <div className="menu-block" style={ Object.assign({
         backgroundImage: img ? `url(${ img })` : ""
     } as CSSProperties, style) }>
         { (name === "[[ADD]]") ? <>
-            <div className="menu-addbtn">
+            <div className="menu-addbtn" onClick={ addBtnClickHandler }>
                 <div className="icn-wrap">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 500 500">
                         <g>

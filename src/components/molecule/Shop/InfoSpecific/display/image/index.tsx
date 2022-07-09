@@ -11,14 +11,15 @@ import SvgManager from "@assets/svg";
 import InfoSpecificButton from "../InfoSpecificButton";
 
 // interfaces
-type imageInfoSpecificProps = {}
+type imageInfoSpecificProps = {
+    info: ShopServiceType
+}
 
 // components
 
 
-const ImageInfoSpecific: React.FC<imageInfoSpecificProps> = ({}) => {
+const ImageInfoSpecific: React.FC<imageInfoSpecificProps> = ({ info }) => {
 
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
     const images = useMemo( () => {
         const keys = Object.keys( info.imgs );
 

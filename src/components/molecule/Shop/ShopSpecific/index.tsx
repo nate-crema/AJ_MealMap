@@ -14,15 +14,15 @@ import SvgManager from "@assets/svg";
 
 // interfaces
 type ShopBriefProps = {
+    info: ShopServiceType
     className?: string
     style?: CSSProperties
 }
 
 // components
 
-const ShopSpecific: React.FC<ShopBriefProps> = ({ className, style }) => {
+const ShopSpecific: React.FC<ShopBriefProps> = ({ info, className, style }) => {
     
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
     const setInfoSpecific = useSetRecoilState<InfoSpecificOpenInfoType>( states.infoSpecificOpenInfo );
 
     // 상점위치: 소요시간정보 가져오기

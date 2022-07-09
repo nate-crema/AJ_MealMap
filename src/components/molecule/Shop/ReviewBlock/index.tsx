@@ -11,6 +11,7 @@ import SvgManager from "@assets/svg";
 
 // interfaces
 type ReviewBlockProps = {
+    info: ShopServiceType
     className?: string,
     onClick?: ( e: MouseEvent ) => any
 }
@@ -18,11 +19,9 @@ type ReviewBlockProps = {
 // components
 
 
-const ReviewBlock: React.FC<ReviewBlockProps> = ({ className, onClick }) => {
+const ReviewBlock: React.FC<ReviewBlockProps> = ({ info, className, onClick }) => {
 
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
-
-    return <div className={ "shop-reviews" + ( className ? ` ${ className }` : "" ) }
+    return ( info ) ? <div className={ "shop-reviews" + ( className ? ` ${ className }` : "" ) }
         onClick={ onClick }
         style={{
             cursor: onClick ? "pointer" : ""
@@ -69,6 +68,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ className, onClick }) => {
             }</span>
         </div>
     </div>
+    : <></>
 };
 
 export default ReviewBlock

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, MutableRefObject, RefObject } from 'react';
 
 // recoil
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { RecoilState, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import states from '@src/recoil/states';
 
 // css
@@ -24,7 +24,7 @@ type GlobalInputCommonProps = {
 }
 
 type GlobalInputProps = GlobalInputCommonProps & ({
-    value: string
+    value: keyof typeof states,
     valueState?: null
 } | {
     value?: null
@@ -37,7 +37,7 @@ const GlobalInput: React.FC<GlobalInputProps> = ({
 }) => {
 
     /* eslint-disable-next-line */
-    const setParentValue = value ? useSetRecoilState( states[ value ] ) : ( value: any ) => {};
+    const setParentValue = value ? useSetRecoilState( states[ value ] as RecoilState<any> ) : ( value: any ) => {};
     const [ v, setV ] = useState<any>( "" );
     const [ ph, setPh ] = useState<string | undefined>(placeholder || "");
     const [ focused, setIsFocus ] = useState(false);

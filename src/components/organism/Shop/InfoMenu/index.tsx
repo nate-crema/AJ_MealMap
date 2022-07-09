@@ -23,7 +23,7 @@ type InfoMenuProps = {}
 // components
 const InfoMenu: React.FC<InfoMenuProps> = ({}) => {
 
-    const [ shopInfo, setShopInfo ] = useRecoilState<ShopServiceType>( states.shopSpecific );
+    const [ info, setInfo ] = useRecoilState( states.shopSpecific );
     const setInfoSpecific = useSetRecoilState<InfoSpecificOpenInfoType>( states.infoSpecificOpenInfo );
 
     // ImageBlock 클릭 이벤트 처리
@@ -36,12 +36,22 @@ const InfoMenu: React.FC<InfoMenuProps> = ({}) => {
         setInfoSpecific( "REVIEW" );
     }
 
-    return <div className="info-menu">
-        <EventBlockWrap className="shop-event" eventInfo={ shopInfo?.events }/>
-        <ShopSpecific className="shop-specs"/>
-        <ImageBlock className="shop-images" onClick={ ImageBlockClickHandler } />
-        <ReviewBlock className="shop-reviews" onClick={ ReviewBlockClickHandler }/>
-    </div>
+    return ( info ) ? <div className="info-menu">
+        <EventBlockWrap className="shop-event"
+            eventInfo={ info?.events }
+        />
+        <ShopSpecific className="shop-specs"
+            info={ info } 
+        />
+        <ImageBlock className="shop-images"
+            info={ info } 
+            onClick={ ImageBlockClickHandler }
+        />
+        <ReviewBlock className="shop-reviews"
+            info={ info } 
+            onClick={ ReviewBlockClickHandler }
+        />
+    </div> : <></>
 }
 
 export default InfoMenu;

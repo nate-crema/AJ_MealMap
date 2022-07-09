@@ -11,6 +11,7 @@ import { getShopInfoByShopID } from "@api/service";
 
 // interfaces
 type ImageBlockProps = {
+    info: ShopServiceType
     className?: string,
     id?: ShopIDType,
     onClick?: ( e: MouseEvent ) => any
@@ -19,22 +20,7 @@ type ImageBlockProps = {
 // components
 
 
-const ImageBlock: React.FC<ImageBlockProps> = ({ className, id, onClick }) => {
-
-    const shops = useRecoilValue<Array<ShopServiceType>>( states.shops );
-    const selected_shop = useRecoilValue<ShopServiceType>( states.shopSpecific );
-    const [ info, setInfo ] = useState<ShopServiceType>();
-
-    useEffect(() => {
-        ( async () => {
-            if ( id ) {
-                const shop_info = shops.filter( v => v.shopID === id )[0] || await getShopInfoByShopID( id );
-                setInfo( shop_info );
-            } else {
-                setInfo( selected_shop );
-            }
-        } )()
-    }, [ id, selected_shop ]);
+const ImageBlock: React.FC<ImageBlockProps> = ({ info, className, id, onClick }) => {
 
     return <div
         className={ "shop-image" + ( className ? ` ${ className }` : "" ) }

@@ -16,6 +16,7 @@ export type AddressDisplayModeEdit = "edit";
 export type AddressDisplayMode = AddressDisplayModeDisplay | AddressDisplayModeEdit;
 
 type AddressDisplayProps = {
+    info: ShopServiceType
     modeState: [ AddressDisplayMode, ( v: AddressDisplayMode ) => any ]
     className?: string
     onAddressClick?: ( e: MouseEvent ) => any
@@ -24,9 +25,10 @@ type AddressDisplayProps = {
 
 // components
 
-const AddressDisplay: React.FC<AddressDisplayProps> = ({ modeState, className, onAddressClick, onEditClick }) => {
+const AddressDisplay: React.FC<AddressDisplayProps> = ({ info, modeState, className, onAddressClick, onEditClick }) => {
 
-    const [ info, setInfo ] = useRecoilState<ShopServiceType>( states.shopSpecific );
+    // molecule 예외: 로컬정보 업데이트를 위해 예외적으로 molecule에서 데이터 처리
+    const setInfo = useSetRecoilState( states.shopSpecific );
     
     const [ mode, setMode ] = modeState;
     const [ displayerMode, setDisplayerMode ] = useState<"S"|"L">("S");
@@ -115,7 +117,7 @@ const AddressDisplay: React.FC<AddressDisplayProps> = ({ modeState, className, o
         console.log( "submitUpdatedAddress", result );
         
         // 로컬에 업데이트 내용 적용
-        setInfo( prev => ({ ...prev, loc: updatedCoordinate }) );
+        setInfo( prev => prev ? ({ ...prev, loc: updatedCoordinate }) : undefined );
     }, [ info, updatedCoordinate ]);
 
     return <div className={ `shop-addressor ${ displayerMode === "S" ? " addressor-small" : " addressor-large" }` + ( className ? ` ${ className }` : "" ) }>

@@ -14,14 +14,14 @@ import { MapHandlerCommonOptions, MapHandlerOptionDisplay, MapHandlerOptionInput
 import { getSvgImageURI } from "@api/service";
 
 // interfaces
-type LocationInfoSpecificProps = {}
+type LocationInfoSpecificProps = {
+    info: ShopServiceType
+}
 
 // components
 
 
-const LocationInfoSpecific: React.FC<LocationInfoSpecificProps> = ({}) => {
-
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
+const LocationInfoSpecific: React.FC<LocationInfoSpecificProps> = ({ info }) => {
 
     // 지도 상태관리
     const [ mapMode, setMapMode ] = useState<"display" | "input">("display");
@@ -107,6 +107,7 @@ const LocationInfoSpecific: React.FC<LocationInfoSpecificProps> = ({}) => {
             onMapLoaded={ mapLoadHandler }
         />
         <AddressDisplay
+            info={ info }
             className="shop-address-displayer"
             modeState={ [ addressDisplayMode, setAddressDisplayMode ] }
             onAddressClick={ locationTextClickHandler }

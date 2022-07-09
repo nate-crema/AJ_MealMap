@@ -7,114 +7,134 @@ import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.ty
 import { InfoSpecificOpenInfoType, InfoSpecificOpenSize } from "@interfaces/InfoSpecific";
 /*
 
-testState: atom({
+const [unique-key] = atom({
     key: "[unique-key]",
     default: "[default_value]"
 })
 
 */
 
-export default new ( function( this: any ): void {
-
-    // State: login
-
-    this.name = atom<string>({
-        key: "nameState",
-        default: ""
-    });
-
-    this.emailId = atom<string>({
-        key: "emailIdState",
-        default: ""
-    });
-
-    this.expires = atom<Date>({
-        key: "expiresState",
-        default: new Date
-    });
-
-    this.isLogined = atom<boolean>({
-        key: "isLoginedState",
-        default: false
-    });
-
-    this.login = selector({
-        key: "loginSelector",
-        get: ( { get } ) => ({
-            name: get( this.name ),
-            emailId: get( this.emailId ),
-            expires: get( this.expires ),
-            isLogined: get( this.isLogined )
-        })
-    });
-
-    // State: Location
-
-    this.location = atom<Location>({
-        key: "locationState",
-        default: {
-            lat: -1,
-            long: -1,
-            address: ""
-        }
-    });
-
-    // State: Shops
-
-    this.shops = atom<Array<ShopServiceType>>({
-        key: "Shops",
-        default: []
-    });
-
-    // States: Subdisplay
-
-    this.subdisplayMountMode = atom<SubdisplayMountMode>({
-        key: "SubdisplayMounState",
-        default: "UNMOUNTED"
-    })
-
-    this.subdisplayDisplayMode = atom<SubdisplayDisplayMode>({
-        key: "SubdisplayDisplayModeState",
-        default: "CLOSED"
-    })
-
-    this.subdisplayDisplaySize = atom<ComponentOpenState>({
-        key: "subdisplayDisplaySizeState",
-        default: "LARGE"
-    })
-
-    // States: InfoSpecific
-
-    this.infoSpecificOpenInfo = atom<InfoSpecificOpenInfoType>({
-        key: "infoSpecificOpenInfoState",
-        default: "CLOSED"
-    })
-
-    // States: Specific
-
-    // this.shopSpecific = atom<ShopIDType | undefined>({
-    //     key: "retaurantSpecificState",
-    //     default: undefined
-    // })
-    this.shopSpecific = atom<ShopServiceType | undefined>({
-        key: "shopSpecificState",
-        default: undefined
-    })
 
 
-    // States: alert
+// State: login
 
-    this.alert = atom<alertOption>({
-        key: "alertState",
-        default: { active: false }
-    })
+const nameState = atom<string>({
+    key: "nameState",
+    default: ""
+});
 
-    // States: SvgManager
-    
-    this.svgList = atom<{ [ svg_type in string ]: string }>({
-        key: "svgListState",
-        default: {}
-    })
+const emailIdState = atom<string>({
+    key: "emailIdState",
+    default: ""
+});
 
-  
-} as any );
+const expiresState = atom<Date>({
+    key: "expiresState",
+    default: new Date
+});
+
+const isLoginedState = atom<boolean>({
+    key: "isLoginedState",
+    default: false
+});
+
+const loginSelector = selector<Login>({
+    key: "loginSelector",
+    get: ( { get } ) => ({
+        name: get( nameState ),
+        emailId: get( emailIdState ),
+        expires: get( expiresState ),
+        isLogined: get( isLoginedState )
+    }),
+    set: ( { set }, newValue: any ) => {
+        set( nameState, newValue.name );
+        set( emailIdState, newValue.emailId );
+        set( expiresState, newValue.expires );
+        set( isLoginedState, newValue.isLogined );
+    }
+});
+
+// State: Location
+
+const locationState = atom<Location>({
+    key: "locationState",
+    default: {
+        lat: -1,
+        long: -1,
+        address: ""
+    }
+});
+
+// State: Shops
+
+const shopState = atom<Array<ShopServiceType>>({
+    key: "ShopState",
+    default: []
+});
+
+// States: Subdisplay
+
+const subdisplayMountState = atom<SubdisplayMountMode>({
+    key: "SubdisplayMountModeState",
+    default: "UNMOUNTED"
+})
+
+const subdisplayDisplayModeState = atom<SubdisplayDisplayMode>({
+    key: "SubdisplayDisplayModeState",
+    default: "CLOSED"
+})
+
+const subdisplayDisplaySizeState = atom<ComponentOpenState>({
+    key: "subdisplayDisplaySizeState",
+    default: "LARGE"
+})
+
+// States: InfoSpecific
+
+const infoSpecificOpenInfoState = atom<InfoSpecificOpenInfoType>({
+    key: "infoSpecificOpenInfoState",
+    default: "CLOSED"
+})
+
+// States: Specific
+
+// this.shopSpecific = atom<ShopIDType | undefined>({
+//     key: "retaurantSpecificState",
+//     default: undefined
+// })
+const shopSpecificState = atom<ShopServiceType | undefined>({
+    key: "shopSpecificState",
+    default: undefined
+})
+
+
+// States: alert
+
+const alertState = atom<alertOption>({
+    key: "alertState",
+    default: { active: false }
+})
+
+// States: SvgManager
+
+const svgListState = atom<{ [ svg_type in string ]: string }>({
+    key: "svgListState",
+    default: {}
+})
+
+export default {
+    name: nameState, 
+    emailId: emailIdState, 
+    expires: expiresState, 
+    isLogined: isLoginedState, 
+    login: loginSelector, 
+    location: locationState, 
+    shops: shopState, 
+    subdisplayMountMode: subdisplayMountState, 
+    subdisplayDisplayMode: subdisplayDisplayModeState, 
+    subdisplayDisplaySize: subdisplayDisplaySizeState, 
+    infoSpecificOpenInfo: infoSpecificOpenInfoState, 
+    shopSpecific: shopSpecificState, 
+    alert: alertState, 
+    svgList: svgListState
+};

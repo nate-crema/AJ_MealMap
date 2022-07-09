@@ -10,14 +10,15 @@ import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import EventBlock from "@molecule/Shop/EventBlock";
 
 // interfaces
-type EventInfoSpecificProps = {}
+type EventInfoSpecificProps = {
+    info: ShopServiceType
+}
 
 // components
 
 
-const EventInfoSpecific: React.FC<EventInfoSpecificProps> = ({}) => {
+const EventInfoSpecific: React.FC<EventInfoSpecificProps> = ({ info }) => {
 
-    const info = useRecoilValue<ShopServiceType>( states.shopSpecific );
     const events = useMemo( () => info.events ? Object.keys(info.events).map( v => ({ ...(info.events || {})[v], key: v }) ) : [], [ info ] );
     
     useEffect(() => {
