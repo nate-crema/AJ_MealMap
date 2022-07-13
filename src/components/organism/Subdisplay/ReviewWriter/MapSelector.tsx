@@ -10,7 +10,7 @@ import '@styles/components/Subdisplay/ReviewWriter/MapSelector.css';
 // components
 import MapHandler from "../../../molecule/MapHandler/MapHandler";
 import { MapOnPlaceClickedFunction } from "@src/interfaces/MapHandler";
-import ServiceButton from "@src/components/atom/Button";
+import ServiceButton from "@atom/ServiceButton";
 
 // interfaces
 type MapSelectorProps = {

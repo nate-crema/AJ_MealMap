@@ -173,95 +173,100 @@ const WorktimeInfoSpecific: React.FC<WorktimeInfoSpecificProps> = ({ info }) => 
         }, 200);
     }, [ workTime, currentDay ]); // workTime과 currentDay가 변할 때 마다 실행
 
-    return ( workTime ) ?
-    <div className="shop-specinfo-worktime">
-        <div className="worktime-day-selector">
-            { WORK_DAYS.map( (v, i) => 
-                <div className="worktime-dayblock" key={ i } onClick={ () => dayBlockClickHandler(i) }>
-                    <span style={{ color: (i === currentDay) ? "var(--theme-color-C)" : "lightgray" }}>{ v }</span>
+    return <div className="shop-specinfo-worktime">
+        { ( workTime ) ? <>
+                <div className="worktime-day-selector">
+                    { WORK_DAYS.map( (v, i) => 
+                        <div className="worktime-dayblock" key={ i } onClick={ () => dayBlockClickHandler(i) }>
+                            <span style={{ color: (i === currentDay) ? "var(--theme-color-C)" : "lightgray" }}>{ v }</span>
+                        </div>
+                    ) }
                 </div>
-            ) }
-        </div>
-        <div className="worktime-display">
-            <div/>
-            <div className="worktime-dpbar worktime-am">
-                {
-                    workTimeRenderList.filter(v => v.type === 0).map( ({ style }) => <>
-                        <div
-                            className="worktime-data"
-                            style={ style }
-                        />
-                    </> )
-                }
+                <div className="worktime-display">
+                    <div/>
+                    <div className="worktime-dpbar worktime-am">
+                        {
+                            workTimeRenderList.filter(v => v.type === 0).map( ({ style }) => <>
+                                <div
+                                    className="worktime-data"
+                                    style={ style }
+                                />
+                            </> )
+                        }
+                    </div>
+                    <div className="worktime-dptext worktime-am-text">
+                        {
+                            workTimeTextList.filter( v => v.type === 0 ).map( ({ style, text, min_val, bar_reverse }, i, list) => <>
+                                <div className="worktime-text_desc" style={{
+                                    ...style,
+                                    height: (
+                                        i%2 && 
+                                        min_val - list[i-1].min_val <= 180
+                                    ) ? "100%" : "50%",
+                                    backgroundColor: undefined,
+                                    zIndex: 100/(i+1)
+                                }}>
+                                    <div className="worktime-extline" style={{
+                                        right: bar_reverse ? "unset" : undefined,
+                                        left: bar_reverse ? "0" : undefined,
+                                        backgroundColor: style.backgroundColor
+                                    }}/>
+                                    <span className="worktime-text" style={{
+                                        right: bar_reverse ? "unset" : undefined,
+                                        left: bar_reverse ? "10px" : undefined,
+                                    }}>{ text }</span>
+                                </div>
+                            </> )
+                        }
+                    </div>
+                    <div/>
+                    <div className="worktime-dpbar worktime-pm">
+                        {
+                            workTimeRenderList.filter(v => v.type === 1).map( ({ style }) => <>
+                                <div
+                                    className="worktime-data"
+                                    style={ style }
+                                />
+                            </> )
+                        }
+                    </div>
+                    <div className="worktime-dptext worktime-pm-text">
+                        {
+                            workTimeTextList.filter( v => v.type === 1 ).map( ({ style, text, min_val, bar_reverse }, i, list) => <>
+                                <div className="worktime-text_desc" style={{
+                                    ...style,
+                                    height: (
+                                        i%2 && 
+                                        min_val - list[i-1].min_val <= 180
+                                    ) ? "100%" : "50%",
+                                    backgroundColor: undefined,
+                                    zIndex: 100/(i+1)
+                                }}>
+                                    <div className="worktime-extline" style={{
+                                        right: bar_reverse ? "unset" : undefined,
+                                        left: bar_reverse ? "0" : undefined,
+                                        backgroundColor: style.backgroundColor
+                                    }}/>
+                                    <span className="worktime-text" style={{
+                                        right: bar_reverse ? "unset" : undefined,
+                                        left: bar_reverse ? "10px" : undefined,
+                                    }}>{ text }</span>
+                                </div>
+                            </> )
+                        }
+                    </div>
+                </div>
+            </>
+            :
+            <div className="info-notexist">
+                <span>아직 등록된 정보가 없어요</span>
             </div>
-            <div className="worktime-dptext worktime-am-text">
-                {
-                    workTimeTextList.filter( v => v.type === 0 ).map( ({ style, text, min_val, bar_reverse }, i, list) => <>
-                        <div className="worktime-text_desc" style={{
-                            ...style,
-                            height: (
-                                i%2 && 
-                                min_val - list[i-1].min_val <= 180
-                            ) ? "100%" : "50%",
-                            backgroundColor: undefined,
-                            zIndex: 100/(i+1)
-                        }}>
-                            <div className="worktime-extline" style={{
-                                right: bar_reverse ? "unset" : undefined,
-                                left: bar_reverse ? "0" : undefined,
-                                backgroundColor: style.backgroundColor
-                            }}/>
-                            <span className="worktime-text" style={{
-                                right: bar_reverse ? "unset" : undefined,
-                                left: bar_reverse ? "10px" : undefined,
-                            }}>{ text }</span>
-                        </div>
-                    </> )
-                }
-            </div>
-            <div/>
-            <div className="worktime-dpbar worktime-pm">
-                {
-                    workTimeRenderList.filter(v => v.type === 1).map( ({ style }) => <>
-                        <div
-                            className="worktime-data"
-                            style={ style }
-                        />
-                    </> )
-                }
-            </div>
-            <div className="worktime-dptext worktime-pm-text">
-                {
-                    workTimeTextList.filter( v => v.type === 1 ).map( ({ style, text, min_val, bar_reverse }, i, list) => <>
-                        <div className="worktime-text_desc" style={{
-                            ...style,
-                            height: (
-                                i%2 && 
-                                min_val - list[i-1].min_val <= 180
-                            ) ? "100%" : "50%",
-                            backgroundColor: undefined,
-                            zIndex: 100/(i+1)
-                        }}>
-                            <div className="worktime-extline" style={{
-                                right: bar_reverse ? "unset" : undefined,
-                                left: bar_reverse ? "0" : undefined,
-                                backgroundColor: style.backgroundColor
-                            }}/>
-                            <span className="worktime-text" style={{
-                                right: bar_reverse ? "unset" : undefined,
-                                left: bar_reverse ? "10px" : undefined,
-                            }}>{ text }</span>
-                        </div>
-                    </> )
-                }
-            </div>
-        </div>
+            
+        }
         <div className="worktime-buttons">
-            <InfoSpecificButton className="worktime-edit-btn" type="plus" specinfo_type="WORKTIME">영업시간이 이상해요</InfoSpecificButton>
+            <InfoSpecificButton className="worktime-edit-btn" type={ workTime ? "edit" : "plus" } specinfo_type="WORKTIME">영업시간 { workTime ? "수정" : "추가" }하기</InfoSpecificButton>
         </div>
     </div>
-    :
-    <></>
 };
 
 export default WorktimeInfoSpecific

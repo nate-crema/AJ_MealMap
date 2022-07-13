@@ -1,0 +1,211 @@
+.shop-specinfo-worktime-add {
+    width: calc( 100% - 80px );
+    height: calc( 100% - 95px );
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.shop-specinfo-worktime-add .title-wrap {
+    width: 100%;
+    height: 60px;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.shop-specinfo-worktime-add .title-wrap p {
+    color: var(--theme-colort-C);
+    margin: 0;
+    
+    position: absolute;
+}
+.shop-specinfo-worktime-add .title-wrap p.text-active { 
+    opacity: 1;
+}
+.shop-specinfo-worktime-add .title-wrap p.text-deactive {
+    margin-top: -4px;
+    opacity: 0;
+}
+
+.shop-specinfo-worktime-add .title-wrap .add-title {
+    font-size: 20px;
+    font-weight: 500;
+
+    top: 0;
+}
+
+.shop-specinfo-worktime-add .title-wrap .add-subtitle {
+    font-size: 14px;
+    font-weight: 300;
+
+    bottom: 0;
+}
+
+.shop-specinfo-worktime-add .stage-wrap {
+    width: 100%;
+    height: calc( 100% - 60px );
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.shop-specinfo-worktime-add .stage-wrap::-webkit-scrollbar {
+    display: none;
+}
+
+/* stage: 0 */
+.shop-specinfo-worktime-add .stage-wrap .stage-0 {
+    width: 100%;
+    height: 160px;
+    
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-0 .workday-selector {
+    width: 100%;
+    height: 40px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    display: grid;
+    grid-template-columns: repeat(7, auto);
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-0 .workday-selector span {
+    font-size: 16px;
+    font-weight: 500;
+    color: lightgray;
+    
+    width: fit-content;
+    height: fit-content;
+    
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    cursor: pointer;
+}
+.shop-specinfo-worktime-add .stage-wrap .stage-0 .workday-selector span.selected_day {
+    color: var(--theme-colort-C);
+    font-weight: 700;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-0 .workday-common-selector {
+    width: calc( 100% - 4px );
+    height: 60px;
+
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+/* stage: 1 */
+.shop-specinfo-worktime-add .stage-wrap .stage-1 {
+    width: 100%;
+    height: 180px;
+
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type {
+    width: 180px;
+    height: 60px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .time-format {
+    font-weight: 500;
+    font-size: 14px;
+    color: lightgray;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-splitbar {
+    width: 2px;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 80px;
+
+    background-color: lightgray;
+    border-radius: 1px;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-inputselection-wrap {
+    width: fit-content;
+    height: 100%;
+    
+    position: absolute;
+    top: 0;
+    left: 100px;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-inputselection-wrap .worktime-inputselection {
+    width: 80px;
+    height: 50%;
+    
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-inputselection-wrap .worktime-inputselection .color-palete {
+    width: 18px;
+    height: 18px;
+    
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    
+    border-radius: 6px;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-inputselection-wrap .worktime-inputselection.input-selection-worktime .color-palete {
+    background-color: var(--theme-color-C);
+}
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-inputselection-wrap .worktime-inputselection.input-selection-resttime .color-palete {
+    background-color: lightgray;
+}
+
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-inputselection-wrap .worktime-inputselection span {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--theme-colort-C);
+    
+    white-space: nowrap;
+    
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    transform: translateY(-50%);
+}
+.shop-specinfo-worktime-add .stage-wrap .stage-1 .worktime-type .worktime-inputselection-wrap .worktime-inputselection span.selected-mode {
+    font-weight: 700;
+}

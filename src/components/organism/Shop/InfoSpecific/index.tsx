@@ -18,6 +18,7 @@ import SvgManager from "@assets/svg";
 import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import InfoSpecCtrlBtn from "@molecule/Shop/InfoSpecific/button";
 import ContactInfoAdd from "@molecule/Shop/InfoSpecific/add/contact";
+import WorktimeInfoAdd from "@molecule/Shop/InfoSpecific/add/workTime";
 
 const mapped_opensize: {
     [ keys in InfoSpecificOpenSize ]: number
@@ -150,6 +151,7 @@ const InfoSpecific: React.FC<InfoSpecificProps> = () => {
             is_closed_tmp ? ' specific-tmpclosed' : ""
         ) }>
             {
+                // display
                 ( [ "WORKTIME" ].includes( open_info ) ) ? <WorktimeInfoSpecific info={ shop_info }/>
                 : ( [ "MENU", "ADD/MENU" ].includes( open_info ) ) ? <MenuInfoSpecific info={ shop_info }/>
                 : ( [ "EVENT" ].includes( open_info ) ) ? <EventInfoSpecific info={ shop_info }/>
@@ -157,7 +159,9 @@ const InfoSpecific: React.FC<InfoSpecificProps> = () => {
                 : ( [ "LOCATION" ].includes( open_info ) ) ? <LocationInfoSpecific info={ shop_info }/>
                 : ( [ "IMAGE" ].includes( open_info ) ) ? <ImageInfoSpecific info={ shop_info }/>
                 : ( [ "REVIEW" ].includes( open_info ) ) ? <ReviewInfoSpecific info={ shop_info }/>
+                // add or edit
                 : ( [ "ADD/CONTACT" ].includes( open_info ) ) ? <ContactInfoAdd info={ shop_info }/>
+                : ( [ "ADD/WORKTIME" ].includes( open_info ) ) ? <WorktimeInfoAdd info={ shop_info }/>
                 : <></>
             }
         </div>

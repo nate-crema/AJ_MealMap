@@ -12,7 +12,7 @@ import { serviceRegisteringMail as serviceRegisteringMailAPI, serviceRegisterUse
 
 // components
 import GlobalInput from "@molecule/Input/GlobalInput";
-import ServiceButton from "@atom/Button";
+import ServiceButton from "@atom/ServiceButton";
 
 // interfaces
 import { LoginStageCompProps } from "@interfaces/Login/StageComponents";
