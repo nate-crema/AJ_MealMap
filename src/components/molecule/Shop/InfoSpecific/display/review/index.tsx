@@ -9,7 +9,7 @@ import './style.css';
 import { CategorizedReviewType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import ReviewBlock from "@molecule/Shop/ReviewBlock";
 import ReviewSpecBlock from "./ReviewSpecBlock";
-import InfoSpecificButton from "../InfoSpecificButton";
+import InfoSpecificButton from "../InfoAddButton";
 
 // interfaces
 type ReviewInfoSpecificProps = {
@@ -42,7 +42,7 @@ const ReviewInfoSpecific: React.FC<ReviewInfoSpecificProps> = ({ info }) => {
                 <ReviewSpecBlock cat={ category } key={ index } i={ index }/>
             </> )  }
         </div>
-        <InfoSpecificButton className="review-edit-btn" type="plus">영업시간이 이상해요</InfoSpecificButton>
+        <InfoSpecificButton className="review-edit-btn" type="plus" specinfo_type="REVIEW">리뷰 추가하기</InfoSpecificButton>
     </div>
 };
 

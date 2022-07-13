@@ -10,7 +10,7 @@ import './style.css';
 // components
 import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import ContactBlock from "./ContactBlock";
-import InfoSpecificButton from "../InfoSpecificButton";
+import InfoSpecificButton from "../InfoAddButton";
 
 // interfaces
 type ContactInfoSpecificProps = {
@@ -29,7 +29,7 @@ const ContactInfoSpecific: React.FC<ContactInfoSpecificProps> = ({ info }) => {
                 <ContactBlock contactInfo={ contact_info }/>
             </> ) }
         </div>
-        <InfoSpecificButton className="contact-add-btn" type="plus">연락처 추가하기</InfoSpecificButton>
+        <InfoSpecificButton className="contact-add-btn" type="plus" specinfo_type="CONTACT">연락처 추가하기</InfoSpecificButton>
     </div>
 };
 

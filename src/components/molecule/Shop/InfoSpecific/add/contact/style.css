@@ -1,0 +1,77 @@
+.shop-specinfo-contact-add {
+    width: calc( 100% - 80px );
+    height: calc( 100% - 95px );
+
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.shop-specinfo-contact-add .title-wrap {
+    width: 100%;
+    height: 60px;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.shop-specinfo-contact-add .title-wrap.input-deactivated {
+    height: 100px;
+}
+
+.shop-specinfo-contact-add .title-wrap p {
+    color: var(--theme-colort-C);
+    margin: 0;
+    
+    position: absolute;
+}
+.shop-specinfo-contact-add .title-wrap p.text-active { 
+    opacity: 1;
+}
+.shop-specinfo-contact-add .title-wrap p.text-deactive {
+    margin-top: -4px;
+    opacity: 0;
+}
+
+.shop-specinfo-contact-add .title-wrap .add-title {
+    font-size: 20px;
+    font-weight: 500;
+
+    top: 0;
+}
+
+.shop-specinfo-contact-add .title-wrap .add-subtitle {
+    font-size: 14px;
+    font-weight: 300;
+
+    bottom: 0;
+}
+
+.shop-specinfo-contact-add .input-wrap {
+    width: 100%;
+    height: 130px;
+    
+    position: absolute;
+    top: 100px;
+    left: 0;
+}
+.shop-specinfo-contact-add .input-wrap.input-deactivated {
+    opacity: 0;
+    margin-top: 20px;
+}
+
+.shop-specinfo-contact-add .input-wrap .input-contact {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.shop-specinfo-contact-add .input-wrap .input-nickname {
+    position: absolute;
+    top: unset !important;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+}

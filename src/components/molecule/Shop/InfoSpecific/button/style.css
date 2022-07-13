@@ -1,0 +1,58 @@
+.infospec-ctrl-commonbtn {
+    width: 90px;
+    height: 45px;
+
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+
+    transition: all .35s cubic-bezier(0, 1, 1, 1);
+
+    z-index: 600;
+}
+
+.infospec-ctrl-commonbtn.commonbtn-close span {
+    font-weight: 500;
+    font-size: 12px;
+    white-space: nowrap;
+    
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.infospec-ctrl-commonbtn.commonbtn-stage span {
+    font-weight: 500;
+    font-size: 12px;
+    white-space: nowrap;
+    
+    position: absolute;
+    top: 50%;
+    left: calc( 50% - 14px );
+    transform: translate( calc(-50% + 7px), -50% );
+
+    margin: 0;
+    padding: 0;
+}
+
+.infospec-ctrl-commonbtn.commonbtn-close .btn-icn {
+    width: 14px;
+    height: auto;
+
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.infospec-ctrl-commonbtn.commonbtn-stage .btn-icn {
+    width: 15px;
+    height: auto;
+
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+}

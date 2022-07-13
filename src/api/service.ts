@@ -3,9 +3,9 @@ import AssetAxios from "@connection/asset";
 
 // interface
 
-import { APIStatusList, AssetAPIResult, StandardAPIResult } from "@interfaces/api";
+import { APIStatusList, AssetAPIResult, StandardAPIResult, StandardAPIUpdateResult } from "@interfaces/api";
 import { ReviewQuestion } from "@src/interfaces/ReviewWriter";
-import { ServiceCoordinateType, ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
+import { ServiceCoordinateType, ShopContactType, ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import {
     ShopMainCategoryRestaurant,
     ShopRestaurantSubCategoryJapan,
@@ -825,9 +825,9 @@ export const getReviewQuestion = async ( shopID: ShopIDType ): Promise<StandardA
     return dummy_response["getReviewQuestion"][ shopID ];
 }
 
-export const updateShopLocation = async ( shopID: ShopIDType, loc: ServiceCoordinateType ): Promise<StandardAPIResult<boolean>> => {
+export const updateShopLocation = async ( shopID: ShopIDType, loc: ServiceCoordinateType ): Promise<StandardAPIUpdateResult<{ loc: ServiceCoordinateType }, boolean>> => {
     try {
-        const { data: result }: { data: StandardAPIResult<boolean> } = await axios.patch(`/service/shop/${ shopID }/location`, { loc });
+        const { data: result }: { data: StandardAPIUpdateResult<{ loc: ServiceCoordinateType }, boolean> } = await axios.patch(`/service/shop/${ shopID }/location`, { loc });
         return result;
     } catch( e: any ) {
         console.error(e.request);
@@ -843,6 +843,42 @@ export const updateShopLocation = async ( shopID: ShopIDType, loc: ServiceCoordi
 // export const getDurationToShop = async ( id: string, coord: ServiceCoordinateType ): Promise<DurationToShopAPIResult> => {
 
 // }
+
+export const addContact = async ( shopID: ShopIDType, contact: string, nickname?: string ): Promise<StandardAPIUpdateResult<{ contact: string, nickname?: string }, ShopContactType>> => {
+    try {
+        // const { data: result }: { data: StandardAPIUpdateResult<{ contact: string, nickname?: string }, ShopContactType> } = await axios.patch(`/service/shop/${ shopID }/contact`, {
+        //     contact,
+        //     nickname
+        // });
+        // return result;
+        return new Promise(( resolve, reject ) => {
+            setTimeout(() => {
+                
+                resolve({
+                    api_version: "v.0.0.3.internal.test",
+                    client_version: process.env.REACT_APP_CLIENT_VERSION || "[ client_version ]",
+                    result: "SUCCEED",
+                    status: 200,
+                    data: {
+                        received: { contact, nickname },
+                        action: "ADDED",
+                        result: {
+                            [ nickname || "" ]: contact
+                        }
+                    }
+                } as StandardAPIUpdateResult<{ contact: string, nickname?: string }, ShopContactType>);
+            }, 1000);
+        })
+    } catch( e: any ) {
+        console.error(e.request);
+        return {
+            client_version: process.env.REACT_APP_CLIENT_VERSION || "[ client_version ]",
+            result: "FAILED",
+            status: e.request.status || 400,
+            error: e
+        };
+    }
+}
 
 export const getSvgImageURI = async ( svg_type: string, searchtype?: string ): Promise<{ result: APIStatusList["SUCCEED"], data: string } | { result: APIStatusList["FAILED"] }> => {
     try {

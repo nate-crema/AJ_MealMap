@@ -27,6 +27,13 @@ export type StandardAPIResult<S> = {
     error: any
 } )
 
+export type StandardAPIUpdateResult<REQ, RES> = StandardAPIResult<{
+    received: REQ,
+    action: "OVERWRITED" | "ADDED" | "REMOVED" | "REPLACED" | "IGNORED" | "REJECTED",
+    reason?: string,
+    result: RES
+}>
+
 export type AssetAPIResult<S> = {
     api_version: string
     client_version: string

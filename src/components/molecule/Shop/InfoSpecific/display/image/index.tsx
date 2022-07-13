@@ -8,7 +8,7 @@ import states from "@recoil/states";
 import './style.css';
 import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import SvgManager from "@assets/svg";
-import InfoSpecificButton from "../InfoSpecificButton";
+import InfoSpecificButton from "../InfoAddButton";
 
 // interfaces
 type imageInfoSpecificProps = {
@@ -77,7 +77,7 @@ const ImageInfoSpecific: React.FC<imageInfoSpecificProps> = ({ info }) => {
                 </div>
             ) }
         </div>
-        <InfoSpecificButton className="image-add-btn" type="plus">사진 추가하기</InfoSpecificButton>
+        <InfoSpecificButton className="image-add-btn" type="plus" specinfo_type="IMAGE">사진 추가하기</InfoSpecificButton>
     </div>
 };
 
