@@ -1,0 +1,106 @@
+.timeinfo_selector {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: calc(33.33% - 20px) 10px calc(33.33% - 20px) 33.33%;
+    grid-template-rows: auto;
+    gap: 10px;
+}
+
+.timeinfo_selector .scroll-selector-wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector::-webkit-scrollbar {
+    display: none;
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value {
+    position: relative;
+    display: inline-block;
+    /* background-color: gray; */
+    padding: 25px 0px;
+    width: 100%;
+    text-align: center;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    color: gray;
+    font-size: 15px;
+    transition: all .2s ease;
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.r:first-child {
+    padding: 25px 0px !important;
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.r:last-child {
+    padding: 25px 0px !important;
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.selected {
+    font-weight: 700;
+    color: var(--theme-color-C) !important;
+    font-size: 20px;
+    padding: 2px 0px;
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.onScrolling {
+    color: var(--theme-color-C);
+}
+
+.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.nonScrolling {
+    color: gray;
+}
+
+.timeinfo_selector .value-focus-bar {
+    width: 60px;
+    height: 2px;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    background-color: var(--theme-color-C);
+    border-radius: 2px;
+    left: 50%;
+}
+
+.timeinfo_selector .value-focus-bar.bar-top {
+    top: 27%;
+}
+
+.timeinfo_selector .value-focus-bar.bar-bottom {
+    bottom: 27%;
+}
+
+.timeinfo_selector .selector-separator {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -17,7 +17,7 @@ import { MapOnPlaceClickedFunction } from "@interfaces/MapHandler";
 import { AnswerID, BaseInfoSelectionFormat, QuestionID, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
 import Writor from "./Writor";
 import ServiceButton from "@atom/ServiceButton";
-import DateSelector from "@src/components/molecule/Selectors/DateSelector";
+import DateSelector from "@molecule/Selectors/DateSelector";
 import WorktimeSelector from "./WorktimeSelector";
 
 type BaseInfoSelectorProps = {

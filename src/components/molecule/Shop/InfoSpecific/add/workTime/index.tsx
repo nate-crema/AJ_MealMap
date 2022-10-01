@@ -6,12 +6,21 @@ import states from "@recoil/states";
 
 // css
 import './style.css';
-import { ShopServiceType, ShopWorkDateListType } from "@interfaces/service/service.data.types/Shop";
-import InfoSpecificAddCommon, { StageAction } from "../common";
-import { WORK_DAYS, WORK_DAYS_KEY } from "@constant/service/Shop";
+
+// components
 import ServiceButton from "@atom/ServiceButton";
+import WorktimeManager from "@molecule/WorktimeManager";
+import InfoSpecificAddCommon, { StageAction } from "../common";
+
+// constant
+import { ShopWorkDateSunday, WORK_DAYS, WORK_DAYS_KEY } from "@constant/service/Shop";
 
 // interfaces
+import { ShopServiceType, ShopWorkDateListType, ShopWorkTimeType } from "@interfaces/service/service.data.types/Shop";
+import { WorktimeManagerModeEdit } from "@interfaces/WorktimeManager";
+import DateSelector from "@molecule/Selectors/DateSelector";
+import { DateSelectorDisplayLanguageKorean } from "@molecule/Selectors/DateSelector/type";
+
 type WorktimeInfoAddProps = {
     info: ShopServiceType
 }
@@ -21,7 +30,15 @@ type WorktimeInfoAddProps = {
 
 const WorktimeInfoAdd: React.FC<WorktimeInfoAddProps> = ({ info }) => {
 
+    const setOpenInfo = useSetRecoilState( states.infoSpecificOpenInfo );
+    const setInfo = useSetRecoilState( states.shopSpecific );
+
     const workTime = useMemo( () => info.workTime, [ info ] );
+    const setWorkTime = ( workTime: ShopWorkTimeType ) => setInfo( p => {
+        if (p)
+            p.workTime = workTime;
+        return p;
+    } )
 
     // 표시 텍스트 관련
     const [ title, setTitleText ] = useState<string>("");
@@ -122,6 +139,14 @@ const WorktimeInfoAdd: React.FC<WorktimeInfoAddProps> = ({ info }) => {
                                         <span className={ inputmode === "resttime" ? " selected-mode" : "" }>휴식시간</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="worktime-input">
+                            <DateSelector
+                                inputValue={[ "date", "am/pm" ]}
+                                onValueSucceed={ (v: any) => console.log(v) }
+                                className="time-selector"
+                                lang={ DateSelectorDisplayLanguageKorean }
+                            />
                             </div>
                         </div>
                     </>:

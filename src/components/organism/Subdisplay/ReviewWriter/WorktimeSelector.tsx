@@ -6,7 +6,7 @@ import states from "@recoil/states";
 
 // css
 import '@styles/components/Subdisplay/ReviewWriter/WorktimeSelector.css';
-import DateSelector from "@src/components/molecule/Selectors/DateSelector";
+import DateSelector from "@molecule/Selectors/DateSelector";
 import ServiceButton from "@atom/ServiceButton";
 
 // components
@@ -94,7 +94,7 @@ const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswere
         </div>
         <div className="worktime-selector-comp-wrap">
             <div className="worktime-fader fader-top"/>
-            <DateSelector
+            {/* <DateSelector
                 inputValue={[ "time", "am/pm" ]}
                 onValueSucceed={ onTimeInputHandler }
                 className="worktime-selector-comp"
@@ -113,7 +113,7 @@ const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswere
                     : undefined 
                 }
                 init_assign={ initAssign }
-            />
+            /> */}
             <div className="worktime-fader fader-bottom"/>
         </div>
         <ServiceButton text="선택완료" theme="main-selection"
