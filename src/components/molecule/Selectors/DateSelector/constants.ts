@@ -49,18 +49,18 @@ export const DATE_SELECTOR_SELECTIONS = {
     },
     month: {
         en: [ 
-            { value: 1, display: "01" }, 
-            { value: 2, display: "02" }, 
-            { value: 3, display: "03" }, 
-            { value: 4, display: "04" }, 
-            { value: 5, display: "05" }, 
-            { value: 6, display: "06" }, 
-            { value: 7, display: "07" }, 
-            { value: 8, display: "08" }, 
-            { value: 9, display: "09" }, 
-            { value: 10, display: "10" }, 
-            { value: 11, display: "11" }, 
-            { value: 12, display: "12" }
+            { value: 1, display: "JAN" }, 
+            { value: 2, display: "FEB" }, 
+            { value: 3, display: "MAR" }, 
+            { value: 4, display: "APR" }, 
+            { value: 5, display: "MAY" }, 
+            { value: 6, display: "JUNE" }, 
+            { value: 7, display: "JULY" }, 
+            { value: 8, display: "AUG" }, 
+            { value: 9, display: "SEP" }, 
+            { value: 10, display: "OCT" }, 
+            { value: 11, display: "NOV" }, 
+            { value: 12, display: "DEC" }
         ],
         ko: [ 
             { value: 1, display: "01" }, 

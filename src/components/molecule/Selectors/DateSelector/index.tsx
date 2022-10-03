@@ -10,6 +10,7 @@ import { DateSelectorDisplayLanguageKorean, DateSelectorDisplayLanguageTypes, Da
 
 // constants
 import { DATE_SELECTOR_SELECTIONS } from "./constants";
+import SvgManager from "@assets/svg";
 
 
 // interfaces
@@ -83,6 +84,9 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
 
     // 선택영역 크기
     const SCROLL_SELECT_SIZE = 71;
+
+    // 최상/하단 공백 선택영역 크기
+    const TOPBOTTOM_SELECT_MARGIN = 71;
     
     /**
      * 사용자 스크롤액션 handler
@@ -110,10 +114,11 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
         if ( last_scrolled.current !== timestamp ) return;
 
         // 스크롤 위치 획득
-        const { scrollTop: userScrollHeight } = e.target as any;
-        let select_value = Math.round( ( userScrollHeight - SCROLL_ADJUST_VALUE) / default_selection_size );
+        const { scrollTop: user_scroll_height } = e.target as any;
 
-        console.log( userScrollHeight, default_selection_size)
+        let select_value = Math.round( ( user_scroll_height - SCROLL_ADJUST_VALUE) / default_selection_size );
+
+        console.log( user_scroll_height, default_selection_size)
         console.log("select_value:firstcalc", select_value);
 
         if ( !swipeRef.current || !swipeWrapRef.current ) {
@@ -125,12 +130,15 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
         if ( DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ].length < ( select_value ) )
             select_value = DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ].length - 1;
 
+        // 이미 스크롤위치 보정이 진행중일 경우 중복보정 금지
+        if ( is_adjusting ) return;
+
         // 선택값으로 스크롤위치 보정
         adjustScroll( select_value );
         
-    }, [ default_selection_size ] );
+    }, [ default_selection_size, is_adjusting ] );
 
-    const adjustScroll = useCallback(( value: number ) => {
+    const adjustScroll = useCallback(( index: number ) => {
         // document 마운트여부 확인
         if ( !swipeRef.current || !swipeWrapRef.current ) {
             setIsScrolling( false );
@@ -140,36 +148,53 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
         // 스크롤위치 보정
         setIsAdjusting( true ); // 스크롤 보정여부 활성화; 사용자 스크롤 정지
         const { offsetHeight: totalSize } = swipeWrapRef.current; // 전체 선택박스 크기
-        
-        const top_nullarea_size = 71;
-        const selectarea_prevpostarea_size = totalSize * 27 / 100;
-        const selectarea_realsize = totalSize * 46 / 100;
-        const selected_size = value === 0 ? 41 : 33;
-        const selected_topbottom_padding = value === 0 ? 8 : 4;
-        const selectarea_design_margin = ( selectarea_realsize - selected_size ) / 2;
 
-        let scroll_value = 
-            top_nullarea_size + 
-            ( default_selection_size * value ) -
-            ( selectarea_design_margin + selectarea_prevpostarea_size ) +
-            selected_topbottom_padding
-        ;
+        // 스크롤 위치 = 선택값 상하여백 크기 + ( 선택값영역 * 선택 index ) - 상하단 선택불가 영역 - 선택영역_선택값간 상하크기차
 
-        (swipeRef.current as any).scrollTop = scroll_value;
+        const selectarea_prevpostarea_size = totalSize * 27 / 100; // 상하단 선택불가 영역
+        const selectarea_selectablesize = totalSize - selectarea_prevpostarea_size * 2 // 선택가능 영역
+        // const selectvalue_size = 21; // 선택값만의 크기
+        // const selectvalue_topbottom_margin = 25; // 선택값 상하여백의 크기
+        const selectvalue_size = 33; // 선택값만의 크기
+        const selectvalue_topbottom_margin = 19; // 선택값 상하여백의 크기
+        const selectvalue_totalsize = selectvalue_size + selectvalue_topbottom_margin * 2; // 선택값영역 크기
+        const area_value_topbottom_sizediff = ( selectarea_selectablesize - selectvalue_totalsize ) / 2 // 선택영역_선택값간 상하크기차
 
-        console.log("index", value, "scrolltop", default_selection_size * ((value-1) + 0.7));
+        const scroll_position = TOPBOTTOM_SELECT_MARGIN + ( selectvalue_totalsize * index ) - selectarea_prevpostarea_size - area_value_topbottom_sizediff + (selectvalue_size/6);
+
+        (swipeRef.current as any).scrollTop = scroll_position;
         
         
         setTimeout(() => {
             // 계산된 값 저장
-            setSelected( DATE_SELECTOR_SELECTIONS[ selection_mode ][lang][ value ].value );
+            setSelected( index );
             setIsAdjusting( false );
         }, 500);
     }, [ default_selection_size ])
 
+
+    const scrollbtnClick = useCallback(( type: "up" | "down" )  => {
+        if ( type === "up" ) {
+            console.log("scrollbtnClick", `index: ${ selected } ->`, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ selected === undefined ? -1 : selected ], ` => (update) ${ (selected || -1)+1 } -> `, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ (selected === undefined ? -1 : selected)+1 ] );
+            if ( selected === undefined ) adjustScroll(0);
+            else if ( DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ].length-1 > selected ) adjustScroll( selected+1 );
+            else return;
+        } else {
+            console.log("scrollbtnClick", `index: ${ selected } ->`, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ selected === undefined ? -1 : selected ], ` => (update) ${ (selected || -1)-1 } -> `, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ (selected === undefined ? -1 : selected)-1 ] );
+            if ( !selected || selected < 1 ) return
+            else adjustScroll( selected-1 );
+        }
+    }, [ selected ]);
+
     return <div className='scroll-selector-wrap' ref={ swipeWrapRef }>
         <div className="value-focus-bar bar-top"></div>
         <div className="value-focus-bar bar-bottom"></div>
+        <div className="scrollbtn-area scrollbtn-top" onClick={ () => scrollbtnClick("up") }>
+            <SvgManager svg_type="arrow_up" style={{ "path": { fill: "var(--theme-color-C)" } }}/>
+        </div>
+        <div className="scrollbtn-area scrollbtn-bottom" onClick={ () => scrollbtnClick("down") }>
+            <SvgManager svg_type="arrow_down" style={{ "path": { fill: "var(--theme-color-C)" } }}/>
+        </div>
         <div className={ `scroll-selector selector-${ selection_mode }` }
             ref={ swipeRef }
             onScroll={ userScrollHandler }
@@ -179,16 +204,16 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
         >
             <span className="selectable-value" style={{
                 padding: "0",
-                height: "71px"
+                height: `${ TOPBOTTOM_SELECT_MARGIN }px`
             }}> </span>
             { DATE_SELECTOR_SELECTIONS[ selection_mode ][lang].map((v, i) => <>
-                <span key={i} className={ "selectable-value r" + ( ( selected === v.value ) ? " selected" : "" ) + ( ( is_scrolling ) ? " onScrolling" : " nonScrolling" ) } style={{
-                    padding: ( (i === 0) && selected === v.value ) ? "12px 0px 0px 0px" : undefined
+                <span key={i} className={ "selectable-value r" + ( ( selected === i ) ? " selected" : "" ) + ( ( is_scrolling ) ? " onScrolling" : " nonScrolling" ) } style={{
+                    // padding: ( (i === 0) && selected === v.value ) ? "12px 0px 25px 0px" : undefined
                 }}>{ v.display }</span>
             </>) }
             <span className="selectable-value" style={{
                 padding: "0",
-                height: "71px"
+                height: `${ TOPBOTTOM_SELECT_MARGIN }px`
             }}> </span>
         </div>
     </div>

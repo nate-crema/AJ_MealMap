@@ -20,6 +20,7 @@ import { ShopServiceType, ShopWorkDateListType, ShopWorkTimeType } from "@interf
 import { WorktimeManagerModeEdit } from "@interfaces/WorktimeManager";
 import DateSelector from "@molecule/Selectors/DateSelector";
 import { DateSelectorDisplayLanguageKorean } from "@molecule/Selectors/DateSelector/type";
+import WorktimeSelector from "@organism/Subdisplay/ReviewWriter/WorktimeSelector";
 
 type WorktimeInfoAddProps = {
     info: ShopServiceType
@@ -126,28 +127,7 @@ const WorktimeInfoAdd: React.FC<WorktimeInfoAddProps> = ({ info }) => {
                     ( stage === 1 ) ? <>
                         {/* 영업시간 선택 */}
                         <div className="stage-1">
-                            <div className="worktime-type">
-                                <span className="time-format">시간유형</span>
-                                <div className="worktime-splitbar"/>
-                                <div className="worktime-inputselection-wrap">
-                                    <div className="worktime-inputselection input-selection-worktime" onClick={ () => inputModeClickHandler( "worktime" ) }>
-                                        <div className="color-palete"/>
-                                        <span className={ inputmode === "worktime" ? " selected-mode" : "" }>영업시간</span>
-                                    </div>
-                                    <div className="worktime-inputselection input-selection-resttime" onClick={ () => inputModeClickHandler( "resttime" ) }>
-                                        <div className="color-palete"/>
-                                        <span className={ inputmode === "resttime" ? " selected-mode" : "" }>휴식시간</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="worktime-input">
-                            <DateSelector
-                                inputValue={[ "date", "am/pm" ]}
-                                onValueSucceed={ (v: any) => console.log(v) }
-                                className="time-selector"
-                                lang={ DateSelectorDisplayLanguageKorean }
-                            />
-                            </div>
+                            <WorktimeSelector selected={ undefined } onAnswered={ () => {} }/>
                         </div>
                     </>:
                     ( stage === 2 ) ? <></>:

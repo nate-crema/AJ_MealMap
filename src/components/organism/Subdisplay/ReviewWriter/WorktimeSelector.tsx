@@ -93,14 +93,12 @@ const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswere
             </> ) }
         </div>
         <div className="worktime-selector-comp-wrap">
-            <div className="worktime-fader fader-top"/>
-            {/* <DateSelector
+            {/* <div className="worktime-fader fader-top"/> */}
+            <DateSelector
                 inputValue={[ "time", "am/pm" ]}
                 onValueSucceed={ onTimeInputHandler }
                 className="worktime-selector-comp"
-
-                displayKO={ "ko" }
-                init={ 
+                init_value={ 
                     ( !Object.values(input_times[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
                     ( {
                         hour: 
@@ -113,8 +111,8 @@ const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswere
                     : undefined 
                 }
                 init_assign={ initAssign }
-            /> */}
-            <div className="worktime-fader fader-bottom"/>
+            />
+            {/* <div className="worktime-fader fader-bottom"/> */}
         </div>
         <ServiceButton text="선택완료" theme="main-selection"
             className="worktime-selector-finish-button"
