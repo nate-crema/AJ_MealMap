@@ -255,7 +255,9 @@ function ScrollSelector({
             const selected_topbottom_padding = scroll_position === 0 ? 8 : 4;
             const selectarea_design_margin = ( selectarea_realsize - selected_size ) / 2;
 
-            let scroll_value = ( scroll_position !== -1 ) ? top_nullarea_size + scroll_position * selection_area_size - ( selectarea_design_margin + selectarea_prevpostarea_size ) + selected_topbottom_padding : 0;
+            let scroll_value = ( scroll_position !== -1 ) ? 
+            top_nullarea_size + scroll_position * selection_area_size - ( selectarea_design_margin + selectarea_prevpostarea_size ) + selected_topbottom_padding 
+            : 0;
             console.log(`scroll setted to: ${ scroll_value }px`)
             swipeRef.current.scrollTop = scroll_value;
             setTimeout(() => {

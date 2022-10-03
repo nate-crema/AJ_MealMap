@@ -8,8 +8,8 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay/ReviewWriter/ReviewDateSelector.css';
 
 // components
-import DateSelector from "@src/components/molecule/Selectors/DateSelector";
-import ServiceButton from "@src/components/atom/Button";
+import DateSelector from "@molecule/Selectors/DateSelector";
+import ServiceButton from "@atom/ServiceButton";
 
 // interfaces
 type DateSelectorResponse = {
@@ -41,7 +41,7 @@ const ReviewDateSelector: React.FC<ReviewDateSelectorProps> = ({ onAnswered }) =
     return <div className="review-dateselector-wrap">
         <div className="time-selector-wrap">
             <div className="time-selector-fader fader-top"/>
-            <DateSelector
+            {/* <DateSelector
                 inputValue={[ "date", "am/pm" ]}
                 onValueSucceed={ onValueInputHandler }
                 className="time-selector"
@@ -49,7 +49,7 @@ const ReviewDateSelector: React.FC<ReviewDateSelectorProps> = ({ onAnswered }) =
                 displayKO={ "ko" }
                 init={ undefined }
                 init_assign={ undefined }
-            />
+            /> */}
             <div className="time-selector-fader fader-bottom"/>
         </div>
         <ServiceButton 

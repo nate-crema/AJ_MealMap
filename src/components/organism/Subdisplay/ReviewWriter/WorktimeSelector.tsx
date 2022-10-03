@@ -6,8 +6,8 @@ import states from "@recoil/states";
 
 // css
 import '@styles/components/Subdisplay/ReviewWriter/WorktimeSelector.css';
-import DateSelector from "@src/components/molecule/Selectors/DateSelector";
-import ServiceButton from "@src/components/atom/Button";
+import DateSelector from "@molecule/Selectors/DateSelector";
+import ServiceButton from "@atom/ServiceButton";
 
 // components
 
@@ -19,7 +19,7 @@ type inputTimesType = { [ keys in catType ]: { [ keys in modeType ]: { h: number
 
 type WorktimeSelectorProps = {
     selected: inputTimesType | undefined,
-    onAnswered: ( answer: any ) => any
+    onAnswered: ( answer: inputTimesType ) => any
 }
 
 const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswered }) => {
@@ -93,14 +93,12 @@ const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswere
             </> ) }
         </div>
         <div className="worktime-selector-comp-wrap">
-            <div className="worktime-fader fader-top"/>
+            {/* <div className="worktime-fader fader-top"/> */}
             <DateSelector
                 inputValue={[ "time", "am/pm" ]}
                 onValueSucceed={ onTimeInputHandler }
                 className="worktime-selector-comp"
-
-                displayKO={ "ko" }
-                init={ 
+                init_value={ 
                     ( !Object.values(input_times[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
                     ( {
                         hour: 
@@ -114,7 +112,7 @@ const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswere
                 }
                 init_assign={ initAssign }
             />
-            <div className="worktime-fader fader-bottom"/>
+            {/* <div className="worktime-fader fader-bottom"/> */}
         </div>
         <ServiceButton text="선택완료" theme="main-selection"
             className="worktime-selector-finish-button"

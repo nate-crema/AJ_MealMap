@@ -12,7 +12,7 @@ import { InfoSpecificOpenInfoAddType, InfoSpecificOpenInfoDisplayType } from "@i
 // interfaces
 type InfoSpecificButtonProps = {
     className: string,
-    type: "plus",
+    type: "plus" | "edit",
     children?: React.ReactNode,
     onClick?: ( e: MouseEvent ) => any,
     specinfo_type: InfoSpecificOpenInfoDisplayType
@@ -20,7 +20,8 @@ type InfoSpecificButtonProps = {
 
 // components
 const ICN_TYPE_MAPPEDVAL = {
-    "plus": "plus-tri-bold"
+    "plus": "plus-tri-bold",
+    "edit": "edit"
     // "plus": "plus"
 }
 

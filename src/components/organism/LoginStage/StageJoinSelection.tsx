@@ -8,7 +8,7 @@ import states from "@recoil/states";
 import '@styles/components/Login/StageJoinSelection.css';
 
 // components
-import ServiceButton from "@src/components/atom/Button";
+import ServiceButton from "@atom/ServiceButton";
 
 // interfaces
 import { LoginStageCompProps } from "@interfaces/Login/StageComponents";

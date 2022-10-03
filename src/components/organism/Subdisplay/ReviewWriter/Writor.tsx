@@ -12,7 +12,7 @@ import GlobalInput from "@molecule/Input/GlobalInput";
 
 // interfaces
 import { MapOnPlaceClickedFunction } from "@interfaces/MapHandler";
-import ServiceButton from "@atom/Button";
+import ServiceButton from "@atom/ServiceButton";
 import { alertOption } from "@interfaces/service/recoil/State";
 
 type WritorProps = {
