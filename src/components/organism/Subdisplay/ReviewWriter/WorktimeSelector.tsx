@@ -19,7 +19,7 @@ type inputTimesType = { [ keys in catType ]: { [ keys in modeType ]: { h: number
 
 type WorktimeSelectorProps = {
     selected: inputTimesType | undefined,
-    onAnswered: ( answer: any ) => any
+    onAnswered: ( answer: inputTimesType ) => any
 }
 
 const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswered }) => {

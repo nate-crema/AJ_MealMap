@@ -75,15 +75,13 @@ const WorktimeInfoAdd: React.FC<WorktimeInfoAddProps> = ({ info }) => {
 
     // 입력값 관련
     const [ select_day, setSelectDay ] = useState<ShopWorkDateListType>();
-    const [ inputmode, setInputMode ] = useState<"worktime" | "resttime">("worktime");
-
 
     const dayClickHandler = ( day: ShopWorkDateListType ) => {
         setSelectDay( day );
     }
 
-    const inputModeClickHandler = ( selected_inputmode: "worktime" | "resttime" ) => {
-        setInputMode( selected_inputmode );
+    const timeSelectedHandler = ( answer: any ) => {
+
     }
 
     // 현재 진행단계 관련
@@ -127,7 +125,7 @@ const WorktimeInfoAdd: React.FC<WorktimeInfoAddProps> = ({ info }) => {
                     ( stage === 1 ) ? <>
                         {/* 영업시간 선택 */}
                         <div className="stage-1">
-                            <WorktimeSelector selected={ undefined } onAnswered={ () => {} }/>
+                            <WorktimeSelector selected={ undefined } onAnswered={ timeSelectedHandler }/>
                         </div>
                     </>:
                     ( stage === 2 ) ? <></>:

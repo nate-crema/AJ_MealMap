@@ -80,7 +80,8 @@
 
 .worktime-selector .worktime-selector-comp-wrap {
     width: 80%;
-    height: 180px;
+    height: calc( 100% - 200px );
+    max-height: 180px;
     position: absolute;
     bottom: 100px;
     left: 50%;
