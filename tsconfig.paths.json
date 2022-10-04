@@ -8,7 +8,7 @@
             "@atom/*": ["src/components/atom/*"],
             "@components/*": ["src/components/*"],
             "@constant/*": ["src/constant/*"],
-            "@pages/*": ["src/pages/*"],
+            "@pages/*": ["src/components/pages/*"],
             "@styles/*": ["src/styles/*"],
             "@assets/*": ["src/assets/*"],
             "@interfaces/*": ["src/interfaces/*"],

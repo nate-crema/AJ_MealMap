@@ -10,7 +10,7 @@ import './style.css';
 // components
 
 // interfaces
-import { ServiceButtonThemes } from "@interfaces/ServiceButton";
+import { ServiceButtonThemes } from "./types";
 
 type ServiceButtonProps = {
     text: string,

@@ -2,9 +2,9 @@ import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
 import { Login, Location, alertOption } from "@interfaces/service/recoil/State";
-import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@src/interfaces/Subdisplay";
+import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@components/pages/Subdisplay/Subdisplay";
 import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
-import { InfoSpecificOpenInfoType, InfoSpecificOpenSize } from "@interfaces/InfoSpecific";
+import { InfoSpecificOpenInfoType, InfoSpecificOpenSize } from "@template/InfoSpecific/type";
 /*
 
 const [unique-key] = atom({
