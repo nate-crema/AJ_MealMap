@@ -16,7 +16,7 @@ import { ShopWorkDateSunday, WORK_DAYS, WORK_DAYS_KEY } from "@constant/service/
 
 // interfaces
 import { ShopServiceType, ShopWorkDateListType, ShopWorkTimeType } from "@interfaces/service/service.data.types/Shop";
-import WorktimeSelector from "@template/ReviewWriter/WorktimeSelector"; // location will be changed
+import TimeReviewer from "@organism/[F]ReviewWriter/TimeReviewer"; // location will be changed
 
 type WorktimeInfoAddProps = {
     info: ShopServiceType
@@ -121,7 +121,7 @@ const WorktimeInfoAdd: React.FC<WorktimeInfoAddProps> = ({ info }) => {
                     ( stage === 1 ) ? <>
                         {/* 영업시간 선택 */}
                         <div className="stage-1">
-                            <WorktimeSelector selected={ undefined } onAnswered={ timeSelectedHandler }/>
+                            <TimeReviewer selected={ undefined } onAnswered={ timeSelectedHandler }/>
                         </div>
                     </>:
                     ( stage === 2 ) ? <></>:

@@ -5,11 +5,11 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/ReviewWriter/WorktimeSelector.css';
-import DateSelector from "@molecule/[F]Selector/DateSelector";
-import ServiceButton from "@atom/ServiceButton";
+import './style.css';
 
 // components
+import DateSelector from "@molecule/[F]Selector/DateSelector";
+import ServiceButton from "@atom/ServiceButton";
 
 // interfaces
 type catType = "work" | "rest";
@@ -17,12 +17,12 @@ type modeType = "from" | "to";
 
 type inputTimesType = { [ keys in catType ]: { [ keys in modeType ]: { h: number, m: number } } };
 
-type WorktimeSelectorProps = {
+type TimeReviewerProps = {
     selected: inputTimesType | undefined,
     onAnswered: ( answer: inputTimesType ) => any
 }
 
-const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswered }) => {
+const TimeReviewer: React.FC<TimeReviewerProps> = ({ selected, onAnswered }) => {
 
     // inputmode control
     const INPUT_MODES: Array<{ type: catType, title: string, isMultiple: boolean, submodes: Array<{ type: modeType, text: string }> }> = [
@@ -122,4 +122,4 @@ const WorktimeSelector: React.FC<WorktimeSelectorProps> = ({ selected, onAnswere
     </div>
 };
 
-export default WorktimeSelector
+export default TimeReviewer

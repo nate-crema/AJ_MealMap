@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/ReviewWriter/MapSelector.css';
+import './style.css';
 
 // components
 import MapHandler from "@molecule/[F]Map/MapHandler";
@@ -13,12 +13,12 @@ import { MapOnPlaceClickedFunction } from "@molecule/[F]Map/MapHandler/types";
 import ServiceButton from "@atom/ServiceButton";
 
 // interfaces
-type MapSelectorProps = {
+type LocationReviewerProps = {
     onAnswered: MapOnPlaceClickedFunction
     onSelected?: () => void
 }
 
-const MapSelector: React.FC<MapSelectorProps> = ({ onAnswered, onSelected }) => {
+const LocationReviewer: React.FC<LocationReviewerProps> = ({ onAnswered, onSelected }) => {
 
     const [ selected, setSelected ] = useState<{ lat: number, long: number } | null>( null );
 
@@ -52,4 +52,4 @@ const MapSelector: React.FC<MapSelectorProps> = ({ onAnswered, onSelected }) => 
     </>
 };
 
-export default MapSelector
+export default LocationReviewer

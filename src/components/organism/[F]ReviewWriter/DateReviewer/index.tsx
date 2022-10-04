@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/ReviewWriter/ReviewDateSelector.css';
+import './style.css';
 
 // components
 import DateSelector from "@molecule/[F]Selector/DateSelector";
@@ -18,11 +18,11 @@ type DateSelectorResponse = {
     ampm: number | null
 }
 
-type ReviewDateSelectorProps = {
+type DateReviewerProps = {
     onAnswered: ( value: any ) => any
 }
 
-const ReviewDateSelector: React.FC<ReviewDateSelectorProps> = ({ onAnswered }) => {
+const DateReviewer: React.FC<DateReviewerProps> = ({ onAnswered }) => {
 
     const [ selected, setSelected ] = useState<boolean>( false );
     const [ date, setDate ] = useState<DateSelectorResponse>( { month: -1, year: -1, ampm: -1 } );
@@ -67,4 +67,4 @@ const ReviewDateSelector: React.FC<ReviewDateSelectorProps> = ({ onAnswered }) =
     </div>
 };
 
-export default ReviewDateSelector
+export default DateReviewer

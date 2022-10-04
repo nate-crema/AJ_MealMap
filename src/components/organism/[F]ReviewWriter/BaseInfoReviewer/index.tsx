@@ -5,20 +5,20 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/ReviewWriter/BaseInfoSelector.css';
+import './style.css';
 import '@styles/animation/Animate.BaseInfoSelection.css';
 
 // components
-import Selector from "./Selector";
-import MapSelector from "./MapSelector";
+import Selector from "../SelectionReviewer";
+import LocationReviewer from "@organism/[F]ReviewWriter/LocationReviewer";
 
 // interfaces
 import { MapOnPlaceClickedFunction } from "@molecule/[F]Map/MapHandler/types";
 import { AnswerID, BaseInfoSelectionFormat, QuestionID, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
-import Writor from "./Writor";
+import WritingReviewer from "@organism/[F]ReviewWriter/WritingReviewer";
 import ServiceButton from "@atom/ServiceButton";
 import DateSelector from "@molecule/[F]Selector/DateSelector";
-import WorktimeSelector from "./WorktimeSelector";
+import TimeReviewer from "@organism/[F]ReviewWriter/TimeReviewer";
 
 type BaseInfoSelectorProps = {
     selection: Array<BaseInfoSelectionFormat>
@@ -220,7 +220,7 @@ const BaseInfoSelection: React.FC<BaseInfoSelectionProps> = ({ info, onClick }) 
     </div>
 }
 
-const BaseInfoSelector: React.FC<BaseInfoSelectorProps> = ({ selection: selections, onAnswered, onSelected }) => {
+const BaseInfoReviewer: React.FC<BaseInfoSelectorProps> = ({ selection: selections, onAnswered, onSelected }) => {
 
     const [ selection_display, setSelectionDisplay ] = useState<boolean>( true );
     const [ selected_question, setSelectedQuestion ] = useState<BaseInfoSelectionFormat | null>( null );
@@ -269,8 +269,8 @@ const BaseInfoSelector: React.FC<BaseInfoSelectorProps> = ({ selection: selectio
             ( selected_question ) ? <>
                 {
                     selected_question.subQuestion.answer.type === "writing-multiple" ?
-                        <Writor
-                            key="Writor"
+                        <WritingReviewer
+                            key="WritingReviewer"
                             placeholder={ selected_question.subQuestion.answer.placeholders || [] }
                             prevValues={ selected_answer[ selected_question?.aid ] || null }
                             maxInput={ selected_question.subQuestion.answer.maxInput || 0 }
@@ -285,15 +285,15 @@ const BaseInfoSelector: React.FC<BaseInfoSelectorProps> = ({ selection: selectio
                         />
                     :
                     selected_question.subQuestion.answer.type === "selection-worktime" ?
-                        <WorktimeSelector 
-                            key="WorktimeSelector"
+                        <TimeReviewer 
+                            key="TimeReviewer"
                             selected={ selected_answer[ selected_question.aid ] }
                             onAnswered={ answerHandler }
                         />
                     :
                     selected_question.subQuestion.answer.type === "selection-location" ?
-                        <MapSelector 
-                            key="MapSelector"
+                        <LocationReviewer 
+                            key="LocationReviewer"
                             onAnswered={ answerHandler }
                         />
                     : <></>
@@ -306,4 +306,4 @@ const BaseInfoSelector: React.FC<BaseInfoSelectorProps> = ({ selection: selectio
     </div>
 };
 
-export default BaseInfoSelector
+export default BaseInfoReviewer

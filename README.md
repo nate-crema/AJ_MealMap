@@ -52,6 +52,23 @@ https://ajou.mealmap.app
         Selector
         : 시스템 전반 사용자 선택액션관련 입력시스템 관리 
 
+        [F]ReviewWriter
+        : ReviewWriter에만 포함되는 기능별 구현 컴포넌트 관리폴더
+            LocationReviewer (Prev: MapSelector)
+            : 식당 위치에 대한 질문정보 표시 및 응답정보 관리
+            DateReviewer (Prev: ReviewDateSelector)
+            : 방문일시 등 방문날짜 대한 질문정보 표시 및 응답정보 관리
+            TimeReviewer (Prev: WorktimeSelector)
+            : 방문시간 등 방문시간에 대한 질문정보 표시 및 응답정보 관리
+            -> [Note]: 시점선택기능을 '/molecule/[F]Selector/DateSelector'로 이관 후 component refactoring 필요
+            SelectionReviewer (Prev: Selector)
+            : 선택표준형 질문에 대한 질문정보 표시 및 응답정보 관리
+            BaseInfoReviewer (Prev: BaseInfoSelector)
+            : 상점 기초정보에 대한 질문정보 표시 및 응답정보 관리
+            WritingReviewer (Prev: Writor)
+            : 주관식 질문에 대한 질문정보 표시 및 응답정보 관리
+
+
         [F]Effect
         : 서비스 전반 애니메이션 구현 컴포넌트 관리폴더
             LogoAnimate

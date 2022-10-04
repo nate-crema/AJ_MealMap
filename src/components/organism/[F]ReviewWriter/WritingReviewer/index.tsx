@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/ReviewWriter/Writor.css';
+import './style.css';
 
 // components
 import GlobalInput from "@atom/ServiceInput";
@@ -15,7 +15,7 @@ import { MapOnPlaceClickedFunction } from "@molecule/[F]Map/MapHandler/types";
 import ServiceButton from "@atom/ServiceButton";
 import { alertOption } from "@interfaces/service/recoil/State";
 
-type WritorProps = {
+type WritingReviewerProps = {
     placeholder?: Array<{ text: string, width: string, necessary: boolean }>
     prevValues?: Array<string>
     maxInput?: number
@@ -23,7 +23,7 @@ type WritorProps = {
 }
 
 
-const Writor: React.FC<WritorProps> = ({ placeholder = [{ text: "", width: "0px", necessary: true }], prevValues, maxInput, onAnswered }) => {
+const WritingReviewer: React.FC<WritingReviewerProps> = ({ placeholder = [{ text: "", width: "0px", necessary: true }], prevValues, maxInput, onAnswered }) => {
 
     // global alert control
     const setGlobalAlert = useSetRecoilState<alertOption>( states.alert );
@@ -111,4 +111,4 @@ const Writor: React.FC<WritorProps> = ({ placeholder = [{ text: "", width: "0px"
     </div>
 };
 
-export default Writor
+export default WritingReviewer

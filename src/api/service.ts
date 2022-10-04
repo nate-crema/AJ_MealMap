@@ -253,55 +253,55 @@ const dummy_question: { [ key in ShopIDType ]: Array<ReviewQuestion> } = {
             size: "LARGE",
             answer: { type: "selection-Shop" }
         },
-        {
-            qid: "QID_1",
-            ment: "위치가 어디쯤인가요?",
-            size: "LARGE",
-            answer: { type: "selection-location" }
-        }, // when newplace
-        {
-            qid: "QID_2",
-            ment: "이중에 알고있는 정보가 있나요?",
-            size: "LARGE",
-            answer: {
-                type: "base-info",
-                selection: [
-                    {
-                        qid: "QID_BASE_INFO",
-                        aid: "QID_Shop_Number",
-                        selectionText: "연락처",
-                        subQuestion: {
-                            qid: "QID_Shop_Number",
-                            ment: "이 식당의 연락처가 어떻게 되나요?",
-                            size: "MEDIUM",
-                            answer: { type: "writing-multiple", placeholders: [ { text: "기본 연락처", width: "90px", necessary: true }, { text: "기타 연락처", width: "90px", necessary: false } ] }
-                        }                     
-                    },
-                    {
-                        qid: "QID_BASE_INFO",
-                        aid: "QID_Shop_Menu",
-                        selectionText: "메뉴",
-                        subQuestion: {
-                            qid: "QID_Shop_Menu",
-                            ment: "이 식당의 메뉴들을 아시는만큼 알려주세요",
-                            size: "MEDIUM",
-                            answer: { type: "writing-multiple", placeholders: [{ text: "메뉴명", width: "60px", necessary: false } ] }
-                        }                     
-                    },
-                    {
-                        qid: "QID_BASE_INFO",
-                        aid: "QID_Shop_Worktime",
-                        selectionText: "영업시간",
-                        subQuestion: {
-                            qid: "QID_Shop_Worktime",
-                            ment: "이 식당의 영업시간을 알려주세요",
-                            size: "MEDIUM",
-                            answer: { type: "selection-worktime" }
-                        }                     
-                    },
-                ]
-            }
-        }, // when newplace
+        // {
+        //     qid: "QID_1",
+        //     ment: "위치가 어디쯤인가요?",
+        //     size: "LARGE",
+        //     answer: { type: "selection-location" }
+        // }, // when newplace
+        // {
+        //     qid: "QID_2",
+        //     ment: "이중에 알고있는 정보가 있나요?",
+        //     size: "LARGE",
+        //     answer: {
+        //         type: "base-info",
+        //         selection: [
+        //             {
+        //                 qid: "QID_BASE_INFO",
+        //                 aid: "QID_Shop_Number",
+        //                 selectionText: "연락처",
+        //                 subQuestion: {
+        //                     qid: "QID_Shop_Number",
+        //                     ment: "이 식당의 연락처가 어떻게 되나요?",
+        //                     size: "MEDIUM",
+        //                     answer: { type: "writing-multiple", placeholders: [ { text: "기본 연락처", width: "90px", necessary: true }, { text: "기타 연락처", width: "90px", necessary: false } ] }
+        //                 }                     
+        //             },
+        //             {
+        //                 qid: "QID_BASE_INFO",
+        //                 aid: "QID_Shop_Menu",
+        //                 selectionText: "메뉴",
+        //                 subQuestion: {
+        //                     qid: "QID_Shop_Menu",
+        //                     ment: "이 식당의 메뉴들을 아시는만큼 알려주세요",
+        //                     size: "MEDIUM",
+        //                     answer: { type: "writing-multiple", placeholders: [{ text: "메뉴명", width: "60px", necessary: false } ] }
+        //                 }                     
+        //             },
+        //             {
+        //                 qid: "QID_BASE_INFO",
+        //                 aid: "QID_Shop_Worktime",
+        //                 selectionText: "영업시간",
+        //                 subQuestion: {
+        //                     qid: "QID_Shop_Worktime",
+        //                     ment: "이 식당의 영업시간을 알려주세요",
+        //                     size: "MEDIUM",
+        //                     answer: { type: "selection-worktime" }
+        //                 }                     
+        //             },
+        //         ]
+        //     }
+        // }, // when newplace
         {
             qid: "QID_3",
             ment: "언제 다녀오셨나요?",

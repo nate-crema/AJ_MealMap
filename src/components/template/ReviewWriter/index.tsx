@@ -16,15 +16,16 @@ import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, Shop
 // components
 import ServiceTitler from "@molecule/ServiceTitler";
 import ShopList from "@organism/ShopList";
-import Selector from "./Selector";
+
+import Selector from "@organism/[F]ReviewWriter/SelectionReviewer";
 import DateSelector from "@molecule/[F]Selector/DateSelector";
-import MapSelector from "./MapSelector";
-import BaseInfoSelector from "./BaseInfoSelector";
+import LocationReviewer from "@organism/[F]ReviewWriter/LocationReviewer";
+import BaseInfoReviewer from "@organism/[F]ReviewWriter/BaseInfoReviewer";
 
 // interfaces
 import { ComponentOpenState } from "@pages/Subdisplay/types";
 import { ReviewAnswer, ReviewQuestion } from "@interfaces/ReviewWriter";
-import ReviewDateSelector from "./ReviewDateSelector";
+import DateReviewer from "@organism/[F]ReviewWriter/DateReviewer";
 import { useNavigate } from "react-router-dom";
 import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
 
@@ -165,18 +166,18 @@ const ReviewWriter: React.FC = () => {
                         />
                     : 
                     question_list[ review_state ].answer.type === "selection-location" ?
-                        <MapSelector 
+                        <LocationReviewer 
                             onSelected={ () => setMent("위치가 이곳인가요?") }
                             onAnswered={ answerHandler }
                         />                   
                     : 
                     question_list[ review_state ].answer.type === "selection-time" ?
-                        <ReviewDateSelector
+                        <DateReviewer
                             onAnswered={ answerHandler }
                         />
                     :
                     question_list[ review_state ].answer.type === "base-info" ?
-                        <BaseInfoSelector 
+                        <BaseInfoReviewer 
                             selection={ ( question_list[ review_state ].answer.selection || [] ) as Array<BaseInfoSelectionFormat> }
                             onSelected={ ( ment: string ) => setMent( ( ment === "[default]" ) ? question_list[ review_state ].ment : ment ) }
                             onAnswered={ answerHandler }

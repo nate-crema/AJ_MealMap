@@ -5,11 +5,11 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/components/Subdisplay/ReviewWriter/Selector.css';
+import './style.css';
 import { AnswerID, ReviewSelectionFormat } from "@src/interfaces/ReviewWriter";
 
 // interfaces
-type SelectorProps = {
+type SelectionReviewerProps = {
     selections: Array<ReviewSelectionFormat>
     onAnswered: ( aid: AnswerID ) => void
 }
@@ -17,7 +17,7 @@ type SelectorProps = {
 // components
 
 
-const Selector: React.FC<SelectorProps> = ({ selections, onAnswered }) => {
+const SelectionReviewer: React.FC<SelectionReviewerProps> = ({ selections, onAnswered }) => {
 
     return <div className="answerhandler-selector-wrap">
         <div className="answerhandler-selector" style={{
@@ -37,4 +37,4 @@ const Selector: React.FC<SelectorProps> = ({ selections, onAnswered }) => {
     </div>
 };
 
-export default Selector
+export default SelectionReviewer
