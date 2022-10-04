@@ -8,10 +8,10 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay/ReviewWriter/Writor.css';
 
 // components
-import GlobalInput from "@molecule/Input/GlobalInput";
+import GlobalInput from "@atom/ServiceInput";
 
 // interfaces
-import { MapOnPlaceClickedFunction } from "@interfaces/MapHandler";
+import { MapOnPlaceClickedFunction } from "@molecule/[F]Map/MapHandler/types";
 import ServiceButton from "@atom/ServiceButton";
 import { alertOption } from "@interfaces/service/recoil/State";
 

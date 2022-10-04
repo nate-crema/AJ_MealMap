@@ -2,7 +2,7 @@
 import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
 import React, { CSSProperties } from "react";
 import { Type } from "typescript";
-import { ComponentOpenState } from "../../components/pages/Subdisplay/Subdisplay";
+import { ComponentOpenState } from "@pages/Subdisplay/types";
 
 export type QuestionID = string;
 export type AnswerID = string;

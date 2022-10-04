@@ -14,15 +14,15 @@ import { APIResult, getReviewQuestion } from "@api/service";
 import { AnswerID, BaseInfoQuestionID, BaseInfoSelectionFormat, QuestionID, ShopWhereQuestionID, ReviewPresetAnswerTypes, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
 
 // components
-import ServiceTitler from "../../../molecule/Titler";
-import ShopList from "../../../organism/Shop/ShopList";
+import ServiceTitler from "@molecule/ServiceTitler";
+import ShopList from "@organism/ShopList";
 import Selector from "./Selector";
-import DateSelector from "../../../molecule/Selectors/DateSelector";
+import DateSelector from "@molecule/[F]Selector/DateSelector";
 import MapSelector from "./MapSelector";
 import BaseInfoSelector from "./BaseInfoSelector";
 
 // interfaces
-import { ComponentOpenState } from "@components/pages/Subdisplay/Subdisplay";
+import { ComponentOpenState } from "@pages/Subdisplay/types";
 import { ReviewAnswer, ReviewQuestion } from "@interfaces/ReviewWriter";
 import ReviewDateSelector from "./ReviewDateSelector";
 import { useNavigate } from "react-router-dom";

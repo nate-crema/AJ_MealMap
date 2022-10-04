@@ -9,9 +9,9 @@ import recoil, { RecoilRoot } from 'recoil';
 import '@styles/App.css';
 
 // components
-import DisplayHandler from './DisplayHandler';
+import DisplayHandler from '@frame/DisplayHandler';
 import Login from "@pages/Login";
-import Main from './pages/Main';
+import Main from '@pages/Main';
 
 const App: React.FC = () => {
 

@@ -9,13 +9,13 @@ import states from "@recoil/states";
 import './style.css';
 
 // components
-import InfoDisplay from "../../organism/Subdisplay/InfoDisplay";
-import ReviewWriter from "../../organism/Subdisplay/ReviewWriter";
+import InfoDisplay from "@template/InfoDisplay";
+import ReviewWriter from "@template/ReviewWriter";
 
 // interfaces
-import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@components/pages/Subdisplay/Subdisplay";
-import Alert from "../../molecule/Alert";
-import InfoSpecific from "@organism/Shop/InfoSpecific";
+import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "./types";
+import Alert from "@organism/ServiceAlert";
+import InfoSpecific from "@template/InfoSpecific";
 
 const SUBDISPLAY_SIZE_PRESETS: {
     [ keys in ComponentOpenState ]: string

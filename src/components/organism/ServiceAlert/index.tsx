@@ -12,7 +12,7 @@ import './style.css';
 
 // interfaces
 import { alertOption } from "@interfaces/service/recoil/State";
-import { alertSizeOptions } from "@src/interfaces/Alert";
+import { alertSizeOptions } from "@organism/ServiceAlert/types";
 import ServiceButton from "@atom/ServiceButton";
 import { ServiceButtonThemes } from "@atom/ServiceButton/types";
 

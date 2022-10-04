@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 
 //recoil
 import { useRecoilState, useRecoilValue } from 'recoil';
-import states from './recoil/states';
+import states from '@recoil/states';
 
 //css
 import '@styles/DisplayHandler.css';
 
 // interfaces
-import { DisplayHandlerProps, WindowSize } from "./interfaces/DisplayHandler";
-import { SubdisplayDisplayMode, SubdisplayMountMode } from './interfaces/Subdisplay';
-import Subdisplay from './components/template/Subdisplay';
+import { DisplayHandlerProps, WindowSize } from "./types";
+import { SubdisplayDisplayMode, SubdisplayMountMode } from '@pages/Subdisplay/types';
+import Subdisplay from '@pages/Subdisplay';
 
 
 const DisplayHandler: React.FC<DisplayHandlerProps> = ({ children }) => {

@@ -17,7 +17,7 @@ import Shops from "@organism/ShopList";
 
 
 // interfaces
-import { SubdisplayDisplayMode } from "@pages/Subdisplay/type";
+import { SubdisplayDisplayMode } from "@pages/Subdisplay/types";
 import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import { getShopInfoByShopID } from "@api/service";
 

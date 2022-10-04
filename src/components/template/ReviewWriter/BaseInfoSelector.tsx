@@ -13,11 +13,11 @@ import Selector from "./Selector";
 import MapSelector from "./MapSelector";
 
 // interfaces
-import { MapOnPlaceClickedFunction } from "@interfaces/MapHandler";
+import { MapOnPlaceClickedFunction } from "@molecule/[F]Map/MapHandler/types";
 import { AnswerID, BaseInfoSelectionFormat, QuestionID, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
 import Writor from "./Writor";
 import ServiceButton from "@atom/ServiceButton";
-import DateSelector from "@molecule/Selectors/DateSelector";
+import DateSelector from "@molecule/[F]Selector/DateSelector";
 import WorktimeSelector from "./WorktimeSelector";
 
 type BaseInfoSelectorProps = {

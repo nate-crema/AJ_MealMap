@@ -8,7 +8,7 @@ import states from "@recoil/states";
 import '@styles/components/Subdisplay/ReviewWriter/ReviewDateSelector.css';
 
 // components
-import DateSelector from "@molecule/Selectors/DateSelector";
+import DateSelector from "@molecule/[F]Selector/DateSelector";
 import ServiceButton from "@atom/ServiceButton";
 
 // interfaces

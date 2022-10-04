@@ -11,7 +11,7 @@ import './style.css';
 // components
 
 // interface
-import { SubdisplayMountMode } from "@components/pages/Subdisplay/Subdisplay";
+import { SubdisplayMountMode } from "@pages/Subdisplay/types";
 
 type touchState = "na" | "toUp" | "toDown";
 
