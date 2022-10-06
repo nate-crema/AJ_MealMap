@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 // css
-import "@styles/components/DateSelector.css";
+import "@styles/components/DatetimeSelector.css";
 
 function ScrollSelector({ 
     // scroll selector initials
@@ -333,7 +333,7 @@ function ScrollSelector({
     </div>
 }
 
-function DateSelector({ 
+function DatetimeSelector({ 
     // date-selector defalut props
     inputValue, 
     // outer action when all values inputed
@@ -451,4 +451,4 @@ function DateSelector({
     </>;
 }
 
-export default DateSelector;
+export default DatetimeSelector;

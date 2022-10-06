@@ -6,7 +6,7 @@ import states from "@recoil/states";
 
 // css
 import './style.css';
-import { DateSelectorDisplayLanguageKorean, DateSelectorDisplayLanguageTypes, DateSelectorHandleValueAmpm, DateSelectorHandleValueDay, DateSelectorHandleValueHour, DateSelectorHandleValueMinute, DateSelectorHandleValueMonth, DateSelectorHandleValueTypes, DateSelectorInputCategoryTypes, SelectedValueType } from "./type";
+import { DatetimeSelectorDisplayLanguageKorean, DatetimeSelectorDisplayLanguageTypes, DatetimeSelectorHandleValueAmpm, DatetimeSelectorHandleValueDay, DatetimeSelectorHandleValueHour, DatetimeSelectorHandleValueMinute, DatetimeSelectorHandleValueMonth, DatetimeSelectorHandleValueTypes, DatetimeSelectorInputCategoryDate, DatetimeSelectorInputCategoryTypes, DatetimeSelectorSelectedValueType } from "./types";
 
 // constants
 import { DATE_SELECTOR_SELECTIONS } from "./constants";
@@ -16,22 +16,22 @@ import SvgManager from "@assets/svg";
 // interfaces
 type ScrollSelectorProps = {
     onSelect: ( v: number ) => any // 사용자 입력값 추정 완료 시 실행될 함수
-    selection_mode: DateSelectorHandleValueTypes
+    selection_mode: DatetimeSelectorHandleValueTypes
     setValueAdjustment: ( v: boolean ) => any // 입력값 추정 중 사용자 입력 금지를 위한 state update handler
     onError: () => void
-    lang?: DateSelectorDisplayLanguageTypes
+    lang?: DatetimeSelectorDisplayLanguageTypes
     readonly?: boolean
     init_value?: number
     init_assign?: boolean
 }
 
-type DateSelectorProps = {
+type DatetimeSelectorProps = {
     className?: string
-    inputValue: Array<DateSelectorInputCategoryTypes>
-    onValueSucceed?: ( v: SelectedValueType ) => any
-    lang?: DateSelectorDisplayLanguageTypes
+    inputValue: Array<DatetimeSelectorInputCategoryTypes>
+    onValueSucceed?: ( v: DatetimeSelectorSelectedValueType ) => any
+    lang?: DatetimeSelectorDisplayLanguageTypes
     readonly?: boolean
-    init_value?: SelectedValueType,
+    init_value?: DatetimeSelectorSelectedValueType,
     init_assign?: boolean
 }
 
@@ -41,10 +41,10 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
     selection_mode,
     setValueAdjustment,
     onError,
-    lang = DateSelectorDisplayLanguageKorean,
+    lang = DatetimeSelectorDisplayLanguageKorean,
     readonly,
     init_value,
-    init_assign = true
+    init_assign = false
 }) => {
 
     // 입력값 추정코드 관련
@@ -57,22 +57,39 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
     const swipeWrapRef = useRef( null );
     const last_scrolled = useRef( new Date().getTime() );
 
+    // 스크롤위치 보정상태 동기화
+    useEffect(() => {
+        if ( !setValueAdjustment ) return;
+        setValueAdjustment( is_adjusting );
+    }, [ is_adjusting ]);
+
     // 선택영역 크기 불러오기
     useEffect(() => {
         const select_area = window.document.querySelector("span.selectable-value.r");
         if (!select_area) return;
         const h = select_area.getBoundingClientRect().height;
-        console.log("default_selection_size", h);
+        // console.log("default_selection_size", h);
         setDefaultSelectionSize(h);
     }, []);
 
     // init_value 설정
     useEffect(() => {
-        if ( !init_value || !init_assign ) return;
-        
-        
-
+        console.log("scroll-selector: init", init_value, init_assign);
+        if ( init_value === selected ) return;
+        if ( !init_assign ) return;
+        else if ( init_value === undefined ) {
+            resetScroll();
+            return;
+        }
+        return adjustScroll( init_value );
     }, [ init_value, init_assign ]);
+
+    // 사용자 입력값 DatetimeSelector로 전송
+    useEffect(() => {
+        if ( selected === undefined ) return;
+        // console.log("scroll-selector: 사용자 입력값 동기화", selected);
+        onSelect( selected );
+    }, [ selected ])
 
     // 입력값 추정코드
 
@@ -118,17 +135,19 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
 
         let select_value = Math.round( ( user_scroll_height - SCROLL_ADJUST_VALUE) / default_selection_size );
 
-        console.log( user_scroll_height, default_selection_size)
+        // console.log( user_scroll_height, default_selection_size)
         console.log("select_value:firstcalc", select_value);
-
+        
         if ( !swipeRef.current || !swipeWrapRef.current ) {
             setIsScrolling( false );
             return;
         }
         
         // 예외처리: 스크롤 위치가 선택범위를 벗어나는경우
-        if ( DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ].length < ( select_value ) )
+        if ( DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ].length <= ( select_value ) )
             select_value = DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ].length - 1;
+        else if ( ( select_value ) < 0 ) 
+            select_value = 0;
 
         // 이미 스크롤위치 보정이 진행중일 경우 중복보정 금지
         if ( is_adjusting ) return;
@@ -138,7 +157,12 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
         
     }, [ default_selection_size, is_adjusting ] );
 
-    const adjustScroll = useCallback(( index: number ) => {
+    /**
+     * 사용자 스크롤 보정 함수
+     * @param index 사용자의 선택으로 추정되는 index값 (=자동으로 스크롤시킬 위치값)
+     * @param skip_save 스크롤액션 뒤 해당 위치에 대응되는 값에 대한 저장 스킵여부 (선택)
+     */
+    const adjustScroll = useCallback(( index: number, skip_save?: boolean ) => {
         // document 마운트여부 확인
         if ( !swipeRef.current || !swipeWrapRef.current ) {
             setIsScrolling( false );
@@ -164,23 +188,30 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
 
         (swipeRef.current as any).scrollTop = scroll_position;
         
-        
         setTimeout(() => {
             // 계산된 값 저장
-            setSelected( index );
+            if ( skip_save !== true ) setSelected( index );
             setIsAdjusting( false );
         }, 500);
     }, [ default_selection_size ])
 
+    const resetScroll = useCallback(() => {
+        adjustScroll( -1, true );
+        setSelected( undefined );
+    }, [ default_selection_size ]);
 
+    /**
+     * 사용자 수동 스크롤 버튼 제어 함수
+     * @param type 사용자가 입력한 스크롤 버튼의 유형: up | down
+     */
     const scrollbtnClick = useCallback(( type: "up" | "down" )  => {
         if ( type === "up" ) {
-            console.log("scrollbtnClick", `index: ${ selected } ->`, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ selected === undefined ? -1 : selected ], ` => (update) ${ (selected || -1)+1 } -> `, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ (selected === undefined ? -1 : selected)+1 ] );
+            // console.log("scrollbtnClick", `index: ${ selected } ->`, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ selected === undefined ? -1 : selected ], ` => (update) ${ (selected || -1)+1 } -> `, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ (selected === undefined ? -1 : selected)+1 ] );
             if ( selected === undefined ) adjustScroll(0);
             else if ( DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ].length-1 > selected ) adjustScroll( selected+1 );
             else return;
         } else {
-            console.log("scrollbtnClick", `index: ${ selected } ->`, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ selected === undefined ? -1 : selected ], ` => (update) ${ (selected || -1)-1 } -> `, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ (selected === undefined ? -1 : selected)-1 ] );
+            // console.log("scrollbtnClick", `index: ${ selected } ->`, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ selected === undefined ? -1 : selected ], ` => (update) ${ (selected || -1)-1 } -> `, DATE_SELECTOR_SELECTIONS[ selection_mode ][ lang ][ (selected === undefined ? -1 : selected)-1 ] );
             if ( !selected || selected < 1 ) return
             else adjustScroll( selected-1 );
         }
@@ -219,41 +250,97 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
     </div>
 }
 
-const DateSelector: React.FC<DateSelectorProps> = ({ 
+const DatetimeSelector: React.FC<DatetimeSelectorProps> = ({ 
     className = "",
     inputValue,
     onValueSucceed,
-    lang = DateSelectorDisplayLanguageKorean,
+    lang = DatetimeSelectorDisplayLanguageKorean,
     readonly = false,
-    init_value, init_assign = true
+    init_value, init_assign = false
 }) => {
 
     // 값 선택 상태관리
-    const [ select, setSelect ] = useState<SelectedValueType>({});
+    const [ select, setSelect ] = useState<DatetimeSelectorSelectedValueType>({});
     const [ editable, setEditable ] = useState<boolean>( false );
     
     /**
      * 선택값 업데이트 함수
-     * @param type DateSelector에서 관리하는 값들 중 변경할 대상값 종류
+     * @param type DatetimeSelector에서 관리하는 값들 중 변경할 대상값 종류
      * @param value 변경할 값
      */
-    const setSelectValue = ( type: DateSelectorHandleValueTypes, value: number ) => 
+    const setSelectValue = ( type: DatetimeSelectorHandleValueTypes, value: number ) => {
         setSelect( p => ({ ...p, [ type ]: value }) );
+    }
 
     /**
-     * 스크롤위치 보정으로 인한 사용자 입력 금지상태 설정함수
+     * 스크롤위치 보정을 위한 사용자 입력금지 설정함수
      * @param v 사용자 입력 금지여부
      */
     const setValueAdjustment = ( v: boolean ) => {
         setEditable( v );
     }
 
+    /**
+     * 사용자 입력값에 대한 비정상적 값에 대한 Error Handler
+     */
     const onSelectionError = () => {
         console.log("error");
     }
 
+    //  사용자 입력완료상태 확인
 
-    return <div className={ className + " timeinfo_selector" } style={{
+    useEffect(() => {
+        if ( !onValueSucceed || Object.values( select ).length === 0 ) return;
+
+        // 입력완료여부 확인
+        if ( inputValue.includes("time") && 
+            (( select.hour === undefined ) || ( select.minute === undefined ))
+        ) return;
+        if ( inputValue.includes("date") && 
+            (( select.month === undefined ) || ( select.day === undefined ))
+        ) return;
+        if ( inputValue.includes("am/pm") && 
+            (( select.ampm === undefined ))
+        ) return;
+        
+
+        // 날짜 입력모드에 대한 날짜 유효성 검증
+        if ( inputValue.includes("date") ) {
+            const month = DATE_SELECTOR_SELECTIONS.month[ DatetimeSelectorDisplayLanguageKorean ][ select.month || -1 ];
+            const day = DATE_SELECTOR_SELECTIONS.day[ DatetimeSelectorDisplayLanguageKorean ][ select.day || -1 ];
+
+            if ( !month || !day ) return;
+
+            const calced_date = new Date( `${ new Date().getFullYear() }-${ month.display }-${ day.display }` );
+            if (
+                month.value !== ( calced_date.getMonth() + 1 ) ||
+                day.value !== ( calced_date.getDay() )
+            ) return onSelectionError();
+            
+            return onValueSucceed( select );
+        }
+
+        console.log( select );
+
+        const select_edited = {
+            hour: select.hour !== undefined ? DATE_SELECTOR_SELECTIONS.hour[ lang ][ select.hour ].value : undefined,
+            minute: select.minute !== undefined ? DATE_SELECTOR_SELECTIONS.minute[ lang ][ select.minute ].value : undefined,
+            month: select.month !== undefined ? DATE_SELECTOR_SELECTIONS.month[ lang ][ select.month ].value : undefined,
+            day: select.day !== undefined ? DATE_SELECTOR_SELECTIONS.day[ lang ][ select.day ].value : undefined,
+            ampm: select.ampm !== undefined ? DATE_SELECTOR_SELECTIONS.ampm[ lang ][ select.ampm ].value : undefined
+        }; // 실제값 불러오기
+
+        if ( inputValue.includes("time") && ( select_edited.hour !== undefined ) && ( select_edited.ampm !== undefined ) ) {
+            select_edited.hour = select_edited.hour + ( ( select_edited.ampm - 1 ) * 12 );
+            delete select_edited.ampm;
+        }
+
+        // console.log("DatetimeSelector", "onValueSucceed", select, select_edited);
+        return onValueSucceed( select_edited );
+    }, [ select ]);
+
+
+    return <div className={ className + " datetime_selector" } style={{
         gridTemplateColumns: 
             ( inputValue.length === 2 
                 && ( inputValue.includes("time") || inputValue.includes("date") )
@@ -267,62 +354,62 @@ const DateSelector: React.FC<DateSelectorProps> = ({
         { inputValue.includes("time") && <>
             <ScrollSelector 
                 setValueAdjustment={ setValueAdjustment }
-                onSelect={ ( v: number ) => setSelectValue(DateSelectorHandleValueHour , v ) }
-                readonly={ readonly }
+                onSelect={ ( v: number ) => setSelectValue(DatetimeSelectorHandleValueHour , v ) }
+                readonly={ readonly && editable }
                 onError={ onSelectionError }
-                init_value={ init_value ? init_value[DateSelectorHandleValueHour] : undefined }
+                init_value={ init_value ? init_value[DatetimeSelectorHandleValueHour] : undefined }
                 init_assign={ init_assign }
-                selection_mode={ DateSelectorHandleValueHour }
+                selection_mode={ DatetimeSelectorHandleValueHour }
                 lang={ lang } 
             />
             <span className="selector-separator">:</span>
             <ScrollSelector 
                 setValueAdjustment={ setValueAdjustment }
-                onSelect={ ( v: number ) => setSelectValue(DateSelectorHandleValueMinute , v ) }
-                readonly={ readonly }
+                onSelect={ ( v: number ) => setSelectValue(DatetimeSelectorHandleValueMinute , v ) }
+                readonly={ readonly && editable }
                 onError={ onSelectionError }
-                init_value={ init_value ? init_value[DateSelectorHandleValueMinute] : undefined }
+                init_value={ init_value ? init_value[DatetimeSelectorHandleValueMinute] : undefined }
                 init_assign={ init_assign }
-                selection_mode={ DateSelectorHandleValueMinute }
+                selection_mode={ DatetimeSelectorHandleValueMinute }
                 lang={ lang } 
             />
         </> }
         { inputValue.includes("date") && <>
             <ScrollSelector 
                 setValueAdjustment={ setValueAdjustment }
-                onSelect={ ( v: number ) => setSelectValue(DateSelectorHandleValueMonth , v ) }
-                readonly={ readonly }
+                onSelect={ ( v: number ) => setSelectValue(DatetimeSelectorHandleValueMonth , v ) }
+                readonly={ readonly && editable }
                 onError={ onSelectionError }
-                init_value={ init_value ? init_value[DateSelectorHandleValueMonth] : undefined }
+                init_value={ init_value ? init_value[DatetimeSelectorHandleValueMonth] : undefined }
                 init_assign={ init_assign }
-                selection_mode={ DateSelectorHandleValueMonth }
+                selection_mode={ DatetimeSelectorHandleValueMonth }
                 lang={ lang } 
             />
             <span className="selector-separator">/</span>
             <ScrollSelector 
                 setValueAdjustment={ setValueAdjustment }
-                onSelect={ ( v: number ) => setSelectValue(DateSelectorHandleValueDay , v ) }
-                readonly={ readonly }
+                onSelect={ ( v: number ) => setSelectValue(DatetimeSelectorHandleValueDay , v ) }
+                readonly={ readonly && editable }
                 onError={ onSelectionError }
-                init_value={ init_value ? init_value[DateSelectorHandleValueDay] : undefined }
+                init_value={ init_value ? init_value[DatetimeSelectorHandleValueDay] : undefined }
                 init_assign={ init_assign }
-                selection_mode={ DateSelectorHandleValueDay }
+                selection_mode={ DatetimeSelectorHandleValueDay }
                 lang={ lang } 
             />
         </> }
         { inputValue.includes("am/pm") && <>
             <ScrollSelector 
                 setValueAdjustment={ setValueAdjustment }
-                onSelect={ ( v: number ) => setSelectValue(DateSelectorHandleValueAmpm , v ) }
-                readonly={ readonly }
+                onSelect={ ( v: number ) => setSelectValue(DatetimeSelectorHandleValueAmpm , v ) }
+                readonly={ readonly && editable }
                 onError={ onSelectionError }
-                init_value={ init_value ? init_value[DateSelectorHandleValueAmpm] : undefined }
+                init_value={ init_value ? init_value[DatetimeSelectorHandleValueAmpm] : undefined }
                 init_assign={ init_assign }
-                selection_mode={ DateSelectorHandleValueAmpm }
+                selection_mode={ DatetimeSelectorHandleValueAmpm }
                 lang={ lang } 
             />
         </> }
     </div>
 };
 
-export default DateSelector
+export default DatetimeSelector

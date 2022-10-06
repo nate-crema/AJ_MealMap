@@ -56,11 +56,10 @@ https://ajou.mealmap.app
         : ReviewWriter에만 포함되는 기능별 구현 컴포넌트 관리폴더
             LocationReviewer (Prev: MapSelector)
             : 식당 위치에 대한 질문정보 표시 및 응답정보 관리
-            DateReviewer (Prev: ReviewDateSelector)
+            DateReviewer (Prev: ReviewDatetimeSelector)
             : 방문일시 등 방문날짜 대한 질문정보 표시 및 응답정보 관리
             TimeReviewer (Prev: WorktimeSelector)
             : 방문시간 등 방문시간에 대한 질문정보 표시 및 응답정보 관리
-            -> [Note]: 시점선택기능을 '/molecule/[F]Selector/DateSelector'로 이관 후 component refactoring 필요
             SelectionReviewer (Prev: Selector)
             : 선택표준형 질문에 대한 질문정보 표시 및 응답정보 관리
             BaseInfoReviewer (Prev: BaseInfoSelector)
@@ -148,7 +147,7 @@ https://ajou.mealmap.app
         : 시스템 전반에 반복적으로 사용되는 선택 컴포넌트 관리폴더
             SelectionSelector(Prev: Selector)
             : 객관형 선택 컴포넌트 (legacy코드 업데이트 필요 (js -> tsx); SelectionBlock 분기 필요)
-            DateSelector
+            DatetimeSelector
             : 영업시간 등 날짜 및 시간 선택 컴포넌트 (legacy코드 업데이트 진행중)
             DepartSelector
             : 대학 학과정보 선택 컴포넌트 (추후 SelectionSelector로 편입예정)
