@@ -1,4 +1,4 @@
-.timeinfo_selector {
+.datetime_selector {
     width: 100%;
     height: 100%;
     position: relative;
@@ -11,7 +11,7 @@
     gap: 10px;
 }
 
-.timeinfo_selector .scroll-selector-wrap {
+.datetime_selector .scroll-selector-wrap {
     width: 100%;
     height: 100%;
     position: relative;
@@ -20,7 +20,7 @@
     transform: translate(-50%, -50%);
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector {
+.datetime_selector .scroll-selector-wrap .scroll-selector {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -34,11 +34,11 @@
     scrollbar-width: none;
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector::-webkit-scrollbar {
+.datetime_selector .scroll-selector-wrap .scroll-selector::-webkit-scrollbar {
     display: none;
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value {
+.datetime_selector .scroll-selector-wrap .scroll-selector .selectable-value {
     position: relative;
     display: inline-block;
     /* background-color: gray; */
@@ -52,15 +52,15 @@
     transition: all .2s ease;
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.r:first-child {
+.datetime_selector .scroll-selector-wrap .scroll-selector .selectable-value.r:first-child {
     padding: 25px 0px !important;
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.r:last-child {
+.datetime_selector .scroll-selector-wrap .scroll-selector .selectable-value.r:last-child {
     padding: 25px 0px !important;
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.selected {
+.datetime_selector .scroll-selector-wrap .scroll-selector .selectable-value.selected {
     font-weight: 700;
     color: var(--theme-color-C) !important;
     font-size: 20px;
@@ -68,15 +68,15 @@
     padding: 19px 0;
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.onScrolling {
+.datetime_selector .scroll-selector-wrap .scroll-selector .selectable-value.onScrolling {
     color: var(--theme-color-C);
 }
 
-.timeinfo_selector .scroll-selector-wrap .scroll-selector .selectable-value.nonScrolling {
+.datetime_selector .scroll-selector-wrap .scroll-selector .selectable-value.nonScrolling {
     color: gray;
 }
 
-.timeinfo_selector .value-focus-bar {
+.datetime_selector .value-focus-bar {
     width: 60px;
     height: 2px;
     position: fixed;
@@ -86,15 +86,15 @@
     left: 50%;
 }
 
-.timeinfo_selector .value-focus-bar.bar-top {
+.datetime_selector .value-focus-bar.bar-top {
     top: 27%;
 }
 
-.timeinfo_selector .value-focus-bar.bar-bottom {
+.datetime_selector .value-focus-bar.bar-bottom {
     bottom: 27%;
 }
 
-.timeinfo_selector .scrollbtn-area {
+.datetime_selector .scrollbtn-area {
     width: 100%;
     height: 23%;
     position: absolute;
@@ -102,21 +102,21 @@
     z-index: 1500;
 }
 
-.timeinfo_selector .scrollbtn-area.scrollbtn-top {
+.datetime_selector .scrollbtn-area.scrollbtn-top {
     top: 0;
     left: 0;
 
     background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 }
 
-.timeinfo_selector .scrollbtn-area.scrollbtn-bottom {
+.datetime_selector .scrollbtn-area.scrollbtn-bottom {
     bottom: 0;
     left: 0;
 
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 }
 
-.timeinfo_selector .scrollbtn-area svg {
+.datetime_selector .scrollbtn-area svg {
     width: 26px;
     height: auto;
 
@@ -126,7 +126,7 @@
     transform: translate(-50%, -50%);
 }
 
-.timeinfo_selector .selector-separator {
+.datetime_selector .selector-separator {
     font-family: "Noto Sans KR", sans-serif;
     font-size: 20px;
     font-weight: 500;

@@ -18,7 +18,7 @@ import ServiceTitler from "@molecule/ServiceTitler";
 import ShopList from "@organism/ShopList";
 
 import Selector from "@organism/[F]ReviewWriter/SelectionReviewer";
-import DateSelector from "@molecule/[F]Selector/DateSelector";
+import DatetimeSelector from "@molecule/[F]Selector/DatetimeSelector";
 import LocationReviewer from "@organism/[F]ReviewWriter/LocationReviewer";
 import BaseInfoReviewer from "@organism/[F]ReviewWriter/BaseInfoReviewer";
 

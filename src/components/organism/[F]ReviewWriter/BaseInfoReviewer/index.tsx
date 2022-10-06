@@ -17,7 +17,7 @@ import { MapOnPlaceClickedFunction } from "@molecule/[F]Map/MapHandler/types";
 import { AnswerID, BaseInfoSelectionFormat, QuestionID, ReviewSelectionFormat } from "@interfaces/ReviewWriter";
 import WritingReviewer from "@organism/[F]ReviewWriter/WritingReviewer";
 import ServiceButton from "@atom/ServiceButton";
-import DateSelector from "@molecule/[F]Selector/DateSelector";
+import DatetimeSelector from "@molecule/[F]Selector/DatetimeSelector";
 import TimeReviewer from "@organism/[F]ReviewWriter/TimeReviewer";
 
 type BaseInfoSelectorProps = {
