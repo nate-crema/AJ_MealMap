@@ -13,7 +13,7 @@ import GlobalInput from "@atom/ServiceInput";
 // interfaces
 import { MapOnPlaceClickedFunction } from "@molecule/[F]Map/MapHandler/types";
 import ServiceButton from "@atom/ServiceButton";
-import { alertOption } from "@interfaces/service/recoil/State";
+import { AlertOption } from "@recoil/types";
 
 type WritingReviewerProps = {
     placeholder?: Array<{ text: string, width: string, necessary: boolean }>
@@ -24,10 +24,6 @@ type WritingReviewerProps = {
 
 
 const WritingReviewer: React.FC<WritingReviewerProps> = ({ placeholder = [{ text: "", width: "0px", necessary: true }], prevValues, maxInput, onAnswered }) => {
-
-    // global alert control
-    const setGlobalAlert = useSetRecoilState<alertOption>( states.alert );
-
 
     // input values control
     const [ values, setValues ] = useState<Array<any>>([]);
@@ -66,7 +62,7 @@ const WritingReviewer: React.FC<WritingReviewerProps> = ({ placeholder = [{ text
         values.forEach( v => {            
             if ( v.length === 0 ) nonInputField++;
         } )
-        if ( nonInputField > 0 ) setGlobalAlert({
+        if ( nonInputField > 0 ) window.ServiceAlert({
             active: true,
             title: { text: "아직 비어있는 입력란이 있어요" },
             descriptions: [{ text: `${ nonInputField }개의 입력란이 아직 입력되지 않았어요. 그대로 저장할까요?` }],

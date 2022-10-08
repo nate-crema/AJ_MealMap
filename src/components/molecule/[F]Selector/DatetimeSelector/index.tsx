@@ -65,11 +65,17 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
 
     // 선택영역 크기 불러오기
     useEffect(() => {
-        const select_area = window.document.querySelector("span.selectable-value.r");
-        if (!select_area) return;
-        const h = select_area.getBoundingClientRect().height;
-        // console.log("default_selection_size", h);
-        setDefaultSelectionSize(h);
+        const setter = () => {
+            const select_area = window.document.querySelector("span.selectable-value.r");
+            if (!select_area) return;
+            const h = select_area.getBoundingClientRect().height;
+            console.log("default_selection_size", h);
+            setDefaultSelectionSize(h || 71);
+            if ( h < 50 ) return setTimeout(() => {
+                setter();
+            }, 1000);
+        }
+        setter();
     }, []);
 
     // init_value 설정
@@ -81,7 +87,7 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
             resetScroll();
             return;
         }
-        return adjustScroll( init_value );
+        return adjustScroll( init_value, undefined, 150 );
     }, [ init_value, init_assign ]);
 
     // 사용자 입력값 DatetimeSelector로 전송
@@ -161,38 +167,41 @@ const ScrollSelector: React.FC<ScrollSelectorProps> = ({
      * 사용자 스크롤 보정 함수
      * @param index 사용자의 선택으로 추정되는 index값 (=자동으로 스크롤시킬 위치값)
      * @param skip_save 스크롤액션 뒤 해당 위치에 대응되는 값에 대한 저장 스킵여부 (선택)
+     * @param delay_time 컴포넌트 크기 변경 등으로 인해 일정 시간 이후 실행할 시간값 (ms) (선택)
      */
-    const adjustScroll = useCallback(( index: number, skip_save?: boolean ) => {
-        // document 마운트여부 확인
-        if ( !swipeRef.current || !swipeWrapRef.current ) {
-            setIsScrolling( false );
-            return;
-        } else setIsScrolling( true );
-
-        // 스크롤위치 보정
-        setIsAdjusting( true ); // 스크롤 보정여부 활성화; 사용자 스크롤 정지
-        const { offsetHeight: totalSize } = swipeWrapRef.current; // 전체 선택박스 크기
-
-        // 스크롤 위치 = 선택값 상하여백 크기 + ( 선택값영역 * 선택 index ) - 상하단 선택불가 영역 - 선택영역_선택값간 상하크기차
-
-        const selectarea_prevpostarea_size = totalSize * 27 / 100; // 상하단 선택불가 영역
-        const selectarea_selectablesize = totalSize - selectarea_prevpostarea_size * 2 // 선택가능 영역
-        // const selectvalue_size = 21; // 선택값만의 크기
-        // const selectvalue_topbottom_margin = 25; // 선택값 상하여백의 크기
-        const selectvalue_size = 33; // 선택값만의 크기
-        const selectvalue_topbottom_margin = 19; // 선택값 상하여백의 크기
-        const selectvalue_totalsize = selectvalue_size + selectvalue_topbottom_margin * 2; // 선택값영역 크기
-        const area_value_topbottom_sizediff = ( selectarea_selectablesize - selectvalue_totalsize ) / 2 // 선택영역_선택값간 상하크기차
-
-        const scroll_position = TOPBOTTOM_SELECT_MARGIN + ( selectvalue_totalsize * index ) - selectarea_prevpostarea_size - area_value_topbottom_sizediff + (selectvalue_size/6);
-
-        (swipeRef.current as any).scrollTop = scroll_position;
-        
+    const adjustScroll = useCallback(( index: number, skip_save?: boolean, delay_time?: number ) => {
         setTimeout(() => {
-            // 계산된 값 저장
-            if ( skip_save !== true ) setSelected( index );
-            setIsAdjusting( false );
-        }, 500);
+            // document 마운트여부 확인
+            if ( !swipeRef.current || !swipeWrapRef.current ) {
+                setIsScrolling( false );
+                return;
+            } else setIsScrolling( true );
+                // 스크롤위치 보정
+                setIsAdjusting( true ); // 스크롤 보정여부 활성화; 사용자 스크롤 정지
+                const { offsetHeight: totalSize } = swipeWrapRef.current; // 전체 선택박스 크기
+        
+                // 스크롤 위치 = 선택값 상하여백 크기 + ( 선택값영역 * 선택 index ) - 상하단 선택불가 영역 - 선택영역_선택값간 상하크기차
+        
+                const selectarea_prevpostarea_size = totalSize * 27 / 100; // 상하단 선택불가 영역
+                const selectarea_selectablesize = totalSize - selectarea_prevpostarea_size * 2 // 선택가능 영역
+                // const selectvalue_size = 21; // 선택값만의 크기
+                // const selectvalue_topbottom_margin = 25; // 선택값 상하여백의 크기
+                const selectvalue_size = 33; // 선택값만의 크기
+                const selectvalue_topbottom_margin = 19; // 선택값 상하여백의 크기
+                const selectvalue_totalsize = selectvalue_size + selectvalue_topbottom_margin * 2; // 선택값영역 크기
+                const area_value_topbottom_sizediff = ( selectarea_selectablesize - selectvalue_totalsize ) / 2 // 선택영역_선택값간 상하크기차
+        
+                const scroll_position = TOPBOTTOM_SELECT_MARGIN + ( selectvalue_totalsize * index ) - selectarea_prevpostarea_size - area_value_topbottom_sizediff + (selectvalue_size/6);
+        
+                console.log("adjustScroll: run", index, scroll_position);
+                (swipeRef.current as any).scrollTop = scroll_position;
+                
+                setTimeout(() => {
+                    // 계산된 값 저장
+                    if ( skip_save !== true ) setSelected( index );
+                    setIsAdjusting( false );
+                }, 500);
+        }, delay_time || 0);
     }, [ default_selection_size ])
 
     const resetScroll = useCallback(() => {

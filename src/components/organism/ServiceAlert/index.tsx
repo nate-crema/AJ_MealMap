@@ -11,7 +11,7 @@ import './style.css';
 
 
 // interfaces
-import { alertOption } from "@interfaces/service/recoil/State";
+import { AlertOption } from "@recoil/types";
 import { alertSizeOptions } from "@organism/ServiceAlert/types";
 import ServiceButton from "@atom/ServiceButton";
 import { ServiceButtonThemes } from "@atom/ServiceButton/types";
@@ -20,8 +20,17 @@ import { ServiceButtonThemes } from "@atom/ServiceButton/types";
 const Alert: React.FC = () => {
 
     // global alert control
-    const [ alert_option, setAlertOption ] = useRecoilState<alertOption>( states.alert );
-    const { active, title, descriptions, buttons, size, backgroundOff } = useMemo<alertOption>(() => alert_option, [ alert_option ]);
+    const [ alert_option, setAlertOption ] = useState<AlertOption>({ active: false });
+    const { active, title, descriptions, content, buttons, size, backgroundOff } = useMemo<AlertOption>(() => alert_option, [ alert_option ]);
+
+    // window alert overwrite
+    const serviceAlertDisplayer = ( options: AlertOption ) => {
+        setAlertOption( options );
+    }
+
+    useEffect(() => {
+        window.ServiceAlert = serviceAlertDisplayer;
+    }, []);
 
     // alert size control
     const MAX_HEIGHT = "80%";
@@ -43,12 +52,12 @@ const Alert: React.FC = () => {
                 setAlertDisplay( "unset" );
                 setTimeout(() => {
                     setAlertHeight( alertHeightPresets[ size as alertSizeOptions ] );
-                }, 300);
+                }, 100);
             } else {
                 setAlertHeight( "0px" );
                 setTimeout(() => {
                     setAlertDisplay( "none" );
-                }, 300);
+                }, 100);
             }
         }, 100);
     }, [ alert_option ]);
@@ -78,6 +87,7 @@ const Alert: React.FC = () => {
                             <p key={ i } style={ desc?.style || {} }>{ desc.text }</p>
                         ) }
                     </div>
+                    { content || <></> }
                     <div className="alert-buttons">
                         { buttons.map( ( { text, theme, style, onAction }: { text: string, theme?: ServiceButtonThemes, style?: CSSProperties, onAction?: ( closeAlert: () => any ) => any }, i: number ) => 
                             <ServiceButton

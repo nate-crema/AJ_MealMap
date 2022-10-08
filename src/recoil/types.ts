@@ -17,7 +17,7 @@ export type Location = {
     address: string
 }
 
-export type alertOption = {
+export type AlertOption = {
     active: true
     title: {
         text: string
@@ -27,6 +27,7 @@ export type alertOption = {
         text: string
         style?: CSSProperties
     }>
+    content?: JSX.Element
     buttons: Array<{
         text: string
         theme?: ServiceButtonThemes
@@ -39,6 +40,7 @@ export type alertOption = {
     active: false
     title?: any
     descriptions?: any
+    content?: any
     buttons?: any
     size?: any
     backgroundOff?: any

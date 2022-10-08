@@ -1,7 +1,7 @@
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 // interfaces
-import { Login, Location, alertOption } from "@interfaces/service/recoil/State";
+import { Login, Location, AlertOption } from "@recoil/types";
 import { ComponentOpenState, SubdisplayDisplayMode, SubdisplayMountMode } from "@pages/Subdisplay/types";
 import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import { InfoSpecificOpenInfoType, InfoSpecificOpenSize } from "@template/InfoSpecific/type";
@@ -107,14 +107,6 @@ const shopSpecificState = atom<ShopServiceType | undefined>({
     default: undefined
 })
 
-
-// States: alert
-
-const alertState = atom<alertOption>({
-    key: "alertState",
-    default: { active: false }
-})
-
 // States: SvgManager
 
 const svgListState = atom<{ [ svg_type in string ]: string }>({
@@ -134,7 +126,6 @@ export default {
     subdisplayDisplayMode: subdisplayDisplayModeState, 
     subdisplayDisplaySize: subdisplayDisplaySizeState, 
     infoSpecificOpenInfo: infoSpecificOpenInfoState, 
-    shopSpecific: shopSpecificState, 
-    alert: alertState, 
+    shopSpecific: shopSpecificState,
     svgList: svgListState
 };

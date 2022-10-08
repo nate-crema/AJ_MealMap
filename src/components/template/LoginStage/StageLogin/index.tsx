@@ -15,7 +15,7 @@ import { serviceLogin } from "@api/auth";
 import ServiceInput from "@atom/ServiceInput";
 
 // interfaces
-import { Login as LoginType } from "@interfaces/service/recoil/State";
+import { Login as LoginType } from "@recoil/types";
 import { LoginStageCompProps } from "@interfaces/Login/StageComponents";
 import { LoginResultConstants, LoginResultFailedReasons, ServiceLoginAPIResult } from "@interfaces/api/auth";
 
