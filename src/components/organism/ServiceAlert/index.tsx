@@ -21,7 +21,7 @@ const Alert: React.FC = () => {
 
     // global alert control
     const [ alert_option, setAlertOption ] = useState<AlertOption>({ active: false });
-    const { active, title, descriptions, content, buttons, size, backgroundOff } = useMemo<AlertOption>(() => alert_option, [ alert_option ]);
+    const { active, title, descriptions, content, buttons, size, backgroundOff, onBackgroundClick } = useMemo<AlertOption>(() => alert_option, [ alert_option ]);
 
     // window alert overwrite
     const serviceAlertDisplayer = ( options: AlertOption ) => {
@@ -68,7 +68,10 @@ const Alert: React.FC = () => {
 
     // alert background click handler
     const backgroundClickHandler = useCallback(() => {
-        if ( active && ( backgroundOff !== false ) ) setAlertOption({ active: false });
+        if ( active && ( backgroundOff !== false ) ) {
+            setAlertOption({ active: false });
+            if ( onBackgroundClick ) onBackgroundClick( closeAlert );
+        }
     }, [ active, backgroundOff ]);
 
 

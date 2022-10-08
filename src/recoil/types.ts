@@ -36,6 +36,7 @@ export type AlertOption = {
     }>
     size: alertSizeOptions
     backgroundOff?: boolean
+    onBackgroundClick?: ( closeAlert: () => any ) => any
 } | { 
     active: false
     title?: any
@@ -44,4 +45,5 @@ export type AlertOption = {
     buttons?: any
     size?: any
     backgroundOff?: any
+    onBackgroundClick?: any
 }

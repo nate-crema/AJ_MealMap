@@ -115,20 +115,20 @@ const MultiDatetimeSelector: React.FC<MultiDatetimeSelectorProps> = ({ INPUT_MOD
             ],
             content: <div className="alert-datetime-selector-wrap">
                 <DatetimeSelector
-                inputValue={[ "time", "am/pm" ]}
-                onValueSucceed={ onTimeInputHandler }
-                className="datetime-comp"
-                init_value={ 
-                    ( !Object.values( input_value[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
-                    ( {
-                        hour: DATE_SELECTOR_SELECTIONS.hour.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].h % 12 ) ) ),
-                        minute: DATE_SELECTOR_SELECTIONS.minute.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].m ) ) ),
-                        ampm: DATE_SELECTOR_SELECTIONS.ampm.ko.findIndex( v => ( v.value === ( ( input_value[ input_cat ][ input_mode ].h >= 12 ) ? 2 : 1 ) ) ) 
-                    } )
-                    : undefined 
-                }
-                init_assign={ true }
-            />
+                    inputValue={[ "time", "am/pm" ]}
+                    onValueSucceed={ onTimeInputHandler }
+                    className="datetime-comp"
+                    init_value={ 
+                        ( !Object.values( input_value[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
+                        ( {
+                            hour: DATE_SELECTOR_SELECTIONS.hour.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].h % 12 ) ) ),
+                            minute: DATE_SELECTOR_SELECTIONS.minute.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].m ) ) ),
+                            ampm: DATE_SELECTOR_SELECTIONS.ampm.ko.findIndex( v => ( v.value === ( ( input_value[ input_cat ][ input_mode ].h >= 12 ) ? 2 : 1 ) ) ) 
+                        } )
+                        : undefined 
+                    }
+                    init_assign={ true }
+                />
             </div>,
             buttons: [{
                 text: "입력창 닫기",
@@ -137,7 +137,11 @@ const MultiDatetimeSelector: React.FC<MultiDatetimeSelectorProps> = ({ INPUT_MOD
                     closeAlert()
                 },
             }],
-            size: "thirdQuarter"
+            size: "thirdQuarter",
+            onBackgroundClick( closeAlert ) {
+                is_alert_input_opened.current = false;
+                closeAlert();
+            }
         });
         is_alert_input_opened.current = true;
     }, [
