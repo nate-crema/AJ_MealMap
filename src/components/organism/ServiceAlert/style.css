@@ -20,12 +20,12 @@
 }
 
 .service-alert-comp .service-alert-background.bg-active {
-    animation: bg-active .35s cubic-bezier(0, 1, 1, 1);
+    animation: bg-active .2s ease;
     animation-fill-mode: both;
 }
 
 .service-alert-comp .service-alert-background.bg-deactive {
-    animation: bg-deactive .35s cubic-bezier(0, 1, 1, 1);
+    animation: bg-deactive .2s ease;
     animation-fill-mode: both;
 }
 

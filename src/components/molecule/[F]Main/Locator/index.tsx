@@ -10,7 +10,7 @@ import './style.css';
 // components
 
 // interfaces
-import { Location } from "@interfaces/service/recoil/State";
+import { Location } from "@recoil/types";
 type LocatorProps = {
     
 }

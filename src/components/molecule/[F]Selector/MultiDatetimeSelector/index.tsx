@@ -44,6 +44,11 @@ const MultiDatetimeSelector: React.FC<MultiDatetimeSelectorProps> = ({ INPUT_MOD
     // 초기 설정값 적용 제어
     const [ initAssign, setInitAssign ] = useState<boolean>( false );
 
+    // 입력창 영역 제어
+    const datetimeSelectorWrapRef = useRef<any>( null );
+    const [ is_alert_input_active, setIsAlertInputActive ] = useState<boolean>( false );
+    const is_alert_input_opened = useRef<boolean>( false );
+
     /**
      * 단일 DatetimeSelector 응답을 처리하기 위한 함수
      * @param result DatetimeSelecotr의 응답유형; DatetimeSelectorSelectedValueType
@@ -91,6 +96,60 @@ const MultiDatetimeSelector: React.FC<MultiDatetimeSelectorProps> = ({ INPUT_MOD
         }, 300);
     }
 
+    // alert 입력 활성화
+    useEffect(() => {
+        if ( !input_cat || !input_mode || !is_alert_input_active ) return;
+
+        const { type, title, isMultiple, submodes } = INPUT_MODES.find( v => v.type === input_cat ) || {};
+        const { text: submode } = submodes?.find( v => v.type === input_mode ) || { text: "시간" };
+
+        if ( is_alert_input_opened.current ) return;
+
+        console.log("multi-datetime-selector: open serviceAlert", input_value);
+
+        window.ServiceAlert({
+            active: true,
+            title: { text: `${ ( title || "영업시간" ).replace("시간", ` ${ submode }` ) } 입력` },
+            descriptions: [
+                { text: `수정할 ${ ( title || "영업시간" ).replace("시간", ` ${ submode }` ) }을 입력해주세요` }
+            ],
+            content: <div className="alert-datetime-selector-wrap">
+                <DatetimeSelector
+                    inputValue={[ "time", "am/pm" ]}
+                    onValueSucceed={ onTimeInputHandler }
+                    className="datetime-comp"
+                    init_value={ 
+                        ( !Object.values( input_value[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
+                        ( {
+                            hour: DATE_SELECTOR_SELECTIONS.hour.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].h % 12 ) ) ),
+                            minute: DATE_SELECTOR_SELECTIONS.minute.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].m ) ) ),
+                            ampm: DATE_SELECTOR_SELECTIONS.ampm.ko.findIndex( v => ( v.value === ( ( input_value[ input_cat ][ input_mode ].h >= 12 ) ? 2 : 1 ) ) ) 
+                        } )
+                        : undefined 
+                    }
+                    init_assign={ true }
+                />
+            </div>,
+            buttons: [{
+                text: "입력창 닫기",
+                onAction(closeAlert) {
+                    is_alert_input_opened.current = false;
+                    closeAlert()
+                },
+            }],
+            size: "thirdQuarter",
+            onBackgroundClick( closeAlert ) {
+                is_alert_input_opened.current = false;
+                closeAlert();
+            }
+        });
+        is_alert_input_opened.current = true;
+    }, [
+        is_alert_input_active,
+        input_cat, input_mode,
+        input_value
+    ]);
+
     // 직전 저장값 출력 (for debuging)
     useEffect(() => {
         console.log( "multi-datetime-selector: saved input value", input_value );
@@ -107,7 +166,23 @@ const MultiDatetimeSelector: React.FC<MultiDatetimeSelectorProps> = ({ INPUT_MOD
             }, 300);
         }
     }, []);
-    
+
+    // 수정시간 alert에서 입력여부 결정
+    const resizeHandler = () => setTimeout(() =>{
+        const { offsetHeight } = datetimeSelectorWrapRef.current;
+        console.log( offsetHeight );
+        console.log( "resizeHandler", offsetHeight <= 80 );
+        setIsAlertInputActive( offsetHeight <= 80 );
+    }, 200);
+
+    // 입력여부 결정 event handler 설정
+    useEffect(() => {
+        resizeHandler();
+        window.addEventListener( "resize", resizeHandler );
+        return () =>
+            window.removeEventListener( "resize", resizeHandler );
+    }, []);
+
     return <div className="multi-datetime-selector">
         <div className="datetime-inputtype-control">
             { INPUT_MODES.map( modes => <>
@@ -118,27 +193,30 @@ const MultiDatetimeSelector: React.FC<MultiDatetimeSelectorProps> = ({ INPUT_MOD
                     }}/>
                     <span className="cat_title">{ modes.title }</span>
                     <div className="cat_modes">
-                        { modes.submodes.map( v => <span className="cat_submode" onClick={ () => modeChangeHandler( v, modes ) }>{ v.text }</span> ) }
+                        { modes.submodes.map( v => <span className={ `cat_submode submode_${ v.text }` } onClick={ () => modeChangeHandler( v, modes ) }>{ v.text }</span> ) }
                     </div>
                 </div>
             </> ) }
         </div>
-        <div className="datetime-comp-wrap">
-            <DatetimeSelector
-                inputValue={[ "time", "am/pm" ]}
-                onValueSucceed={ onTimeInputHandler }
-                className="datetime-comp"
-                init_value={ 
-                    ( !Object.values( input_value[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
-                    ( {
-                        hour: DATE_SELECTOR_SELECTIONS.hour.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].h % 12 ) ) ),
-                        minute: DATE_SELECTOR_SELECTIONS.minute.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].m ) ) ),
-                        ampm: DATE_SELECTOR_SELECTIONS.ampm.ko.findIndex( v => ( v.value === ( ( input_value[ input_cat ][ input_mode ].h >= 12 ) ? 2 : 1 ) ) ) 
-                    } )
-                    : undefined 
-                }
-                init_assign={ initAssign }
-            />
+        <div className="datetime-comp-wrap" ref={ datetimeSelectorWrapRef }>
+            {
+                ( is_alert_input_active ) ? <></> :
+                <DatetimeSelector
+                    inputValue={[ "time", "am/pm" ]}
+                    onValueSucceed={ onTimeInputHandler }
+                    className="datetime-comp"
+                    init_value={ 
+                        ( !Object.values( input_value[ input_cat ][ input_mode ]).includes( -1 ) ) ? 
+                        ( {
+                            hour: DATE_SELECTOR_SELECTIONS.hour.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].h % 12 ) ) ),
+                            minute: DATE_SELECTOR_SELECTIONS.minute.ko.findIndex( v => ( v.value === ( input_value[ input_cat ][ input_mode ].m ) ) ),
+                            ampm: DATE_SELECTOR_SELECTIONS.ampm.ko.findIndex( v => ( v.value === ( ( input_value[ input_cat ][ input_mode ].h >= 12 ) ? 2 : 1 ) ) ) 
+                        } )
+                        : undefined 
+                    }
+                    init_assign={ initAssign }
+                />
+            }
         </div>
         <ServiceButton text="선택완료" theme="main-selection"
             className="multi-datetime-finish-button"

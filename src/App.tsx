@@ -8,6 +8,9 @@ import recoil, { RecoilRoot } from 'recoil';
 //css
 import '@styles/App.css';
 
+// types
+import "@src/react-app-env.d";
+
 // components
 import DisplayHandler from '@frame/DisplayHandler';
 import Login from "@pages/Login";

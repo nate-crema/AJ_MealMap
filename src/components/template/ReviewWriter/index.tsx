@@ -31,9 +31,6 @@ import { ShopIDType } from "@interfaces/service/service.data.types/Shop";
 
 const ReviewWriter: React.FC = () => {
 
-    // global alert control
-    const setGlobalAlert = useSetRecoilState( states.alert );
-
     // useEffect(() => {
     //     setTimeout(() => {
     //         setGlobalAlert({
@@ -48,7 +45,7 @@ const ReviewWriter: React.FC = () => {
     //                 { text: "확인" }
     //             ],
     //             size: "half"
-    //         } as alertOption)
+    //         } as AlertOption)
     //     }, 1000)
     // }, [  ])
 

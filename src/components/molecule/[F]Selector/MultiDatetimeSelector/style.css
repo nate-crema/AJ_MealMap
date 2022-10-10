@@ -60,12 +60,17 @@
     
     display: inline-block;
 
-    width: 50%;
+    width: fit-content;
     height: fit-content;
     
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+}
+
+.datetime-inputtype-control .input_mode .cat_modes .cat_submode.submode_시작시간 {
+    padding: 5px 5px 5px 30px;
+}
+.datetime-inputtype-control .input_mode .cat_modes .cat_submode.submode_종료시간 {
+    padding: 5px 5px 5px 25px;
 }
 
 .datetime-comp-wrap {
@@ -78,6 +83,15 @@
     transform: translate(-50%);
     
     overflow: hidden;
+}
+
+.alert-datetime-selector-wrap {
+    width: calc( 100% - 80px );
+    height: 90px;
+    position: absolute;
+    bottom: 130px;
+    left: 50%;
+    transform: translate(-50%);
 }
 
 .multi-datetime-finish-button {

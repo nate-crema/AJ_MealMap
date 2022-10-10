@@ -15,7 +15,7 @@ import { getShopList, getShopListByCoordinate } from "@api/service";
 import ShopBlock from "@molecule/[F]Blocks/ShopBlock";
 
 // interfaces
-import { Location } from "@interfaces/service/recoil/State";
+import { Location } from "@recoil/types";
 import { ShopCompDisplayType, ShopCompReview, ShopCompReviewType } from "@interfaces/Shop/comp";
 import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 
