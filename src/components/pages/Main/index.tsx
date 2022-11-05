@@ -6,13 +6,13 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, ResetRecoilState } f
 import states from "@recoil/states";
 
 // css
-import '@styles/pages/Main.css';
+import './style.css';
 
 
 // components
 import Locator from "@molecule/[F]Main/Locator";
 import ServiceTitler from "@molecule/ServiceTitler";
-import Shops from "@organism/ShopList";
+import ShopList from "@organism/ShopList";
 // import ReviewEntrypoint from "@molecule/ReviewEntrypoint/ReviewEntrypoint";
 
 
@@ -20,6 +20,7 @@ import Shops from "@organism/ShopList";
 import { SubdisplayDisplayMode } from "@pages/Subdisplay/types";
 import { ShopIDType, ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 import { getShopInfoByShopID } from "@api/service";
+import ServiceSearcher from "@molecule/[F]Main/ServiceSearcher";
 
 const Main: React.FC = () => {
 
@@ -77,14 +78,23 @@ const Main: React.FC = () => {
         else unDisplayShopSpecific();
     }, [ location ]);
 
-    return <>
-        <Locator/>
-        <div className="main-area">
-            <ServiceTitler title={ title } ment={ ment } />
-            <Shops mode="display"/>
+
+    // design control
+    const is_search_active = useRecoilValue<boolean>( states.isSearchActive );
+
+    return <div className="main-page">
+        <div className={ `pagemode-main ${ is_search_active ? "pagemode-deactive" : "pagemode-active" }` }>
+            <Locator className="mainpage-locator"/>
+            <div className="main-area">
+                <ServiceTitler title={ title } ment={ ment } className="mainpage-titler"/>
+                <ShopList mode="display" className="main-shoplist"/>
+            </div>
+        </div>
+        <div className={ `pagemode-search ${ is_search_active ? "pagemode-active" : "pagemode-deactive" }` }>
+            <ServiceSearcher className="mainpage-searcher"/>
         </div>
         {/* <ReviewEntrypoint/> */}
-    </>
+    </div>
 };
 
 export default Main;

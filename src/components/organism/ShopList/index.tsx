@@ -19,16 +19,18 @@ import { Location } from "@recoil/types";
 import { ShopCompDisplayType, ShopCompReview, ShopCompReviewType } from "@interfaces/Shop/comp";
 import { ShopServiceType } from "@interfaces/service/service.data.types/Shop";
 
-type ShopsListProps = {
+type ShopsListProps = ({
     mode: ShopCompReviewType
     onBlockClick?: ( info: string | null, index: number ) => void
 } | {
     mode: ShopCompDisplayType
     onBlockClick?: ( info: ShopServiceType | null, index: number ) => void
+}) & {
+    className?: string
 }
 
 
-const ShopList: React.FC<ShopsListProps> = ({ mode, onBlockClick }) => {
+const ShopList: React.FC<ShopsListProps> = ({ mode, onBlockClick, className }) => {
 
     // Shop list control
     const { lat, long } = useRecoilValue<Location>( states.location );
@@ -59,18 +61,23 @@ const ShopList: React.FC<ShopsListProps> = ({ mode, onBlockClick }) => {
             );
     };
     
-    return <div className={ `shops-list listmode-${ mode }` }>
-        {
-            Object.values(shops).map( 
-                ( shop, index: number ) => 
-                    <ShopBlock
-                        key={ shop.shopID }
-                        id={ shop.shopID }
-                        mode={ mode }
-                        onClick={ ( mode === "review" ) ? ( info: ShopServiceType ) => ShopBlockClickHandler( info, index ) : undefined }
-                    />
-            )
-        }
+    return <div className={ `shops-list listmode-${ mode } ${ className || "" }` }>
+        <div className="list-fader top-fader"/>
+        <div className="list-content-wrap">
+            {
+                Object.values(shops).map( 
+                    ( shop, index: number ) => 
+                        <ShopBlock
+                            key={ shop.shopID }
+                            id={ shop.shopID }
+                            mode={ mode }
+                            onClick={ ( mode === "review" ) ? ( info: ShopServiceType ) => ShopBlockClickHandler( info, index ) : undefined }
+                        />
+                )
+            }
+        </div>
+
+        <div className="list-fader bottom-fader"/>
         {
             (mode === "review") && <div className="shop-notfound shop-block"
                 key={ "Shop_notfound" }

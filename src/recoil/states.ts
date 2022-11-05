@@ -65,6 +65,12 @@ const locationState = atom<Location>({
     }
 });
 
+// State: isSearchActive
+const searchActiveState = atom<boolean>({
+    key: "searchActiveState",
+    default: false
+});
+
 // State: Shops
 
 const shopState = atom<Array<ShopServiceType>>({
@@ -121,6 +127,7 @@ export default {
     isLogined: isLoginedState, 
     login: loginSelector, 
     location: locationState, 
+    isSearchActive: searchActiveState,
     shops: shopState, 
     subdisplayMountMode: subdisplayMountState, 
     subdisplayDisplayMode: subdisplayDisplayModeState, 

@@ -5,7 +5,7 @@
 https://ajou.mealmap.app
 
 ## 1. Project Info
-* 프로젝트 기간: 2021.04~(진행중)
+* 프로젝트 기간: 2021.06~(진행중)
 * 기술스택: React + Typescript
 
 ## 2. Project Structure
@@ -105,6 +105,10 @@ https://ajou.mealmap.app
         : Main에만 사용되는 기능별 구현 컴포넌트 관리폴더
             Locator
             : GPS 및 IP주소 기반 사용자 위치 표시 관리 
+            ServiceSearcher
+            : 상점, 메뉴 등 검색기능 관리
+            ServiceFilter
+            : ServiceSearcher의 검색결과에 대한 필터링 관련기능 관리
         
         [F]InfoMenu
         : InfoMenu에만 포함되는 기능별 구현 컴포넌트 관리폴더

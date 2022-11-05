@@ -1,0 +1,153 @@
+.main-page {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.main-page .pagemode-main {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    animation-duration: .3s;
+    animation-fill-mode: both;
+
+    overflow: hidden;
+}
+
+.main-page .pagemode-main.pagemode-active {
+    animation-name: pagemode-main-active;
+}
+
+.main-page .pagemode-main .main-area {
+    width: 80%;
+    height: calc( 100% - ( 90px + 60px ) );
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translate(-50%);
+    
+    overflow: hidden;
+}
+
+.main-page .pagemode-main .main-area .main-shoplist {
+    width: 100%;
+    height: calc( 100% - 140px );
+}
+
+.main-page .pagemode-main.pagemode-deactive {
+    animation-name: pagemode-main-deactive;
+}
+
+
+
+.main-page .pagemode-search {
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+
+    animation-duration: .3s;
+    animation-fill-mode: both;
+
+}
+.main-page .pagemode-search.pagemode-deactive {
+    height: 50px;
+    top: 160px;
+    
+    animation-name: pagemode-search-deactive;
+}
+.main-page .pagemode-search.pagemode-active {
+    height: 100%;
+    top: 0;
+
+    animation-name: pagemode-search-active;
+}
+
+.main-page .pagemode-search .mainpage-searcher {
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+
+    animation-duration: .5s;
+    animation-fill-mode: both;
+}
+.main-page .pagemode-search.pagemode-deactive .mainpage-searcher {
+    bottom: 0;
+
+    animation-name: pagemode-search-deactive-searcher;
+}
+.main-page .pagemode-search.pagemode-active .mainpage-searcher {
+    bottom: 60px;
+
+    animation-name: pagemode-search-active-searcher;
+}
+
+
+@keyframes pagemode-main-active {
+    from {
+        opacity: 0;
+        height: 0;
+        /* top: -100%; */
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pagemode-main-deactive {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        height: 0;
+        /* top: -100%; */
+    }
+}
+
+@keyframes pagemode-search-deactive {
+    from {
+        height: 100%;
+        top: 0;
+    }
+    to {
+        height: 50px;
+        top: 160px;
+    }
+}
+
+@keyframes pagemode-search-active {
+    from {
+        height: 50px;
+        top: 160px;
+    }
+    to {
+        height: 100%;
+        top: 0;
+    }
+}
+
+@keyframes pagemode-search-deactive-searcher {
+    from {
+        bottom: 60px;
+    }
+    to {
+        bottom: 0;
+    }
+}
+
+@keyframes pagemode-search-active-searcher {
+    from {
+        bottom: 0;
+    }
+    to {
+        bottom: 60px;
+    }
+}

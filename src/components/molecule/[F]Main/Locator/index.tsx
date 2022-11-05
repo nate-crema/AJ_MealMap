@@ -12,7 +12,7 @@ import './style.css';
 // interfaces
 import { Location } from "@recoil/types";
 type LocatorProps = {
-    
+    className?: string
 }
 
 type KakaoRegionResult = {
@@ -35,7 +35,7 @@ declare global {
     }
 }
 
-const Locator: React.FC<LocatorProps> = ({  }) => {
+const Locator: React.FC<LocatorProps> = ({ className }) => {
 
 
     // geolocation control
@@ -104,7 +104,7 @@ const Locator: React.FC<LocatorProps> = ({  }) => {
     }, [ location ] );
     
 
-    return <div className="service-locator">
+    return <div className={ `service-locator ${ className || "" }` }>
         <span className={ "current-location" + ( display ? " fadeIn" : " fadeOut" ) }>현재 위치: { ment }</span>
     </div>
 };

@@ -15,12 +15,13 @@ type StyleProperties = CSSProperties | { [ key in string ]: CSSProperties };
 type SvgManagerProps = {
     svg_type: string
     style?: StyleProperties
+    className?: string
 }
 
 // components
 
 
-const SvgManager: React.FC<SvgManagerProps> = ({ svg_type, style }) => {
+const SvgManager: React.FC<SvgManagerProps> = ({ svg_type, style, className }) => {
     
     const [ svgList, setSvgList ] = useRecoilState<{ [ svg_type in string ]: string }>( states.svgList );
     const [ svgDoc, setSvgDoc ] = useState<any>(null);
@@ -59,7 +60,7 @@ const SvgManager: React.FC<SvgManagerProps> = ({ svg_type, style }) => {
         } )()
     }, [ svg_type ]);
 
-    return <div dangerouslySetInnerHTML={{ __html: svgDoc }}/>;
+    return <div className={ className || "" } dangerouslySetInnerHTML={{ __html: svgDoc }}/>;
 };
 
 export default SvgManager
